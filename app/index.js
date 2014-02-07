@@ -23,13 +23,14 @@ BemgenGenerator.prototype.askFor = function askFor() {
 
     function checkName(value) { return !value.match(/[^0-9a-zA-Z._-]/g); }
 
-    // Technologies
+    // technologies
     var commonTech = [ { value: 'bemjson.js' }, { value: 'less' }, { value: 'roole' }, { value: 'css' }, { value: 'ie.css' }, { value: 'ieN.css' } ],
         _commonTech = [ { value: 'priv.js' }, { value: 'bemhtml' }, { value: 'bemtree' }, { value: 'examples' } ],
         coreTech = [ { value: 'browser.js' }, { value: 'browser.js+bemhtml' }, { value: 'node.js' } ],
         blTech = [ { value: 'js' }, { value: 'js-i' }, { value: 'js+bemhtml' } ], 
         localizationTech = [ { value: 'i18n.js' }, { value: 'i18n.js+bemhtml' }, { value: 'i18n.html' } ];
 
+    // questions to the user
     var prompts = [{
         type: 'input',
         name: 'projectName',
@@ -50,9 +51,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         type: 'list',
         name: 'collector',
         message: 'What collector to use?',
-        choices: [{ 
-            value: 'bem' 
-        }],
+        choices: [ { value: 'bem' } ],
     }, {
         type: 'list',
         name: 'baseLibrary',
@@ -103,6 +102,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         }
     }];
 
+     // answers from the user
     this.prompt(prompts, function (props) {
         this.someOption = props.someOption;
         
