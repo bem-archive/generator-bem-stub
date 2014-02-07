@@ -1,4 +1,4 @@
-# generator-bemgen [![Build Status](https://secure.travis-ci.org/eGavr/generator-bemgen.png?branch=master)](https://travis-ci.org/eGavr/generator-bemgen)
+# generator-bemgen
 
 A generator for [Yeoman](http://yeoman.io).
 
