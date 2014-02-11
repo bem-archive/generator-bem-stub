@@ -12,7 +12,7 @@ var BemgenGenerator = module.exports = function BemgenGenerator(args, options, c
 
     this.on('end', function () {
         this.log.write('').ok('Done!');
-        setTimeout(process.exit, 100, 0); // Force exit
+        setTimeout(process.exit, 100, 0);   // force exit
     });
 };
 
@@ -30,6 +30,12 @@ BemgenGenerator.prototype.askFor = function askFor() {
         blTech = [ { value: 'js' }, { value: 'js-i' }, { value: 'js+bemhtml' } ], 
         localizationTech = [ { value: 'i18n.js' }, { value: 'i18n.js+bemhtml' }, { value: 'i18n.html' } ];
 
+    // versions
+    var coreVersion = ' @ version',
+        blVersion = ' @ version',
+        componentsVersion = ' @ version',
+        mvcVersion = ' @ version';
+
     // questions to the user
     var prompts = [{
         type: 'input',
@@ -39,7 +45,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         default: path.basename(this.dest._base)
     }, {
         type: 'input',
-        name: 'fullName',
+        name: 'author',
         message: 'Who will mantain this project?',
         default: this.user.git.username || 'Ivan Ivanovich'
     }, {
@@ -51,25 +57,43 @@ BemgenGenerator.prototype.askFor = function askFor() {
         type: 'list',
         name: 'collector',
         message: 'What collector to use?',
-        choices: [ { value: 'bem' } ],
+        choices: [ { value: 'bem' } ]
     }, {
         type: 'list',
         name: 'baseLibrary',
         message: 'What base library to use?',
-        choices: [ { value: 'bem-core' }, { value: 'bem-bl' } ],
+        choices: [{
+            name: 'bem-core', 
+            value: 'bem-core' + coreVersion 
+        }, {
+            name: 'bem-bl', 
+            value: 'bem-bl' + blVersion 
+        }] 
     }, {
         type: 'checkbox',
         name: 'addLibraries',
         message: 'Would you like any additional libraries?',
         choices: function (input) {
-            if (input.baseLibrary === 'bem-core') return [ { value: 'bem-components' }, { value: 'bem-mvc' } ];
-            else if (input.baseLibrary === 'bem-bl') return [ { value: 'bem-mvc' } ];
+            // returns the list of possible additional libs in dependence of the base library
+            if (input.baseLibrary === 'bem-core' + coreVersion) 
+                return [{ 
+                    name: 'bem-components', 
+                    value: 'bem-components' + componentsVersion 
+                }, {
+                    name: 'bem-mvc', 
+                    value: 'bem-mvc' + mvcVersion
+                }];
+            else if (input.baseLibrary === 'bem-bl' + blVersion) 
+                return [{
+                    name: 'bem-mvc', 
+                    value: 'bem-mvc' + mvcVersion 
+                }];
         }
     }, {
         type: 'list',
         name: 'platform',
         message: 'What platform to use?',
-        choices: [ { value: 'desktop' }, { value: 'touch-pad' }, { value: 'touch-phone' } ],
+        choices: [ { value: 'desktop' }, { value: 'touch-pad' }, { value: 'touch-phone' } ]
     }, {
         type: 'confirm',
         name: 'localization',
@@ -80,17 +104,18 @@ BemgenGenerator.prototype.askFor = function askFor() {
         name: 'languages',
         message: 'Enter languages separated by a space ("ru", "en" are default)',
         when: function(input) {
-            return input.localization ? true : false;
+            return input.localization ? true : false;   // We need localization? So, let's ask this question!
         }
     }, {
         type: 'checkbox',
         name: 'technology',
         message: 'What technologies to use?',
         choices: function(input) {
-            if (input.baseLibrary === 'bem-core' && !input.localization) return commonTech.concat(coreTech, _commonTech);
-            else if (input.baseLibrary === 'bem-core' && input.localization) return commonTech.concat(coreTech, _commonTech, localizationTech);
-            else if (input.baseLibrary === 'bem-bl' && !input.localization) return commonTech.concat(blTech, _commonTech);
-            else if (input.baseLibrary === 'bem-bl' && input.localization) return commonTech.concat(_commonTech, localizationTech);
+            // returns the list of possible technologies to choose in dependence of the previous answers
+            if (input.baseLibrary === 'bem-core' + coreVersion && !input.localization) return commonTech.concat(coreTech, _commonTech);
+            else if (input.baseLibrary === 'bem-core' + coreVersion && input.localization) return commonTech.concat(coreTech, _commonTech, localizationTech);
+            else if (input.baseLibrary === 'bem-bl' + blVersion && !input.localization) return commonTech.concat(blTech, _commonTech);
+            else if (input.baseLibrary === 'bem-bl' + blVersion && input.localization) return commonTech.concat(_commonTech, localizationTech);
         }
     }, {
         type: 'confirm',
@@ -98,27 +123,33 @@ BemgenGenerator.prototype.askFor = function askFor() {
         message: 'Use html?',
         default: true,
         when: function(input) {
-            return (input.technology.indexOf('bemjson.js') !== -1 && !input.localization) ? true : false;
-        }
+            return (input.technology.indexOf('bemjson.js') !== -1 && !input.localization) ? true : false;   // 'bemjson.js' has been chosen without localization?
+        }                                                                                                   //                              Better to ask this question!
     }];
 
      // answers from the user
-    this.prompt(prompts, function (props) {
-        this.someOption = props.someOption;
-        
+    this.prompt(prompts, function (props) {  
+        this.author = props.author;
+        this.email = props.email;
+        this.projectName = props.projectName;
+
+        this.libs = props.addLibraries;
+        this.libs.unshift(props.baseLibrary);
+
         cb();
     }.bind(this));
 };
 
 BemgenGenerator.prototype.app = function app() {
-    this.mkdir('app');
-    this.mkdir('app/templates');
-
-    this.copy('_package.json', 'package.json');
-    this.copy('_bower.json', 'bower.json');
+    var root = this.sourceRoot() + '/project-stub'; // path to 'project-stub' in templates
+    var files = this.expandFiles('**', { dot: true, cwd: root });   // roots of all files in 'project-stub'
+    this._.each(files, function (f) {
+        var src = path.join(root, f);   // copy from
+        var dest = path.join(this.destinationRoot(), this.projectName, path.dirname(f), path.basename(f));  // where to copy
+        this.template(src, dest);
+    }.bind(this));
 };
 
 BemgenGenerator.prototype.projectfiles = function projectfiles() {
-    this.copy('editorconfig', '.editorconfig');
-    this.copy('jshintrc', '.jshintrc');
+
 };
