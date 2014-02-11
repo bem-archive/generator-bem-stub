@@ -1,5 +1,5 @@
 # generator-bemgen
-
+ 
 A generator for [Yeoman](http://yeoman.io).
 
 
