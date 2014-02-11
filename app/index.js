@@ -2,6 +2,7 @@
 var util = require('util');
 var path = require('path');
 var yeoman = require('yeoman-generator');
+var fs = require('fs');
 
 
 var BemgenGenerator = module.exports = function BemgenGenerator(args, options, config) {
@@ -22,6 +23,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
     var cb = this.async();
 
     function checkName(value) { return !value.match(/[^0-9a-zA-Z._-]/g); }
+    function getVersion(value) { return JSON.parse(fs.readFileSync(_path).toString()).versions[value]; }
 
     // technologies
     var commonTech = [ { value: 'bemjson.js' }, { value: 'less' }, { value: 'roole' }, { value: 'css' }, { value: 'ie.css' }, { value: 'ieN.css' } ],
@@ -31,10 +33,13 @@ BemgenGenerator.prototype.askFor = function askFor() {
         localizationTech = [ { value: 'i18n.js' }, { value: 'i18n.js+bemhtml' }, { value: 'i18n.html' } ];
 
     // versions
-    var coreVersion = ' @ version',
-        blVersion = ' @ version',
-        componentsVersion = ' @ version',
-        mvcVersion = ' @ version';
+    var _path = this.sourceRoot() + '/config.json'; // path to 'ver.json' in templates
+    //this.versions = { 
+    //    'bem-core': ' @ ' + getVersion('bem-core'), 
+    //    'bem-bl': ' @ ' + getVersion('bem-bl'),
+    //    'bem-components': ' @ ' + getVersion('bem-components'),
+    //    'bem-mvc': ' @ ' + getVersion('bem-mvc') 
+    //}
 
     // questions to the user
     var prompts = [{
@@ -64,10 +69,10 @@ BemgenGenerator.prototype.askFor = function askFor() {
         message: 'What base library to use?',
         choices: [{
             name: 'bem-core', 
-            value: 'bem-core' + coreVersion 
+            value: { name: 'bem-core', version: getVersion('bem-core') }// + coreVersion 
         }, {
             name: 'bem-bl', 
-            value: 'bem-bl' + blVersion 
+            value: { name: 'bem-bl', version: getVersion('bem-bl') } //+ blVersion 
         }] 
     }, {
         type: 'checkbox',
@@ -75,25 +80,34 @@ BemgenGenerator.prototype.askFor = function askFor() {
         message: 'Would you like any additional libraries?',
         choices: function (input) {
             // returns the list of possible additional libs in dependence of the base library
-            if (input.baseLibrary === 'bem-core' + coreVersion) 
+            if (input.baseLibrary.name === 'bem-core'/* + coreVersion*/) 
                 return [{ 
                     name: 'bem-components', 
-                    value: 'bem-components' + componentsVersion 
+                    value: { name: 'bem-components', version: getVersion('bem-components') } //+ componentsVersion 
                 }, {
                     name: 'bem-mvc', 
-                    value: 'bem-mvc' + mvcVersion
+                    value: { name: 'bem-mvc', version: getVersion('bem-mvc') } // + mvcVersion
                 }];
-            else if (input.baseLibrary === 'bem-bl' + blVersion) 
+            else if (input.baseLibrary.name === 'bem-bl' /*+ blVersion*/) 
                 return [{
                     name: 'bem-mvc', 
-                    value: 'bem-mvc' + mvcVersion 
+                    value: { name: 'bem-mvc',  version: getVersion('bem-mvc') } //+ mvcVersion 
                 }];
         }
     }, {
         type: 'list',
-        name: 'platform',
+        name: 'platforms',
         message: 'What platform to use?',
-        choices: [ { value: 'desktop' }, { value: 'touch-pad' }, { value: 'touch-phone' } ]
+        choices: [{ 
+            name: 'desktop', 
+            value: ['desktop', 'common'] 
+        }, { 
+            name: 'touch-pad', 
+            value: ['common', 'touch', 'touch-pad'] 
+        }, {
+            name: 'touch-phone', 
+            value: ['common', 'touch', 'touch-phone'] 
+        }]
     }, {
         type: 'confirm',
         name: 'localization',
@@ -112,10 +126,10 @@ BemgenGenerator.prototype.askFor = function askFor() {
         message: 'What technologies to use?',
         choices: function(input) {
             // returns the list of possible technologies to choose in dependence of the previous answers
-            if (input.baseLibrary === 'bem-core' + coreVersion && !input.localization) return commonTech.concat(coreTech, _commonTech);
-            else if (input.baseLibrary === 'bem-core' + coreVersion && input.localization) return commonTech.concat(coreTech, _commonTech, localizationTech);
-            else if (input.baseLibrary === 'bem-bl' + blVersion && !input.localization) return commonTech.concat(blTech, _commonTech);
-            else if (input.baseLibrary === 'bem-bl' + blVersion && input.localization) return commonTech.concat(_commonTech, localizationTech);
+            if (input.baseLibrary.name === 'bem-core' /*+ coreVersion*/ && !input.localization) return commonTech.concat(coreTech, _commonTech);
+            else if (input.baseLibrary.name === 'bem-core' /*+ coreVersion*/ && input.localization) return commonTech.concat(coreTech, _commonTech, localizationTech);
+            else if (input.baseLibrary.name === 'bem-bl' /*+ blVersion*/ && !input.localization) return commonTech.concat(blTech, _commonTech);
+            else if (input.baseLibrary.name === 'bem-bl' /*+ blVersion*/ && input.localization) return commonTech.concat(_commonTech, localizationTech);
         }
     }, {
         type: 'confirm',
@@ -124,17 +138,32 @@ BemgenGenerator.prototype.askFor = function askFor() {
         default: true,
         when: function(input) {
             return (input.technology.indexOf('bemjson.js') !== -1 && !input.localization) ? true : false;   // 'bemjson.js' has been chosen without localization?
-        }                                                                                                   //                              Better to ask this question!
+        }                                                                                                   // Better to ask this question!
     }];
 
      // answers from the user
-    this.prompt(prompts, function (props) {  
+    this.prompt(prompts, function (props) { 
+        //console.log(props) 
         this.author = props.author;
         this.email = props.email;
         this.projectName = props.projectName;
 
         this.libs = props.addLibraries;
         this.libs.unshift(props.baseLibrary);
+
+        //console.log(this.libs);
+        this.platforms = [];
+        //var platforms = props.platforms;
+
+        for (var lib in this.libs) {
+            for (var platform in props.platforms) {
+                this.platforms.push(this.libs[lib].name + '/' + ((this.libs[lib].name !== 'bem-bl') ?  props.platforms[platform] + '.blocks' : 'blocks-' + props.platforms[platform]));
+
+            }
+            //this.platforms.push()
+        }
+
+        console.log(this.platforms);
 
         cb();
     }.bind(this));

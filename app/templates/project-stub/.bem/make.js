@@ -13,7 +13,7 @@ MAKE.decl('Arch', {
     bundlesLevelsRegexp: /^.+?\.bundles$/,
 
     libraries: [
-<%= _.map(libs, function(lib) { return "        '" + lib + "'"}).join(',\n') %>
+<%= _.map(libs, function(lib) { return "        '" + lib.name + " @ " + lib.version + "'"}).join(',\n') %>
     ]
 
 });
