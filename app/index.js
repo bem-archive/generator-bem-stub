@@ -32,14 +32,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         blTech = [ { value: 'js' }, { value: 'js-i' }, { value: 'js+bemhtml' } ], 
         localizationTech = [ { value: 'i18n.js' }, { value: 'i18n.js+bemhtml' }, { value: 'i18n.html' } ];
 
-    // versions
-    var _path = this.sourceRoot() + '/config.json'; // path to 'ver.json' in templates
-    //this.versions = { 
-    //    'bem-core': ' @ ' + getVersion('bem-core'), 
-    //    'bem-bl': ' @ ' + getVersion('bem-bl'),
-    //    'bem-components': ' @ ' + getVersion('bem-components'),
-    //    'bem-mvc': ' @ ' + getVersion('bem-mvc') 
-    //}
+    var _path = this.sourceRoot() + '/config.json'; // path to 'config.json' in templates
 
     // questions to the user
     var prompts = [{
@@ -69,10 +62,10 @@ BemgenGenerator.prototype.askFor = function askFor() {
         message: 'What base library to use?',
         choices: [{
             name: 'bem-core', 
-            value: { name: 'bem-core', version: getVersion('bem-core') }// + coreVersion 
+            value: { name: 'bem-core', version: getVersion('bem-core') }
         }, {
             name: 'bem-bl', 
-            value: { name: 'bem-bl', version: getVersion('bem-bl') } //+ blVersion 
+            value: { name: 'bem-bl', version: getVersion('bem-bl') }
         }] 
     }, {
         type: 'checkbox',
@@ -80,18 +73,18 @@ BemgenGenerator.prototype.askFor = function askFor() {
         message: 'Would you like any additional libraries?',
         choices: function (input) {
             // returns the list of possible additional libs in dependence of the base library
-            if (input.baseLibrary.name === 'bem-core'/* + coreVersion*/) 
+            if (input.baseLibrary.name === 'bem-core') 
                 return [{ 
                     name: 'bem-components', 
-                    value: { name: 'bem-components', version: getVersion('bem-components') } //+ componentsVersion 
+                    value: { name: 'bem-components', version: getVersion('bem-components') }
                 }, {
                     name: 'bem-mvc', 
-                    value: { name: 'bem-mvc', version: getVersion('bem-mvc') } // + mvcVersion
+                    value: { name: 'bem-mvc', version: getVersion('bem-mvc') }
                 }];
-            else if (input.baseLibrary.name === 'bem-bl' /*+ blVersion*/) 
+            else if (input.baseLibrary.name === 'bem-bl') 
                 return [{
                     name: 'bem-mvc', 
-                    value: { name: 'bem-mvc',  version: getVersion('bem-mvc') } //+ mvcVersion 
+                    value: { name: 'bem-mvc',  version: getVersion('bem-mvc') }
                 }];
         }
     }, {
@@ -126,10 +119,10 @@ BemgenGenerator.prototype.askFor = function askFor() {
         message: 'What technologies to use?',
         choices: function(input) {
             // returns the list of possible technologies to choose in dependence of the previous answers
-            if (input.baseLibrary.name === 'bem-core' /*+ coreVersion*/ && !input.localization) return commonTech.concat(coreTech, _commonTech);
-            else if (input.baseLibrary.name === 'bem-core' /*+ coreVersion*/ && input.localization) return commonTech.concat(coreTech, _commonTech, localizationTech);
-            else if (input.baseLibrary.name === 'bem-bl' /*+ blVersion*/ && !input.localization) return commonTech.concat(blTech, _commonTech);
-            else if (input.baseLibrary.name === 'bem-bl' /*+ blVersion*/ && input.localization) return commonTech.concat(_commonTech, localizationTech);
+            if (input.baseLibrary.name === 'bem-core' && !input.localization) return commonTech.concat(coreTech, _commonTech);
+            else if (input.baseLibrary.name === 'bem-core' && input.localization) return commonTech.concat(coreTech, _commonTech, localizationTech);
+            else if (input.baseLibrary.name === 'bem-bl' && !input.localization) return commonTech.concat(blTech, _commonTech);
+            else if (input.baseLibrary.name === 'bem-bl' && input.localization) return commonTech.concat(_commonTech, localizationTech);
         }
     }, {
         type: 'confirm',
@@ -143,7 +136,6 @@ BemgenGenerator.prototype.askFor = function askFor() {
 
      // answers from the user
     this.prompt(prompts, function (props) { 
-        //console.log(props) 
         this.author = props.author;
         this.email = props.email;
         this.projectName = props.projectName;
@@ -151,19 +143,13 @@ BemgenGenerator.prototype.askFor = function askFor() {
         this.libs = props.addLibraries;
         this.libs.unshift(props.baseLibrary);
 
-        //console.log(this.libs);
         this.platforms = [];
-        //var platforms = props.platforms;
 
         for (var lib in this.libs) {
             for (var platform in props.platforms) {
                 this.platforms.push(this.libs[lib].name + '/' + ((this.libs[lib].name !== 'bem-bl') ?  props.platforms[platform] + '.blocks' : 'blocks-' + props.platforms[platform]));
-
             }
-            //this.platforms.push()
         }
-
-        console.log(this.platforms);
 
         cb();
     }.bind(this));
