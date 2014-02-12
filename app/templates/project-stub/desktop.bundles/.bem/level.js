@@ -8,15 +8,11 @@ exports.getConfig = function() {
 
     return BEM.util.extend(this.__base() || {}, {
         bundleBuildLevels: this.resolvePaths([
-                'bem-core/common.blocks',
-                'bem-core/desktop.blocks',
-                'bem-components/common.blocks',
-                'bem-components/desktop.blocks'
+<%= _.map(platforms.withPath, function(platform) { return "                '" + platform + "'"}).join(',\n') %>
             ]
             .map(function(path) { return PATH.resolve(environ.LIB_ROOT, path); })
             .concat([
-                'common.blocks',
-                'desktop.blocks'
+<%= _.map(platforms.withoutPath, function(platform) { return "                '" + platform + ".blocks'"}).join(',\n') %>
             ]
             .map(function(path) { return PATH.resolve(environ.PRJ_ROOT, path); })))
     });
