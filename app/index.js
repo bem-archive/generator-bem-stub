@@ -22,10 +22,13 @@ util.inherits(BemgenGenerator, yeoman.generators.Base);
 BemgenGenerator.prototype.askFor = function askFor() {
     var cb = this.async();
 
+    // checks the validity of the project name
     function checkName(value) { return !value.match(/[^0-9a-zA-Z._-]/g); }
 
+    // gets the version of the liblary from 'templates/config.json'
     function getVersion(value) { return JSON.parse(fs.readFileSync(_path).toString()).versions[value]; }
 
+    // receives, for example, pls['desktop', 'common'] and libs['bem-core'], returns platforms['bem-core/desktop.blocks', 'bem-core/common.blocks']
     function getPlatforms(pls, libs) {
         var platforms = [];
         for (var lib in libs) {
