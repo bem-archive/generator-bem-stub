@@ -23,7 +23,18 @@ BemgenGenerator.prototype.askFor = function askFor() {
     var cb = this.async();
 
     function checkName(value) { return !value.match(/[^0-9a-zA-Z._-]/g); }
+
     function getVersion(value) { return JSON.parse(fs.readFileSync(_path).toString()).versions[value]; }
+
+    function getPlatforms(pls, libs) {
+        var platforms = [];
+        for (var lib in libs) {
+            for (var platform in pls) {
+                platforms.push(libs[lib].name + '/' + ((libs[lib].name !== 'bem-bl') ?  pls[platform] + '.blocks' : 'blocks-' + pls[platform]));
+            }
+        }
+        return platforms;
+    }
 
     // technologies
     var commonTech = [ { value: 'bemjson.js' }, { value: 'less' }, { value: 'roole' }, { value: 'css' }, { value: 'ie.css' }, { value: 'ieN.css' } ],
@@ -111,7 +122,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         name: 'languages',
         message: 'Enter languages separated by a space ("ru", "en" are default)',
         when: function(input) {
-            return input.localization ? true : false;   // We need localization? So, let's ask this question!
+            return input.localization ? true : false;   // Do we need localization? So, let's ask this question!
         }
     }, {
         type: 'checkbox',
@@ -129,9 +140,9 @@ BemgenGenerator.prototype.askFor = function askFor() {
         name: 'html',
         message: 'Use html?',
         default: true,
-        when: function(input) {
-            return (input.technology.indexOf('bemjson.js') !== -1 && !input.localization) ? true : false;   // 'bemjson.js' has been chosen without localization?
-        }                                                                                                   // Better to ask this question!
+        when: function(input) { // Has 'bemjson.js' been chosen without localization? Better to ask this question!
+            return (input.technology.indexOf('bemjson.js') !== -1 && !input.localization) ? true : false;   
+        }                                                                                                   
     }];
 
      // answers from the user
@@ -139,17 +150,22 @@ BemgenGenerator.prototype.askFor = function askFor() {
         this.author = props.author;
         this.email = props.email;
         this.projectName = props.projectName;
+        /* package.json --> 
+            <%= author %> | <%= email %> | <%= projectName %>
+        */
 
         this.libs = props.addLibraries;
         this.libs.unshift(props.baseLibrary);
-
-        this.platforms = [];
-
-        for (var lib in this.libs) {
-            for (var platform in props.platforms) {
-                this.platforms.push(this.libs[lib].name + '/' + ((this.libs[lib].name !== 'bem-bl') ?  props.platforms[platform] + '.blocks' : 'blocks-' + props.platforms[platform]));
-            }
-        }
+        /* .bem/make.js -->
+            <%= _.map(libs, function(lib) { return "        '" + lib.name + " @ " + lib.version + "'"}).join(',\n') %>
+        */
+        
+        // 'withPath' ==> 'bem-core/common.blocks' | 'withoutPath' ==> 'common'
+        this.platforms = { 'withPath' :  getPlatforms(props.platforms, this.libs), 'withoutPath' : props.platforms }
+        /* desktop.bundles/.bem/level.js -->    
+            <%= _.map(platforms.withPath, function(platform) { return "                '" + platform + "'"}).join(',\n') %>
+            <%= _.map(platforms.withoutPath, function(platform) { return "                '" + platform + ".blocks'"}).join(',\n') %>
+        */
 
         cb();
     }.bind(this));
