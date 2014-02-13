@@ -1,7 +1,7 @@
 {
   "author": "<%= author %>",
-  "email": "<%= email %>"
   "name": "<%= projectName %>",
+  "email": "<%= email %>",
   "version": "0.0.1",
   "repository": {
     "type": "git",
