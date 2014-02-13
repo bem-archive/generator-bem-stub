@@ -9,17 +9,7 @@ var PATH = require('path'),
 exports.getTechs = function() {
 
     return {
-        'vanilla.js'    : join(BEMCORE_TECHS, 'vanilla.js.js'),
-        'browser.js'    : join(BEMCORE_TECHS, 'browser.js.js'),
-        'node.js'       : join(BEMCORE_TECHS, 'node.js.js'),
-        'css'           : 'v2/css',
-        'ie.css'        : 'v2/ie.css',
-        'ie6.css'       : 'v2/ie6.css',
-        'ie7.css'       : 'v2/ie7.css',
-        'ie8.css'       : 'v2/ie8.css',
-        'ie9.css'       : 'v2/ie9.css',
-
-        'bemhtml'       : join(BEMCORE_TECHS, 'bemhtml.js')
+<%= _.map(technologies.inBlocks, function(technology) { return "        " + technology}).join(',\n') %>
     };
 
 };

@@ -24,14 +24,7 @@ MAKE.decl('BundleNode', {
     getTechs: function() {
 
         return [
-            'bemjson.js',
-            'bemdecl.js',
-            'deps.js',
-            'bemhtml',
-            'browser.js+bemhtml',
-            'css',
-            'ie.css',
-            'html'
+<%= _.map(technologies.inMake, function(technology) { return "            '" + technology + "'"}).join(',\n') %>
         ];
 
     },
