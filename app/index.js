@@ -39,15 +39,31 @@ BemgenGenerator.prototype.askFor = function askFor() {
         return platforms;
     }
 
+    // handles the typed languages
     function getLanguages(languages) {
+        // removes all duplicate values in array
+        function getUnique(arr) {
+            var obj = {};
+            for(var i = 0; i < arr.length; i++) {
+                var str = arr[i];
+                obj[str] = true;
+            }
+            return Object.keys(obj);
+        }
+
         languages = languages.replace(/\s+/g, ' '); // removes duplicate spaces
         languages = languages.replace(/(^\s)|(\s$)/, '');   // removes the space at the beginning and at the end
-        if (languages.indexOf('ru') === -1) languages = 'ru ' + languages;
-        if (languages.indexOf('en') === -1) languages = 'en ' + languages;
-        return languages;
+        
+        // 'ru' and 'en' are default
+        languages = 'ru en ' + languages;
+        
+        languages = languages.split(' ');
+        if (languages[languages.length - 1] === '') languages.pop(); 
+        
+        return getUnique(languages);
     }
 
-    // 'inBlocks' => '.bem/levels/blocks.js' | 'inMake' => '.bem/make.js'
+    // handles the selected technologies
     function getTechnologies(techs, html) {
         // gets the 'techs[value]' property from 'templates/config.json' 
         function getTech(value) { 
@@ -65,7 +81,9 @@ BemgenGenerator.prototype.askFor = function askFor() {
             return sp;
         }
 
+        // 'inBlocks' ==> '.bem/levels/blocks.js' | 'inMake' ==> '.bem/make.js'
         var technologies = { 'inBlocks' : ['\'deps.js\'            : \'v2/deps.js\''], 'inMake' : ['deps.js'] }; // 'deps.js' is always included
+
         for (var tech in techs) {
             if (techs[tech] === 'browser.js') { // bem-core -> browser.js -> vanilla.js
                 technologies.inBlocks.push('\'' + techs[tech] + '\'' + spaces() + ': ' + getTech(techs[tech]), '\'vanilla.js\'' + spaces('vanilla.js') + ': ' + getTech('vanilla.js')); 
@@ -221,6 +239,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         */
 
         this.languages = (props.localization) ? getLanguages(props.languages) : [];
+        console.log(this.languages);
         /*
 
         */
