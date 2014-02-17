@@ -87,7 +87,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
             return '\'' + tech + '\'' + spaces(tech.length) + ': ' + getTechVal(tech);
         }
 
-        // 'inBlocks' ==> '.bem/levels/blocks.js' | 'inLevels' ==> '.bem/make.js'
+        // 'inLevels' ==> '.bem/levels/' | 'inMake' ==> '.bem/make.js'
         var technologies = { 'inLevels' : [ make('bemdecl.js'), make('deps.js')], 
                              'inMake' : [ 'bemdecl.js', 'deps.js'] };   // 'bemdecl.js' and 'deps.js' are always included
 
