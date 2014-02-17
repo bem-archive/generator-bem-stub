@@ -9,7 +9,7 @@ var PATH = require('path'),
 exports.getTechs = function() {
 
     return {
-<%= _.map(technologies.inBlocks, function(technology) { return "        " + technology}).join(',\n') %>
+<%= _.map(technologies.inLevels, function(technology) { return "        " + technology}).join(',\n') %>
     };
 
 };

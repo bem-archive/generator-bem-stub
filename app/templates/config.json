@@ -1,7 +1,7 @@
 { 
     "versions": {
         "bem-core": "f4b46ef0590549042d938f7e981df4d14eb4caef",
-        "bem-bl": "version",
+        "bem-bl": "",
         "bem-components": "82301a8af6c15c2849d1f755a24f594de6522251",
         "bem-mvc": "version"
     },
@@ -20,6 +20,7 @@
         "ie8.css"            : "v2/ie8.css",
         "ie9.css"            : "v2/ie9.css",
         "bemhtml"            : "join(BEMCORE_TECHS, 'bemhtml.js')",
-        "html"               : "join(BEMCORE_TECHS, 'html.js')"
+        "html"               : "join(BEMCORE_TECHS, 'html.js')",
+	"node.js"	     : "join(BEMCORE_TECHS, 'node.js.js')"
     }
 }

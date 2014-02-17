@@ -28,6 +28,16 @@ BemgenGenerator.prototype.askFor = function askFor() {
     // gets the version of the liblary from 'templates/config.json'
     function getVersion(value) { return JSON.parse(fs.readFileSync(_path).toString()).versions[value]; }
 
+    // removes all duplicate values in array
+    function getUnique(arr) {
+        var obj = {};
+        for(var i = 0; i < arr.length; i++) {
+            var str = arr[i];
+            obj[str] = true;
+        }
+        return Object.keys(obj);
+    }
+
     // receives, for example, pls['desktop', 'common'] and libs['bem-core'], returns platforms['bem-core/desktop.blocks', 'bem-core/common.blocks']
     function getPlatforms(pls, libs) {
         var platforms = [];
@@ -41,16 +51,6 @@ BemgenGenerator.prototype.askFor = function askFor() {
 
     // handles the typed languages
     function getLanguages(languages) {
-        // removes all duplicate values in array
-        function getUnique(arr) {
-            var obj = {};
-            for(var i = 0; i < arr.length; i++) {
-                var str = arr[i];
-                obj[str] = true;
-            }
-            return Object.keys(obj);
-        }
-
         languages = languages.replace(/\s+/g, ' '); // removes duplicate spaces
         languages = languages.replace(/(^\s)|(\s$)/, '');   // removes the space at the beginning and at the end
         
@@ -64,50 +64,65 @@ BemgenGenerator.prototype.askFor = function askFor() {
     }
 
     // handles the selected technologies
-    function getTechnologies(techs, html) {
-        // gets the 'techs[value]' property from 'templates/config.json' 
-        function getTech(value) { 
-            var _tech = JSON.parse(fs.readFileSync(_path).toString()).techs[value];
-            return (_tech !== undefined && _tech.indexOf('join(') !== -1) ? _tech : '\'' + _tech + '\''; 
-        }
-
-        // adds spaces in order to align techs in the source code
-        function spaces() {
-            var start = (arguments.length) ? arguments[0].length : techs[tech].length;
-            var sp = '';
-            for (var i = start + 2; i < 21; i++) {
-                sp += ' ';
+    function getTechnologies(techs) {
+        // makes a string of technology to push it into 'technologies.inLevels'
+        function make(tech) {
+            // gets the 'techs[value]' property from 'templates/config.json' 
+            function getTechVal(tech) { 
+                var _tech = JSON.parse(fs.readFileSync(_path).toString()).techs[tech];
+                return (_tech !== undefined && _tech.indexOf('join(') !== -1) ? _tech : '\'' + _tech + '\''; 
             }
-            return sp;
+
+            // adds spaces in order to align techs in the source code
+            function spaces(start) {
+                //var start = tech.length;
+                var sp = '';
+                for (; start < 21; start++) {
+                    sp += ' ';
+                }
+                return sp;
+            }  
+
+            // for example, returns ==> 'bemjson.js'         : join(PRJ_TECHS, 'bemjson.js')
+            return '\'' + tech + '\'' + spaces(tech.length) + ': ' + getTechVal(tech);
         }
 
-        // 'inBlocks' ==> '.bem/levels/blocks.js' | 'inMake' ==> '.bem/make.js'
-        var technologies = { 'inBlocks' : ['\'deps.js\'            : \'v2/deps.js\''], 'inMake' : ['deps.js'] }; // 'deps.js' is always included
+        // 'inBlocks' ==> '.bem/levels/blocks.js' | 'inLevels' ==> '.bem/make.js'
+        var technologies = { 'inLevels' : [ make('bemdecl.js'), make('deps.js')], 
+                             'inMake' : [ 'bemdecl.js', 'deps.js'] };   // 'bemdecl.js' and 'deps.js' are always included
 
         for (var tech in techs) {
-            if (techs[tech] === 'browser.js') { // bem-core -> browser.js -> vanilla.js
-                technologies.inBlocks.push('\'' + techs[tech] + '\'' + spaces() + ': ' + getTech(techs[tech]), '\'vanilla.js\'' + spaces('vanilla.js') + ': ' + getTech('vanilla.js')); 
-                technologies.inMake.push(techs[tech], 'vanilla.js'); 
+            switch (techs[tech]) {
+                case 'bemjson.js':  // puts 'bemjson.js' on the top (it always goes the first in technologies)
+                    technologies.inLevels.unshift(make('bemjson.js')); 
+                    technologies.inMake.unshift('bemjson.js');
+                    break;
+                case 'browser.js+bemhtml':  // 'bem-core' --> 'browser.js+bemhtml' ==> 'vanilla.js', 'browser.js' and 'js'
+                    technologies.inLevels.push(make('browser.js+bemhtml'), make('vanilla.js'), make('browser.js'), make('js')); 
+                    technologies.inMake.push('browser.js+bemhtml');
+                    break;
+                case 'node.js': // 'bem-core' --> 'node.js' ==> 'vanilla.js' and 'js'
+                    technologies.inLevels.push(make('node.js'), make('vanilla.js'), make('js')); 
+                    technologies.inMake.push('node.js'); 
+                    break;
+                default:
+                    technologies.inLevels.push(make(techs[tech])); 
+                    technologies.inMake.push(techs[tech]);
+                    break;
             }
-            else if (techs[tech] === 'bemjson.js' && html) { 
-                technologies.inBlocks.push('\'' + techs[tech] + '\'' + spaces() + ': ' + getTech(techs[tech]), '\'html\'' + spaces('html') + ': ' + getTech('html')); 
-                technologies.inMake.push(techs[tech], 'html');
-            }
-            else { 
-                technologies.inBlocks.push('\'' + techs[tech] + '\'' + spaces() + ': ' + getTech(techs[tech])); 
-                technologies.inMake.push(techs[tech]);
-            }
-        } 
+        }
+
+        technologies.inLevels = getUnique(technologies.inLevels);
+
         return technologies;
     }
 
     // technologies
-    var commonTech = [ { value: 'bemjson.js' }, { value: 'less' }, { value: 'roole' }, { value: 'css' }, { value: 'ie.css' }, { value: 'ie6.css' },
-                        { value: 'ie7.css' }, { value: 'ie8.css' }, { value: 'ie9.css' } ],
-        _commonTech = [ { value: 'priv.js' }, { value: 'bemhtml' }, { value: 'bemtree' }, { value: 'examples' } ],
-        coreTech = [ { value: 'browser.js' }, { value: 'browser.js+bemhtml' }, { value: 'node.js' } ],
-        blTech = [ { value: 'js' }, { value: 'js-i' }, { value: 'js+bemhtml' } ], 
-        localizationTech = [ { value: 'i18n.js' }, { value: 'i18n.js+bemhtml' }, { value: 'i18n.html' } ];
+    var commonTech = [ { value: 'bemjson.js' }, { value: 'css' }, { value: 'ie.css' }, { value: 'ie6.css' },
+                    { value: 'ie7.css' }, { value: 'ie8.css' }, { value: 'ie9.css' }, { value: 'less' }, { value: 'roole' } ],
+        templates = { core: [ { value: 'bemtree'  }, { value: 'bemhtml' } ], common: [ { value: 'bemhtml' } ] },
+        localizationTech = [ { value: 'i18n.js' } ],
+        scripts = { core: [ { value: 'node.js' }, { value: 'browser.js+bemhtml' } ], blWithLocal: [ { value: 'i18n.js+bemhtml' } ], blWithoutLocal: [ { value: 'js+bemhtml' } ] };
 
     var _path = this.sourceRoot() + '/config.json'; // path to 'config.json' in templates
 
@@ -196,10 +211,10 @@ BemgenGenerator.prototype.askFor = function askFor() {
         message: 'What technologies to use?',
         choices: function(input) {
             // returns the list of possible technologies to choose in dependence of the previous answers
-            if (input.baseLibrary.name === 'bem-core' && !input.localization) return commonTech.concat(coreTech, _commonTech);
-            else if (input.baseLibrary.name === 'bem-core' && input.localization) return commonTech.concat(coreTech, _commonTech, localizationTech);
-            else if (input.baseLibrary.name === 'bem-bl' && !input.localization) return commonTech.concat(blTech, _commonTech);
-            else if (input.baseLibrary.name === 'bem-bl' && input.localization) return commonTech.concat(_commonTech, localizationTech);
+            if (input.baseLibrary.name === 'bem-core' && !input.localization) return commonTech.concat(templates.core, scripts.core);
+            else if (input.baseLibrary.name === 'bem-core' && input.localization) return commonTech.concat(templates.core, localizationTech, scripts.core);
+            else if (input.baseLibrary.name === 'bem-bl' && !input.localization) return commonTech.concat(templates.common, scripts.blWithoutLocal);
+            else if (input.baseLibrary.name === 'bem-bl' && input.localization) return commonTech.concat(templates.common, localizationTech, scripts.blWithLocal);
         }
     }, {
         type: 'confirm',
@@ -207,7 +222,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         message: 'Use html?',
         default: true,
         when: function(input) { // Has 'bemjson.js' been chosen without localization? Better to ask this question!
-            return (input.techs.indexOf('bemjson.js') !== -1 && !input.localization) ? true : false;   
+            return (input.techs.indexOf('bemjson.js') !== -1) ? true : false;   
         }                                                                                                   
     }];
 
@@ -239,12 +254,12 @@ BemgenGenerator.prototype.askFor = function askFor() {
         */
 
         this.languages = (props.localization) ? getLanguages(props.languages) : [];
-        console.log(this.languages);
         /*
 
         */
 
-        this.technologies = getTechnologies(props.techs, props.html);
+        if (props.html && props.localization) props.techs.push('i18n.html'); else if (props.html && !props.localization) props.techs.push('html');
+        this.technologies = getTechnologies(props.techs);
         /*
             .bem/make.js -->
                 <%= _.map(technologies.inMake, function(technology) { return "            '" + technology + "'"}).join(',\n') %>
