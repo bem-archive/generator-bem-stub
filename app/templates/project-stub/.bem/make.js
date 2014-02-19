@@ -5,7 +5,7 @@ var environ = require('bem-environ')(__dirname);
 environ.extendMake(MAKE);
 
 //process.env.YENV = 'production';
-//process.env.XJST_ASYNCIFY = 'yes';
+//process.env.XJST_ASYNCIFY = 'yes';<%=  languages  %>
 
 MAKE.decl('Arch', {
 

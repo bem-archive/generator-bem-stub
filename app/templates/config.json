@@ -1,7 +1,7 @@
 { 
     "versions": {
         "bem-core": "f4b46ef0590549042d938f7e981df4d14eb4caef",
-        "bem-bl": "",
+        "bem-bl": "support/1.x",
         "bem-components": "82301a8af6c15c2849d1f755a24f594de6522251",
         "bem-mvc": "version"
     },
@@ -10,17 +10,25 @@
         "bemdecl.js"         : "v2/bemdecl.js",
         "deps.js"            : "v2/deps.js",
         "js"                 : "v2/js-i",
-        "vanilla.js"         : "join(BEMCORE_TECHS, 'vanilla.js.js')",
-        "browser.js"         : "join(BEMCORE_TECHS, 'browser.js.js')",
-        "browser.js+bemhtml" : "join(BEMCORE_TECHS, 'browser.js+bemhtml.js')",
+        "vanilla.js"         : "join(BEM_TECHS, 'vanilla.js.js')",
+        "browser.js"         : "join(BEM_TECHS, 'browser.js.js')",
+        "browser.js+bemhtml" : "join(BEM_TECHS, 'browser.js+bemhtml.js')",
         "css"                : "v2/css",
         "ie.css"             : "v2/ie.css",
         "ie6.css"            : "v2/ie6.css",
         "ie7.css"            : "v2/ie7.css",
         "ie8.css"            : "v2/ie8.css",
         "ie9.css"            : "v2/ie9.css",
-        "bemhtml"            : "join(BEMCORE_TECHS, 'bemhtml.js')",
-        "html"               : "join(BEMCORE_TECHS, 'html.js')",
-	"node.js"	     : "join(BEMCORE_TECHS, 'node.js.js')"
+	"bemtree"	     : "join(BEM_TECHS, 'bemtree.js')",
+        "bemhtml"            : "join(BEM_TECHS, 'bemhtml.js')",
+        "html"               : "join(BEM_TECHS, 'html.js')",
+	"node.js"	     : "join(BEM_TECHS, 'node.js.js')",
+	"js+bemhtml"	     : "join(BEM_TECHS, 'js+bemhtml.js')",
+	"i18n"		     : "join(BEM_TECHS, 'i18n.js')",
+	"i18n.js+bemhtml"    : "join(BEM_TECHS, 'i18n.js+bemhtml.js')",
+	"i18n.js"	     : "join(BEM_TECHS, 'i18n.js.js')",
+	"i18n.html"	     : "join(BEM_TECHS, 'i18n.html.js')",
+	"roole"		     : "v2/roole.js",
+	"less"		     : "v2/less.js"
     }
 }

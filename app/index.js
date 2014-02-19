@@ -55,22 +55,22 @@ BemgenGenerator.prototype.askFor = function askFor() {
         languages = languages.replace(/(^\s)|(\s$)/, '');   // removes the space at the beginning and at the end
         
         // 'ru' and 'en' are default
-        languages = 'ru en ' + languages;
+        languages = 'en ru ' + languages;
         
         languages = languages.split(' ');
         if (languages[languages.length - 1] === '') languages.pop(); 
         
-        return getUnique(languages);
+        return '\nprocess.env.BEM_I18N_LANGS = \'' + getUnique(languages).join(' ') + '\';';
     }
 
     // handles the selected technologies
-    function getTechnologies(techs) {
+    function getTechnologies(techs, base) {
         // makes a string of technology to push it into 'technologies.inLevels'
         function make(tech) {
             // gets the 'techs[value]' property from 'templates/config.json' 
             function getTechVal(tech) { 
                 var _tech = JSON.parse(fs.readFileSync(_path).toString()).techs[tech];
-                return (_tech !== undefined && _tech.indexOf('join(') !== -1) ? _tech : '\'' + _tech + '\''; 
+                return (/*_tech !== undefined && */_tech.indexOf('join(') !== -1) ? _tech : '\'' + _tech + '\''; 
             }
 
             // adds spaces in order to align techs in the source code
@@ -98,12 +98,28 @@ BemgenGenerator.prototype.askFor = function askFor() {
                     technologies.inMake.unshift('bemjson.js');
                     break;
                 case 'browser.js+bemhtml':  // 'bem-core' --> 'browser.js+bemhtml' ==> 'vanilla.js', 'browser.js' and 'js'
-                    technologies.inLevels.push(make('browser.js+bemhtml'), make('vanilla.js'), make('browser.js'), make('js')); 
+                    technologies.inLevels.push(make('browser.js+bemhtml'), make('browser.js'), make('vanilla.js'), make('js')); 
                     technologies.inMake.push('browser.js+bemhtml');
                     break;
                 case 'node.js': // 'bem-core' --> 'node.js' ==> 'vanilla.js' and 'js'
                     technologies.inLevels.push(make('node.js'), make('vanilla.js'), make('js')); 
                     technologies.inMake.push('node.js'); 
+                    break;
+                case 'i18n.html':  // 'bem-core' or 'bem-bl' with 'localization' and 'html' -> 'i18n.html' => 'html'
+                    technologies.inLevels.push(make('i18n.html'), make('html')); 
+                    technologies.inMake.push('i18n.html');
+                    break;
+                case 'i18n.js+bemhtml': // 'bem-bl' with 'localization' -> 'i18n.js+bemhtml' => 'i18n'
+                    technologies.inLevels.push(make('i18n.js+bemhtml'), make('i18n')); 
+                    technologies.inMake.push('i18n.js+bemhtml'); 
+                    break;
+                case 'i18n.js': // 'localization' -> 'i18n.js' => 'js'
+                    technologies.inLevels.push(make('i18n.js'), make('js')); 
+                    technologies.inMake.push('i18n.js'); 
+                    break;
+                case 'js+bemhtml': // 'bem-bl' -> 'js+bemhtml' => 'js' and 'bemhtml'
+                    technologies.inLevels.push(make('js+bemhtml'), make('js'), make('bemhtml')); 
+                    technologies.inMake.push('js+bemhtml'); 
                     break;
                 default:
                     technologies.inLevels.push(make(techs[tech])); 
@@ -114,6 +130,10 @@ BemgenGenerator.prototype.askFor = function askFor() {
 
         technologies.inLevels = getUnique(technologies.inLevels);
 
+        for (var tech in technologies.inLevels) {
+            technologies.inLevels[tech] = (base === 'bem-core') ? technologies.inLevels[tech].replace('BEM_TECHS', 'BEMCORE_TECHS') : technologies.inLevels[tech].replace('BEM_TECHS', 'BEMBL_TECHS');
+        }
+
         return technologies;
     }
 
@@ -121,7 +141,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
     var commonTech = [ { value: 'bemjson.js' }, { value: 'css' }, { value: 'ie.css' }, { value: 'ie6.css' },
                     { value: 'ie7.css' }, { value: 'ie8.css' }, { value: 'ie9.css' }, { value: 'less' }, { value: 'roole' } ],
         templates = { core: [ { value: 'bemtree'  }, { value: 'bemhtml' } ], common: [ { value: 'bemhtml' } ] },
-        localizationTech = [ { value: 'i18n.js' } ],
+        //localizationTech = [ { value: 'i18n.js' } ],
         scripts = { core: [ { value: 'node.js' }, { value: 'browser.js+bemhtml' } ], blWithLocal: [ { value: 'i18n.js+bemhtml' } ], blWithoutLocal: [ { value: 'js+bemhtml' } ] };
 
     var _path = this.sourceRoot() + '/config.json'; // path to 'config.json' in templates
@@ -201,7 +221,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'input',
         name: 'languages',
-        message: 'Enter languages separated by a space (\'ru\', \'en\' are default)',
+        message: 'Enter languages separated by a space (\'en\', \'ru\' are default)',
         when: function(input) {
             return input.localization ? true : false;   // Do we need localization? So, let's ask this question!
         }
@@ -211,11 +231,10 @@ BemgenGenerator.prototype.askFor = function askFor() {
         message: 'What technologies to use?',
         choices: function(input) {
             // returns the list of possible technologies to choose in dependence of the previous answers
-            if (input.baseLibrary.name === 'bem-core' && !input.localization) return commonTech.concat(templates.core, scripts.core);
-            else if (input.baseLibrary.name === 'bem-core' && input.localization) return commonTech.concat(templates.core, localizationTech, scripts.core);
+            if (input.baseLibrary.name === 'bem-core') return commonTech.concat(templates.core, scripts.core);
             else if (input.baseLibrary.name === 'bem-bl' && !input.localization) return commonTech.concat(templates.common, scripts.blWithoutLocal);
-            else if (input.baseLibrary.name === 'bem-bl' && input.localization) return commonTech.concat(templates.common, localizationTech, scripts.blWithLocal);
-        }
+            else if (input.baseLibrary.name === 'bem-bl' && input.localization) return commonTech.concat(templates.common, scripts.blWithLocal);
+        }          
     }, {
         type: 'confirm',
         name: 'html',
@@ -226,49 +245,80 @@ BemgenGenerator.prototype.askFor = function askFor() {
         }                                                                                                   
     }];
 
-    // answers from the user
-    this.prompt(prompts, function (props) { 
-        this.author = props.author;
-        this.email = props.email;
-        this.projectName = props.projectName;
+    function getAnswers(_this, props) {
+        console.log(props);
+        // adds 'i18n' and 'i18n.js'
+        function addLocalTechs(input) {
+            var count = 0;
+
+            function inArray(arr, val) {
+                for (var k in arr) {
+                    if (arr[k] === val) return true; 
+                }
+                return false;
+            }
+
+            for (var i in scripts) {
+                for (var j = 0; j < scripts[i].length; j++) {
+                    if (inArray(input, scripts[i][j].value)) count++;
+                }
+            }
+
+            input.splice(input.length - count, 0, 'i18n', 'i18n.js');
+            return input;
+        }
+
+        _this.author = props.author;
+        _this.email = props.email;
+        _this.projectName = props.projectName;
         /* package.json --> 
                 <%= author %> | <%= email %> | <%= projectName %>
         */
 
-        this.collector = props.collector;
+        _this.collector = props.collector;
         /*
 
         */
 
-        this.libs = props.addLibraries;
-        this.libs.unshift(props.baseLibrary);
+        _this.libs = props.addLibraries;
+        _this.libs.unshift(props.baseLibrary);
         /* .bem/make.js -->
                 <%= _.map(libs, function(lib) { return "        '" + lib.name + " @ " + lib.version + "'"}).join(',\n') %>
         */
         
         // 'withPath' ==> 'bem-core/common.blocks' | 'withoutPath' ==> 'common'
-        this.platforms = { 'withPath' :  getPlatforms(props.platforms, this.libs), 'withoutPath' : props.platforms }
+        _this.platforms = { 'withPath' :  getPlatforms(props.platforms, _this.libs), 'withoutPath' : props.platforms }
         /* desktop.bundles/.bem/level.js -->    
                 <%= _.map(platforms.withPath, function(platform) { return "                '" + platform + "'"}).join(',\n') %>
                 <%= _.map(platforms.withoutPath, function(platform) { return "                '" + platform + ".blocks'"}).join(',\n') %>
         */
 
-        this.languages = (props.localization) ? getLanguages(props.languages) : [];
+        _this.languages = (props.localization) ? getLanguages(props.languages) : '';
         /*
-
+            
         */
 
+        if (props.localization) props.techs = addLocalTechs(props.techs);   // localization has been chosen - > let's add 'i18n' and 'i18n.js' to techs
         if (props.html && props.localization) props.techs.push('i18n.html'); else if (props.html && !props.localization) props.techs.push('html');
-        this.technologies = getTechnologies(props.techs);
+        _this.technologies = getTechnologies(props.techs, props.baseLibrary.name);
         /*
             .bem/make.js -->
                 <%= _.map(technologies.inMake, function(technology) { return "            '" + technology + "'"}).join(',\n') %>
             .bem/levels/blocks.js -->
-                <%= _.map(technologies.inBlocks, function(technology) { return "        " + technology}).join(',\n') %>
+                <%= _.map(technologies.inLevels, function(technology) { return "        " + technology}).join(',\n') %>
         */
 
         cb();
-    }.bind(this));
+    }
+
+    try {
+        var answersFromJSON = JSON.parse(fs.readFileSync(process.argv.slice(3).shift()).toString());
+    }
+    catch(e) {
+        this.answersFromJSON = undefined;
+    }
+
+    (answersFromJSON) ? /* answers from the JSON file */ getAnswers(this, answersFromJSON) : /* answers from the user */ this.prompt(prompts, function (props) { getAnswers(this, props); }.bind(this));
 };
 
 BemgenGenerator.prototype.app = function app() {
