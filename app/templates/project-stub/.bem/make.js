@@ -33,6 +33,6 @@ MAKE.decl('BundleNode', {
         sourceNode.getFiles().forEach(function(f) {
             this['create-js-optimizer-node'](tech, this.ctx.arch.getNode(f), bundleNode);
         }, this);
-    }
+    }<%= localizationCode  %>
 
 });

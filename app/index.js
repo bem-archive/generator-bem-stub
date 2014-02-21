@@ -26,7 +26,9 @@ BemgenGenerator.prototype.askFor = function askFor() {
     function checkName(value) { return !value.match(/[^0-9a-zA-Z._-]/g); }
 
     // gets the version of the liblary from 'templates/config.json'
-    function getVersion(value) { return JSON.parse(fs.readFileSync(_path).toString()).versions[value]; }
+    function getVersion(base, value) { return JSON.parse(fs.readFileSync(_path).toString()).versions[base][value]; }
+
+    function getSourceCode(value) { return JSON.parse(fs.readFileSync(_path).toString()).sourceCode[value]; }
 
     // removes all duplicate values in array
     function getUnique(arr) {
@@ -174,10 +176,10 @@ BemgenGenerator.prototype.askFor = function askFor() {
         message: 'What base library to use?',
         choices: [{
             name: 'bem-core', 
-            value: { name: 'bem-core', version: getVersion('bem-core') }
+            value: { name: 'bem-core', version: getVersion('core', 'bem-core') }
         }, {
             name: 'bem-bl', 
-            value: { name: 'bem-bl', version: getVersion('bem-bl') }
+            value: { name: 'bem-bl', version: getVersion('bl', 'bem-bl') }
         }] 
     }, {
         type: 'checkbox',
@@ -188,15 +190,15 @@ BemgenGenerator.prototype.askFor = function askFor() {
             if (input.baseLibrary.name === 'bem-core') 
                 return [{ 
                     name: 'bem-components', 
-                    value: { name: 'bem-components', version: getVersion('bem-components') }
+                    value: { name: 'bem-components', version: getVersion('core','bem-components') }
                 }, {
                     name: 'bem-mvc', 
-                    value: { name: 'bem-mvc', version: getVersion('bem-mvc') }
+                    value: { name: 'bem-mvc', version: getVersion('core', 'bem-mvc') }
                 }];
             else if (input.baseLibrary.name === 'bem-bl') 
                 return [{
                     name: 'bem-mvc', 
-                    value: { name: 'bem-mvc',  version: getVersion('bem-mvc') }
+                    value: { name: 'bem-mvc',  version: getVersion('bl', 'bem-mvc') }
                 }];
         }
     }, {
@@ -293,6 +295,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
                 <%= _.map(platforms.withoutPath, function(platform) { return "                '" + platform + ".blocks'"}).join(',\n') %>
         */
 
+        _this.localizationCode = (props.localization) ? getSourceCode('localization') : '';
         _this.languages = (props.localization) ? getLanguages(props.languages) : '';
         /*
             
