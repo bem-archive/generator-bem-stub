@@ -1,0 +1,12 @@
+{
+  "projectName": "bemcore.platforms.local.1",
+  "author": "Evgeniy Gavrushin",
+  "email": "job.govorov@yandex.ru",
+  "collector": "bem",
+  "baseLibrary": { "name": "bem-core", "version": "v1" },
+  "addLibraries": [],
+  "platforms": [ "common", "desktop" ],
+  "localization": true,
+  "languages": "",
+  "techs": []
+}

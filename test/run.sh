@@ -1,6 +1,8 @@
 echo 'Running tests...'
 rm -rf output/*
 
+k=0
+
 for j in input/* ;
 do
     i=$j/${j:6}.json
@@ -26,6 +28,7 @@ do
         exit 1
     fi 
 
+    k=$(( $k + 1 ))
     npm install
     ./node_modules/.bin/bem make
 
@@ -37,3 +40,6 @@ do
 
     cd ../..
 done
+
+echo
+echo '==> OK! -> '$k 'tests'
