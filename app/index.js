@@ -4,6 +4,13 @@ var path = require('path');
 var yeoman = require('yeoman-generator');
 var fs = require('fs');
 
+// checks the entry of value in an array
+function inArray(arr, val) {
+    for (var k in arr) {
+        if (arr[k] === val) return true; 
+    }
+    return false;
+} 
 
 var BemgenGenerator = module.exports = function BemgenGenerator(args, options, config) {
     yeoman.generators.Base.apply(this, arguments);
@@ -28,6 +35,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
     // gets the version of the liblary from 'templates/config.json'
     function getVersion(base, value) { return JSON.parse(fs.readFileSync(_path).toString()).versions[base][value]; }
 
+    // gets the piece of code from 'templates/config.json' which should be inserted in the source code
     function getSourceCode(value) { return JSON.parse(fs.readFileSync(_path).toString()).sourceCode[value]; }
 
     // removes all duplicate values in array
@@ -143,7 +151,6 @@ BemgenGenerator.prototype.askFor = function askFor() {
     var commonTech = [ { value: 'bemjson.js' }, { value: 'css' }, { value: 'ie.css' }, { value: 'ie6.css' },
                     { value: 'ie7.css' }, { value: 'ie8.css' }, { value: 'ie9.css' }, { value: 'less' }, { value: 'roole' } ],
         templates = { core: [ { value: 'bemtree'  }, { value: 'bemhtml' } ], common: [ { value: 'bemhtml' } ] },
-        //localizationTech = [ { value: 'i18n.js' } ],
         scripts = { core: [ { value: 'node.js' }, { value: 'browser.js+bemhtml' } ], blWithLocal: [ { value: 'i18n.js+bemhtml' } ], blWithoutLocal: [ { value: 'js+bemhtml' } ] };
 
     var _path = this.sourceRoot() + '/config.json'; // path to 'config.json' in templates
@@ -225,7 +232,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         name: 'languages',
         message: 'Enter languages separated by a space (\'en\', \'ru\' are default)',
         when: function(input) {
-            return input.localization ? true : false;   // Do we need localization? So, let's ask this question!
+            return input.localization ? true : false;   // Do we need localization? ==> So, let's ask this question!
         }
     }, {
         type: 'checkbox',
@@ -242,7 +249,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         name: 'html',
         message: 'Use html?',
         default: true,
-        when: function(input) { // Has 'bemjson.js' been chosen without localization? Better to ask this question!
+        when: function(input) { // Has 'bemjson.js' been chosen? ==> Better to ask this question!
             return (input.techs.indexOf('bemjson.js') !== -1) ? true : false;   
         }                                                                                                   
     }];
@@ -252,20 +259,11 @@ BemgenGenerator.prototype.askFor = function askFor() {
         // adds 'i18n' and 'i18n.js'
         function addLocalTechs(input) {
             var count = 0;
-
-            function inArray(arr, val) {
-                for (var k in arr) {
-                    if (arr[k] === val) return true; 
-                }
-                return false;
-            }
-
             for (var i in scripts) {
                 for (var j = 0; j < scripts[i].length; j++) {
                     if (inArray(input, scripts[i][j].value)) count++;
                 }
             }
-
             input.splice(input.length - count, 0, 'i18n', 'i18n.js');
             return input;
         }
@@ -287,7 +285,12 @@ BemgenGenerator.prototype.askFor = function askFor() {
         /* .bem/make.js -->
                 <%= _.map(libs, function(lib) { return "        '" + lib.name + " @ " + lib.version + "'"}).join(',\n') %>
         */
-        
+
+        _this.page = (props.baseLibrary.name === 'bem-core') ? 'page' : 'b-page';
+        /* desktop.bundles/index/index.bemjson.js -->
+                <%= page %>
+        */
+
         // 'withPath' ==> 'bem-core/common.blocks' | 'withoutPath' ==> 'common'
         _this.platforms = { 'withPath' :  getPlatforms(props.platforms, _this.libs), 'withoutPath' : props.platforms }
         /* desktop.bundles/.bem/level.js -->    
@@ -298,7 +301,8 @@ BemgenGenerator.prototype.askFor = function askFor() {
         _this.localizationCode = (props.localization) ? getSourceCode('localization') : '';
         _this.languages = (props.localization) ? getLanguages(props.languages) : '';
         /*
-            
+            .bem/make.js -->
+                <%= languages %> | <%= localizationCode %>
         */
 
         if (props.localization) props.techs = addLocalTechs(props.techs);   // localization has been chosen - > let's add 'i18n' and 'i18n.js' to techs
@@ -314,6 +318,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         cb();
     }
 
+    // 'answersFromJSON !== undefined' when the valid path to JSON-file was given as a parameter, for example, 'yo bemgen pathTo/test.json'
     try {
         var answersFromJSON = JSON.parse(fs.readFileSync(process.argv.slice(3).shift()).toString());
     }
@@ -332,4 +337,17 @@ BemgenGenerator.prototype.app = function app() {
         var dest = path.join(this.destinationRoot(), this.projectName, path.dirname(f), path.basename(f));  // where to copy
         this.template(src, dest);
     }.bind(this));
+};
+
+// Have 'less' or 'roole' been chosen? ==> We need in additional instalation of preprocessores
+BemgenGenerator.prototype.installPreprocessors = function installPreprocessors() {
+    if (inArray(this.technologies.inMake, 'less') && inArray(this.technologies.inMake, 'roole')) {
+        this.shell.exec('cd ' + this.projectName + ' && npm install less roole --save');
+    }
+    else if (inArray(this.technologies.inMake, 'less')) {
+        this.shell.exec('cd ' + this.projectName + ' && npm install less --save');
+    }
+    else if (inArray(this.technologies.inMake, 'roole')) {
+        this.shell.exec('cd ' + this.projectName + ' && npm install roole --save');
+    }
 };
