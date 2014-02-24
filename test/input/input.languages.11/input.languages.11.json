@@ -1,0 +1,12 @@
+{
+  "projectName": "input.languages.11",
+  "author": "Evgeniy Gavrushin",
+  "email": "job.govorov@yandex.ru",
+  "collector": "bem",
+  "baseLibrary": { "name": "bem-bl", "version": "support/1.x" },
+  "addLibraries": [],
+  "platforms": [ "common", "desktop" ],
+  "localization": true,
+  "languages": "uk  my  ",
+  "techs": []
+}
