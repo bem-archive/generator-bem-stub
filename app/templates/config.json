@@ -33,8 +33,8 @@
 	"i18n.js+bemhtml"    : "join(BEM_TECHS, 'i18n.js+bemhtml.js')",
 	"i18n.js"	     : "join(BEM_TECHS, 'i18n.js.js')",
 	"i18n.html"	     : "join(BEM_TECHS, 'i18n.html.js')",
-	"roole"		     : "v2/roole.js",
-	"less"		     : "v2/less.js"
+	"roole"		     : "v2/roole",
+	"less"		     : "v2/less"
     },
     "sourceCode": {
         "localization"	     : ",\n    'create-i18n.js+bemhtml-optimizer-node': function(tech, sourceNode, bundleNode) {\n        sourceNode.getFiles().forEach(function(f) {\n            this['create-js-optimizer-node'](tech, this.ctx.arch.getNode(f), bundleNode);\n        }, this);\n    },\n    'create-i18n.html-node': function(tech, bundleNode, magicNode) {\n        return this.setBemCreateNode(\n            tech,\n            this.level.resolveTech(tech),\n            bundleNode,\n            magicNode);\n    }"
