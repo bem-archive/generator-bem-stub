@@ -4,7 +4,7 @@ var path = require('path');
 var yeoman = require('yeoman-generator');
 var fs = require('fs');
 
-// checks the entry of value in an array
+// checks the entry of the value in the array
 function inArray(arr, val) {
     for (var k in arr) {
         if (arr[k] === val) return true; 
@@ -38,7 +38,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
     // gets the piece of code from 'templates/config.json' which should be inserted in the source code
     function getSourceCode(value) { return JSON.parse(fs.readFileSync(_path).toString()).sourceCode[value]; }
 
-    // removes all duplicate values in array
+    // removes all duplicate values in the array
     function getUnique(arr) {
         var obj = {};
         for(var i = 0; i < arr.length; i++) {
@@ -59,12 +59,12 @@ BemgenGenerator.prototype.askFor = function askFor() {
         return platforms;
     }
 
-    // handles the typed languages
+    // handles typed languages
     function getLanguages(languages) {
         languages = languages.replace(/\s+/g, ' '); // removes duplicate spaces
-        languages = languages.replace(/(^\s)|(\s$)/, '');   // removes the space at the beginning and at the end
+        languages = languages.replace(/(^\s)|(\s$)/, '');   // removes space at the beginning and at the end
         
-        // 'ru' and 'en' are default
+        // 'en' and 'ru' are default
         languages = 'en ru ' + languages;
         
         languages = languages.split(' ');
@@ -73,19 +73,18 @@ BemgenGenerator.prototype.askFor = function askFor() {
         return '\nprocess.env.BEM_I18N_LANGS = \'' + getUnique(languages).join(' ') + '\';';
     }
 
-    // handles the selected technologies
+    // handles selected technologies
     function getTechnologies(techs, base) {
-        // makes a string of technology to push it into 'technologies.inLevels'
+        // makes (formulates) a string of technology to push it into 'technologies.inLevels'
         function make(tech) {
             // gets the 'techs[value]' property from 'templates/config.json' 
             function getTechVal(tech) { 
                 var _tech = JSON.parse(fs.readFileSync(_path).toString()).techs[tech];
-                return (/*_tech !== undefined && */_tech.indexOf('join(') !== -1) ? _tech : '\'' + _tech + '\''; 
+                return (_tech.indexOf('join(') !== -1) ? _tech : '\'' + _tech + '\''; 
             }
 
             // adds spaces in order to align techs in the source code
             function spaces(start) {
-                //var start = tech.length;
                 var sp = '';
                 for (; start < 21; start++) {
                     sp += ' ';
@@ -140,6 +139,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
 
         technologies.inLevels = getUnique(technologies.inLevels);
 
+        // for example, 'html'               : join(BEMCORE_TECHS, 'html.js') for bem-core; 'html'               : join(BEMBL_TECHS, 'html.js') for bem-bl;
         for (var tech in technologies.inLevels) {
             technologies.inLevels[tech] = (base === 'bem-core') ? technologies.inLevels[tech].replace('BEM_TECHS', 'BEMCORE_TECHS') : technologies.inLevels[tech].replace('BEM_TECHS', 'BEMBL_TECHS');
         }
