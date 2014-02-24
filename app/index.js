@@ -124,7 +124,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
                     break;
                 case 'i18n.js': // 'localization' -> 'i18n.js' => 'js'
                     technologies.inLevels.push(make('i18n.js'), make('js')); 
-                    if (!inArray(techs, 'i18n.js+bemhtml')) technologies.inMake.push('i18n.js'); 
+                    if (!inArray(techs, 'i18n.js+bemhtml')) technologies.inMake.push('i18n.js'); // 'i18n.js+bemhtml' (if has been chosen) instead of 'i18n.js' (in '.bem/make.js')
                     break;
                 case 'js+bemhtml': // 'bem-bl' -> 'js+bemhtml' => 'js' and 'bemhtml'
                     technologies.inLevels.push(make('js+bemhtml'), make('js'), make('bemhtml')); 
