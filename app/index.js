@@ -124,7 +124,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
                     break;
                 case 'i18n.js': // 'localization' -> 'i18n.js' => 'js'
                     technologies.inLevels.push(make('i18n.js'), make('js')); 
-                    technologies.inMake.push('i18n.js'); 
+                    if (!inArray(techs, 'i18n.js+bemhtml')) technologies.inMake.push('i18n.js'); 
                     break;
                 case 'js+bemhtml': // 'bem-bl' -> 'js+bemhtml' => 'js' and 'bemhtml'
                     technologies.inLevels.push(make('js+bemhtml'), make('js'), make('bemhtml')); 
@@ -305,7 +305,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
                 <%= languages %> | <%= localizationCode %>
         */
 
-        if (props.localization) props.techs = addLocalTechs(props.techs);   // localization has been chosen - > let's add 'i18n' and 'i18n.js' to techs
+        if (props.localization) props.techs = addLocalTechs(props.techs);   // localization has been chosen --> let's add 'i18n' and 'i18n.js' to techs
         if (props.html && props.localization) props.techs.push('i18n.html'); else if (props.html && !props.localization) props.techs.push('html');
         _this.technologies = getTechnologies(props.techs, props.baseLibrary.name);
         /*
