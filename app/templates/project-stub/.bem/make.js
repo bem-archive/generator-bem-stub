@@ -5,7 +5,7 @@ var environ = require('bem-environ')(__dirname);
 environ.extendMake(MAKE);
 
 //process.env.YENV = 'production';
-//process.env.XJST_ASYNCIFY = 'yes';<%=  languages  %>
+//process.env.XJST_ASYNCIFY = 'yes';<%= languages %>
 
 MAKE.decl('Arch', {
 
@@ -33,6 +33,6 @@ MAKE.decl('BundleNode', {
         sourceNode.getFiles().forEach(function(f) {
             this['create-js-optimizer-node'](tech, this.ctx.arch.getNode(f), bundleNode);
         }, this);
-    }<%= localizationCode  %>
+    }<%= localizationCode %>
 
 });
