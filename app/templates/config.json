@@ -8,6 +8,10 @@
 	"bl": {
 	    "bem-bl": "support/1.x",
 	    "bem-mvc": "master"			
+	},
+	"preprocessors": {
+	    "roole": "~0.9.0",
+    	    "less": "~1.6.3"
 	}
     },
     "techs": {
