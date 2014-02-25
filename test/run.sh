@@ -20,8 +20,11 @@ do
     len=${#i}
     projectName=${i:6:(len-12)/2}
     cd $projectName
-
-    if ! diff ../../$j/make.js .bem/make.js; then
+     
+    if ! diff ../../$j/package.json package.json; then
+        echo '==> FAIL ->' $j/package.json '!==' output/$projectName/package.json
+        exit 1
+    elif ! diff ../../$j/make.js .bem/make.js; then
         echo '==> FAIL ->' $j/make.js '!==' output/$projectName/.bem/make.js
         exit 1
     elif ! diff ../../$j/level.js desktop.bundles/.bem/level.js; then
