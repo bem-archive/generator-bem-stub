@@ -1,0 +1,11 @@
+{
+  "projectName": "bembl.techs.ie8.css",
+  "author": "Evgeniy Gavrushin",
+  "email": "job.govorov@yandex.ru",
+  "collector": "bem",
+  "baseLibrary": { "name": "bem-bl", "version": "support/1.x" },
+  "addLibraries": [],
+  "platforms": [ "common", "desktop" ],
+  "localization": false,
+  "techs": [ "ie8.css" ]    
+}
