@@ -197,7 +197,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
             if (input.baseLibrary.name === 'bem-core') 
                 return [{ 
                     name: 'bem-components', 
-                    value: { name: 'bem-components', version: getVersion('core','bem-components') }
+                    value: { name: 'bem-components', version: getVersion('core', 'bem-components') }
                 }, {
                     name: 'bem-mvc', 
                     value: { name: 'bem-mvc', version: getVersion('core', 'bem-mvc') }
@@ -339,15 +339,27 @@ BemgenGenerator.prototype.app = function app() {
     }.bind(this));
 };
 
-// Have 'less' or 'roole' been chosen? ==> We need in additional instalation of preprocessores
+// Have 'less' or 'roole' been chosen? ==> We need in additional installation of preprocessores
 BemgenGenerator.prototype.installPreprocessors = function installPreprocessors() {
+    // gets the version of the preprocessor from 'templates/config.json'
+    function getVersion(base, value) { return JSON.parse(fs.readFileSync(_path).toString()).versions[base][value]; }
+
+    var _path = this.sourceRoot() + '/config.json', // path to 'config.json' in templates
+        packagePath = this.destinationRoot() + '/' + this.projectName + '/package.json',    // path to 'package.json' in the created project
+        pack = JSON.parse(fs.readFileSync(packagePath).toString());
+
+    // adds the necessary preprocessors to 'package.json' in the created project
     if (inArray(this.technologies.inMake, 'less') && inArray(this.technologies.inMake, 'roole')) {
-        this.shell.exec('cd ' + this.projectName + ' && npm install less roole --save');
+        pack.dependencies.less = getVersion('preprocessors', 'less');
+        pack.dependencies.roole = getVersion('preprocessors', 'roole');
     }
     else if (inArray(this.technologies.inMake, 'less')) {
-        this.shell.exec('cd ' + this.projectName + ' && npm install less --save');
+        pack.dependencies.less = getVersion('preprocessors', 'less');
     }
     else if (inArray(this.technologies.inMake, 'roole')) {
-        this.shell.exec('cd ' + this.projectName + ' && npm install roole --save');
+        pack.dependencies.roole = getVersion('preprocessors', 'roole');
     }
+
+    fs.writeFileSync(packagePath, JSON.stringify(pack, null, '  '));
+    fs.appendFile(packagePath, '\n');   
 };
