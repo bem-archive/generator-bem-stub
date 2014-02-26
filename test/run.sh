@@ -33,6 +33,9 @@ do
     elif ! diff ../../$j/blocks.js .bem/levels/blocks.js; then
         echo '==> FAIL ->' $j/blocks.js '!==' output/$projectName/.bem/levels/blocks.js
         exit 1
+    elif ! diff ../../$j/index.bemjson.js desktop.bundles/index/index.bemjson.js; then
+        echo '==> FAIL ->' $j/index.bemjson.js '!==' output/$projectName/desktop.bundles/index/index.bemjson.js
+        exit 1
     fi 
 
     k=$(( $k + 1 ))
