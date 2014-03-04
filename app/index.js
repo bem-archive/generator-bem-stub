@@ -12,6 +12,16 @@ function inArray(arr, val) {
     return false;
 } 
 
+// removes all duplicate values in the array
+function getUnique(arr) {
+    var obj = {};
+    for(var i = 0; i < arr.length; i++) {
+        var str = arr[i];
+        obj[str] = true;
+    }
+    return Object.keys(obj);
+}
+
 var BemgenGenerator = module.exports = function BemgenGenerator(args, options, config) {
     yeoman.generators.Base.apply(this, arguments);
 
@@ -37,16 +47,6 @@ BemgenGenerator.prototype.askFor = function askFor() {
 
     // gets the piece of code from 'templates/config.json' which should be inserted in the source code
     function getSourceCode(value) { return JSON.parse(fs.readFileSync(_path).toString()).sourceCode[value]; }
-
-    // removes all duplicate values in the array
-    function getUnique(arr) {
-        var obj = {};
-        for(var i = 0; i < arr.length; i++) {
-            var str = arr[i];
-            obj[str] = true;
-        }
-        return Object.keys(obj);
-    }
 
     // receives, for example, pls['desktop', 'common'] and libs['bem-core'], returns platforms['bem-core/desktop.blocks', 'bem-core/common.blocks']
     function getPlatforms(pls, libs) {
@@ -114,19 +114,19 @@ BemgenGenerator.prototype.askFor = function askFor() {
                     technologies.inLevels.push(make('node.js'), make('vanilla.js'), make('js')); 
                     technologies.inMake.push('node.js'); 
                     break;
-                case 'i18n.html':  // 'bem-core' or 'bem-bl' with 'localization' and 'html' -> 'i18n.html' => 'html'
+                case 'i18n.html':  // 'bem-core' or 'bem-bl' with 'localization' and 'html' --> 'i18n.html' ==> 'html'
                     technologies.inLevels.push(make('i18n.html'), make('html')); 
                     technologies.inMake.push('i18n.html');
                     break;
-                case 'i18n.js+bemhtml': // 'bem-bl' with 'localization' -> 'i18n.js+bemhtml' => 'i18n'
+                case 'i18n.js+bemhtml': // 'bem-bl' with 'localization' --> 'i18n.js+bemhtml' ==> 'i18n'
                     technologies.inLevels.push(make('i18n.js+bemhtml'), make('i18n')); 
                     technologies.inMake.push('i18n.js+bemhtml'); 
                     break;
-                case 'i18n.js': // 'localization' -> 'i18n.js' => 'js'
+                case 'i18n.js': // 'localization' --> 'i18n.js' ==> 'js'
                     technologies.inLevels.push(make('i18n.js'), make('js')); 
                     if (!inArray(techs, 'i18n.js+bemhtml')) technologies.inMake.push('i18n.js'); // 'i18n.js+bemhtml' (if has been chosen) instead of 'i18n.js' (in '.bem/make.js')
                     break;
-                case 'js+bemhtml': // 'bem-bl' -> 'js+bemhtml' => 'js' and 'bemhtml'
+                case 'js+bemhtml': // 'bem-bl' --> 'js+bemhtml' ==> 'js' and 'bemhtml'
                     technologies.inLevels.push(make('js+bemhtml'), make('js'), make('bemhtml')); 
                     technologies.inMake.push('js+bemhtml'); 
                     break;
@@ -243,6 +243,20 @@ BemgenGenerator.prototype.askFor = function askFor() {
             if (input.baseLibrary.name === 'bem-core') return commonTech.concat(templates.core, scripts.core);
             else if (input.baseLibrary.name === 'bem-bl' && !input.localization) return commonTech.concat(templates.common, scripts.blWithoutLocal);
             else if (input.baseLibrary.name === 'bem-bl' && input.localization) return commonTech.concat(templates.common, scripts.blWithLocal);
+        },
+        filter: function(input) {
+            var ie = false;
+            for (var i = 0; i < input.length; i++) {
+                if (input[i] === 'ie.css' || input[i] === 'ie6.css' || input[i] === 'ie7.css' || input[i] === 'ie8.css' || input[i] === 'ie9.css') {
+                    ie = i;
+                    break;
+                }
+            }
+
+            if (ie !== false) input.splice(ie, 0, 'css', 'ie.css');
+            input = getUnique(input);
+            
+            return input;
         }          
     }, {
         type: 'confirm',
@@ -360,6 +374,5 @@ BemgenGenerator.prototype.installPreprocessors = function installPreprocessors()
         pack.dependencies.roole = getVersion('preprocessors', 'roole');
     }
 
-    fs.writeFileSync(packagePath, JSON.stringify(pack, null, '  '));
-    fs.appendFile(packagePath, '\n');   
+    fs.writeFileSync(packagePath, JSON.stringify(pack, null, '  ') + '\n');  
 };
