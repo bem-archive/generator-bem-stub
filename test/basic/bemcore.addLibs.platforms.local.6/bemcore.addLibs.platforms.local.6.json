@@ -1,0 +1,12 @@
+{
+  "projectName": "bemcore.addLibs.platforms.local.6",
+  "author": "Evgeniy Gavrushin",
+  "email": "job.govorov@yandex.ru",
+  "collector": "bem",
+  "baseLibrary": { "name": "bem-core", "version": "v1" },
+  "addLibraries": [ { "name": "bem-mvc", "version": "v2" } ],
+  "platforms": [ "common", "touch", "touch-phone" ],
+  "localization": true,
+  "languages": "",
+  "techs": []
+}
