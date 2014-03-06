@@ -69,3 +69,7 @@ or
 ```./run.sh``` - to check the created files and the assembly of the projects (higher quality testing, but slower)
 
 ```./run.sh -b -n``` - to check only the created files of the projects (lower quality testing, but faster)
+
+## License
+
+[MIT License](http://en.wikipedia.org/wiki/MIT_License)
