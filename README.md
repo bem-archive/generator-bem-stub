@@ -25,7 +25,7 @@ $ yo bemgen
 or use ```JSON-file``` with answers as parameter:
 
 ```
-$ yo bemgen FULL PATH TO JSON-FILE
+$ yo bemgen FULL_PATH_TO_JSON-FILE
 ```
 
 For example, we have a file with answers ```example.json``` which lies in the directory where we want to creat a project:
@@ -62,6 +62,8 @@ cd test
 
 Run:
 
-```./run.sh -b``` or ```./run.sh``` - to check the created files and the assembly of the projects (higher quality testing, but slower)
+```./run.sh -b```
+or
+```./run.sh``` - to check the created files and the assembly of the projects (higher quality testing, but slower)
 
 ```./run.sh -b -n``` - to check only the created files of the projects (lower quality testing, but faster)
