@@ -25,7 +25,7 @@ $ yo bemgen
 or use ```JSON-file``` with answers as parameter:
 
 ```
-$ yo bemgen FULL PATH TO JSON-file
+$ yo bemgen FULL PATH TO JSON-FILE
 ```
 
 For example, we have a file with answers ```example.json``` which lies in the directory where we want to creat a project:
