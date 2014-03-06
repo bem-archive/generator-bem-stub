@@ -26,6 +26,8 @@ MAKE.decl('BundleNode', {
         return [
             'bemdecl.js',
             'deps.js',
+            'css',
+            'ie.css',
             'ie8.css'
         ];
 

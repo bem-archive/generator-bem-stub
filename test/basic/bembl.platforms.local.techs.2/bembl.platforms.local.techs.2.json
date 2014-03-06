@@ -7,8 +7,8 @@
   "addLibraries": [],
   "platforms": [ "common", "touch", "touch-pad" ],
   "localization": true,
-  "languages": "",
-  "techs": 
+  "languages": "en ru",
+  "techs":
     [ "bemjson.js",
       "css",
       "ie.css",
@@ -20,5 +20,5 @@
       "roole",
       "bemhtml",
       "i18n.js+bemhtml" ],
-  "html": false    
+  "html": false
 }

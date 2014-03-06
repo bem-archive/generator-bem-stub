@@ -7,6 +7,6 @@
   "addLibraries": [],
   "platforms": [ "common", "desktop" ],
   "localization": true,
-  "languages": "",
-  "techs": [ "i18n.js+bemhtml" ]   
+  "languages": "en ru",
+  "techs": [ "i18n.js+bemhtml" ]
 }

@@ -4,11 +4,11 @@
   "email": "job.govorov@yandex.ru",
   "collector": "bem",
   "baseLibrary": { "name": "bem-core", "version": "v1" },
-  "addLibraries": 
-    [ { "name": "bem-components", "version": "v2" }, 
+  "addLibraries":
+    [ { "name": "bem-components", "version": "v2" },
       { "name": "bem-mvc", "version": "v2" } ],
   "platforms": [ "common", "desktop" ],
   "localization": true,
-  "languages": "",
+  "languages": "en ru",
   "techs": []
 }

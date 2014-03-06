@@ -7,6 +7,6 @@
   "addLibraries": [],
   "platforms": [ "common", "desktop" ],
   "localization": true,
-  "languages": "",
+  "languages": "en ru",
   "techs": []
 }

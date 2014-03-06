@@ -7,7 +7,7 @@
   "addLibraries": [],
   "platforms": [ "common", "desktop" ],
   "localization": true,
-  "languages": "",
+  "languages": "en ru",
   "techs": [ "bemjson.js" ],
-  "html": true   
+  "html": true
 }

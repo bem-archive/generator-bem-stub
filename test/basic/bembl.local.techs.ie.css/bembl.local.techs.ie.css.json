@@ -7,6 +7,6 @@
   "addLibraries": [],
   "platforms": [ "common", "desktop" ],
   "localization": true,
-  "languages": "",
-  "techs": [ "ie.css" ]   
+  "languages": "en ru",
+  "techs": [ "ie.css" ]
 }

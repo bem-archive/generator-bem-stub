@@ -12,6 +12,8 @@ exports.getTechs = function() {
     return {
         'bemdecl.js'           : 'v2/bemdecl.js',
         'deps.js'              : 'v2/deps.js',
+        'css'                  : 'v2/css',
+        'ie.css'               : 'v2/ie.css',
         'ie7.css'              : 'v2/ie7.css'
     };
 

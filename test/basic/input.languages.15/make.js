@@ -6,7 +6,7 @@ environ.extendMake(MAKE);
 
 //process.env.YENV = 'production';
 //process.env.XJST_ASYNCIFY = 'yes';
-process.env.BEM_I18N_LANGS = 'en ru my uk';
+process.env.BEM_I18N_LANGS = 'my uk';
 
 MAKE.decl('Arch', {
 

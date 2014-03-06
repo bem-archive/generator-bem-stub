@@ -12,6 +12,8 @@ exports.getTechs = function() {
     return {
         'bemdecl.js'           : 'v2/bemdecl.js',
         'deps.js'              : 'v2/deps.js',
+        'css'                  : 'v2/css',
+        'ie.css'               : 'v2/ie.css',
         'ie6.css'              : 'v2/ie6.css',
         'i18n'                 : join(BEMBL_TECHS, 'i18n.js'),
         'i18n.js'              : join(BEMBL_TECHS, 'i18n.js.js'),
