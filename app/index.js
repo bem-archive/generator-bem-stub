@@ -27,6 +27,10 @@ BemgenGenerator.prototype.askFor = function askFor() {
         return !value.match(/[^0-9a-zA-Z._-]/g);
     }
 
+    function validateLanguages(value) {
+        return !value === '';
+    }
+
     function getLibVersion(base, value) {
         return JSON.parse(_this.readFileAsString(configPath)).versions[base][value];
     }
@@ -229,7 +233,8 @@ BemgenGenerator.prototype.askFor = function askFor() {
         message: 'Enter languages separated by a space (e.g. \'en\', \'ru\')',
         when: function(input) {
             return input.localization;   // Do we need localization?
-        }
+        },
+        validate: validateLanguages
     }, {
         type: 'checkbox',
         name: 'techs',
