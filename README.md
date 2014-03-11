@@ -22,7 +22,7 @@ Run from any directory you want:
 $ yo bemgen
 ```
 
-or use ```JSON-file``` with answers as parameter:
+or use ```JSON-file``` with answers as a parameter:
 
 ```
 $ yo bemgen FULL_PATH_TO_JSON-FILE
