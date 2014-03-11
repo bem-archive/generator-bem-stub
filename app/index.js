@@ -274,16 +274,12 @@ BemgenGenerator.prototype.askFor = function askFor() {
         }
 
         function addCssIe(input) {
-            var ie = -1;
-            for (var i = 0; i < input.length; i++) {
-                if (input[i] === 'ie.css' || input[i] === 'ie6.css' || input[i] === 'ie7.css' || input[i] === 'ie8.css' || input[i] === 'ie9.css') {
-                    ie = i;
-                    break;
-                }
-            }
+            var ie = /ie[0-9]{0,2}\.css/.exec(input);
 
-            ie > -1 && input.splice(ie, 0, 'css', 'ie.css');
-            input = _.uniq(input);
+            if (ie) {
+                input.splice(input.indexOf(ie[0]), 0, 'css', 'ie.css');
+                input = _.uniq(input);
+            }
 
             return input;
         }
