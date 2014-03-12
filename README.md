@@ -50,7 +50,7 @@ Run:
 $ yo bemgen example.json
 ```
 
-```bemgen``` will take the content of the ```example.json``` as answers.
+```generator-bemgen``` will take the content of the ```example.json``` as answers.
 
 Go to the ```test/basic``` and see more examples of ```JSON-files```.
 
@@ -78,9 +78,7 @@ $ yo bemgen FULL_PATH_TO_JSON-FILE +a
 
 Run from the root folder of the ```generator-bemgen```:
 
-```
-$ cd test
-```
+```$ cd test```
 
 Then run:
 
