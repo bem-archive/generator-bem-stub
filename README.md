@@ -22,13 +22,13 @@ Run from any directory you want:
 $ yo bemgen
 ```
 
-or use ```JSON-file``` with answers as a parameter:
+or use ```JSON-file``` with answers as the parameter:
 
 ```
 $ yo bemgen FULL_PATH_TO_JSON-FILE
 ```
 
-For example, we have a file with the answers ```example.json``` which lies in the directory where we want to create the project:
+For example, we have the file with the answers ```example.json``` which lies in the directory where we want to create the project:
 
 ```
 {
@@ -76,7 +76,7 @@ $ yo bemgen FULL_PATH_TO_JSON-FILE +a
 
 ## Tests
 
-Run from the root folder of the ```generator-bemgen```:
+Run from the root folder of ```generator-bemgen```:
 
 ```$ cd test```
 
