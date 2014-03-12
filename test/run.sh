@@ -11,9 +11,9 @@ fi
 k=0
 make=true
 
-if [ "$1" = "" ] || [ "$1" = '-basic' ]; then
+if [ "$1" = "" ] || [ "$1" = '+a' ] || [ "$1" = '-basic' ]; then
     folder='basic'
-    if [ "$2" != '+a' ]; then
+    if [ "$1" != '+a' ] && [ "$2" != '+a' ]; then
         make=false
     fi
 elif [ "$1" = '-more' ]; then
