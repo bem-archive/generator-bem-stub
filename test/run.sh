@@ -11,13 +11,13 @@ fi
 k=0
 make=true
 
-if [ "$1" = "" ] || [ "$1" = '-b' ]; then
+if [ "$1" = "" ] || [ "$1" = '-basic' ]; then
     folder='basic'
-    if [ "$2" = '-n' ]; then
+    if [ "$2" != '+a' ]; then
         make=false
     fi
-elif [ "$1" = '-m' ]; then
-    folder='make'
+elif [ "$1" = '-more' ]; then
+    folder='more'
 else
     echo '==> FAIL -> Invalid parameter'
     exit 1
