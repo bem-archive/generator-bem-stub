@@ -28,7 +28,7 @@ or use ```JSON-file``` with answers as a parameter:
 $ yo bemgen FULL_PATH_TO_JSON-FILE
 ```
 
-For example, we have a file with answers ```example.json``` which lies in the directory where we want to create a project:
+For example, we have a file with the answers ```example.json``` which lies in the directory where we want to create the project:
 
 ```
 {
@@ -50,13 +50,13 @@ Run:
 $ yo bemgen example.json
 ```
 
-```bemgen``` will take the content of ```example.json``` as answers.
+```bemgen``` will take the content of the ```example.json``` as answers.
 
-Go to ```test/basic``` and see more examples of ```JSON-files```.
+Go to the ```test/basic``` and see more examples of ```JSON-files```.
 
 ## Assembly
 
-As soon as you answer all the questions you will have to assembly the created project:
+As soon as you answer all questions you will have to assembly the created project:
 
 ```
 $ cd THE_NAME_OF_YOUR_PROJECT
@@ -67,7 +67,7 @@ $ ./node_modules/.bin/bem make
 ```
 
 Do you find these operations really tedious and boring? Open an issue and I will automatize this process.
-I have not aleady done this, because it is more convenient to test the work of the ```generator-bemgen``` and the assembly of the created projects seperately.
+I have not aleady done this, because it is more convenient to test the work of the ```generator-bemgen``` and assembly of created projects seperately.
 
 ## Tests
 
