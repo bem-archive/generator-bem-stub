@@ -67,11 +67,11 @@ $ ./node_modules/.bin/bem make
 ```
 
 Do you find these operations really tedious and boring? Open an issue and I will automatize this process.
-I have not aleady done this, because it is more convenient to test the work of the ```generator-bemgen``` and assembly of created projects seperately.
+I have not aleady done this, because it is more convenient to test the work of the ```generator-bemgen``` and the assembly of the created projects seperately.
 
 ## Tests
 
-Run from the root folder of ```generator-bemgen```:
+Run from the root folder of the ```generator-bemgen```:
 
 ```
 $ cd test
