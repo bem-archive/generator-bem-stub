@@ -28,7 +28,8 @@ BemgenGenerator.prototype.askFor = function askFor() {
     }
 
     function validateLanguages(value) {
-        return !value === '';
+        //console.log(!(value === ''));
+        return !(value === '');
     }
 
     function getLibVersion(base, value) {
@@ -226,7 +227,10 @@ BemgenGenerator.prototype.askFor = function askFor() {
         type: 'confirm',
         name: 'localization',
         message: 'Need localization?',
-        default: true
+        default: true,
+        when: function(input) {
+            return input.baseLibrary.name === 'bem-bl';
+        }
     }, {
         type: 'input',
         name: 'languages',
@@ -346,11 +350,24 @@ BemgenGenerator.prototype.askFor = function askFor() {
 
     //----------------------------------------------------------START--------------------------------------------------------------------//
 
-    // 'answersFromJSON !== undefined' when the valid path to JSON-file was given as a parameter, for example, 'yo bemgen pathTo/test.json'
-    try {
-        var answersFromJSON = JSON.parse(_this.readFileAsString(process.argv[3]));
+    var params = {
+        first: process.argv[3],
+        second: process.argv[4]
     }
-    catch(e) {}
+
+    if (_this.assemble = params.first === '+a') {}
+    else {
+        // 'answersFromJSON !== undefined' when a valid path to JSON-file was given as a first parameter, for example, 'yo bemgen test.json'
+        try {
+            var answersFromJSON = params.first && JSON.parse(_this.readFileAsString(params.first));
+        }
+        catch(e) {
+            this.log.error('Invalid path to JSON-file');
+            process.exit(1);
+        }
+
+        _this.assemble = params.second === '+a';
+    }
 
     answersFromJSON ?
         getAnswers(answersFromJSON) :
@@ -387,3 +404,15 @@ BemgenGenerator.prototype.installPreprocessors = function installPreprocessors()
 
     fs.writeFileSync(packagePath, JSON.stringify(pack, null, '  ') + '\n');
 };
+
+// +a
+BemgenGenerator.prototype.assemble = function assemble() {
+    if (this.assemble) {
+        this.log.write('').info(' ==> npm install...').write('');
+        this.shell.exec('cd ' + this.projectName + ' && npm i -s');
+        this.log.write('').ok('Ok!').write('');
+
+        this.log.write('').info(' ==> ./node_modules/.bin/bem make...').write('');
+        this.shell.exec('cd ' + this.projectName + ' && ./node_modules/.bin/bem make');
+    }
+}
