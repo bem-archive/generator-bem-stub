@@ -34,9 +34,9 @@ For example, we have a file with the answers ```example.json``` which lies in th
 {
   "projectName": "example",
   "author": "Ivan Ivanov",
-  "email": "example@yandex.ru",
+  "email": "ivan@yandex.ru",
   "collector": "bem",
-  "baseLibrary": { "name": "bem-core", "version": "v1" },
+  "baseLibrary": { "name": "bem-bl", "version": "support/1.x" },
   "addLibraries": [],
   "platforms": [ "common", "desktop" ],
   "localization": false,
@@ -66,8 +66,13 @@ $ npm i
 $ ./node_modules/.bin/bem make
 ```
 
-Do you find these operations really tedious and boring? Open an issue and I will automatize this process.
-I have not aleady done this, because it is more convenient to test the work of the ```generator-bemgen``` and the assembly of the created projects seperately.
+You can use the parameter ```+a``` to automate the assembly:
+
+```
+$ yo bemgen +a
+
+$ yo bemgen FULL_PATH_TO_JSON-FILE +a
+```
 
 ## Tests
 
@@ -79,15 +84,9 @@ $ cd test
 
 Then run:
 
-```
-$ ./run.sh
-```
+```$ ./run.sh +a``` or ```$ ./run.sh -basic +a``` - to check the created files and the assembly of the projects (higher quality testing, but slower)
 
-or
-
-```$ ./run.sh -b``` - to check the created files and the assembly of the projects (higher quality testing, but slower)
-
-```$ ./run.sh -b -n``` - to check only the created files of the projects (lower quality testing, but faster)
+```$ ./run.sh``` or ```$ ./run.sh -basic``` - to check only the created files of the projects (lower quality testing, but faster)
 
 ## License
 
