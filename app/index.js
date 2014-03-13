@@ -375,8 +375,8 @@ BemgenGenerator.prototype.askFor = function askFor() {
 };
 
 BemgenGenerator.prototype.app = function app() {
-    var root = path.join(this.sourceRoot(), this.collector); // path to 'project-stub' in templates
-    var files = this.expandFiles('**', { dot: true, cwd: root });   // roots of all files in 'project-stub'
+    var root = path.join(this.sourceRoot(), this.collector); // path to templates
+    var files = this.expandFiles('**', { dot: true, cwd: root });   // roots of all files
     this._.each(files, function (f) {
         var src = path.join(root, f);   // copy from
         var dest = path.join(this.destinationRoot(), this.projectName, path.dirname(f), path.basename(f));  // where to copy
