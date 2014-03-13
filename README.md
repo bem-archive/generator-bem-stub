@@ -28,7 +28,7 @@ or use ```JSON-file``` with answers as the parameter:
 $ yo bemgen FULL_PATH_TO_JSON-FILE
 ```
 
-For example, we have the file with the answers ```example.json``` which lies in the directory where we want to create the project:
+For example, we have the file with answers ```example.json``` which lies in the directory where we want to create the project:
 
 ```
 {
@@ -50,7 +50,7 @@ Run:
 $ yo bemgen example.json
 ```
 
-```generator-bemgen``` will take the content of the ```example.json``` as answers.
+```generator-bemgen``` will take the content of ```example.json``` as answers.
 
 Go to the ```test/basic``` and see more examples of ```JSON-files```.
 
