@@ -2,7 +2,7 @@
   "projectName": "bemcore.addLibs.platforms.1",
   "author": "Evgeniy Gavrushin",
   "email": "job.govorov@yandex.ru",
-  "collector": "bem",
+  "collector": "bem-tools",
   "baseLibrary": { "name": "bem-core", "version": "v1" },
   "addLibraries": [ { "name": "bem-components", "version": "v2" } ],
   "platforms": [ "common", "desktop" ],

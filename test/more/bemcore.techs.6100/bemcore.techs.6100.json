@@ -1,0 +1,25 @@
+{
+  "projectName": "bemcore.techs.6100",
+  "author": "Evgeniy Gavrushin",
+  "email": "job.govorov@yandex.ru",
+  "collector": "bem",
+  "baseLibrary": {
+    "name": "bem-core",
+    "version": "v1"
+  },
+  "addLibraries": [],
+  "platforms": [
+    "common",
+    "desktop"
+  ],
+  "localization": false,
+  "techs": [
+    "css",
+    "less",
+    "roole",
+    "bemtree",
+    "bemhtml",
+    "node.js",
+    "browser.js+bemhtml"
+  ]
+}

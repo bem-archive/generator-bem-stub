@@ -2,7 +2,7 @@
   "projectName": "bemcore.techs.ie8.css",
   "author": "Evgeniy Gavrushin",
   "email": "job.govorov@yandex.ru",
-  "collector": "bem",
+  "collector": "bem-tools",
   "baseLibrary": { "name": "bem-core", "version": "v1" },
   "addLibraries": [],
   "platforms": [ "common", "desktop" ],

@@ -178,7 +178,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         type: 'list',
         name: 'collector',
         message: 'What collector to use?',
-        choices: [ { value: 'bem' } ]
+        choices: [ { value: 'bem-tools' } ]
     }, {
         type: 'list',
         name: 'baseLibrary',
@@ -375,7 +375,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
 };
 
 BemgenGenerator.prototype.app = function app() {
-    var root = this.sourceRoot() + '/project-stub'; // path to 'project-stub' in templates
+    var root = path.join(this.sourceRoot(), this.collector); // path to 'project-stub' in templates
     var files = this.expandFiles('**', { dot: true, cwd: root });   // roots of all files in 'project-stub'
     this._.each(files, function (f) {
         var src = path.join(root, f);   // copy from
