@@ -91,9 +91,9 @@ Then run:
 In the same directory create the folder ```more```.
 
 In this folder you can add your own tests and check their assembly.
-Create a folder, for example, ```myTest```. In this folder create the JSON-file with answers ```myTest.json```
+Create a folder, for example, ```myTest```. In this folder create the ```JSON-file``` with answers ```myTest.json```
 
-**It is very important to name the JSON-file just as well as the folder where it lies!**
+**It is very important to name the ```JSON-file``` just as well as the folder where it lies!**
 
 You can create as many tests as you like and then run:
 
