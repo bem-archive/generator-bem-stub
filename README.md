@@ -86,7 +86,7 @@ Then run:
 
 ```$ ./run.sh``` or ```$ ./run.sh -basic``` - to check only the created files of the projects (lower quality testing, but faster)
 
-Besides, there is a way to check only the assembly of the projects.
+**Besides**, there is a way to check only the assembly of the projects.
 
 In the same directory create the folder ```more```.
 
