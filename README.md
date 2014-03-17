@@ -86,6 +86,19 @@ Then run:
 
 ```$ ./run.sh``` or ```$ ./run.sh -basic``` - to check only the created files of the projects (lower quality testing, but faster)
 
+Besides, there is a way to check only the assembly of the projects.
+
+In the same directory create the folder ```more```.
+
+In this folder you can add your own tests and check their assembly.
+Create a folder, for example, ```myTest```. In this folder create the JSON-file with answers ```myTest.json```
+
+**It is very important to name the JSON-file just as well as the folder where it lies!**
+
+You can create as many tests as you like and then run:
+
+```$ ./run.sh -more```
+
 ## License
 
 [MIT License](http://en.wikipedia.org/wiki/MIT_License)
