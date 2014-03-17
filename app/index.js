@@ -63,7 +63,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         function getTechDecl(tech) {
             // gets the 'techs[value]' property from 'templates/config.json'
             function getTechVal(tech) {
-                var _tech = JSON.parse(_this.readFileAsString(configPath)).techs[tech].replace('BEM_TECHS', base === 'bem-core' ? 'BEMCORE_TECHS'  : 'BEMBL_TECHS');
+                var _tech = JSON.parse(_this.readFileAsString(configPath)).toolsTechs[tech].replace('BEM_TECHS', base === 'bem-core' ? 'BEMCORE_TECHS'  : 'BEMBL_TECHS');
 
                 return _tech.indexOf('join(') !== -1 ? _tech : '\'' + _tech + '\'';
             }
