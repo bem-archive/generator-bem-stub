@@ -1,0 +1,26 @@
+{
+  "projectName": "tools.bemcore.addLibs.platforms.2",
+  "author": "Evgeniy Gavrushin",
+  "email": "job.govorov@yandex.ru",
+  "collector": "bem-tools",
+  "baseLibrary": {
+    "name": "bem-core",
+    "version": "v2.0.0",
+    "repository": "git://github.com/bem/bem-core.git"
+  },
+  "addLibraries": [
+    {
+      "name": "bem-components",
+      "version": "v2",
+      "repository": "git://github.com/bem/bem-components.git"
+    }
+  ],
+  "platforms": [
+    "common",
+    "touch",
+    "touch-pad"
+  ],
+  "localization": false,
+  "preprocessor": "css",
+  "techs": []
+}

@@ -1,0 +1,21 @@
+{
+  "projectName": "tools.bemcore.techs.node.js",
+  "author": "Evgeniy Gavrushin",
+  "email": "job.govorov@yandex.ru",
+  "collector": "bem-tools",
+  "baseLibrary": {
+    "name": "bem-core",
+    "version": "v2.0.0",
+    "repository": "git://github.com/bem/bem-core.git"
+  },
+  "addLibraries": [],
+  "platforms": [
+    "common",
+    "desktop"
+  ],
+  "localization": false,
+  "preprocessor": "css",
+  "techs": [
+    "node.js"
+  ]
+}

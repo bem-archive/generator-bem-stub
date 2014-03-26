@@ -1,0 +1,33 @@
+{
+  "projectName": "tools.bemcore.platforms.techs.2.html",
+  "author": "Evgeniy Gavrushin",
+  "email": "job.govorov@yandex.ru",
+  "collector": "bem-tools",
+  "baseLibrary": {
+    "name": "bem-core",
+    "version": "v2.0.0",
+    "repository": "git://github.com/bem/bem-core.git"
+  },
+  "addLibraries": [],
+  "platforms": [
+    "common",
+    "touch",
+    "touch-pad"
+  ],
+  "localization": false,
+  "preprocessor": "css",
+  "techs": [
+    "bemjson.js",
+    "css",
+    "ie.css",
+    "ie6.css",
+    "ie7.css",
+    "ie8.css",
+    "ie9.css",
+    "bemtree",
+    "bemhtml",
+    "node.js",
+    "browser.js+bemhtml"
+  ],
+  "html": true
+}

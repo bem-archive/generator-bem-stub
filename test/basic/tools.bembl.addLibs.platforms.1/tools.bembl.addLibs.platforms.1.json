@@ -1,0 +1,25 @@
+{
+  "projectName": "tools.bembl.addLibs.platforms.1",
+  "author": "Evgeniy Gavrushin",
+  "email": "job.govorov@yandex.ru",
+  "collector": "bem-tools",
+  "baseLibrary": {
+    "name": "bem-bl",
+    "version": "v1.2.0",
+    "repository": "git://github.com/bem/bem-bl.git"
+  },
+  "addLibraries": [
+    {
+      "name": "bem-mvc",
+      "version": "master",
+      "repository": "git://github.com/bem/bem-mvc.git"
+    }
+  ],
+  "platforms": [
+    "common",
+    "desktop"
+  ],
+  "localization": false,
+  "preprocessor": "css",
+  "techs": []
+}

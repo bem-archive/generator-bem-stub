@@ -1,0 +1,37 @@
+{
+  "projectName": "tools.bembl.addLibs.platforms.techs.3.html",
+  "author": "Evgeniy Gavrushin",
+  "email": "job.govorov@yandex.ru",
+  "collector": "bem-tools",
+  "baseLibrary": {
+    "name": "bem-bl",
+    "version": "v1.2.0",
+    "repository": "git://github.com/bem/bem-bl.git"
+  },
+  "addLibraries": [
+    {
+      "name": "bem-mvc",
+      "version": "master",
+      "repository": "git://github.com/bem/bem-mvc.git"
+    }
+  ],
+  "platforms": [
+    "common",
+    "touch",
+    "touch-phone"
+  ],
+  "localization": false,
+  "preprocessor": "css",
+  "techs": [
+    "bemjson.js",
+    "css",
+    "ie.css",
+    "ie6.css",
+    "ie7.css",
+    "ie8.css",
+    "ie9.css",
+    "bemhtml",
+    "js+bemhtml"
+  ],
+  "html": true
+}
