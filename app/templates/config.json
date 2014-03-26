@@ -1,46 +1,76 @@
-{ 
-    "versions": {
-	"core": {
-            "bem-core": "v1",
-            "bem-components": "v2",
-	    "bem-mvc": "v2"
-	},
-	"bl": {
-	    "bem-bl": "support/1.x",
-	    "bem-mvc": "master"			
-	},
-	"preprocessors": {
-	    "roole": "~0.9.0",
-    	    "less": "~1.6.3"
-	}
+{
+  "repositories": {
+    "bem-core": "git://github.com/bem/bem-core.git",
+    "bem-bl": "git://github.com/bem/bem-bl.git",
+    "bem-components": "git://github.com/bem/bem-components.git",
+    "bem-mvc": "git://github.com/bem/bem-mvc.git"
+  },
+  "versions": {
+    "core": {
+      "bem-core": "v2.0.0",
+      "bem-components": "v2",
+      "bem-mvc": "v2"
     },
-    "toolsTechs": {
-	"bemjson.js"         : "join(PRJ_TECHS, 'bemjson.js')",
-        "bemdecl.js"         : "v2/bemdecl.js",
-        "deps.js"            : "v2/deps.js",
-        "js"                 : "v2/js-i",
-        "vanilla.js"         : "join(BEM_TECHS, 'vanilla.js.js')",
-        "browser.js"         : "join(BEM_TECHS, 'browser.js.js')",
-        "browser.js+bemhtml" : "join(BEM_TECHS, 'browser.js+bemhtml.js')",
-        "css"                : "v2/css",
-        "ie.css"             : "v2/ie.css",
-        "ie6.css"            : "v2/ie6.css",
-        "ie7.css"            : "v2/ie7.css",
-        "ie8.css"            : "v2/ie8.css",
-        "ie9.css"            : "v2/ie9.css",
-	"bemtree"	     : "join(BEM_TECHS, 'bemtree.js')",
-        "bemhtml"            : "join(BEM_TECHS, 'bemhtml.js')",
-        "html"               : "join(BEM_TECHS, 'html.js')",
-	"node.js"	     : "join(BEM_TECHS, 'node.js.js')",
-	"js+bemhtml"	     : "join(BEM_TECHS, 'js+bemhtml.js')",
-	"i18n"		     : "join(BEM_TECHS, 'i18n.js')",
-	"i18n.js+bemhtml"    : "join(BEM_TECHS, 'i18n.js+bemhtml.js')",
-	"i18n.js"	     : "join(BEM_TECHS, 'i18n.js.js')",
-	"i18n.html"	     : "join(BEM_TECHS, 'i18n.html.js')",
-	"roole"		     : "v2/roole",
-	"less"		     : "v2/less"
+    "bl": {
+      "bem-bl": "v1.2.0",
+      "bem-mvc": "master"
     },
-    "sourceCode": {
-        "localization"	     : ",\n    'create-i18n.js+bemhtml-optimizer-node': function(tech, sourceNode, bundleNode) {\n        sourceNode.getFiles().forEach(function(f) {\n            this['create-js-optimizer-node'](tech, this.ctx.arch.getNode(f), bundleNode);\n        }, this);\n    },\n    'create-i18n.html-node': function(tech, bundleNode, magicNode) {\n        return this.setBemCreateNode(\n            tech,\n            this.level.resolveTech(tech),\n            bundleNode,\n            magicNode);\n    }"
+    "preprocessors": {
+      "roole": "~0.9.0",
+      "less": "~1.6.3",
+      "stylus": "^0.42.3"
     }
+  },
+  "technologies": {
+    "tools": {
+      "bemjson.js"         : "join(PRJ_TECHS, 'bemjson.js')",
+      "bemdecl.js"         : "v2/bemdecl.js",
+      "deps.js"            : "v2/deps.js",
+      "js"                 : "v2/js-i",
+      "vanilla.js"         : "join(BEM_TECHS, 'vanilla.js.js')",
+      "browser.js"         : "join(BEM_TECHS, 'browser.js.js')",
+      "browser.js+bemhtml" : "join(BEM_TECHS, 'browser.js+bemhtml.js')",
+      "css"                : "v2/css",
+      "ie.css"             : "v2/ie.css",
+      "ie6.css"            : "v2/ie6.css",
+      "ie7.css"            : "v2/ie7.css",
+      "ie8.css"            : "v2/ie8.css",
+      "ie9.css"            : "v2/ie9.css",
+      "bemtree"	           : "join(BEM_TECHS, 'bemtree.js')",
+      "bemhtml"            : "join(BEM_TECHS, 'bemhtml.js')",
+      "html"               : "join(BEM_TECHS, 'html.js')",
+      "node.js"	           : "join(BEM_TECHS, 'node.js.js')",
+      "js+bemhtml"         : "join(BEM_TECHS, 'js+bemhtml.js')",
+      "i18n"               : "join(BEM_TECHS, 'i18n.js')",
+      "i18n.js+bemhtml"    : "join(BEM_TECHS, 'i18n.js+bemhtml.js')",
+      "i18n.js"            : "join(BEM_TECHS, 'i18n.js.js')",
+      "i18n.html"          : "join(BEM_TECHS, 'i18n.html.js')",
+      "stylus"             : "v2/styl",
+      "roole"              : "v2/roole",
+      "less"               : "v2/less"
+    },
+    "enb": {
+      "bemjson.js"         : "enb/techs/bemdecl-from-bemjson",
+      "css"                : "enb/techs/css",
+      "ie.css"             : "enb/techs/css-ie",
+      "ie6.css"            : "enb/techs/css-ie6",
+      "ie7.css"            : "enb/techs/css-ie7",
+      "ie8.css"            : "enb/techs/css-ie8",
+      "ie9.css"            : "enb/techs/css-ie9",
+      "stylus"             : "enb-stylus/techs/css-stylus",
+      "roole"              : "enb-roole/techs/css-roole",
+      "less"               : "enb/techs/css-less",
+      "bemtree"            : "enb-bemxjst/techs/bemtree-old", 
+      "bemhtml"            : "enb-bemxjst/techs/bemhtml",
+      "bh"                 : "bh/techs/bh-server",
+      "node.js"            : "enb-diverse-js/techs/node-js",
+      "browser.js"         : "enb-diverse-js/techs/browser-js",
+      "vanilla.js"         : "enb-diverse-js/techs/vinilla-js",
+      "js"                 : "enb/techs/js",
+      "html"               : "enb/techs/html-from-bemjson"
+    } 
+  },
+  "sourceCode": {
+    "toolsLocalization"	     : ",\n    'create-i18n.js+bemhtml-optimizer-node': function(tech, sourceNode, bundleNode) {\n        sourceNode.getFiles().forEach(function(f) {\n            this['create-js-optimizer-node'](tech, this.ctx.arch.getNode(f), bundleNode);\n        }, this);\n    },\n    'create-i18n.html-node': function(tech, bundleNode, magicNode) {\n        return this.setBemCreateNode(\n            tech,\n            this.level.resolveTech(tech),\n            bundleNode,\n            magicNode);\n    }"
+  }
 }
