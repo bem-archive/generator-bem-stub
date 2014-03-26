@@ -1,0 +1,12 @@
+{
+  "author": "<%= author %>",
+  "name": "<%= projectName %>",
+  "email": "<%= email %>",
+  "version": "0.0.1",
+  "dependencies": {
+    "enb": "0.9.0"
+  },
+  "devDependencies": {
+    "bower": "1.3.1"
+  }
+}

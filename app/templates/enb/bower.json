@@ -1,0 +1,9 @@
+{
+  "author": "<%= author %>",
+  "name": "<%= projectName %>",
+  "email": "<%= email %>",
+  "version": "0.0.1",
+  "dependencies": {
+<%= _.map(libs, function(lib) { return '    "' + lib.name + '": "' + lib.repository + '#' + lib.version + '"'}).join(',\n') %>
+  }
+}
