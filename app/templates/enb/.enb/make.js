@@ -2,8 +2,7 @@ module.exports = function(config) {
     // Сборка общих технологий для всех бандлов
     config.nodes('*.bundles/*', function(nodeConfig) {
         nodeConfig.addTechs([
-            [ require('enb/techs/file-provider'), { target: '?.bemdecl.js' } ],
-            [ require('enb/techs/deps'), { bemdeclTarget: '?.bemdecl.js' } ],
+            [ require('enb/techs/file-provider'), { target: <%= "'?." + target + "'" %> } ],
 <%= _.map(technologies.inTechs, function(technology) { return "            [ require('" + technology + "') ]"}).join(',\n') %>
         ]);
 

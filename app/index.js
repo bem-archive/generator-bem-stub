@@ -209,10 +209,6 @@ BemgenGenerator.prototype.askFor = function askFor() {
         _this.author = props.author;
         _this.email = props.email;
         _this.projectName = props.projectName;
-        /*  bem-tools && enb ==>
-                package.json -->
-                    <%= author %> | <%= email %> | <%= projectName %>
-        */
 
         // -------------------
 
@@ -222,15 +218,6 @@ BemgenGenerator.prototype.askFor = function askFor() {
 
         _this.libs = props.addLibraries;
         _this.libs.unshift(props.baseLibrary);
-
-        /*  bem-tools ==>
-                .bem/make.js -->
-                    <%= _.map(libs, function(lib) { return "        '" + lib.name + " @ " + lib.version + "'"}).join(',\n') %>
-
-            enb ==>
-                bower.json -->
-                    <%= _.map(libs, function(lib) { return '    "' + lib.name + '": "' + lib.repository + '#' + lib.version + '"'}).join(',\n') %>
-        */
 
         // ---------
 
@@ -243,16 +230,6 @@ BemgenGenerator.prototype.askFor = function askFor() {
             withPath :  collector.getPlatforms(props.platforms, _this.libs),
             withoutPath : props.platforms
         }
-        /*  bem-tools ==>
-                desktop.bundles/.bem/level.js -->
-                    <%= _.map(platforms.withPath, function(platform) { return "                '" + platform + "'"}).join(',\n') %>
-                    <%= _.map(platforms.withoutPath, function(platform) { return "                '" + platform + ".blocks'"}).join(',\n') %>
-
-            enb ==>
-                .bem/make.js
-                    <%= _.map(platforms.withPath, function(platform) { return "        { path: 'libs/" + platform + "', check: false },"}).join('\n') %>
-                    <%= _.map(platforms.withoutPath, function(platform) { return "        '" + platform + ".blocks'"}).join(',\n') %>
-        */
 
         // ---------
 
@@ -261,10 +238,6 @@ BemgenGenerator.prototype.askFor = function askFor() {
         // ----
 
         _this.collectorName === 'bem-tools' && (_this.page = props.baseLibrary.name === 'bem-core' ? 'page' : 'b-page');
-        /* bem-tools ==>
-            desktop.bundles/index/index.bemjson.js -->
-                <%= page %>
-        */
 
         // ----
 
@@ -274,12 +247,9 @@ BemgenGenerator.prototype.askFor = function askFor() {
 
         _this.localizationCode = props.localization ? collector.getSourceCode(configPath, 'toolsLocalization') : '';
         _this.languages = props.localization ? collector.getLanguages(props.languages) : '';
-        /*  bem-tools ==>
-                .bem/make.js -->
-                    <%= languages %> | <%= localizationCode %>
-        */
 
-        props.localization && (props.techs = collector.addLocalTechs(props.techs, collector.scripts));   // localization has been chosen --> let's add 'i18n' and 'i18n.js' to techs
+        // localization ==> 'i18n' && 'i18n.js'
+        props.localization && (props.techs = collector.addLocalTechs(props.techs, collector.scripts));
 
         // ------------
 
@@ -287,27 +257,20 @@ BemgenGenerator.prototype.askFor = function askFor() {
         // Technologies
         // ------------
 
-        props.techs = collector.addPreprocessor(props.techs, props.preprocessor);
+        // 'ieN' ==> 'css' and 'ie.css' | preprocessors: 'stylus', 'roole', 'less', 'pure css'
+        props.techs = collector.addCssIe(collector.addPreprocessor(props.techs, props.preprocessor));
 
-        props.techs = collector.addCssIe(props.techs);    // 'ieN' ==> 'css' and 'ie.css'
+        // 'enb' --> 'bem-core' ==> 'bemhtml', 'bh'
+        props.templateSystem && props.templateSystem !== 'my' && props.techs.push(props.templateSystem);
 
-        props.templateSystem && props.templateSystem !== 'my' && props.techs.push(props.templateSystem); // 'enb' --> 'bem-core' ==> 'bemhtml', 'bh'
+        // 'localization' --> 'html' ==> 'i18n.html'
+        props.html && props.techs.push(_this.collectorName === 'bem-tools' ? (props.localization ? 'i18n.html' : 'html') : 'html');
 
-        props.html && props.techs.push(_this.collectorName === 'bem-tools' ? props.localization ? 'i18n.html' : 'html' : 'html');
-
+        // if 'bem-tools' returns ==> 'technologies.inLevels' && 'technologies.inMake' | if 'enb' returns ==> 'technologies.inTechs' && 'technologies.inTargets'
         _this.technologies = collector.getTechnologies(configPath, props.techs, props.baseLibrary.name);
-        /*
-            bem-tools ==>
-                .bem/make.js -->
-                    <%= _.map(technologies.inMake, function(technology) { return "            '" + technology + "'"}).join(',\n') %>
-                .bem/levels/blocks.js -->
-                    <%= _.map(technologies.inLevels, function(technology) { return "        " + technology}).join(',\n') %>
 
-            enb ==>
-                .bem/make.js -->
-                    <%= _.map(technologies.inTechs, function(technology) { return "            [ require('" + technology + "') ]"}).join(',\n') %>
-                    <%= _.map(technologies.inTargets, function(technology) { return "            '?." + technology + "'"}).join(',\n') %>
-        */
+        // 'enb' --> 'bemjson.js' ==> '{ target: '?.bemjson.js' }'
+        _this.technologies.inTargets && (_this.target = _this.technologies.inTargets.indexOf('bemjson.js') > -1 ? 'bemjson.js' : 'bemdecl.js');
 
         // ------------
 

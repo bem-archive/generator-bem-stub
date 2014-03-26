@@ -48,7 +48,7 @@ exports.getTechnologies = function(configPath, techs, base) {
 
     // 'inTechs' ==> 'nodeConfig.addTechs' | 'inTargets' ==> 'nodeConfig.addTargets'
     var technologies = {
-            inTechs : [ 'enb/techs/files' ], // 'files' is always included
+            inTechs : [ 'enb/techs/files', 'enb/techs/deps' ], // 'files' is always included
             inTargets : []
         },
         inTechs = technologies.inTechs,
