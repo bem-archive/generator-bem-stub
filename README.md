@@ -39,6 +39,7 @@ For example, we have the file with answers ```example.json``` which lies in the 
   "baseLibrary": { "name": "bem-bl", "version": "support/1.x" },
   "addLibraries": [],
   "platforms": [ "common", "desktop" ],
+  "preprocessor": "css",
   "localization": false,
   "techs": []
 }
