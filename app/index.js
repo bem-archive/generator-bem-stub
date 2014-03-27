@@ -266,7 +266,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         // 'localization' --> 'html' ==> 'i18n.html'
         props.html && props.techs.push(_this.collectorName === 'bem-tools' ? (props.localization ? 'i18n.html' : 'html') : 'html');
 
-        // if 'bem-tools' returns ==> 'technologies.inLevels' && 'technologies.inMake' | if 'enb' returns ==> 'technologies.inTechs' && 'technologies.inTargets'
+        // if 'bem-tools', returns ==> 'technologies.inLevels' && 'technologies.inMake' | if 'enb', returns ==> 'technologies.inTechs' && 'technologies.inTargets'
         _this.technologies = collector.getTechnologies(configPath, props.techs, props.baseLibrary.name);
 
         // 'enb' --> 'bemjson.js' ==> '{ target: '?.bemjson.js' }'
