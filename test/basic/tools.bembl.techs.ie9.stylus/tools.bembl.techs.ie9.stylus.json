@@ -1,0 +1,21 @@
+{
+  "projectName": "tools.bembl.techs.ie9.stylus",
+  "author": "Evgeniy Gavrushin",
+  "email": "job.govorov@yandex.ru",
+  "collector": "bem-tools",
+  "baseLibrary": {
+    "name": "bem-bl",
+    "version": "v1.2.0",
+    "repository": "git://github.com/bem/bem-bl.git"
+  },
+  "addLibraries": [],
+  "platforms": [
+    "common",
+    "desktop"
+  ],
+  "localization": false,
+  "preprocessor": "stylus",
+  "techs": [
+    "ie9.css"
+  ]
+}
