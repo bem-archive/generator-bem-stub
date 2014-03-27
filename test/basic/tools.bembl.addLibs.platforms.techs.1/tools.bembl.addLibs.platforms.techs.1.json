@@ -23,14 +23,11 @@
   "preprocessor": "css",
   "techs": [
     "bemjson.js",
-    "css",
     "ie.css",
     "ie6.css",
     "ie7.css",
     "ie8.css",
     "ie9.css",
-    "less",
-    "roole",
     "bemhtml",
     "js+bemhtml"
   ],

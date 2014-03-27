@@ -14,7 +14,6 @@
     "touch",
     "touch-phone"
   ],
-  "localization": false,
   "preprocessor": "css",
   "techs": []
 }

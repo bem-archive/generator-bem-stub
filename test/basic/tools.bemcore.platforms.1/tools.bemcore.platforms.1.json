@@ -13,7 +13,6 @@
     "common",
     "desktop"
   ],
-  "localization": false,
   "preprocessor": "css",
   "techs": []
 }

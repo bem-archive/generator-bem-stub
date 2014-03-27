@@ -19,8 +19,6 @@ exports.getTechs = function() {
         'ie7.css'              : 'v2/ie7.css',
         'ie8.css'              : 'v2/ie8.css',
         'ie9.css'              : 'v2/ie9.css',
-        'less'                 : 'v2/less',
-        'roole'                : 'v2/roole',
         'bemhtml'              : join(BEMBL_TECHS, 'bemhtml.js'),
         'js+bemhtml'           : join(BEMBL_TECHS, 'js+bemhtml.js'),
         'js'                   : 'v2/js-i',

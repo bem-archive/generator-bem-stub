@@ -25,7 +25,6 @@
     "touch",
     "touch-pad"
   ],
-  "localization": false,
   "preprocessor": "css",
   "techs": []
 }

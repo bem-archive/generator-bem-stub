@@ -24,7 +24,6 @@
   "preprocessor": "css",
   "techs": [
     "bemjson.js",
-    "css",
     "ie.css",
     "ie6.css",
     "ie7.css",
