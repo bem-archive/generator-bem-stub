@@ -57,6 +57,8 @@ Go to the ```test/basic``` and see more examples of ```JSON-files```.
 
 ## Assembly
 
+**This information is for those occasions when you are using ```bem-tools``` as collector!**
+
 As soon as you answer all questions you will have to assembly the created project:
 
 ```
