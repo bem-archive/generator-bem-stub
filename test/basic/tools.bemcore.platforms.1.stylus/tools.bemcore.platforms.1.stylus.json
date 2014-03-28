@@ -1,0 +1,18 @@
+{
+  "projectName": "tools.bemcore.platforms.1.stylus",
+  "author": "Evgeniy Gavrushin",
+  "email": "job.govorov@yandex.ru",
+  "collector": "bem-tools",
+  "baseLibrary": {
+    "name": "bem-core",
+    "version": "v2.0.0",
+    "repository": "git://github.com/bem/bem-core.git"
+  },
+  "addLibraries": [],
+  "platforms": [
+    "common",
+    "desktop"
+  ],
+  "preprocessor": "stylus",
+  "techs": []
+}
