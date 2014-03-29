@@ -336,7 +336,7 @@ BemgenGenerator.prototype.addPreprocessor = function addPreprocessor() {
 
 // +a
 BemgenGenerator.prototype.assemble = function assemble() {
-    if (this.assemble) {
+    if (this.collector === 'bem-tools' && this.assemble) {
         this.log.write('').info(' ==> npm install...').write('');
         this.shell.exec('cd ' + this.projectName + ' && npm i -s');
         this.log.write('').ok('Ok!').write('');
