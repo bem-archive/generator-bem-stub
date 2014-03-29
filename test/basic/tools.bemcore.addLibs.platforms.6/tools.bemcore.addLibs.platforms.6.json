@@ -5,7 +5,7 @@
   "collector": "bem-tools",
   "baseLibrary": {
     "name": "bem-core",
-    "version": "v2.0.0",
+    "version": "v2.1.0",
     "repository": "git://github.com/bem/bem-core.git"
   },
   "addLibraries": [
