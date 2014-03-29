@@ -36,9 +36,16 @@ For example, we have the file with answers ```example.json``` which lies in the 
   "author": "Ivan Ivanov",
   "email": "ivan@yandex.ru",
   "collector": "bem-tools",
-  "baseLibrary": { "name": "bem-bl", "version": "support/1.x" },
+  "baseLibrary": {
+    "name": "bem-bl",
+    "version": "v1.2.0",
+    "repository": "git://github.com/bem/bem-bl.git"
+  },
   "addLibraries": [],
-  "platforms": [ "common", "desktop" ],
+  "platforms": [
+    "common",
+    "desktop"
+  ],
   "localization": false,
   "preprocessor": "css",
   "techs": []
