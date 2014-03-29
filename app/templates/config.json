@@ -7,7 +7,7 @@
   },
   "versions": {
     "core": {
-      "bem-core": "v2.0.0",
+      "bem-core": "v2.1.0",
       "bem-components": "v2",
       "bem-mvc": "v2"
     },
@@ -60,7 +60,7 @@
       "stylus"             : "enb-stylus/techs/css-stylus",
       "roole"              : "enb-roole/techs/css-roole",
       "less"               : "enb/techs/css-less",
-      "bemtree"            : "enb-bemxjst/techs/bemtree-old", 
+      "bemtree"            : "enb-bemxjst/techs/bemtree-old",
       "bemhtml"            : "enb-bemxjst/techs/bemhtml",
       "bh"                 : "bh/techs/bh-server",
       "node.js"            : "enb-diverse-js/techs/node-js",
@@ -68,7 +68,7 @@
       "vanilla.js"         : "enb-diverse-js/techs/vinilla-js",
       "js"                 : "enb/techs/js",
       "html"               : "enb/techs/html-from-bemjson"
-    } 
+    }
   },
   "sourceCode": {
     "toolsLocalization"	     : ",\n    'create-i18n.js+bemhtml-optimizer-node': function(tech, sourceNode, bundleNode) {\n        sourceNode.getFiles().forEach(function(f) {\n            this['create-js-optimizer-node'](tech, this.ctx.arch.getNode(f), bundleNode);\n        }, this);\n    },\n    'create-i18n.html-node': function(tech, bundleNode, magicNode) {\n        return this.setBemCreateNode(\n            tech,\n            this.level.resolveTech(tech),\n            bundleNode,\n            magicNode);\n    }"
