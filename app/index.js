@@ -13,7 +13,7 @@ var BemgenGenerator = module.exports = function BemgenGenerator(args, options, c
 
     this.on('end', function () {
         this.log.write('').ok('Done!');
-        setTimeout(process.exit, 100, 0);   // force exit
+        setTimeout(process.exit, 0, 0);   // force exit
     });
 };
 
@@ -199,7 +199,6 @@ BemgenGenerator.prototype.askFor = function askFor() {
     }];
 
     function getAnswers(props) {
-        console.log(props);
 
         var collector = require((_this.collectorName = props.collector) === 'bem-tools' ? './lib/tools' : './lib/enb');
 
