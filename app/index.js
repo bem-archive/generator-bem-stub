@@ -46,7 +46,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         name: 'projectName',
         message: 'How would you like to name the project?',
         validate: validateName,
-        default: path.basename(_this.dest._base)
+        default: 'project-stub'
     }, {
         type: 'input',
         name: 'author',
@@ -336,7 +336,7 @@ BemgenGenerator.prototype.addPreprocessor = function addPreprocessor() {
 
 // +a
 BemgenGenerator.prototype.assemble = function assemble() {
-    if (this.collector === 'bem-tools' && this.assemble) {
+    if (this.collectorName === 'bem-tools' && this.assemble) {
         this.log.write('').info(' ==> npm install...').write('');
         this.shell.exec('cd ' + this.projectName + ' && npm i -s');
         this.log.write('').ok('Ok!').write('');
