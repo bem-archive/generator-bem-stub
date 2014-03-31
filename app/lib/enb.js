@@ -53,7 +53,7 @@ exports.getTechnologies = function(configPath, techs, base) {
             inJSON : []
         },
         inTechs = technologies.inTechs,
-        inTargets = technologies.inTargets;
+        inTargets = technologies.inTargets,
         inJSON = technologies.inJSON;
 
     Object.keys(techs).forEach(function(tech) {

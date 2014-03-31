@@ -73,10 +73,12 @@ exports.getTechnologies = function(configPath, techs, base) {
     var technologies = {
             // 'bemdecl.js' and 'deps.js' are always included
             inLevels : [ getTechDecl('bemdecl.js'), getTechDecl('deps.js')],
-            inMake : [ 'bemdecl.js', 'deps.js']
+            inMake : [ 'bemdecl.js', 'deps.js'],
+            inJSON : []
         },
         inLevels = technologies.inLevels,
-        inMake = technologies.inMake;
+        inMake = technologies.inMake,
+        inJSON = technologies.inJSON;
 
     Object.keys(techs).forEach(function(tech) {
         switch (techs[tech]) {
@@ -111,6 +113,8 @@ exports.getTechnologies = function(configPath, techs, base) {
             default:
                 inLevels.push(getTechDecl(techs[tech]));
                 inMake.push(techs[tech]);
+
+                (techs[tech] === 'stylus' || techs[tech] === 'roole' || techs[tech] === 'less') && inJSON.push(techs[tech]);
         }
     });
 
