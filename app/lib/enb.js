@@ -80,14 +80,6 @@ exports.getTechnologies = function(configPath, techs, base) {
                 inTechs.push(getTechVal('bh'));
                 inTargets.push('bemhtml.js');   // 'bh' ==> '?.bemhtml.js' in 'nodeConfig.addTargets'
                 break;
-            case 'node.js': // 'bem-core' --> 'node.js' ==> 'vanilla.js' and 'js'
-                inTechs.push(getTechVal('node.js'), getTechVal('vanilla.js'));
-                inTargets.push('node.js', 'vanilla.js');
-                break;
-            case 'browser.js': // 'bem-core' --> 'browser.js' ==> 'vanilla.js'
-                inTechs.push(getTechVal('browser.js'), getTechVal('vanilla.js'));
-                inTargets.push('browser.js', 'vanilla.js');
-                break;
             default:
                 inTechs.push(getTechVal(techs[tech]));
                 inTargets.push(techs[tech]);
