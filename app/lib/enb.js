@@ -49,36 +49,54 @@ exports.getTechnologies = function(configPath, techs, base) {
     // 'inTechs' ==> 'nodeConfig.addTechs' | 'inTargets' ==> 'nodeConfig.addTargets'
     var technologies = {
             inTechs : [ 'enb/techs/files', 'enb/techs/deps' ], // 'files' is always included
-            inTargets : []
+            inTargets : [],
+            inJSON : []
         },
         inTechs = technologies.inTechs,
         inTargets = technologies.inTargets;
+        inJSON = technologies.inJSON;
 
     Object.keys(techs).forEach(function(tech) {
         switch(techs[tech]) {
             case 'stylus':
                 inTechs.push(getTechVal('stylus'));
                 inTargets.push('css');  // 'stylus' ==> '?.css' in 'nodeConfig.addTargets'
+                inJSON.push('enb-stylus');
                 break;
             case 'roole':
                 inTechs.push(getTechVal('roole'));
                 inTargets.push('css');  // 'roole' ==> '?.css' in 'nodeConfig.addTargets'
+                inJSON.push('roole', 'enb-roole');
                 break;
             case 'less':
                 inTechs.push(getTechVal('less'));
                 inTargets.push('css');  // 'less' ==> '?.css' in 'nodeConfig.addTargets'
+                inJSON.push('less');
                 break;
             case 'bemtree':
                 inTechs.push(getTechVal('bemtree'));
                 inTargets.push('bemtree.js');   // 'bemtree' ==> '?.bemtree.js' in 'nodeConfig.addTargets'
+                inJSON.push('enb-bemxjst');
                 break;
             case 'bemhtml':
                 inTechs.push(getTechVal('bemhtml') + (base === 'bem-core' ? '-old' : ''));  // bem-core ==> bemhtml-old | bem-bl ==> bemhtml"
                 inTargets.push('bemhtml.js');   // 'bemhtml' ==> '?.bemhtml.js' in 'nodeConfig.addTargets'
+                inJSON.push('enb-bemxjst');
                 break;
             case 'bh':
                 inTechs.push(getTechVal('bh'));
                 inTargets.push('bemhtml.js');   // 'bh' ==> '?.bemhtml.js' in 'nodeConfig.addTargets'
+                inJSON.push('bh');
+                break;
+            case 'node.js': // 'bem-core' --> 'node.js' ==> 'vanilla.js' and 'js'
+                inTechs.push(getTechVal('node.js'));
+                inTargets.push('node.js');
+                inJSON.push('enb-diverse-js');
+                break;
+            case 'browser.js': // 'bem-core' --> 'browser.js' ==> 'vanilla.js'
+                inTechs.push(getTechVal('browser.js'));
+                inTargets.push('browser.js');
+                inJSON.push('enb-diverse-js');
                 break;
             default:
                 inTechs.push(getTechVal(techs[tech]));
@@ -88,6 +106,7 @@ exports.getTechnologies = function(configPath, techs, base) {
 
     technologies.inTechs = _.uniq(inTechs);
     technologies.inTargets = _.uniq(inTargets);
+    technologies.inJSON = _.uniq(inJSON);
 
     return technologies;
 }

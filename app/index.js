@@ -313,7 +313,7 @@ BemgenGenerator.prototype.app = function app() {
 };
 
 // Have 'less' or 'roole' been chosen? ==> We need in additional installation of preprocessors
-BemgenGenerator.prototype.addPreprocessor = function addPreprocessor() {
+BemgenGenerator.prototype.addPackages = function addPackages() {
     var _this = this;
 
     function getLibVersion(base, value) {
@@ -323,13 +323,13 @@ BemgenGenerator.prototype.addPreprocessor = function addPreprocessor() {
     var configPath = path.join(_this.sourceRoot(), 'config.json'), // path to 'config.json' in templates
         packagePath = path.join(_this.destinationRoot(), _this.projectName, 'package.json'),    // path to 'package.json' in the created project
         pack = JSON.parse(_this.readFileAsString(packagePath)),
-        deps = pack.dependencies,
-        techs = _this.collectorName === 'bem-tools' ? _this.technologies.inMake : _this.technologies.inTechs;
+        deps = this.collectorName === 'bem-tools' ? pack.dependencies : pack.devDependencies,
+        inJSON = _this.technologies.inJSON;
 
-    // adds the necessary preprocessors to 'package.json' in the created project
-    techs.indexOf('less') > -1 && (deps.less = getLibVersion('preprocessors', 'less'));
-    techs.indexOf('roole') > -1 && (deps.roole = getLibVersion('preprocessors', 'roole'));
-    techs.indexOf('stylus') > -1 && (deps.stylus = getLibVersion('preprocessors', 'stylus'));
+    // adds the necessary packages to 'package.json' in the created project
+    for (var _package in inJSON) {
+        deps[inJSON[_package]] = getLibVersion('other', inJSON[_package]);
+    }
 
     fs.writeFileSync(packagePath, JSON.stringify(pack, null, '  ') + '\n');
 };
