@@ -62,19 +62,19 @@
       "ie7.css"            : "enb/techs/css-ie7",
       "ie8.css"            : "enb/techs/css-ie8",
       "ie9.css"            : "enb/techs/css-ie9",
+      "js"                 : "enb/techs/js",
+      "html"               : "enb/techs/html-from-bemjson",
+      "less"               : "enb/techs/css-less",
       "stylus"             : "enb-stylus/techs/css-stylus",
       "roole"              : "enb-roole/techs/css-roole",
-      "less"               : "enb/techs/css-less",
-      "bemtree"            : "enb-bemxjst/techs/bemtree-old",
-      "bemhtml"            : "enb-bemxjst/techs/bemhtml",
+      "bemtree.js"         : "enb-bemxjst/techs/bemtree-old",
+      "bemhtml.js"         : "enb-bemxjst/techs/bemhtml",
       "bh"                 : "bh/techs/bh-server",
       "node.js"            : "enb-diverse-js/techs/node-js",
-      "browser.js"         : "enb-diverse-js/techs/browser-js",
-      "js"                 : "enb/techs/js",
-      "html"               : "enb/techs/html-from-bemjson"
+      "browser.js"         : "enb-diverse-js/techs/browser-js"
     }
   },
   "sourceCode": {
-    "toolsLocalization"	     : ",\n    'create-i18n.js+bemhtml-optimizer-node': function(tech, sourceNode, bundleNode) {\n        sourceNode.getFiles().forEach(function(f) {\n            this['create-js-optimizer-node'](tech, this.ctx.arch.getNode(f), bundleNode);\n        }, this);\n    },\n    'create-i18n.html-node': function(tech, bundleNode, magicNode) {\n        return this.setBemCreateNode(\n            tech,\n            this.level.resolveTech(tech),\n            bundleNode,\n            magicNode);\n    }"
+    "toolsLocalization"	   : ",\n    'create-i18n.js+bemhtml-optimizer-node': function(tech, sourceNode, bundleNode) {\n        sourceNode.getFiles().forEach(function(f) {\n            this['create-js-optimizer-node'](tech, this.ctx.arch.getNode(f), bundleNode);\n        }, this);\n    },\n    'create-i18n.html-node': function(tech, bundleNode, magicNode) {\n        return this.setBemCreateNode(\n            tech,\n            this.level.resolveTech(tech),\n            bundleNode,\n            magicNode);\n    }"
   }
 }
