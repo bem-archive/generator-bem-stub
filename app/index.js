@@ -196,6 +196,24 @@ BemgenGenerator.prototype.askFor = function askFor() {
         when: function(input) { // Has 'bemjson.js' been chosen?
             return input.techs.indexOf('bemjson.js') > -1;
         }
+    }, {
+        type: 'checkbox',
+        name: 'minimization',
+        message: 'Which files do you want to minimize?',
+        choices: function(input) {
+            var toMinimize = [ { value: 'css' } ];
+
+            for (var tech in input.techs) {
+                input.techs[tech] !== 'bemjson.js' && toMinimize.push( { value: input.techs[tech] } );
+            }
+
+            (input.templateSystem && input.templateSystem !== 'my') && toMinimize.push( { value: 'bemhtml.js' } );
+
+            return toMinimize;
+        },
+        when: function(input) {
+            return input.collector === 'enb';
+        }
     }];
 
     function getAnswers(props) {
@@ -270,6 +288,14 @@ BemgenGenerator.prototype.askFor = function askFor() {
 
         // 'enb' --> 'bemjson.js' ==> '{ target: '?.bemjson.js' }'
         _this.technologies.inTargets && (_this.target = _this.technologies.inTargets.indexOf('bemjson.js') > -1 ? 'bemjson.js' : 'bemdecl.js');
+
+        // ------------
+
+
+        // Minimization
+        // ------------
+
+        props.minimization && (_this.toMinify = props.minimization);
 
         // ------------
 

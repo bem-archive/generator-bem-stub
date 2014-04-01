@@ -13,9 +13,9 @@ exports.commonTech = [
 ],
 exports.templates = {
     core: [
-        { value: 'bemtree'  } ],
+        { value: 'bemtree.js'  } ],
     bl: [
-        { value: 'bemhtml' }
+        { value: 'bemhtml.js' }
     ]
 },
 exports.scripts = {
@@ -73,12 +73,7 @@ exports.getTechnologies = function(configPath, techs, base) {
                 inTargets.push('css');  // 'less' ==> '?.css' in 'nodeConfig.addTargets'
                 inJSON.push('less');
                 break;
-            case 'bemtree':
-                inTechs.push(getTechVal('bemtree'));
-                inTargets.push('bemtree.js');   // 'bemtree' ==> '?.bemtree.js' in 'nodeConfig.addTargets'
-                inJSON.push('enb-bemxjst');
-                break;
-            case 'bemhtml':
+            case 'bemhtml.js':
                 inTechs.push(getTechVal('bemhtml') + (base === 'bem-core' ? '-old' : ''));  // bem-core ==> bemhtml-old | bem-bl ==> bemhtml"
                 inTargets.push('bemhtml.js');   // 'bemhtml' ==> '?.bemhtml.js' in 'nodeConfig.addTargets'
                 inJSON.push('enb-bemxjst');
@@ -88,19 +83,13 @@ exports.getTechnologies = function(configPath, techs, base) {
                 inTargets.push('bemhtml.js');   // 'bh' ==> '?.bemhtml.js' in 'nodeConfig.addTargets'
                 inJSON.push('bh');
                 break;
-            case 'node.js': // 'bem-core' --> 'node.js' ==> 'vanilla.js' and 'js'
-                inTechs.push(getTechVal('node.js'));
-                inTargets.push('node.js');
-                inJSON.push('enb-diverse-js');
-                break;
-            case 'browser.js': // 'bem-core' --> 'browser.js' ==> 'vanilla.js'
-                inTechs.push(getTechVal('browser.js'));
-                inTargets.push('browser.js');
-                inJSON.push('enb-diverse-js');
-                break;
             default:
                 inTechs.push(getTechVal(techs[tech]));
                 inTargets.push(techs[tech]);
+
+                (techs[tech] === 'node.js' || techs[tech] === 'browser.js') && inJSON.push('enb-diverse-js');
+                techs[tech] === 'bemtree.js' && inJSON.push('enb-bemxjst');
+
         }
     });
 

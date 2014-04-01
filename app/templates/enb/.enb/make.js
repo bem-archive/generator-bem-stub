@@ -1,5 +1,5 @@
 module.exports = function(config) {
-    // Сборка общих технологий для всех бандлов
+
     config.nodes('*.bundles/*', function(nodeConfig) {
         nodeConfig.addTechs([
             [ require('enb/techs/file-provider'), { target: <%= "'?." + target + "'" %> } ],
@@ -11,20 +11,33 @@ module.exports = function(config) {
         ]);
     });
 
-    // Указываем уровни для бандлов технологий
+
     config.nodes(<%= "'" + platforms.withoutPath[platforms.withoutPath.length - 1] + ".bundles/*'"%>, function(nodeConfig) {
         nodeConfig.addTechs([
             [ require('enb/techs/levels'), { levels: getLevels(config) } ]
         ]);
     });
+
+
+    config.mode('development', function(modeConfig) {
+        config.nodes('*.bundles/*', function(nodeConfig) {
+            nodeConfig.addTechs([
+<%= _.map(toMinify, function(technology) { return "                [ require('enb/techs/file-copy'), { sourceTarget: '?." + technology + "', destTarget: '?.min." + technology + "' } ]" }).join(',\n') %>
+            ]);
+        });
+    });
+
+    config.mode('production', function(modeConfig) {
+        config.nodes('*.bundles/*', function(nodeConfig) {
+            nodeConfig.addTechs([
+<%= _.map(toMinify, function(technology) { return "                [ require('enb/techs/borschik'), { sourceTarget: '?." + technology + "', destTarget: '?.min." + technology + "' } ]" }).join(',\n') %>
+            ]);
+        });
+    });
+
 };
 
-/**
- * Получение уровней переопределения
- *
- * @param {Object} config
- * @returns {*|Array}
- */
+
 function getLevels(config) {
     return [
 <%= _.map(platforms.withPath, function(platform) { return "        { path: 'libs/" + platform + "', check: false },"}).join('\n') %>
