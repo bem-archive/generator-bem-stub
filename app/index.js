@@ -70,31 +70,38 @@ BemgenGenerator.prototype.askFor = function askFor() {
         type: 'list',
         name: 'baseLibrary',
         message: 'What base library to use?',
-        choices: [{
-            name: 'bem-core',
-            value: {
+        choices: function() {
+            var choices = [];
+
+            choices.push({
                 name: 'bem-core',
-                version: getLibVersion('core', 'bem-core'),
-                repository: getLibRepo('bem-core')
-            }
-        }, {
-            name: 'bem-bl',
-            value: {
+                value: {
+                    name: 'bem-core',
+                    version: getLibVersion('core', 'bem-core'),
+                    repository: getLibRepo('bem-core')
+                }
+            },
+            {
                 name: 'bem-bl',
-                version: getLibVersion('bl', 'bem-bl'),
-                repository: getLibRepo('bem-bl')
-            }
-        }]
+                value: {
+                    name: 'bem-bl',
+                    version: getLibVersion('bl', 'bem-bl'),
+                    repository: getLibRepo('bem-bl')
+                }
+            });
+
+            return choices;
+        }
     }, {
         type: 'checkbox',
         name: 'addLibraries',
         message: 'Would you like any additional libraries?',
-        choices: function (input) {
+        choices: function(input) {
             // returns the list of possible additional libs in dependence of the base library
             var isCore = input.baseLibrary.name === 'bem-core',
-                result = [];
+                choices = [];
 
-            isCore && result.push({
+            isCore && choices.push({
                 name: 'bem-components',
                 value: {
                     name: 'bem-components',
@@ -103,7 +110,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
                 }
             });
 
-            return result.concat({
+            return choices.concat({
                 name: 'bem-mvc',
                 value: {
                     name: 'bem-mvc',
@@ -126,6 +133,18 @@ BemgenGenerator.prototype.askFor = function askFor() {
             name: 'touch-phone',
             value: ['common', 'touch', 'touch-phone']
         }]
+    }, {
+        type: 'confirm',
+        name: 'design',
+        message: 'Use default design?',
+        default: true,
+        when: function(input) {
+            var useComponents;
+            for (var lib in input.addLibraries) {
+                input.addLibraries[lib].name === 'bem-components' && (useComponents = true)
+            }
+            return input.baseLibrary.name === 'bem-core' && useComponents
+        }
     }, {
         type: 'confirm',
         name: 'localization',
@@ -244,7 +263,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
 
         // 'withPath' ==> 'bem-core/common.blocks' | 'withoutPath' ==> 'common'
         _this.platforms = {
-            withPath :  collector.getPlatforms(props.platforms, _this.libs),
+            withPath :  collector.getPlatforms(props.platforms, _this.libs, props.design),
             withoutPath : props.platforms
         }
 
