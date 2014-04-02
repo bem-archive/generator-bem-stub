@@ -20,6 +20,7 @@
     "touch",
     "touch-phone"
   ],
+  "design": false,
   "preprocessor": "css",
   "techs": [
     "bemjson.js",

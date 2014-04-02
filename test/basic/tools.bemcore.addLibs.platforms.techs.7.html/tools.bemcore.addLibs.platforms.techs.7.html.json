@@ -24,6 +24,7 @@
     "common",
     "desktop"
   ],
+  "design": false,
   "preprocessor": "css",
   "techs": [
     "bemjson.js",

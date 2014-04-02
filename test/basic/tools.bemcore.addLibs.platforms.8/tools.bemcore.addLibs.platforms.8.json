@@ -25,6 +25,7 @@
     "touch",
     "touch-pad"
   ],
+  "design": false,
   "preprocessor": "css",
   "techs": []
 }

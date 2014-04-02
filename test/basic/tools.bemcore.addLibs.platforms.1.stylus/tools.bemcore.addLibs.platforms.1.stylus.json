@@ -19,6 +19,7 @@
     "common",
     "desktop"
   ],
+  "design": false,
   "preprocessor": "stylus",
   "techs": []
 }
