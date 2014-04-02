@@ -1,0 +1,21 @@
+{
+  "projectName": "tools.bembl.platforms.local.2",
+  "author": "Evgeniy Gavrushin",
+  "email": "job.govorov@yandex.ru",
+  "collector": "bem-tools",
+  "baseLibrary": {
+    "name": "bem-bl",
+    "version": "v1.2.0",
+    "repository": "git://github.com/bem/bem-bl.git"
+  },
+  "addLibraries": [],
+  "platforms": [
+    "common",
+    "touch",
+    "touch-pad"
+  ],
+  "localization": true,
+  "languages": "en ru",
+  "preprocessor": "css",
+  "techs": []
+}

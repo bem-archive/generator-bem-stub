@@ -1,0 +1,19 @@
+{
+  "projectName": "tools.bemcore.platforms.3",
+  "author": "Evgeniy Gavrushin",
+  "email": "job.govorov@yandex.ru",
+  "collector": "bem-tools",
+  "baseLibrary": {
+    "name": "bem-core",
+    "version": "v2.1.0",
+    "repository": "git://github.com/bem/bem-core.git"
+  },
+  "addLibraries": [],
+  "platforms": [
+    "common",
+    "touch",
+    "touch-phone"
+  ],
+  "preprocessor": "css",
+  "techs": []
+}

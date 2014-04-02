@@ -1,0 +1,36 @@
+{
+  "projectName": "tools.bembl.addLibs.platforms.local.techs.1.html.less",
+  "author": "Evgeniy Gavrushin",
+  "email": "job.govorov@yandex.ru",
+  "collector": "bem-tools",
+  "baseLibrary": {
+    "name": "bem-bl",
+    "version": "v1.2.0",
+    "repository": "git://github.com/bem/bem-bl.git"
+  },
+  "addLibraries": [
+    {
+      "name": "bem-mvc",
+      "version": "master",
+      "repository": "git://github.com/bem/bem-mvc.git"
+    }
+  ],
+  "platforms": [
+    "common",
+    "desktop"
+  ],
+  "localization": true,
+  "languages": "en ru",
+  "preprocessor": "less",
+  "techs": [
+    "bemjson.js",
+    "ie.css",
+    "ie6.css",
+    "ie7.css",
+    "ie8.css",
+    "ie9.css",
+    "bemhtml",
+    "i18n.js+bemhtml"
+  ],
+  "html": true
+}

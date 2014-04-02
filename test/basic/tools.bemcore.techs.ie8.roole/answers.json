@@ -1,0 +1,20 @@
+{
+  "projectName": "tools.bemcore.techs.ie8.roole",
+  "author": "Evgeniy Gavrushin",
+  "email": "job.govorov@yandex.ru",
+  "collector": "bem-tools",
+  "baseLibrary": {
+    "name": "bem-core",
+    "version": "v2.1.0",
+    "repository": "git://github.com/bem/bem-core.git"
+  },
+  "addLibraries": [],
+  "platforms": [
+    "common",
+    "desktop"
+  ],
+  "preprocessor": "roole",
+  "techs": [
+    "ie8.css"
+  ]
+}
