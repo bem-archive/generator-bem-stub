@@ -90,7 +90,7 @@ Run from the root folder of ```generator-bemgen```:
 
 ```$ cd test```
 
-Then run:
+Then execute:
 
 ```$ ./run.sh +a``` or ```$ ./run.sh -basic +a``` - to check the created files and the assembly of the projects (higher quality testing, but slower)
 
@@ -101,9 +101,26 @@ Then run:
 In the same directory create the folder ```more```.
 
 In this folder you can add your own tests and check their assembly.
-Create a folder, for example, ```myTest```. In this folder create the ```JSON-file``` with answers ```myTest.json```
+Create a folder, for example, ```myTest```. In this folder create the ```JSON-file``` with answers ```answers.json```
 
-**It is very important to name the ```JSON-file``` just as well as the folder where it lies!**
+```
+|-- app
+|
+|-- node_modules
+|
+|-- test
+|   |
+|   |-- basic
+|   |
+|   |-- more
+|       |
+|       |-- myTest
+|           |
+|           |-- answers.json
+|
+```
+
+**It is very important to name the ```JSON-file``` just as well as it was shown above!**
 
 You can create as many tests as you like and then run:
 
