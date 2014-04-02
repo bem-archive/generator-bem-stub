@@ -27,10 +27,9 @@ for j in $folder/* ;
 do
     fLen=${#folder}
 
-    i=$j/${j:fLen+1}.json
     cd output
 
-    yo bemgen ../$i
+    yo bemgen ../$j/answers.json
 
     projectName=${j:fLen+1}
     cd $projectName
