@@ -6,24 +6,39 @@
     "bem-mvc": "git://github.com/bem/bem-mvc.git"
   },
   "versions": {
-    "core": {
-      "bem-core": "v2.1.0",
-      "bem-components": "v2",
-      "bem-mvc": "v2"
+    "bem-tools": {
+      "core": {
+        "bem-core": "bem-core @ v2.1.0",
+        "bem-components": "bem-components @ v2",
+        "bem-mvc": "bem-mvc @ v2"
+      },
+      "bl": {
+        "bem-bl": "bem-bl @ v1.2.0",
+        "bem-mvc": "bem-mvc @ master"
+      },
     },
-    "bl": {
-      "bem-bl": "v1.2.0",
-      "bem-mvc": "master"
+    "enb": {
+      "core": {
+        "bem-core": "\"bem-core\": \"2.1.0\"",
+        "bem-components": "\"bem-components\": \"git://github.com/bem/bem-components.git#v2\"",
+        "bem-mvc": "\"bem-mvc\": \"git://github.com/bem/bem-mvc.git#v2\""
+      },
+      "bl": {
+        "bem-bl": "\"bem-bl\": \"1.2.0\"",
+        "bem-mvc": "\"bem-bl\": \"git://github.com/bem/bem-mvc.git#master\""
+      },
     },
     "other": {
-      "roole": "0.9.0",
-      "less": "1.6.3",
-      "stylus": "0.42.3",
-      "enb-diverse-js": "0.1.0",
-      "enb-stylus": "0.0.3",
-      "enb-roole": "0.1.0",
-      "enb-bemxjst": "1.1.0",
-      "bh": "1.1.1"
+      "toJSON": {
+        "roole": "0.9.0",
+        "less": "1.6.3",
+        "stylus": "0.42.3",
+        "enb-diverse-js": "0.1.0",
+        "enb-stylus": "0.0.3",
+        "enb-roole": "0.1.0",
+        "enb-bemxjst": "1.1.0",
+        "bh": "1.1.1"
+      }
     }
   },
   "technologies": {
