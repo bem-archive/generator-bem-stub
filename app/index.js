@@ -196,7 +196,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         name: 'templateSystem',
         message: 'What template system to use?',
         choices: [{
-            value: 'bemhtml'
+            value: 'bemhtml.js'
         }, {
             value: 'bh'
         }, {
@@ -205,7 +205,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         }],
         default: 3,
         when: function(input) { // 'enb' --> 'bem-core' --> 'bemjson.js' ==> template system
-            return input.collector === 'enb' && input.baseLibrary.name === 'bem-core' && input.techs.indexOf('bemjson.js') > -1;
+            return input.collector === 'enb' && input.baseLibrary.name === 'bem-core' > -1;
         }
     }, {
         type: 'confirm',

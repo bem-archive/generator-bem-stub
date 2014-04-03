@@ -75,7 +75,7 @@ exports.getTechnologies = function(configPath, techs, base) {
                 inJSON.push('less');
                 break;
             case 'bemhtml.js':
-                inTechs.push(getTechVal('bemhtml') + (base === 'bem-core' ? '-old' : ''));  // bem-core ==> bemhtml-old | bem-bl ==> bemhtml"
+                inTechs.push(getTechVal('bemhtml.js') + (base === 'bem-core' ? '-old' : ''));  // bem-core ==> bemhtml-old | bem-bl ==> bemhtml"
                 inTargets.push('bemhtml.js');   // 'bemhtml' ==> '?.bemhtml.js' in 'nodeConfig.addTargets'
                 inJSON.push('enb-bemxjst');
                 break;
