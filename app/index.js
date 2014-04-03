@@ -136,7 +136,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'confirm',
         name: 'design',
-        message: 'Use default design?',
+        message: 'Use design from bem-components?',
         default: true,
         when: function(input) {
             var useComponents;
@@ -165,16 +165,31 @@ BemgenGenerator.prototype.askFor = function askFor() {
         type: 'list',
         name: 'preprocessor',
         message: 'What preprocessors to use?',
-        choices: [{
-            value: 'stylus'
-        }, {
-            value: 'roole',
-        }, {
-            value: 'less',
-        }, {
-            name: 'Only pure css',
-            value: 'css'
-        }]
+        choices: function(input) {
+            var isEnb = input.collector === 'enb';
+            var useComponents;
+            for (var lib in input.addLibraries) {
+                input.addLibraries[lib].name === 'bem-components' && (useComponents = true)
+            }
+
+            return (isEnb && useComponents) ?
+                    [{
+                        value: 'roole'
+                    }, {
+                        name: 'Only pure css',
+                        value: 'roole'
+                    }] :
+                    [{
+                        value: 'stylus'
+                    }, {
+                        value: 'roole',
+                    }, {
+                        value: 'less',
+                    }, {
+                        name: 'Only pure css',
+                        value: 'css'
+                    }]
+        }
     }, {
         type: 'checkbox',
         name: 'techs',
@@ -196,6 +211,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         name: 'templateSystem',
         message: 'What template system to use?',
         choices: [{
+            name: 'bemhtml',
             value: 'bemhtml.js'
         }, {
             value: 'bh'
@@ -273,7 +289,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         // Page
         // ----
 
-        _this.collectorName === 'bem-tools' && (_this.page = props.baseLibrary.name === 'bem-core' ? 'page' : 'b-page');
+        _this.page = props.baseLibrary.name === 'bem-core' ? 'page' : 'b-page';
 
         // ----
 
@@ -306,7 +322,8 @@ BemgenGenerator.prototype.askFor = function askFor() {
         _this.technologies = collector.getTechnologies(configPath, props.techs, props.baseLibrary.name);
 
         // 'enb' --> 'bemjson.js' ==> '{ target: '?.bemjson.js' }'
-        _this.technologies.inTargets && (_this.target = _this.technologies.inTargets.indexOf('bemjson.js') > -1 ? 'bemjson.js' : 'bemdecl.js');
+        _this.isBemjson = props.techs.indexOf('bemjson.js') > -1;
+        _this.technologies.inTargets && (_this.target = _this.isBemjson ? 'bemjson.js' : 'bemdecl.js');
 
         // ------------
 
@@ -317,6 +334,14 @@ BemgenGenerator.prototype.askFor = function askFor() {
         props.minimization && (_this.toMinify = props.minimization);
 
         // ------------
+
+
+        // enb ==> 'index.bemjson.js'
+        // ---------------------
+
+        _this.collectorName === 'enb' && (_this.scripts = collector.getScripts(_this.technologies.inTargets, _this.toMinify));
+
+        // ---------------------
 
         cb();
     }
@@ -350,7 +375,15 @@ BemgenGenerator.prototype.askFor = function askFor() {
 BemgenGenerator.prototype.app = function app() {
     var root = path.join(this.sourceRoot(), this.collectorName); // path to templates
     var files = this.expandFiles('**', { dot: true, cwd: root });   // roots of all files
+
     this._.each(files, function (f) {
+
+        if (this.collectorName === 'enb') {
+            if (this.isBemjson && f === 'desktop.bundles/index/index.bemdecl.js') return;
+
+            if (!this.isBemjson && f === 'desktop.bundles/index/index.bemjson.js') return;
+        }
+
         var src = path.join(root, f);   // copy from
         var dest = path.join(this.destinationRoot(), this.projectName, path.dirname(f), path.basename(f));  // where to copy
         this.template(src, dest);
@@ -378,6 +411,13 @@ BemgenGenerator.prototype.addPackages = function addPackages() {
 
     fs.writeFileSync(packagePath, JSON.stringify(pack, null, '  ') + '\n');
 };
+
+// Creates the necessary empty folders in the created project (if we use 'enb' collector)
+BemgenGenerator.prototype.createFolders = function createFolders() {
+    var platforms = this.platforms.withoutPath;
+    this.collectorName === 'enb' &&
+        this.shell.exec('cd ' + this.projectName + ' && mkdir common.blocks && mkdir ' + platforms[platforms.length - 1] + ".blocks");
+}
 
 // +a
 BemgenGenerator.prototype.assemble = function assemble() {

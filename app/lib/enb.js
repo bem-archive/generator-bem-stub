@@ -59,6 +59,9 @@ exports.getTechnologies = function(configPath, techs, base) {
 
     Object.keys(techs).forEach(function(tech) {
         switch(techs[tech]) {
+            case 'bemjson.js': // 'bemjson.js' ==> only in techs
+                inTechs.push(getTechVal('bemjson.js'));
+                break;
             case 'stylus':
                 inTechs.push(getTechVal('stylus'));
                 inTargets.push('css');  // 'stylus' ==> '?.css' in 'nodeConfig.addTargets'
@@ -117,4 +120,26 @@ exports.addCssIe = function(input) {
     }
 
     return input;
+}
+
+exports.getScripts = function(techs, toMin) {
+    var scripts = [];
+
+    techs.indexOf('css') > -1 && scripts.push({
+        elem: 'css',
+        url: toMin.indexOf('css') > -1 ? 'min.css' : 'css'
+    });
+
+    techs.indexOf('browser.js') > -1 && scripts.push({
+        elem: 'js',
+        url: toMin.indexOf('browser.js') > -1 ? 'min.browser.js' : 'browser.js'
+    });
+
+    techs.indexOf('js') > -1 && scripts.push({
+        elem: 'js',
+        url: toMin.indexOf('js') > -1 ? 'min.js' : 'js'
+    });
+
+    return scripts;
+
 }
