@@ -205,7 +205,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         }],
         default: 3,
         when: function(input) { // 'enb' --> 'bem-core' --> 'bemjson.js' ==> template system
-            return input.collector === 'enb' && input.baseLibrary.name === 'bem-core' > -1;
+            return input.collector === 'enb' && input.baseLibrary.name === 'bem-core';
         }
     }, {
         type: 'confirm',
