@@ -373,19 +373,25 @@ BemgenGenerator.prototype.askFor = function askFor() {
 };
 
 BemgenGenerator.prototype.app = function app() {
+    var platforms = this.platforms.withoutPath;
     var root = path.join(this.sourceRoot(), this.collectorName); // path to templates
     var files = this.expandFiles('**', { dot: true, cwd: root });   // roots of all files
 
     this._.each(files, function (f) {
 
-        if (this.collectorName === 'enb') {
-            if (this.isBemjson && f === 'desktop.bundles/index/index.bemdecl.js') return;
+        var dirname = path.dirname(f);
 
-            if (!this.isBemjson && f === 'desktop.bundles/index/index.bemjson.js') return;
+        if (this.collectorName === 'enb') {
+            if (this.isBemjson && f === 'bundles/index/index.bemdecl.js') return;
+
+            if (!this.isBemjson && f === 'bundles/index/index.bemjson.js') return;
+
+            (f === 'bundles/index/index.bemdecl.js' || f === 'bundles/index/index.bemjson.js') &&
+                (dirname = path.join(platforms[platforms.length - 1] + '.bundles', 'index'));
         }
 
         var src = path.join(root, f);   // copy from
-        var dest = path.join(this.destinationRoot(), this.projectName, path.dirname(f), path.basename(f));  // where to copy
+        var dest = path.join(this.destinationRoot(), this.projectName, dirname, path.basename(f));  // where to copy
         this.template(src, dest);
     }.bind(this));
 };
@@ -416,7 +422,9 @@ BemgenGenerator.prototype.addPackages = function addPackages() {
 BemgenGenerator.prototype.createFolders = function createFolders() {
     var platforms = this.platforms.withoutPath;
     this.collectorName === 'enb' &&
-        this.shell.exec('cd ' + this.projectName + ' && mkdir common.blocks && mkdir ' + platforms[platforms.length - 1] + ".blocks");
+        this.shell.exec('cd ' + this.projectName +
+            ' && mkdir common.blocks && mkdir ' + platforms[platforms.length - 1] + ".blocks" +
+            ' && mkdir ' + platforms[platforms.length - 2] + ".blocks");
 }
 
 // +a

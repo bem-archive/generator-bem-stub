@@ -33,7 +33,12 @@ exports.getPlatforms = function(pls, libs, design) {
     var platforms = [];
     for (var lib in libs) {
         for (var platform in pls) {
-            platforms.push(libs[lib].name + '/' + (libs[lib].name !== 'bem-bl' ?  pls[platform] + '.blocks' : 'blocks-' + pls[platform]));
+
+            if (libs[lib].name === 'bem-mvc' && (pls[platform].indexOf('touch') > -1 || pls[platform] === 'desktop')) continue;
+
+            pls[platform].indexOf('touch-') === -1 &&
+                platforms.push(libs[lib].name + '/' + (libs[lib].name !== 'bem-bl' ?  pls[platform] + '.blocks' : 'blocks-' + pls[platform]));
+
             design && libs[lib].name === 'bem-components' && platforms.push(libs[lib].name + '/design/' + pls[platform] + '.blocks');
         }
     }
