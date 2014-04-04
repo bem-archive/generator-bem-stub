@@ -1,12 +1,12 @@
 {
-  "name": "generator-bemgen",
+  "name": "generator-bemstub",
   "version": "0.0.0",
   "description": "A generator for Yeoman",
   "keywords": [
     "yeoman-generator"
   ],
-  "homepage": "https://github.com/eGavr/generator-bemgen",
-  "bugs": "https://github.com/eGavr/generator-bemgen/issues",
+  "homepage": "https://github.com/eGavr/generator-bemstub",
+  "bugs": "https://github.com/eGavr/generator-bemstub/issues",
   "author": {
     "name": "Evgeniy Gavryushin",
     "email": "",
@@ -15,7 +15,7 @@
   "main": "app/index.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/eGavr/generator-bemgen.git"
+    "url": "git://github.com/eGavr/generator-bemstub.git"
   },
   "scripts": {
     "test": "mocha"

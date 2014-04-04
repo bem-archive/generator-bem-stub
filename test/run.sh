@@ -29,7 +29,7 @@ do
 
     cd output
 
-    yo bemgen ../$j/answers.json
+    yo bemstub ../$j/answers.json
 
     projectName=${j:fLen+1}
     cd $projectName
