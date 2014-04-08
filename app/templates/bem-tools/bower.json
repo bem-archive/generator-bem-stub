@@ -1,0 +1,12 @@
+{
+  "name": "<%= projectName %>",
+  "version": "0.0.1",
+  "ignore": [
+    ".bem/cache",
+    "node_modules",
+    "libs"
+  ],
+  "dependencies": {
+<%= _.map(libs, function(lib) { return '    "' + lib.name + '": "' + lib.version + '"'}).join(',\n') %>
+  }
+}
