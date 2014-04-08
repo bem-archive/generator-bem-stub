@@ -72,6 +72,8 @@ exports.getTechnologies = function(configPath, techs, base, toMinify) {
         inTargets = technologies.inTargets,
         inJSON = technologies.inJSON;
 
+    inTargets.push(toMinify.indexOf('css') > -1 ? 'min.css' : 'css');
+
     Object.keys(techs).forEach(function(tech) {
         switch(techs[tech]) {
             case 'bemjson.js': // 'bemjson.js' ==> only in techs
@@ -79,17 +81,14 @@ exports.getTechnologies = function(configPath, techs, base, toMinify) {
                 break;
             case 'stylus':
                 inTechs.push(getTechVal('stylus'));
-                inTargets.push(toMinify.indexOf('css') > -1 ? 'min.css' : 'css');  // 'stylus' ==> '?.css' in 'nodeConfig.addTargets'
                 inJSON.push('enb-stylus');
                 break;
             case 'roole':
                 inTechs.push(getTechVal('roole'));
-                inTargets.push(toMinify.indexOf('css') > -1 ? 'min.css' : 'css');  // 'roole' ==> '?.css' in 'nodeConfig.addTargets'
                 inJSON.push('roole', 'enb-roole');
                 break;
             case 'less':
                 inTechs.push(getTechVal('less'));
-                inTargets.push(toMinify.indexOf('css') > -1 ? 'min.css' : 'css');  // 'less' ==> '?.css' in 'nodeConfig.addTargets'
                 inJSON.push('less');
                 break;
             case 'bemhtml.js':
