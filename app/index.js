@@ -114,7 +114,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'list',
         name: 'platforms',
-        message: 'What platform to use?',
+        message: 'What platforms to use?',
         choices: [{
             name: 'desktop',
             value: ['common', 'desktop']
