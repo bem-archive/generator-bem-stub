@@ -73,18 +73,18 @@
   },
   "sourceCode": {
     "tools": {
-      "localization"	   : ",\n    'create-i18n.js+bemhtml-optimizer-node': function(tech, sourceNode, bundleNode) {\n        sourceNode.getFiles().forEach(function(f) {\n            this['create-js-optimizer-node'](tech, this.ctx.arch.getNode(f), bundleNode);\n        }, this);\n    },\n    'create-i18n.html-node': function(tech, bundleNode, magicNode) {\n        return this.setBemCreateNode(\n            tech,\n            this.level.resolveTech(tech),\n            bundleNode,\n            magicNode);\n    }",
-      "roole"            : ",\n    'create-css-node' : function(tech, bundleNode, magicNode) {\n        var source = this.getBundlePath('roole');\n        if(this.ctx.arch.hasNode(source)) {\n            return this.createAutoprefixerNode(tech, this.ctx.arch.getNode(source), bundleNode, magicNode);\n        }\n    }",
-      "design"           : "\nMAKE.decl('AutoprefixerNode', {\n\n    getPlatform : function() {\n        return this.output.split('.')[0];\n    },\n\n    getBrowsers : function() {\n        var platform = this.getPlatform();\n        switch(platform) {\n",
-      "desktop"          : "\n        case 'desktop':\n            return [\n                'last 2 versions',\n                'ie 10',\n                'ff 24',\n                'opera 12.16'\n            ];\n\n        }\n\n        return this.__base();\n    }\n\n});",
-      "touch-pad"        : "\n        case 'touch-pad':\n            return [\n                'android 4',\n                'ios 5'\n            ];\n\n        }\n\n        return this.__base();\n    }\n\n});",
-      "touch-phone"      : "\n        case 'touch-phone':\n            return [\n                'android 4',\n                'ios 6',\n                'ie 10'\n            ];\n\n        }\n\n        return this.__base();\n    }\n\n});"
+      "localization"	     : ",\n    'create-i18n.js+bemhtml-optimizer-node': function(tech, sourceNode, bundleNode) {\n        sourceNode.getFiles().forEach(function(f) {\n            this['create-js-optimizer-node'](tech, this.ctx.arch.getNode(f), bundleNode);\n        }, this);\n    },\n    'create-i18n.html-node': function(tech, bundleNode, magicNode) {\n        return this.setBemCreateNode(\n            tech,\n            this.level.resolveTech(tech),\n            bundleNode,\n            magicNode);\n    }",
+      "roole"              : ",\n    'create-css-node' : function(tech, bundleNode, magicNode) {\n        var source = this.getBundlePath('roole');\n        if(this.ctx.arch.hasNode(source)) {\n            return this.createAutoprefixerNode(tech, this.ctx.arch.getNode(source), bundleNode, magicNode);\n        }\n    }",
+      "design"             : "\nMAKE.decl('AutoprefixerNode', {\n\n    getPlatform : function() {\n        return this.output.split('.')[0];\n    },\n\n    getBrowsers : function() {\n        var platform = this.getPlatform();\n        switch(platform) {\n",
+      "desktop"            : "\n        case 'desktop':\n            return [\n                'last 2 versions',\n                'ie 10',\n                'ff 24',\n                'opera 12.16'\n            ];\n\n        }\n\n        return this.__base();\n    }\n\n});",
+      "touch-pad"          : "\n        case 'touch-pad':\n            return [\n                'android 4',\n                'ios 5'\n            ];\n\n        }\n\n        return this.__base();\n    }\n\n});",
+      "touch-phone"        : "\n        case 'touch-phone':\n            return [\n                'android 4',\n                'ios 6',\n                'ie 10'\n            ];\n\n        }\n\n        return this.__base();\n    }\n\n});"
     },
     "enb": {
-      "design"           : "\n            [ require('enb-roole/techs/css-roole'), { target: '?.noprefix.css' } ],\n            [ require('enb-autoprefixer/techs/css-autoprefixer'), {\n                browserSupport: ",
-      "desktop"          : "['last 2 versions', 'ie 10', 'ff 24', 'opera 12.16'],\n                sourceTarget: '?.noprefix.css'\n            }],",
-      "touch-pad"        : "['android 4', 'ios 5'],\n                sourceTarget: '?.noprefix.css'\n            }],",
-      "touch-phone"      : "['android 4', 'ios 6', 'ie 10'],\n                sourceTarget: '?.noprefix.css'\n            }],"
+      "design"             : "\n            [ require('enb-roole/techs/css-roole'), { target: '?.noprefix.css' } ],\n            [ require('enb-autoprefixer/techs/css-autoprefixer'), {\n                browserSupport: ",
+      "desktop"            : "['last 2 versions', 'ie 10', 'ff 24', 'opera 12.16'],\n                sourceTarget: '?.noprefix.css'\n            }],",
+      "touch-pad"          : "['android 4', 'ios 5'],\n                sourceTarget: '?.noprefix.css'\n            }],",
+      "touch-phone"        : "['android 4', 'ios 6', 'ie 10'],\n                sourceTarget: '?.noprefix.css'\n            }],"
     }
   }
 }
