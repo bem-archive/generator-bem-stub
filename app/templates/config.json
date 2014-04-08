@@ -1,19 +1,13 @@
 {
-  "repositories": {
-    "bem-core": "git://github.com/bem/bem-core.git",
-    "bem-bl": "git://github.com/bem/bem-bl.git",
-    "bem-components": "git://github.com/bem/bem-components.git",
-    "bem-mvc": "git://github.com/bem/bem-mvc.git"
-  },
   "versions": {
     "core": {
       "bem-core": "v2.1.0",
-      "bem-components": "v2",
-      "bem-mvc": "v2"
+      "bem-components": "git://github.com/bem/bem-components.git#v2",
+      "bem-mvc": "git://github.com/bem/bem-mvc.git#v2"
     },
     "bl": {
       "bem-bl": "v1.2.0",
-      "bem-mvc": "master"
+      "bem-mvc": "git://github.com/bem/bem-mvc.git#master"
     },
     "other": {
       "roole": "0.9.0",
@@ -23,7 +17,10 @@
       "enb-stylus": "0.0.3",
       "enb-roole": "0.1.0",
       "enb-bemxjst": "1.1.0",
-      "bh": "1.1.1"
+      "enb-xjst": "1.0.4",
+      "bh": "1.1.1",
+      "bem-tools-autoprefixer": "0.0.2",
+      "enb-autoprefixer": "0.1.0"
     }
   },
   "technologies": {
@@ -75,6 +72,19 @@
     }
   },
   "sourceCode": {
-    "toolsLocalization"	   : ",\n    'create-i18n.js+bemhtml-optimizer-node': function(tech, sourceNode, bundleNode) {\n        sourceNode.getFiles().forEach(function(f) {\n            this['create-js-optimizer-node'](tech, this.ctx.arch.getNode(f), bundleNode);\n        }, this);\n    },\n    'create-i18n.html-node': function(tech, bundleNode, magicNode) {\n        return this.setBemCreateNode(\n            tech,\n            this.level.resolveTech(tech),\n            bundleNode,\n            magicNode);\n    }"
+    "tools": {
+      "localization"	   : ",\n    'create-i18n.js+bemhtml-optimizer-node': function(tech, sourceNode, bundleNode) {\n        sourceNode.getFiles().forEach(function(f) {\n            this['create-js-optimizer-node'](tech, this.ctx.arch.getNode(f), bundleNode);\n        }, this);\n    },\n    'create-i18n.html-node': function(tech, bundleNode, magicNode) {\n        return this.setBemCreateNode(\n            tech,\n            this.level.resolveTech(tech),\n            bundleNode,\n            magicNode);\n    }",
+      "roole"            : ",\n    'create-css-node' : function(tech, bundleNode, magicNode) {\n        var source = this.getBundlePath('roole');\n        if(this.ctx.arch.hasNode(source)) {\n            return this.createAutoprefixerNode(tech, this.ctx.arch.getNode(source), bundleNode, magicNode);\n        }\n    }",
+      "design"           : "\nMAKE.decl('AutoprefixerNode', {\n\n    getPlatform : function() {\n        return this.output.split('.')[0];\n    },\n\n    getBrowsers : function() {\n        var platform = this.getPlatform();\n        switch(platform) {\n",
+      "desktop"          : "\n        case 'desktop':\n            return [\n                'last 2 versions',\n                'ie 10',\n                'ff 24',\n                'opera 12.16'\n            ];\n\n        }\n\n        return this.__base();\n    }\n\n});",
+      "touch-pad"        : "\n        case 'touch-pad':\n            return [\n                'android 4',\n                'ios 5'\n            ];\n\n        }\n\n        return this.__base();\n    }\n\n});",
+      "touch-phone"      : "\n        case 'touch-phone':\n            return [\n                'android 4',\n                'ios 6',\n                'ie 10'\n            ];\n\n        }\n\n        return this.__base();\n    }\n\n});"
+    },
+    "enb": {
+      "design"           : "\n            [ require('enb-roole/techs/css-roole'), { target: '?.noprefix.css' } ],\n            [ require('enb-autoprefixer/techs/css-autoprefixer'), {\n                browserSupport: ",
+      "desktop"          : "['last 2 versions', 'ie 10', 'ff 24', 'opera 12.16'],\n                sourceTarget: '?.noprefix.css'\n            }],",
+      "touch-pad"        : "['android 4', 'ios 5'],\n                sourceTarget: '?.noprefix.css'\n            }],",
+      "touch-phone"      : "['android 4', 'ios 6', 'ie 10'],\n                sourceTarget: '?.noprefix.css'\n            }],"
+    }
   }
 }
