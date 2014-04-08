@@ -1,4 +1,4 @@
-# generator-bemgen
+# generator-bem-stub
 
 A generator for [Yeoman](http://yeoman.io).
 
@@ -7,9 +7,9 @@ A generator for [Yeoman](http://yeoman.io).
 ```
 $ npm install -g yo
 
-$ git clone https://github.com/eGavr/generator-bemgen.git
+$ git clone https://github.com/eGavr/generator-bem-stub.git
 
-$ cd generator-bemgen
+$ cd generator-bem-stub
 
 $ npm link
 ```
@@ -19,13 +19,13 @@ $ npm link
 Run from any directory you want:
 
 ```
-$ yo bemgen
+$ yo bem-stub
 ```
 
 or use ```JSON-file``` with answers as the parameter:
 
 ```
-$ yo bemgen FULL_PATH_TO_JSON-FILE
+$ yo bem-stub FULL_PATH_TO_JSON-FILE
 ```
 
 For example, we have the file with answers ```example.json``` which lies in the directory where we want to create the project:
@@ -37,17 +37,15 @@ For example, we have the file with answers ```example.json``` which lies in the 
   "email": "ivan@yandex.ru",
   "collector": "bem-tools",
   "baseLibrary": {
-    "name": "bem-bl",
-    "version": "v1.2.0",
-    "repository": "git://github.com/bem/bem-bl.git"
+    "name": "bem-core",
+    "version": "v2.1.0"
   },
   "addLibraries": [],
   "platforms": [
     "common",
     "desktop"
   ],
-  "localization": false,
-  "preprocessor": "css",
+  "preprocessor": "roole",
   "techs": []
 }
 ```
@@ -55,76 +53,24 @@ For example, we have the file with answers ```example.json``` which lies in the 
 Run:
 
 ```
-$ yo bemgen example.json
+$ yo bem-stub example.json
 ```
 
-```generator-bemgen``` will take the content of ```example.json``` as answers.
+```generator-bem-stub``` will take the content of ```example.json``` as answers.
 
-Go to the ```test/basic``` and see more examples of ```JSON-files```.
+I will give more examples of ```JSON-files``` later.
 
-## Assembly
+## Installation of dependencies
 
-**This information is for those occasions when you are using ```bem-tools``` as collector!**
+```generator-bem-stub``` will install all the dependences from ```package.json``` automatically.
 
-As soon as you answer all questions you will have to assembly the created project:
-
-```
-$ cd THE_NAME_OF_YOUR_PROJECT
-
-$ npm i
-
-$ ./node_modules/.bin/bem make
-```
-
-You can use the parameter ```+a``` to automate the assembly:
+If you want to do it manually:
 
 ```
-$ yo bemgen +a
+$ yo bem-stub --no-deps
 
-$ yo bemgen FULL_PATH_TO_JSON-FILE +a
+$ yo bem-stub FULL_PATH_TO_JSON-FILE --no-deps
 ```
-
-## Tests
-
-Run from the root folder of ```generator-bemgen```:
-
-```$ cd test```
-
-Then execute:
-
-```$ ./run.sh +a``` or ```$ ./run.sh -basic +a``` - to check the created files and the assembly of the projects (higher quality testing, but slower)
-
-```$ ./run.sh``` or ```$ ./run.sh -basic``` - to check only the created files of the projects (lower quality testing, but faster)
-
-**Besides**, there is a way to check only the assembly of the projects.
-
-In the same directory create the folder ```more```.
-
-In this folder you can add your own tests and check their assembly.
-Create a folder, for example, ```myTest```. In this folder create the ```JSON-file``` with answers ```answers.json```
-
-```
-|-- app
-|
-|-- node_modules
-|
-|-- test
-|   |
-|   |-- basic
-|   |
-|   |-- more
-|       |
-|       |-- myTest
-|           |
-|           |-- answers.json
-|
-```
-
-**It is very important to name the ```JSON-file``` just as well as it was shown above!**
-
-You can create as many tests as you like and then run:
-
-```$ ./run.sh -more```
 
 ## License
 
