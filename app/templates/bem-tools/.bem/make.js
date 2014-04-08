@@ -1,8 +1,6 @@
 /* jshint node:true */
 /* global MAKE */
-
-var environ = require('bem-environ')(__dirname);
-environ.extendMake(MAKE);
+<%= roole.require %>
 
 //process.env.YENV = 'production';
 //process.env.XJST_ASYNCIFY = 'yes';<%= languages %>
@@ -11,10 +9,6 @@ MAKE.decl('Arch', {
 
     blocksLevelsRegexp: /^.+?\.blocks/,
     bundlesLevelsRegexp: /^.+?\.bundles$/,
-
-    libraries: [
-<%= _.map(libs, function(lib) { return "        '" + lib.name + " @ " + lib.version + "'"}).join(',\n') %>
-    ]
 
 });
 
@@ -33,6 +27,7 @@ MAKE.decl('BundleNode', {
         sourceNode.getFiles().forEach(function(f) {
             this['create-js-optimizer-node'](tech, this.ctx.arch.getNode(f), bundleNode);
         }, this);
-    }<%= localizationCode %>
+    }<%= localizationCode %><%= roole.code %>
 
 });
+<%= design %>

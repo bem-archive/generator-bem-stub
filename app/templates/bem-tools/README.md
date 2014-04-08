@@ -17,7 +17,7 @@ You may also consider [installing bem-tools locally to your environment](http://
 So, how easy is it to get started with BEM?  *Super easy*.
 
 It's as easy as...
-    
+
 1. ›`git clone git://github.com/bem/project-stub.git`
 2. ›`cd project-stub`
 3. ›`npm install`
@@ -69,7 +69,7 @@ This is the ugly way to run the `bem server` command.  If you think it's ugly to
 
 ### An Easier, More Beautiful Way:
 
-Once you have either (a) [fixed your PATH environment variable](#fix-your-path-environment-variable), or (b) 
+Once you have either (a) [fixed your PATH environment variable](#fix-your-path-environment-variable), or (b)
 [properly installed bem-tools to your local environment](http://bem.info/tools/bem/installation/).
 You may now, more elegantly, start your `bem server` by running:
 
