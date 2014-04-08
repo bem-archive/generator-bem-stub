@@ -29,5 +29,4 @@ MAKE.decl('BundleNode', {
         }, this);
     }<%= localizationCode %><%= roole.code %>
 
-});
-<%= design %>
+});<%= design %>
