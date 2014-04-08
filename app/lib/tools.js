@@ -163,15 +163,6 @@ exports.addPreprocessor = function(input, preprocessor) {
     input.splice(input.indexOf('bemjson.js') + 1, 0, preprocessor);
 
     return input;
-
-    //var re = /ie[0-9]{0,2}\.css/g,
-    //    ie, ieLast;
-
-    //while ((ie = re.exec(input))) ieLast = ie[0];
-
-    //input.splice(input.indexOf(ieLast ? ieLast : 'bemjson.js') + 1, 0, preprocessor);
-
-    //return input;
 }
 
 exports.addIe = function(input) {
