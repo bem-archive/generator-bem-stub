@@ -28,6 +28,16 @@ exports.scripts = {
     ]
 };
 
+// gets the piece of code from 'templates/config.json' which should be inserted in the source code
+exports.getSourceCode = function(configPath, collector) {
+    var res = '';
+
+    for (var value = 2; value < arguments.length; value++)
+        res += JSON.parse(fs.readFileSync(configPath).toString()).sourceCode[collector][arguments[value]];
+
+    return res;
+}
+
 // receives, for example, pls['desktop', 'common'] and libs['bem-core'], returns platforms['bem-core/desktop.blocks', 'bem-core/common.blocks']
 exports.getPlatforms = function(pls, libs, design) {
     var platforms = [];
@@ -47,7 +57,7 @@ exports.getPlatforms = function(pls, libs, design) {
 }
 
 // handles selected technologies
-exports.getTechnologies = function(configPath, techs, base) {
+exports.getTechnologies = function(configPath, techs, base, toMinify) {
     function getTechVal(tech) {
         return JSON.parse(fs.readFileSync(configPath).toString()).technologies.enb[tech];
     }
@@ -69,32 +79,32 @@ exports.getTechnologies = function(configPath, techs, base) {
                 break;
             case 'stylus':
                 inTechs.push(getTechVal('stylus'));
-                inTargets.push('css');  // 'stylus' ==> '?.css' in 'nodeConfig.addTargets'
+                inTargets.push(toMinify.indexOf('css') > -1 ? 'min.css' : 'css');  // 'stylus' ==> '?.css' in 'nodeConfig.addTargets'
                 inJSON.push('enb-stylus');
                 break;
             case 'roole':
                 inTechs.push(getTechVal('roole'));
-                inTargets.push('css');  // 'roole' ==> '?.css' in 'nodeConfig.addTargets'
+                inTargets.push(toMinify.indexOf('css') > -1 ? 'min.css' : 'css');  // 'roole' ==> '?.css' in 'nodeConfig.addTargets'
                 inJSON.push('roole', 'enb-roole');
                 break;
             case 'less':
                 inTechs.push(getTechVal('less'));
-                inTargets.push('css');  // 'less' ==> '?.css' in 'nodeConfig.addTargets'
+                inTargets.push(toMinify.indexOf('css') > -1 ? 'min.css' : 'css');  // 'less' ==> '?.css' in 'nodeConfig.addTargets'
                 inJSON.push('less');
                 break;
             case 'bemhtml.js':
-                inTechs.push(getTechVal('bemhtml.js') + (base === 'bem-core' ? '-old' : ''));  // bem-core ==> bemhtml-old | bem-bl ==> bemhtml"
-                inTargets.push('bemhtml.js');   // 'bemhtml' ==> '?.bemhtml.js' in 'nodeConfig.addTargets'
-                inJSON.push('enb-bemxjst');
+                inTechs.push(base === 'bem-core' ? getTechVal('bemhtml.js') + '-old' : getTechVal('bemhtml.js').replace('bemxjst', 'xjst'));  // bem-core ==> bemhtml-old | bem-bl ==> bemhtml"
+                inTargets.push(toMinify.indexOf('bemhtml.js') > -1 ? 'min.bemhtml.js' : 'bemhtml.js');   // 'bemhtml' ==> '?.bemhtml.js' in 'nodeConfig.addTargets'
+                inJSON.push(base === 'bem-core' ? 'enb-bemxjst' : 'enb-xjst');
                 break;
             case 'bh':
                 inTechs.push(getTechVal('bh'));
-                inTargets.push('bemhtml.js');   // 'bh' ==> '?.bemhtml.js' in 'nodeConfig.addTargets'
+                inTargets.push(toMinify.indexOf('bemhtml.js') > -1 ? 'min.bemhtml.js' : 'bemhtml.js');   // 'bh' ==> '?.bemhtml.js' in 'nodeConfig.addTargets'
                 inJSON.push('bh');
                 break;
             default:
                 inTechs.push(getTechVal(techs[tech]));
-                inTargets.push(techs[tech]);
+                inTargets.push(toMinify.indexOf(techs[tech]) > -1 ? 'min.' + techs[tech] : techs[tech]);
 
                 (techs[tech] === 'node.js' || techs[tech] === 'browser.js') && inJSON.push('enb-diverse-js');
                 techs[tech] === 'bemtree.js' && inJSON.push('enb-bemxjst');
@@ -110,13 +120,13 @@ exports.getTechnologies = function(configPath, techs, base) {
 }
 
 exports.addPreprocessor = function(input, preprocessor) {
-    input.push(preprocessor);
+    preprocessor && input.push(preprocessor);
 
     return input;
 }
 
 
-exports.addCssIe = function(input) {
+exports.addIe = function(input) {
     var ie = /ie[0-9]{0,2}\.css/.exec(input);
 
     if (ie) {

@@ -34,8 +34,13 @@ exports.scripts = {
 };
 
 // gets the piece of code from 'templates/config.json' which should be inserted in the source code
-exports.getSourceCode = function(configPath, value) {
-    return JSON.parse(fs.readFileSync(configPath).toString()).sourceCode[value];
+exports.getSourceCode = function(configPath, collector) {
+    var res = '';
+
+    for (var value = 2; value < arguments.length; value++)
+        res += JSON.parse(fs.readFileSync(configPath).toString()).sourceCode[collector][arguments[value]];
+
+    return res;
 }
 
 // receives, for example, pls['desktop', 'common'] and libs['bem-core'], returns platforms['bem-core/desktop.blocks', 'bem-core/common.blocks']
@@ -143,27 +148,37 @@ exports.addLocalTechs = function(input, scripts) {
 }
 
 exports.addPreprocessor = function(input, preprocessor) {
+
     if (preprocessor === 'css') {
         input.splice(input.indexOf('bemjson.js') + 1, 0, 'css');
 
         return input;
     }
+    else if (preprocessor === 'roole' || !preprocessor) {
+        input.splice(input.indexOf('bemjson.js') + 1, 0, 'roole', 'css');
 
-    var re = /ie[0-9]{0,2}\.css/g,
-        ie, ieLast;
+        return input;
+    }
 
-    while ((ie = re.exec(input))) ieLast = ie[0];
-
-    input.splice(input.indexOf(ieLast ? ieLast : 'bemjson.js') + 1, 0, preprocessor);
+    input.splice(input.indexOf('bemjson.js') + 1, 0, preprocessor);
 
     return input;
+
+    //var re = /ie[0-9]{0,2}\.css/g,
+    //    ie, ieLast;
+
+    //while ((ie = re.exec(input))) ieLast = ie[0];
+
+    //input.splice(input.indexOf(ieLast ? ieLast : 'bemjson.js') + 1, 0, preprocessor);
+
+    //return input;
 }
 
-exports.addCssIe = function(input) {
+exports.addIe = function(input) {
     var ie = /ie[0-9]{0,2}\.css/.exec(input);
 
     if (ie) {
-        input.splice(input.indexOf(ie[0]), 0, 'css', 'ie.css');
+        input.splice(input.indexOf(ie[0]), 0, 'ie.css');
         input = _.uniq(input);
     }
 

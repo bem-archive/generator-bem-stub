@@ -36,10 +36,6 @@ BemgenGenerator.prototype.askFor = function askFor() {
         return JSON.parse(_this.readFileAsString(configPath)).versions[base][value];
     }
 
-    function getLibRepo(value) {
-        return JSON.parse(_this.readFileAsString(configPath)).repositories[value];
-    }
-
     // questions to user
     var prompts = [{
         type: 'input',
@@ -77,16 +73,14 @@ BemgenGenerator.prototype.askFor = function askFor() {
                 name: 'bem-core',
                 value: {
                     name: 'bem-core',
-                    version: getLibVersion('core', 'bem-core'),
-                    repository: getLibRepo('bem-core')
+                    version: getLibVersion('core', 'bem-core')
                 }
             },
             {
                 name: 'bem-bl',
                 value: {
                     name: 'bem-bl',
-                    version: getLibVersion('bl', 'bem-bl'),
-                    repository: getLibRepo('bem-bl')
+                    version: getLibVersion('bl', 'bem-bl')
                 }
             });
 
@@ -105,8 +99,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
                 name: 'bem-components',
                 value: {
                     name: 'bem-components',
-                    version: getLibVersion('core', 'bem-components'),
-                    repository: getLibRepo('bem-components')
+                    version: getLibVersion('core', 'bem-components')
                 }
             });
 
@@ -114,8 +107,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
                 name: 'bem-mvc',
                 value: {
                     name: 'bem-mvc',
-                    version: getLibVersion(isCore ? 'core' : 'bl', 'bem-mvc'),
-                    repository: getLibRepo('bem-mvc')
+                    version: getLibVersion(isCore ? 'core' : 'bl', 'bem-mvc')
                 }
             });
         }
@@ -164,7 +156,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'list',
         name: 'preprocessor',
-        message: 'What preprocessors to use?',
+        message: 'What preprocessor to use?',
         choices: function(input) {
             var isEnb = input.collector === 'enb';
             var useComponents;
@@ -172,14 +164,24 @@ BemgenGenerator.prototype.askFor = function askFor() {
                 input.addLibraries[lib].name === 'bem-components' && (useComponents = true)
             }
 
-            return (isEnb && useComponents) ?
-                    [{
+             if (isEnb && useComponents) {
+                return [{
                         value: 'roole'
                     }, {
                         name: 'Only pure css',
                         value: 'roole'
-                    }] :
-                    [{
+                    }]
+            }
+            else if (!isEnb && input.baseLibrary.name === 'bem-core') {
+                return [{
+                        value: 'roole'
+                    }, {
+                        name: 'Only pure css',
+                        value: 'css'
+                    }]
+            }
+            else {
+                return [{
                         value: 'stylus'
                     }, {
                         value: 'roole',
@@ -189,6 +191,10 @@ BemgenGenerator.prototype.askFor = function askFor() {
                         name: 'Only pure css',
                         value: 'css'
                     }]
+            }
+        },
+        when: function(input) {
+            return !input.design;
         }
     }, {
         type: 'checkbox',
@@ -229,7 +235,10 @@ BemgenGenerator.prototype.askFor = function askFor() {
         message: 'Build static html?',
         default: true,
         when: function(input) { // Has 'bemjson.js' been chosen?
-            return input.techs.indexOf('bemjson.js') > -1;
+            if (input.collector === 'bem-tools') return input.techs.indexOf('bemjson.js') > -1 && input.techs.indexOf('bemhtml') > -1;
+
+            else return (input.templateSystem && (input.templateSystem !== 'my' || input.techs.indexOf('bemhtml.js') > -1) &&
+                input.techs.indexOf('bemjson.js') > -1)
         }
     }, {
         type: 'checkbox',
@@ -297,33 +306,10 @@ BemgenGenerator.prototype.askFor = function askFor() {
         // Localization
         // ------------
 
-        _this.localizationCode = props.localization ? collector.getSourceCode(configPath, 'toolsLocalization') : '';
         _this.languages = props.localization ? collector.getLanguages(props.languages) : '';
 
         // localization ==> 'i18n' && 'i18n.js'
         props.localization && (props.techs = collector.addLocalTechs(props.techs, collector.scripts));
-
-        // ------------
-
-
-        // Technologies
-        // ------------
-
-        // 'ieN' ==> 'css' and 'ie.css' | preprocessors: 'stylus', 'roole', 'less', 'pure css'
-        props.techs = collector.addCssIe(collector.addPreprocessor(props.techs, props.preprocessor));
-
-        // 'enb' --> 'bem-core' ==> 'bemhtml', 'bh'
-        props.templateSystem && props.templateSystem !== 'my' && props.techs.push(props.templateSystem);
-
-        // 'localization' --> 'html' ==> 'i18n.html'
-        props.html && props.techs.push(_this.collectorName === 'bem-tools' ? (props.localization ? 'i18n.html' : 'html') : 'html');
-
-        // if 'bem-tools', returns ==> 'technologies.inLevels' && 'technologies.inMake' | if 'enb', returns ==> 'technologies.inTechs' && 'technologies.inTargets'
-        _this.technologies = collector.getTechnologies(configPath, props.techs, props.baseLibrary.name);
-
-        // 'enb' --> 'bemjson.js' ==> '{ target: '?.bemjson.js' }'
-        _this.isBemjson = props.techs.indexOf('bemjson.js') > -1;
-        _this.technologies.inTargets && (_this.target = _this.isBemjson ? 'bemjson.js' : 'bemdecl.js');
 
         // ------------
 
@@ -334,6 +320,49 @@ BemgenGenerator.prototype.askFor = function askFor() {
         props.minimization && (_this.toMinify = props.minimization);
 
         // ------------
+
+
+        // Technologies
+        // ------------
+
+        // 'ieN' ==> 'css' and 'ie.css' | preprocessors: 'stylus', 'roole', 'less', 'pure css'
+        props.techs = collector.addIe(collector.addPreprocessor(props.techs, props.preprocessor));
+
+        // 'enb' --> 'bem-core' ==> 'bemhtml', 'bh'
+        props.templateSystem && props.templateSystem !== 'my' && props.techs.push(props.templateSystem);
+
+        // 'localization' --> 'html' ==> 'i18n.html'
+        props.html && props.techs.push(_this.collectorName === 'bem-tools' ? (props.localization ? 'i18n.html' : 'html') : 'html');
+
+        // if 'bem-tools', returns ==> 'technologies.inLevels' && 'technologies.inMake' | if 'enb', returns ==> 'technologies.inTechs' && 'technologies.inTargets'
+        _this.technologies = collector.getTechnologies(configPath, props.techs, props.baseLibrary.name, _this.toMinify);
+
+        // 'enb' --> 'bemjson.js' ==> '{ target: '?.bemjson.js' }'
+        _this.isBemjson = props.techs.indexOf('bemjson.js') > -1;
+        _this.technologies.inTargets && (_this.target = _this.isBemjson ? 'bemjson.js' : 'bemdecl.js');
+
+        // ------------
+
+
+        // Source code
+        // -----------
+
+        _this.localizationCode = props.localization ? collector.getSourceCode(configPath, 'tools', 'localization') : '';
+
+        _this.roole = (_this.collectorName === 'bem-tools' && (props.preprocessor === 'roole' || props.design)) ?
+        {
+            require: '\nrequire(\'bem-tools-autoprefixer\').extendMake(MAKE);',
+            code: collector.getSourceCode(configPath, 'tools', 'roole')
+        } :
+        {
+            require: '',
+            code: ''
+        }
+
+        var platforms = _this.platforms.withoutPath;
+        _this.design = props.design ? collector.getSourceCode(configPath, _this.collectorName === 'bem-tools' ? 'tools' : 'enb', 'design', platforms[platforms.length - 1]) : '';
+
+        // -----------
 
 
         // enb ==> 'index.bemjson.js'
@@ -353,8 +382,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         second: process.argv[4]
     }
 
-    if (_this.assemble = params.first === '+a') {}
-    else {
+    if (_this.npmi = !(params.first === '--no-deps')) {
         // 'answersFromJSON !== undefined' when a valid path to JSON-file was given as a first parameter, for example, 'yo bemgen test.json'
         try {
             var answersFromJSON = params.first && JSON.parse(_this.readFileAsString(params.first));
@@ -364,7 +392,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
             process.exit(1);
         }
 
-        _this.assemble = params.second === '+a';
+        _this.npmi = !(params.second === '--no-deps');
     }
 
     answersFromJSON ?
@@ -388,6 +416,13 @@ BemgenGenerator.prototype.app = function app() {
 
             (f === 'bundles/index/index.bemdecl.js' || f === 'bundles/index/index.bemjson.js') &&
                 (dirname = path.join(platforms[platforms.length - 1] + '.bundles', 'index'));
+        }
+        else {
+            (f === 'blocks/.bem/level.js') && (dirname = path.join(platforms[platforms.length - 1] + '.blocks', '.bem'));
+
+            (f === 'bundles/.bem/level.js') && (dirname = path.join(platforms[platforms.length - 1] + '.bundles', '.bem'));
+
+            (f === 'bundles/index/index.bemjson.js') && (dirname = path.join(platforms[platforms.length - 1] + '.bundles', 'index'));
         }
 
         var src = path.join(root, f);   // copy from
@@ -415,26 +450,30 @@ BemgenGenerator.prototype.addPackages = function addPackages() {
         deps[inJSON[_package]] = getLibVersion('other', inJSON[_package]);
     }
 
+    this.collectorName === 'bem-tools' &&
+        this.roole.require !== '' && (deps['bem-tools-autoprefixer'] = getLibVersion('other', 'bem-tools-autoprefixer'));
+
+    this.collectorName === 'enb' &&
+        this.design && (deps['enb-autoprefixer'] = getLibVersion('other', 'enb-autoprefixer')) &&
+            (deps['enb-roole'] = getLibVersion('other', 'enb-roole'))
+
     fs.writeFileSync(packagePath, JSON.stringify(pack, null, '  ') + '\n');
 };
 
 // Creates the necessary empty folders in the created project (if we use 'enb' collector)
 BemgenGenerator.prototype.createFolders = function createFolders() {
     var platforms = this.platforms.withoutPath;
-    this.collectorName === 'enb' &&
-        this.shell.exec('cd ' + this.projectName +
-            ' && mkdir common.blocks && mkdir ' + platforms[platforms.length - 1] + ".blocks" +
-            ' && mkdir ' + platforms[platforms.length - 2] + ".blocks");
+
+    this.shell.exec('cd ' + this.projectName +
+        ' && mkdir common.blocks ' + ((platforms[platforms.length - 2] !== 'common') ? platforms[platforms.length - 2] + ".blocks " : '') +
+            ((this.collectorName === 'enb') ? platforms[platforms.length - 1] + ".blocks" : ''));
 }
 
-// +a
+// --no-deps
 BemgenGenerator.prototype.assemble = function assemble() {
-    if (this.collectorName === 'bem-tools' && this.assemble) {
+    if (this.npmi) {
         this.log.write('').info(' ==> npm install...').write('');
         this.shell.exec('cd ' + this.projectName + ' && npm i -s');
         this.log.write('').ok('Ok!').write('');
-
-        this.log.write('').info(' ==> ./node_modules/.bin/bem make...').write('');
-        this.shell.exec('cd ' + this.projectName + ' && ./node_modules/.bin/bem make');
     }
 }
