@@ -38,7 +38,7 @@ exports.getSourceCode = function(configPath, collector) {
 exports.getPlatforms = function(pls, libs, design) {
     var platforms = [];
     for (var lib in libs) {
-        for (var platform in pls) {
+        for (var platform in pls) {     // 'bem-bl' ==> 'blocks-common', 'blocks-desktop', 'blocks-touch' ...
             platforms.push(libs[lib].name + '/' + pls[platform] + '.blocks');
             design && libs[lib].name === 'bem-components' && platforms.push(libs[lib].name + '/design/' + pls[platform] + '.blocks');
         }
@@ -70,7 +70,7 @@ exports.getTechnologies = function(configPath, techs) {
         },
         inLevels = technologies.inLevels,
         inMake = technologies.inMake,
-        inJSON = technologies.inJSON;
+        inJSON = technologies.inJSON;   // to 'package.json'
 
     Object.keys(techs).forEach(function(tech) {
         switch (techs[tech]) {
@@ -86,10 +86,6 @@ exports.getTechnologies = function(configPath, techs) {
                 inLevels.push(getTechDecl('node.js'), getTechDecl('vanilla.js'), getTechDecl('js'));
                 inMake.push('node.js');
                 break;
-            case 'i18n.html':  // 'bem-core' or 'bem-bl' with 'localization' and 'html' --> 'i18n.html' ==> 'html'
-                inLevels.push(getTechDecl('i18n.html'), getTechDecl('html'));
-                inMake.push('i18n.html');
-                break;
             default:
                 inLevels.push(getTechDecl(techs[tech]));
                 inMake.push(techs[tech]);
@@ -103,6 +99,7 @@ exports.getTechnologies = function(configPath, techs) {
     return technologies;
 }
 
+// preprocessors: 'roole', 'pure css'
 exports.addPreprocessor = function(input, preprocessor) {
 
     if (preprocessor === 'css') {
@@ -121,6 +118,7 @@ exports.addPreprocessor = function(input, preprocessor) {
     return input;
 }
 
+// 'ieN' ==> ie.css'
 exports.addIe = function(input) {
     var ie = /ie[0-9]{0,2}\.css/.exec(input);
 

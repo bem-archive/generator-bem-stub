@@ -40,7 +40,7 @@ exports.getPlatforms = function(pls, libs, design) {
 
             if (libs[lib].name === 'bem-mvc' && (pls[platform].indexOf('touch') > -1 || pls[platform] === 'desktop')) continue;
 
-            pls[platform].indexOf('touch-') === -1 &&
+            pls[platform].indexOf('touch-') === -1 &&   // 'bem-bl' ==> 'blocks-common', 'blocks-desktop', 'blocks-touch' ...
                 platforms.push(libs[lib].name + '/' + pls[platform] + '.blocks');
 
             design && libs[lib].name === 'bem-components' && platforms.push(libs[lib].name + '/design/' + pls[platform] + '.blocks');
@@ -58,13 +58,13 @@ exports.getTechnologies = function(configPath, techs, toMinify) {
 
     // 'inTechs' ==> 'nodeConfig.addTechs' | 'inTargets' ==> 'nodeConfig.addTargets'
     var technologies = {
-            inTechs : [ 'enb/techs/files', 'enb/techs/deps' ], // 'files' is always included
+            inTechs : [ 'enb/techs/files', 'enb/techs/deps' ],  // 'files' and 'deps' are always included
             inTargets : [],
             inJSON : []
         },
         inTechs = technologies.inTechs,
         inTargets = technologies.inTargets,
-        inJSON = technologies.inJSON;
+        inJSON = technologies.inJSON;   // to 'package.json'
 
     inTargets.push(toMinify.indexOf('css') > -1 ? 'min.css' : 'css');
 
@@ -79,20 +79,20 @@ exports.getTechnologies = function(configPath, techs, toMinify) {
                 break;
             case 'roole':
                 inTechs.push(getTechVal('roole'));
-                inJSON.push('roole', 'enb-roole');
+                inJSON.push('roole', 'enb-roole');  // 'roole' ==> 'roole', 'enb-roole' in 'package.json'
                 break;
             case 'less':
                 inTechs.push(getTechVal('less'));
                 inJSON.push('less');
                 break;
-            case 'bemhtml.js':
-                inTechs.push(getTechVal('bemhtml.js') + '-old');  // bem-core ==> bemhtml-old
+            case 'bemhtml.js':   // 'bem-core' ==> 'bemhtml-old' from package 'enb-bemxjst'
+                inTechs.push(getTechVal('bemhtml.js') + '-old');
                 inTargets.push(toMinify.indexOf('bemhtml.js') > -1 ? 'min.bemhtml.js' : 'bemhtml.js');
                 inJSON.push('enb-bemxjst');
                 break;
             case 'bh':
                 inTechs.push(getTechVal('bh'));
-                inTargets.push(toMinify.indexOf('bemhtml.js') > -1 ? 'min.bemhtml.js' : 'bemhtml.js');   // 'bh' ==> '?.bemhtml.js' in 'nodeConfig.addTargets'
+                inTargets.push(toMinify.indexOf('bemhtml.js') > -1 ? 'min.bemhtml.js' : 'bemhtml.js');   // 'bh' ==> '?.bemhtml.js' in 'targets'
                 inJSON.push('bh');
                 break;
             default:
@@ -112,13 +112,14 @@ exports.getTechnologies = function(configPath, techs, toMinify) {
     return technologies;
 }
 
+// preprocessors: 'stylus', 'roole', 'less', 'pure css'
 exports.addPreprocessor = function(input, preprocessor) {
     preprocessor && input.push(preprocessor);
 
     return input;
 }
 
-
+// 'ieN' ==> ie.css'
 exports.addIe = function(input) {
     var ie = /ie[0-9]{0,2}\.css/.exec(input);
 
@@ -130,6 +131,7 @@ exports.addIe = function(input) {
     return input;
 }
 
+// To 'index.bemjson.js'
 exports.getScripts = function(techs, toMin) {
     var scripts = [];
 

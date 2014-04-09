@@ -79,7 +79,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         type: 'checkbox',
         name: 'addLibraries',
         message: 'Would you like any additional libraries?',
-        choices: function(input) {
+        choices: function(input) {  // 'bem-core' ==> 'bem-components'
             var choices = [];
 
             choices.push({
@@ -111,7 +111,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         name: 'design',
         message: 'Use design from bem-components?',
         default: true,
-        when: function(input) {
+        when: function(input) {     // 'bem-core' --> 'bem-components' ==> 'design'
             var useComponents;
 
             for (var lib in input.addLibraries) {
@@ -124,13 +124,44 @@ BemgenGenerator.prototype.askFor = function askFor() {
         type: 'list',
         name: 'preprocessor',
         message: 'What preprocessor to use?',
-        choices: [{
-            value: 'roole'
-        }, {
-            name: 'Only pure css',
-            value: 'css'
-        }],
-        when: function(input) {
+        choices: function(input) {
+            // returns the list of possible preprocessors in dependence of the previous answers
+            var isEnb = input.collector === 'enb';
+            var useComponents;
+            for (var lib in input.addLibraries) {
+                input.addLibraries[lib].name === 'bem-components' && (useComponents = true)
+            }
+
+            if (isEnb && useComponents) {
+                return [{
+                        value: 'roole'
+                    }, {
+                        name: 'Only pure css',
+                        value: 'roole'
+                    }]
+            }
+            else if (!isEnb) {
+                return [{
+                        value: 'roole'
+                    }, {
+                        name: 'Only pure css',
+                        value: 'css'
+                    }]
+            }
+            else {
+                return [{
+                        value: 'stylus'
+                    }, {
+                        value: 'roole',
+                    }, {
+                        value: 'less',
+                    }, {
+                        name: 'Only pure css',
+                        value: 'css'
+                    }]
+            }
+        },
+        when: function(input) {     // 'design' ==> 'roole'
             return !input.design;
         }
     }, {
@@ -138,6 +169,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         name: 'techs',
         message: 'What technologies to use?',
         choices: function(input) {
+            // returns the list of possible technologies to choose in dependence of the previous answers
             var collector = require(input.collector === 'bem-tools' ? './lib/tools' : './lib/enb');
 
             return collector.commonTech.concat(collector.templates.core, collector.scripts.coreWithoutLocal);
@@ -155,7 +187,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
             name: 'My template system',
             value: 'my'
         }],
-        when: function(input) {
+        when: function(input) { // 'enb' --> 'bem-core' ==> 'template system'
             return input.collector === 'enb';
         }
     }, {
@@ -163,7 +195,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         name: 'html',
         message: 'Build static html?',
         default: true,
-        when: function(input) { // Has 'bemjson.js' been chosen?
+        when: function(input) { // 'bemjson' --> 'template system' ==> 'html'
             if (input.collector === 'bem-tools') return input.techs.indexOf('bemjson.js') > -1 && input.techs.indexOf('bemhtml') > -1;
 
             else return (input.templateSystem && (input.templateSystem !== 'my' || input.techs.indexOf('bemhtml.js') > -1) &&
@@ -207,7 +239,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         // ---------
 
         _this.libs = props.addLibraries;
-        _this.libs.unshift(props.baseLibrary);
+        _this.libs.unshift(props.baseLibrary);  // base lib on the top
 
         // ---------
 
@@ -235,7 +267,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         // Technologies
         // ------------
 
-        // 'ieN' ==> 'css' and 'ie.css' | preprocessor
+        // 'ieN' ==> 'ie.css' | preprocessor
         props.techs = collector.addIe(collector.addPreprocessor(props.techs, props.preprocessor));
 
         // 'enb' --> 'bem-core' ==> 'bemhtml', 'bh'
@@ -258,8 +290,8 @@ BemgenGenerator.prototype.askFor = function askFor() {
 
         _this.roole = (_this.collectorName === 'bem-tools' && (props.preprocessor === 'roole' || props.design)) ?
         {
-            require: '\nrequire(\'bem-tools-autoprefixer\').extendMake(MAKE);',
-            code: collector.getSourceCode(configPath, 'tools', 'roole')
+            require: '\nrequire(\'bem-tools-autoprefixer\').extendMake(MAKE);', // requires 'autoprefixer' in make.js
+            code: collector.getSourceCode(configPath, 'tools', 'roole') // source code for 'roole' in make.js
         } :
         {
             require: '',
@@ -267,6 +299,8 @@ BemgenGenerator.prototype.askFor = function askFor() {
         }
 
         var platforms = _this.platforms.withoutPath;
+
+        // gets the source code for 'design'
         _this.design = props.design ? collector.getSourceCode(configPath, _this.collectorName === 'bem-tools' ? 'tools' : 'enb', 'design', platforms[platforms.length - 1]) : '';
 
         // -----------
@@ -338,7 +372,7 @@ BemgenGenerator.prototype.app = function app() {
     }.bind(this));
 };
 
-// Have 'less' or 'roole' been chosen? ==> We need in additional installation of preprocessors
+// Adds dependencies in 'package.json'
 BemgenGenerator.prototype.addPackages = function addPackages() {
     var _this = this;
 
@@ -367,7 +401,7 @@ BemgenGenerator.prototype.addPackages = function addPackages() {
     fs.writeFileSync(packagePath, JSON.stringify(pack, null, '  ') + '\n');
 };
 
-// Creates the necessary empty folders in the created project
+// Makes the necessary empty folders in the created project
 BemgenGenerator.prototype.createFolders = function createFolders() {
     var platforms = this.platforms.withoutPath;
 
