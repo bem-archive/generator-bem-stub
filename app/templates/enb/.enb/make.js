@@ -18,7 +18,7 @@ module.exports = function(config) {
         ]);
     });
 
-
+    // Minimization
     config.mode('development', function(modeConfig) {
         config.nodes('*.bundles/*', function(nodeConfig) {
             nodeConfig.addTechs([
