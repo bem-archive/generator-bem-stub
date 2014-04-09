@@ -118,13 +118,14 @@ exports.getTechnologies = function(configPath, techs, base, toMinify) {
     return technologies;
 }
 
+// preprocessors: 'stylus', 'roole', 'less', 'pure css'
 exports.addPreprocessor = function(input, preprocessor) {
     preprocessor && input.push(preprocessor);
 
     return input;
 }
 
-
+// 'ieN' ==> ie.css'
 exports.addIe = function(input) {
     var ie = /ie[0-9]{0,2}\.css/.exec(input);
 
@@ -135,7 +136,7 @@ exports.addIe = function(input) {
 
     return input;
 }
-
+// To 'index.bemjson.js'
 exports.getScripts = function(techs, toMin) {
     var scripts = [];
 

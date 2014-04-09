@@ -147,6 +147,7 @@ exports.addLocalTechs = function(input, scripts) {
     return input;
 }
 
+// preprocessors: 'stylus', 'roole', 'less', 'pure css'
 exports.addPreprocessor = function(input, preprocessor) {
 
     if (preprocessor === 'css') {
@@ -165,6 +166,7 @@ exports.addPreprocessor = function(input, preprocessor) {
     return input;
 }
 
+// 'ieN' ==> ie.css'
 exports.addIe = function(input) {
     var ie = /ie[0-9]{0,2}\.css/.exec(input);
 

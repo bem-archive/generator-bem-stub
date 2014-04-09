@@ -47,7 +47,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         type: 'input',
         name: 'author',
         message: 'Who will mantain this project?',
-        default: _this.user.git.username || 'Ivan Ivanovich'
+        default: _this.user.git.username || 'Ivan Ivanov'
     }, {
         type: 'input',
         name: 'email',
@@ -130,7 +130,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         name: 'design',
         message: 'Use design from bem-components?',
         default: true,
-        when: function(input) {
+        when: function(input) {     // 'bem-core' --> 'bem-components' ==> design
             var useComponents;
             for (var lib in input.addLibraries) {
                 input.addLibraries[lib].name === 'bem-components' && (useComponents = true)
@@ -158,6 +158,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         name: 'preprocessor',
         message: 'What preprocessor to use?',
         choices: function(input) {
+            // returns the list of possible preprocessors in dependence of the previous answers
             var isEnb = input.collector === 'enb';
             var useComponents;
             for (var lib in input.addLibraries) {
@@ -234,7 +235,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         name: 'html',
         message: 'Build static html?',
         default: true,
-        when: function(input) { // Has 'bemjson.js' been chosen?
+        when: function(input) { // 'bemjson' --> template system ==> html
             if (input.collector === 'bem-tools') return input.techs.indexOf('bemjson.js') > -1 && input.techs.indexOf('bemhtml') > -1;
 
             else return (input.templateSystem && (input.templateSystem !== 'my' || input.techs.indexOf('bemhtml.js') > -1) &&
@@ -325,7 +326,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         // Technologies
         // ------------
 
-        // 'ieN' ==> 'css' and 'ie.css' | preprocessors: 'stylus', 'roole', 'less', 'pure css'
+        // 'ieN' ==> ie.css' | preprocessor
         props.techs = collector.addIe(collector.addPreprocessor(props.techs, props.preprocessor));
 
         // 'enb' --> 'bem-core' ==> 'bemhtml', 'bh'
@@ -351,8 +352,8 @@ BemgenGenerator.prototype.askFor = function askFor() {
 
         _this.roole = (_this.collectorName === 'bem-tools' && (props.preprocessor === 'roole' || props.design)) ?
         {
-            require: '\nrequire(\'bem-tools-autoprefixer\').extendMake(MAKE);',
-            code: collector.getSourceCode(configPath, 'tools', 'roole')
+            require: '\nrequire(\'bem-tools-autoprefixer\').extendMake(MAKE);', // requires 'autoprefixer' in make.js
+            code: collector.getSourceCode(configPath, 'tools', 'roole') // source code for 'roole' in make.js
         } :
         {
             require: '',
@@ -360,6 +361,8 @@ BemgenGenerator.prototype.askFor = function askFor() {
         }
 
         var platforms = _this.platforms.withoutPath;
+
+        // gets the source code for 'design' in make.js
         _this.design = props.design ? collector.getSourceCode(configPath, _this.collectorName === 'bem-tools' ? 'tools' : 'enb', 'design', platforms[platforms.length - 1]) : '';
 
         // -----------
@@ -445,7 +448,7 @@ BemgenGenerator.prototype.addPackages = function addPackages() {
         deps = this.collectorName === 'bem-tools' ? pack.dependencies : pack.devDependencies,
         inJSON = _this.technologies.inJSON;
 
-    // adds the necessary packages to 'package.json' in the created project
+    // adds the necessary packages to the 'package.json' in the created project
     for (var _package in inJSON) {
         deps[inJSON[_package]] = getLibVersion('other', inJSON[_package]);
     }
@@ -460,7 +463,7 @@ BemgenGenerator.prototype.addPackages = function addPackages() {
     fs.writeFileSync(packagePath, JSON.stringify(pack, null, '  ') + '\n');
 };
 
-// Creates the necessary empty folders in the created project (if we use 'enb' collector)
+// Creates the necessary empty folders in the created project
 BemgenGenerator.prototype.createFolders = function createFolders() {
     var platforms = this.platforms.withoutPath;
 
@@ -474,6 +477,6 @@ BemgenGenerator.prototype.assemble = function assemble() {
     if (this.npmi) {
         this.log.write('').info(' ==> npm install...').write('');
         this.shell.exec('cd ' + this.projectName + ' && npm i -s');
-        this.log.write('').ok('Ok!').write('');
+        this.collectorName === 'enb' && this.shell.exec('cd ' + this.projectName + ' && ./node_modules/.bin/bower i');
     }
 }
