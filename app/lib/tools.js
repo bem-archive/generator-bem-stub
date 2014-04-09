@@ -15,22 +15,13 @@ exports.commonTech = [
 exports.templates = {
     core: [
         { value: 'bemtree'  },
-        { value: 'bemhtml' } ],
-    bl: [
-        { value: 'bemhtml' }
-    ]
+        { value: 'bemhtml' } ]
 },
 exports.scripts = {
     coreWithoutLocal: [
         { value: 'node.js' },
         { value: 'browser.js+bemhtml' }
     ],
-    blWithLocal: [
-        { value: 'i18n.js+bemhtml' }
-    ],
-    blWithoutLocal: [
-        { value: 'js+bemhtml' }
-    ]
 };
 
 // gets the piece of code from 'templates/config.json' which should be inserted in the source code
@@ -48,7 +39,7 @@ exports.getPlatforms = function(pls, libs, design) {
     var platforms = [];
     for (var lib in libs) {
         for (var platform in pls) {
-            platforms.push(libs[lib].name + '/' + (libs[lib].name !== 'bem-bl' ?  pls[platform] + '.blocks' : 'blocks-' + pls[platform]));
+            platforms.push(libs[lib].name + '/' + pls[platform] + '.blocks');
             design && libs[lib].name === 'bem-components' && platforms.push(libs[lib].name + '/design/' + pls[platform] + '.blocks');
         }
     }
@@ -56,19 +47,14 @@ exports.getPlatforms = function(pls, libs, design) {
     return platforms;
 }
 
-// handles typed languages
-exports.getLanguages = function(languages) {
-    return '\nprocess.env.BEM_I18N_LANGS = \'' + _.uniq(languages.replace(/\s+/g, ' ').trim().split(' ')).join(' ') + '\';';
-}
-
 // handles selected technologies
-exports.getTechnologies = function(configPath, techs, base) {
+exports.getTechnologies = function(configPath, techs) {
     function getTechDecl(tech) {
         // gets the 'techs[value]' property from 'templates/config.json'
         function getTechVal(tech) {
-            var _tech = JSON.parse(fs.readFileSync(configPath).toString()).technologies.tools[tech].replace('BEM_TECHS', base === 'bem-core' ? 'BEMCORE_TECHS'  : 'BEMBL_TECHS');
+            var _tech = JSON.parse(fs.readFileSync(configPath).toString()).technologies.tools[tech].replace('BEM_TECHS', 'BEMCORE_TECHS');
 
-            return _tech.indexOf('join(') !== -1 ? _tech : '\'' + _tech + '\'';
+            return _tech.indexOf('join(') > -1 ? _tech : '\'' + _tech + '\'';
         }
 
         // for example, returns ==> 'bemjson.js'         : join(PRJ_TECHS, 'bemjson.js')
@@ -104,47 +90,17 @@ exports.getTechnologies = function(configPath, techs, base) {
                 inLevels.push(getTechDecl('i18n.html'), getTechDecl('html'));
                 inMake.push('i18n.html');
                 break;
-            case 'i18n.js+bemhtml': // 'bem-bl' with 'localization' --> 'i18n.js+bemhtml' ==> 'i18n'
-                inLevels.push(getTechDecl('i18n.js+bemhtml'), getTechDecl('i18n'));
-                inMake.push('i18n.js+bemhtml');
-                break;
-            case 'i18n.js': // 'localization' --> 'i18n.js' ==> 'js'
-                inLevels.push(getTechDecl('i18n.js'), getTechDecl('js'));
-                if (techs.indexOf('i18n.js+bemhtml') < 0) inMake.push('i18n.js'); // 'i18n.js+bemhtml' (if has been chosen) instead of 'i18n.js' (in '.bem/make.js')
-                break;
-            case 'js+bemhtml': // 'bem-bl' --> 'js+bemhtml' ==> 'js' and 'bemhtml'
-                inLevels.push(getTechDecl('js+bemhtml'), getTechDecl('js'), getTechDecl('bemhtml'));
-                inMake.push('js+bemhtml');
-                break;
             default:
                 inLevels.push(getTechDecl(techs[tech]));
                 inMake.push(techs[tech]);
 
-                (techs[tech] === 'stylus' || techs[tech] === 'roole' || techs[tech] === 'less') && inJSON.push(techs[tech]);
+                techs[tech] === 'roole' && inJSON.push(techs[tech]);
         }
     });
 
     technologies.inLevels = _.uniq(inLevels);
 
     return technologies;
-}
-
-// adds 'i18n' and 'i18n.js'
-exports.addLocalTechs = function(input, scripts) {
-    for (var i in scripts) {
-        for (var j = 0; j < scripts[i].length; j++) {
-            var pos = input.indexOf(scripts[i][j].value)
-            if (pos > -1) {
-                input.splice(pos, 0, 'i18n', 'i18n.js');
-
-                return input;
-            }
-        }
-    }
-
-    input.push('i18n', 'i18n.js');
-
-    return input;
 }
 
 exports.addPreprocessor = function(input, preprocessor) {

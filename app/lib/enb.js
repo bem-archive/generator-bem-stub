@@ -13,18 +13,12 @@ exports.commonTech = [
 ],
 exports.templates = {
     core: [
-        { value: 'bemtree.js'  } ],
-    bl: [
-        { value: 'bemhtml.js' }
-    ]
+        { value: 'bemtree.js'  } ]
 },
 exports.scripts = {
     coreWithoutLocal: [
         { value: 'node.js' },
         { value: 'browser.js' }
-    ],
-    blWithoutLocal: [
-        { value: 'js' }
     ]
 };
 
@@ -47,7 +41,7 @@ exports.getPlatforms = function(pls, libs, design) {
             if (libs[lib].name === 'bem-mvc' && (pls[platform].indexOf('touch') > -1 || pls[platform] === 'desktop')) continue;
 
             pls[platform].indexOf('touch-') === -1 &&
-                platforms.push(libs[lib].name + '/' + (libs[lib].name !== 'bem-bl' ?  pls[platform] + '.blocks' : 'blocks-' + pls[platform]));
+                platforms.push(libs[lib].name + '/' + pls[platform] + '.blocks');
 
             design && libs[lib].name === 'bem-components' && platforms.push(libs[lib].name + '/design/' + pls[platform] + '.blocks');
         }
@@ -57,7 +51,7 @@ exports.getPlatforms = function(pls, libs, design) {
 }
 
 // handles selected technologies
-exports.getTechnologies = function(configPath, techs, base, toMinify) {
+exports.getTechnologies = function(configPath, techs, toMinify) {
     function getTechVal(tech) {
         return JSON.parse(fs.readFileSync(configPath).toString()).technologies.enb[tech];
     }
@@ -92,9 +86,9 @@ exports.getTechnologies = function(configPath, techs, base, toMinify) {
                 inJSON.push('less');
                 break;
             case 'bemhtml.js':
-                inTechs.push(base === 'bem-core' ? getTechVal('bemhtml.js') + '-old' : getTechVal('bemhtml.js').replace('bemxjst', 'xjst'));  // bem-core ==> bemhtml-old | bem-bl ==> bemhtml"
-                inTargets.push(toMinify.indexOf('bemhtml.js') > -1 ? 'min.bemhtml.js' : 'bemhtml.js');   // 'bemhtml' ==> '?.bemhtml.js' in 'nodeConfig.addTargets'
-                inJSON.push(base === 'bem-core' ? 'enb-bemxjst' : 'enb-xjst');
+                inTechs.push(getTechVal('bemhtml.js') + '-old');  // bem-core ==> bemhtml-old
+                inTargets.push(toMinify.indexOf('bemhtml.js') > -1 ? 'min.bemhtml.js' : 'bemhtml.js');
+                inJSON.push('enb-bemxjst');
                 break;
             case 'bh':
                 inTechs.push(getTechVal('bh'));
@@ -155,5 +149,4 @@ exports.getScripts = function(techs, toMin) {
     });
 
     return scripts;
-
 }

@@ -2,20 +2,12 @@
   "versions": {
     "core": {
       "bem-core": "v2.1.0",
-      "bem-components": "git://github.com/bem/bem-components.git#v2",
-      "bem-mvc": "git://github.com/bem/bem-mvc.git#v2"
-    },
-    "bl": {
-      "bem-bl": "v1.2.0",
-      "bem-mvc": "git://github.com/bem/bem-mvc.git#master"
+      "bem-components": "git://github.com/bem/bem-components.git#v2"
     },
     "other": {
       "roole": "0.9.0",
-      "less": "1.6.3",
-      "stylus": "0.42.3",
-      "enb-diverse-js": "0.1.0",
-      "enb-stylus": "0.0.3",
       "enb-roole": "0.1.0",
+      "enb-diverse-js": "0.1.0",
       "enb-bemxjst": "1.1.0",
       "enb-xjst": "1.0.4",
       "bh": "1.1.1",
@@ -28,52 +20,41 @@
       "bemjson.js"         : "join(PRJ_TECHS, 'bemjson.js')",
       "bemdecl.js"         : "v2/bemdecl.js",
       "deps.js"            : "v2/deps.js",
-      "js"                 : "v2/js-i",
-      "vanilla.js"         : "join(BEM_TECHS, 'vanilla.js.js')",
-      "browser.js"         : "join(BEM_TECHS, 'browser.js.js')",
-      "browser.js+bemhtml" : "join(BEM_TECHS, 'browser.js+bemhtml.js')",
+      "roole"              : "v2/roole",
       "css"                : "v2/css",
       "ie.css"             : "v2/ie.css",
       "ie6.css"            : "v2/ie6.css",
       "ie7.css"            : "v2/ie7.css",
       "ie8.css"            : "v2/ie8.css",
       "ie9.css"            : "v2/ie9.css",
-      "bemtree"	           : "join(BEM_TECHS, 'bemtree.js')",
+      "bemtree"            : "join(BEM_TECHS, 'bemtree.js')",
       "bemhtml"            : "join(BEM_TECHS, 'bemhtml.js')",
-      "html"               : "join(BEM_TECHS, 'html.js')",
-      "node.js"	           : "join(BEM_TECHS, 'node.js.js')",
-      "js+bemhtml"         : "join(BEM_TECHS, 'js+bemhtml.js')",
-      "i18n"               : "join(BEM_TECHS, 'i18n.js')",
-      "i18n.js+bemhtml"    : "join(BEM_TECHS, 'i18n.js+bemhtml.js')",
-      "i18n.js"            : "join(BEM_TECHS, 'i18n.js.js')",
-      "i18n.html"          : "join(BEM_TECHS, 'i18n.html.js')",
-      "stylus"             : "v2/styl",
-      "roole"              : "v2/roole",
-      "less"               : "v2/less"
+      "node.js"            : "join(BEM_TECHS, 'node.js.js')",
+      "vanilla.js"         : "join(BEM_TECHS, 'vanilla.js.js')",
+      "js"                 : "v2/js-i",
+      "browser.js+bemhtml" : "join(BEM_TECHS, 'browser.js+bemhtml.js')",
+      "browser.js"         : "join(BEM_TECHS, 'browser.js.js')",
+      "html"               : "join(BEM_TECHS, 'html.js')"
     },
     "enb": {
       "bemjson.js"         : "enb/techs/bemdecl-from-bemjson",
+      "roole"              : "enb-roole/techs/css-roole",
       "css"                : "enb/techs/css",
       "ie.css"             : "enb/techs/css-ie",
       "ie6.css"            : "enb/techs/css-ie6",
       "ie7.css"            : "enb/techs/css-ie7",
       "ie8.css"            : "enb/techs/css-ie8",
       "ie9.css"            : "enb/techs/css-ie9",
-      "js"                 : "enb/techs/js",
-      "html"               : "enb/techs/html-from-bemjson",
-      "less"               : "enb/techs/css-less",
-      "stylus"             : "enb-stylus/techs/css-stylus",
-      "roole"              : "enb-roole/techs/css-roole",
       "bemtree.js"         : "enb-bemxjst/techs/bemtree-old",
       "bemhtml.js"         : "enb-bemxjst/techs/bemhtml",
       "bh"                 : "bh/techs/bh-server",
       "node.js"            : "enb-diverse-js/techs/node-js",
-      "browser.js"         : "enb-diverse-js/techs/browser-js"
+      "browser.js"         : "enb-diverse-js/techs/browser-js",
+      "html"               : "enb/techs/html-from-bemjson"
     }
   },
   "sourceCode": {
     "tools": {
-      "localization"       : ",\n    'create-i18n.js+bemhtml-optimizer-node': function(tech, sourceNode, bundleNode) {\n        sourceNode.getFiles().forEach(function(f) {\n            this['create-js-optimizer-node'](tech, this.ctx.arch.getNode(f), bundleNode);\n        }, this);\n    },\n    'create-i18n.html-node': function(tech, bundleNode, magicNode) {\n        return this.setBemCreateNode(\n            tech,\n            this.level.resolveTech(tech),\n            bundleNode,\n            magicNode);\n    }",
       "roole"              : ",\n    'create-css-node' : function(tech, bundleNode, magicNode) {\n        var source = this.getBundlePath('roole');\n        if(this.ctx.arch.hasNode(source)) {\n            return this.createAutoprefixerNode(tech, this.ctx.arch.getNode(source), bundleNode, magicNode);\n        }\n    }",
       "design"             : "\n\nMAKE.decl('AutoprefixerNode', {\n\n    getPlatform : function() {\n        return this.output.split('.')[0];\n    },\n\n    getBrowsers : function() {\n        var platform = this.getPlatform();\n        switch(platform) {\n",
       "desktop"            : "\n        case 'desktop':\n            return [\n                'last 2 versions',\n                'ie 10',\n                'ff 24',\n                'opera 12.16'\n            ];\n\n        }\n\n        return this.__base();\n    }\n\n});",

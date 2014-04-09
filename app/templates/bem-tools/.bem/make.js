@@ -3,7 +3,7 @@
 <%= roole.require %>
 
 //process.env.YENV = 'production';
-//process.env.XJST_ASYNCIFY = 'yes';<%= languages %>
+//process.env.XJST_ASYNCIFY = 'yes';
 
 MAKE.decl('Arch', {
 
@@ -27,6 +27,6 @@ MAKE.decl('BundleNode', {
         sourceNode.getFiles().forEach(function(f) {
             this['create-js-optimizer-node'](tech, this.ctx.arch.getNode(f), bundleNode);
         }, this);
-    }<%= localizationCode %><%= roole.code %>
+    }<%= roole.code %>
 
 });<%= design %>
