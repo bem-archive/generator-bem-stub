@@ -101,7 +101,6 @@ exports.getTechnologies = function(configPath, techs) {
 
 // preprocessors: 'roole', 'pure css'
 exports.addPreprocessor = function(input, preprocessor) {
-
     if (preprocessor === 'css') {
         input.splice(input.indexOf('bemjson.js') + 1, 0, 'css');
 
