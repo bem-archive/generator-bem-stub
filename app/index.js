@@ -201,10 +201,11 @@ BemgenGenerator.prototype.askFor = function askFor() {
         name: 'techs',
         message: 'What technologies to use?',
         choices: function(input) {
+            // returns the list of possible technologies to choose in dependence of the previous answers
             var collector = require(input.collector === 'bem-tools' ? './lib/tools' : './lib/enb');
 
             var libName = input.baseLibrary.name;
-            // returns the list of possible technologies to choose in dependence of the previous answers
+
             if (libName === 'bem-core') return collector.commonTech.concat(collector.templates.core, collector.scripts.coreWithoutLocal);
             if (libName === 'bem-bl') {
                 if (input.collector === 'bem-tools' && input.localization) return collector.commonTech.concat(collector.templates.bl, collector.scripts.blWithLocal);

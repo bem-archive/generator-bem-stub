@@ -156,5 +156,4 @@ exports.getScripts = function(techs, toMin) {
     });
 
     return scripts;
-
 }

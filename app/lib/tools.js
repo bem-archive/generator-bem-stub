@@ -84,7 +84,7 @@ exports.getTechnologies = function(configPath, techs, base) {
         },
         inLevels = technologies.inLevels,
         inMake = technologies.inMake,
-        inJSON = technologies.inJSON;
+        inJSON = technologies.inJSON;   // to 'package.json'
 
     Object.keys(techs).forEach(function(tech) {
         switch (techs[tech]) {
@@ -149,7 +149,6 @@ exports.addLocalTechs = function(input, scripts) {
 
 // preprocessors: 'stylus', 'roole', 'less', 'pure css'
 exports.addPreprocessor = function(input, preprocessor) {
-
     if (preprocessor === 'css') {
         input.splice(input.indexOf('bemjson.js') + 1, 0, 'css');
 
