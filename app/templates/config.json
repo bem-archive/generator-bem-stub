@@ -6,7 +6,9 @@
     },
     "other": {
       "roole": "0.9.0",
+      "less": "1.6.3",
       "enb-roole": "0.1.0",
+      "enb-stylus": "0.0.3",
       "enb-diverse-js": "0.1.0",
       "enb-bemxjst": "1.1.0",
       "enb-xjst": "1.0.4",
@@ -39,6 +41,8 @@
     "enb": {
       "bemjson.js"         : "enb/techs/bemdecl-from-bemjson",
       "roole"              : "enb-roole/techs/css-roole",
+      "less"               : "enb/techs/css-less",
+      "stylus"             : "enb-stylus/techs/css-stylus",
       "css"                : "enb/techs/css",
       "ie.css"             : "enb/techs/css-ie",
       "ie6.css"            : "enb/techs/css-ie6",
