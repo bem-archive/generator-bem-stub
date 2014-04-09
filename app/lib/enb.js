@@ -46,7 +46,7 @@ exports.getPlatforms = function(pls, libs, design) {
 
             if (libs[lib].name === 'bem-mvc' && (pls[platform].indexOf('touch') > -1 || pls[platform] === 'desktop')) continue;
 
-            pls[platform].indexOf('touch-') === -1 &&
+            pls[platform].indexOf('touch-') === -1 &&   // 'bem-bl' ==> 'blocks-common', 'blocks-desktop', 'blocks-touch' ...
                 platforms.push(libs[lib].name + '/' + (libs[lib].name !== 'bem-bl' ?  pls[platform] + '.blocks' : 'blocks-' + pls[platform]));
 
             design && libs[lib].name === 'bem-components' && platforms.push(libs[lib].name + '/design/' + pls[platform] + '.blocks');
@@ -64,15 +64,15 @@ exports.getTechnologies = function(configPath, techs, base, toMinify) {
 
     // 'inTechs' ==> 'nodeConfig.addTechs' | 'inTargets' ==> 'nodeConfig.addTargets'
     var technologies = {
-            inTechs : [ 'enb/techs/files', 'enb/techs/deps' ], // 'files' is always included
+            inTechs : [ 'enb/techs/files', 'enb/techs/deps' ], // 'files' and 'deps' are always included
             inTargets : [],
             inJSON : []
         },
         inTechs = technologies.inTechs,
         inTargets = technologies.inTargets,
-        inJSON = technologies.inJSON;
+        inJSON = technologies.inJSON;   // to 'package.json'
 
-    inTargets.push(toMinify.indexOf('css') > -1 ? 'min.css' : 'css');
+    inTargets.push(toMinify.indexOf('css') > -1 ? 'min.css' : 'css'); // 'stylus', 'roole', 'less', 'css' ==> 'css' in 'targets'
 
     Object.keys(techs).forEach(function(tech) {
         switch(techs[tech]) {
@@ -85,20 +85,20 @@ exports.getTechnologies = function(configPath, techs, base, toMinify) {
                 break;
             case 'roole':
                 inTechs.push(getTechVal('roole'));
-                inJSON.push('roole', 'enb-roole');
+                inJSON.push('roole', 'enb-roole');  // 'roole' ==> 'roole', 'enb-roole' in 'package.json'
                 break;
             case 'less':
                 inTechs.push(getTechVal('less'));
                 inJSON.push('less');
                 break;
-            case 'bemhtml.js':
-                inTechs.push(base === 'bem-core' ? getTechVal('bemhtml.js') + '-old' : getTechVal('bemhtml.js').replace('bemxjst', 'xjst'));  // bem-core ==> bemhtml-old | bem-bl ==> bemhtml"
-                inTargets.push(toMinify.indexOf('bemhtml.js') > -1 ? 'min.bemhtml.js' : 'bemhtml.js');   // 'bemhtml' ==> '?.bemhtml.js' in 'nodeConfig.addTargets'
+            case 'bemhtml.js':  // 'bem-core' ==> 'bemhtml-old' from package 'enb-bemxjst'  | 'bem-bl' ==> 'bemhtml' from package 'enb-xjst'
+                inTechs.push(base === 'bem-core' ? getTechVal('bemhtml.js') + '-old' : getTechVal('bemhtml.js').replace('bemxjst', 'xjst'));
+                inTargets.push(toMinify.indexOf('bemhtml.js') > -1 ? 'min.bemhtml.js' : 'bemhtml.js');
                 inJSON.push(base === 'bem-core' ? 'enb-bemxjst' : 'enb-xjst');
                 break;
             case 'bh':
                 inTechs.push(getTechVal('bh'));
-                inTargets.push(toMinify.indexOf('bemhtml.js') > -1 ? 'min.bemhtml.js' : 'bemhtml.js');   // 'bh' ==> '?.bemhtml.js' in 'nodeConfig.addTargets'
+                inTargets.push(toMinify.indexOf('bemhtml.js') > -1 ? 'min.bemhtml.js' : 'bemhtml.js');   // 'bh' ==> '?.bemhtml.js' in 'targets'
                 inJSON.push('bh');
                 break;
             default:

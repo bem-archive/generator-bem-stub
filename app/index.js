@@ -8,7 +8,7 @@ var util = require('util'),
 var BemgenGenerator = module.exports = function BemgenGenerator(args, options, config) {
     yeoman.generators.Base.apply(this, arguments);
 
-    this.pkg = JSON.parse(this.readFileAsString(path.join(__dirname, '../package.json')));
+    this.pkg = JSON.parse(this.readFileAsString(path.join(__dirname, path.join('..', 'package.json'))));
     this.username = this.user.git.email.split('@')[0] || this.shell.exec('whoami').output.trim();
 
     this.on('end', function () {
@@ -90,8 +90,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         type: 'checkbox',
         name: 'addLibraries',
         message: 'Would you like any additional libraries?',
-        choices: function(input) {
-            // returns the list of possible additional libs in dependence of the base library
+        choices: function(input) { // 'bem-core' ==> 'bem-components' && 'bem-mvc' | 'bem-bl' ==> 'bem-mvc'
             var isCore = input.baseLibrary.name === 'bem-core',
                 choices = [];
 
@@ -130,7 +129,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         name: 'design',
         message: 'Use design from bem-components?',
         default: true,
-        when: function(input) {     // 'bem-core' --> 'bem-components' ==> design
+        when: function(input) {     // 'bem-core' --> 'bem-components' ==> 'design'
             var useComponents;
             for (var lib in input.addLibraries) {
                 input.addLibraries[lib].name === 'bem-components' && (useComponents = true)
@@ -142,15 +141,15 @@ BemgenGenerator.prototype.askFor = function askFor() {
         name: 'localization',
         message: 'Need localization?',
         default: true,
-        when: function(input) {
+        when: function(input) {     // 'bem-tools' --> 'bem-bl' ==> 'localization'
             return input.collector === 'bem-tools' && input.baseLibrary.name === 'bem-bl';
         }
     }, {
         type: 'input',
         name: 'languages',
         message: 'Enter languages separated by a space (e.g. \'en\', \'ru\')',
-        when: function(input) {
-            return input.localization;   // Do we need localization?
+        when: function(input) {     // 'bem-tools' --> 'bem-bl' --> 'localization' ==> 'languages'
+            return input.localization;
         },
         validate: validateLanguages
     }, {
@@ -165,7 +164,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
                 input.addLibraries[lib].name === 'bem-components' && (useComponents = true)
             }
 
-             if (isEnb && useComponents) {
+            if (isEnb && useComponents) {
                 return [{
                         value: 'roole'
                     }, {
@@ -194,7 +193,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
                     }]
             }
         },
-        when: function(input) {
+        when: function(input) {     // 'design' ==> 'roole'
             return !input.design;
         }
     }, {
@@ -226,8 +225,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
             name: 'My template system',
             value: 'my'
         }],
-        default: 3,
-        when: function(input) { // 'enb' --> 'bem-core' --> 'bemjson.js' ==> template system
+        when: function(input) { // 'enb' --> 'bem-core' ==> 'template system'
             return input.collector === 'enb' && input.baseLibrary.name === 'bem-core';
         }
     }, {
@@ -235,7 +233,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         name: 'html',
         message: 'Build static html?',
         default: true,
-        when: function(input) { // 'bemjson' --> template system ==> html
+        when: function(input) { // 'bemjson' --> 'template system' ==> 'html'
             if (input.collector === 'bem-tools') return input.techs.indexOf('bemjson.js') > -1 && input.techs.indexOf('bemhtml') > -1;
 
             else return (input.templateSystem && (input.templateSystem !== 'my' || input.techs.indexOf('bemhtml.js') > -1) &&
@@ -279,7 +277,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         // ---------
 
         _this.libs = props.addLibraries;
-        _this.libs.unshift(props.baseLibrary);
+        _this.libs.unshift(props.baseLibrary);  // base lib on the top
 
         // ---------
 
@@ -309,7 +307,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
 
         _this.languages = props.localization ? collector.getLanguages(props.languages) : '';
 
-        // localization ==> 'i18n' && 'i18n.js'
+        // 'localization' ==> 'i18n' && 'i18n.js'
         props.localization && (props.techs = collector.addLocalTechs(props.techs, collector.scripts));
 
         // ------------
@@ -362,18 +360,18 @@ BemgenGenerator.prototype.askFor = function askFor() {
 
         var platforms = _this.platforms.withoutPath;
 
-        // gets the source code for 'design' in make.js
+        // gets the source code for 'design'
         _this.design = props.design ? collector.getSourceCode(configPath, _this.collectorName === 'bem-tools' ? 'tools' : 'enb', 'design', platforms[platforms.length - 1]) : '';
 
         // -----------
 
 
         // enb ==> 'index.bemjson.js'
-        // ---------------------
+        // --------------------------
 
         _this.collectorName === 'enb' && (_this.scripts = collector.getScripts(_this.technologies.inTargets, _this.toMinify));
 
-        // ---------------------
+        // --------------------------
 
         cb();
     }
@@ -413,19 +411,19 @@ BemgenGenerator.prototype.app = function app() {
         var dirname = path.dirname(f);
 
         if (this.collectorName === 'enb') {
-            if (this.isBemjson && f === 'bundles/index/index.bemdecl.js') return;
+            if (this.isBemjson && f === path.join('bundles', 'index', 'index.bemdecl.js')) return;
 
-            if (!this.isBemjson && f === 'bundles/index/index.bemjson.js') return;
+            if (!this.isBemjson && f === path.join('bundles', 'index', 'index.bemjson.js')) return;
 
-            (f === 'bundles/index/index.bemdecl.js' || f === 'bundles/index/index.bemjson.js') &&
+            (f === path.join('bundles', 'index', 'index.bemdecl.js') || f === path.join('bundles', 'index', 'index.bemjson.js')) &&
                 (dirname = path.join(platforms[platforms.length - 1] + '.bundles', 'index'));
         }
         else {
-            (f === 'blocks/.bem/level.js') && (dirname = path.join(platforms[platforms.length - 1] + '.blocks', '.bem'));
+            (f === path.join('blocks', '.bem', 'level.js')) && (dirname = path.join(platforms[platforms.length - 1] + '.blocks', '.bem'));
 
-            (f === 'bundles/.bem/level.js') && (dirname = path.join(platforms[platforms.length - 1] + '.bundles', '.bem'));
+            (f === path.join('bundles', '.bem', 'level.js')) && (dirname = path.join(platforms[platforms.length - 1] + '.bundles', '.bem'));
 
-            (f === 'bundles/index/index.bemjson.js') && (dirname = path.join(platforms[platforms.length - 1] + '.bundles', 'index'));
+            (f === path.join('bundles', 'index', 'index.bemjson.js')) && (dirname = path.join(platforms[platforms.length - 1] + '.bundles', 'index'));
         }
 
         var src = path.join(root, f);   // copy from
@@ -434,7 +432,7 @@ BemgenGenerator.prototype.app = function app() {
     }.bind(this));
 };
 
-// Have 'less' or 'roole' been chosen? ==> We need in additional installation of preprocessors
+// Adds dependencies in 'package.json'
 BemgenGenerator.prototype.addPackages = function addPackages() {
     var _this = this;
 
@@ -453,7 +451,7 @@ BemgenGenerator.prototype.addPackages = function addPackages() {
         deps[inJSON[_package]] = getLibVersion('other', inJSON[_package]);
     }
 
-    this.collectorName === 'bem-tools' &&
+    this.collectorName === 'bem-tools' &&   // 'bem-tools' --> 'roole' ==> 'autoprefixer'
         this.roole.require !== '' && (deps['bem-tools-autoprefixer'] = getLibVersion('other', 'bem-tools-autoprefixer'));
 
     this.collectorName === 'enb' &&
@@ -463,7 +461,7 @@ BemgenGenerator.prototype.addPackages = function addPackages() {
     fs.writeFileSync(packagePath, JSON.stringify(pack, null, '  ') + '\n');
 };
 
-// Creates the necessary empty folders in the created project
+// Makes the necessary empty folders in the created project
 BemgenGenerator.prototype.createFolders = function createFolders() {
     var platforms = this.platforms.withoutPath;
 
@@ -476,7 +474,10 @@ BemgenGenerator.prototype.createFolders = function createFolders() {
 BemgenGenerator.prototype.assemble = function assemble() {
     if (this.npmi) {
         this.log.write('').info(' ==> npm install...').write('');
-        this.shell.exec('cd ' + this.projectName + ' && npm i -s');
-        this.collectorName === 'enb' && this.shell.exec('cd ' + this.projectName + ' && ./node_modules/.bin/bower i');
+        this.shell.exec('cd ' + this.projectName + ' && npm i');
+
+        this.collectorName === 'enb' &&
+            this.log.write('').info(' ==> bower install...').write('') &&
+                this.shell.exec('cd ' + this.projectName + ' && ./node_modules/.bin/bower i');
     }
 }

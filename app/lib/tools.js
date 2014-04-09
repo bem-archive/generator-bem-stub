@@ -47,7 +47,7 @@ exports.getSourceCode = function(configPath, collector) {
 exports.getPlatforms = function(pls, libs, design) {
     var platforms = [];
     for (var lib in libs) {
-        for (var platform in pls) {
+        for (var platform in pls) {     // 'bem-bl' ==> 'blocks-common', 'blocks-desktop', 'blocks-touch' ...
             platforms.push(libs[lib].name + '/' + (libs[lib].name !== 'bem-bl' ?  pls[platform] + '.blocks' : 'blocks-' + pls[platform]));
             design && libs[lib].name === 'bem-components' && platforms.push(libs[lib].name + '/design/' + pls[platform] + '.blocks');
         }
@@ -100,19 +100,19 @@ exports.getTechnologies = function(configPath, techs, base) {
                 inLevels.push(getTechDecl('node.js'), getTechDecl('vanilla.js'), getTechDecl('js'));
                 inMake.push('node.js');
                 break;
-            case 'i18n.html':  // 'bem-core' or 'bem-bl' with 'localization' and 'html' --> 'i18n.html' ==> 'html'
+            case 'i18n.html':  // 'bem-bl' --> 'localization' --> 'html' ==> 'i18n.html', 'html'
                 inLevels.push(getTechDecl('i18n.html'), getTechDecl('html'));
                 inMake.push('i18n.html');
                 break;
-            case 'i18n.js+bemhtml': // 'bem-bl' with 'localization' --> 'i18n.js+bemhtml' ==> 'i18n'
+            case 'i18n.js+bemhtml': // 'bem-bl' --> 'localization' --> 'i18n.js+bemhtml' ==> 'i18n'
                 inLevels.push(getTechDecl('i18n.js+bemhtml'), getTechDecl('i18n'));
                 inMake.push('i18n.js+bemhtml');
                 break;
-            case 'i18n.js': // 'localization' --> 'i18n.js' ==> 'js'
+            case 'i18n.js': // 'bem-bl' --> 'localization' --> 'i18n.js' ==> 'js'
                 inLevels.push(getTechDecl('i18n.js'), getTechDecl('js'));
                 if (techs.indexOf('i18n.js+bemhtml') < 0) inMake.push('i18n.js'); // 'i18n.js+bemhtml' (if has been chosen) instead of 'i18n.js' (in '.bem/make.js')
                 break;
-            case 'js+bemhtml': // 'bem-bl' --> 'js+bemhtml' ==> 'js' and 'bemhtml'
+            case 'js+bemhtml': // 'bem-bl' --> 'js+bemhtml' ==> 'js', 'bemhtml'
                 inLevels.push(getTechDecl('js+bemhtml'), getTechDecl('js'), getTechDecl('bemhtml'));
                 inMake.push('js+bemhtml');
                 break;
