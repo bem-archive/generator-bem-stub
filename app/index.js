@@ -170,7 +170,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         message: 'What technologies to use?',
         choices: function(input) {
             // returns the list of possible technologies to choose in dependence of the previous answers
-            var collector = require(input.collector === 'bem-tools' ? './lib/tools' : './lib/enb');
+            var collector = require('.' + path.sep + path.join('lib', input.collector === 'bem-tools' ? 'tools' : 'enb'));
 
             return collector.commonTech.concat(collector.templates.core, collector.scripts.coreWithoutLocal);
         }
@@ -223,7 +223,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
 
     function getAnswers(props) {
 
-        var collector = require((_this.collectorName = props.collector) === 'bem-tools' ? './lib/tools' : './lib/enb');
+        var collector = require('.' + path.sep + path.join('lib', (_this.collectorName = props.collector) === 'bem-tools' ? 'tools' : 'enb'));
 
         // General information
         // -------------------
@@ -418,6 +418,6 @@ BemgenGenerator.prototype.assemble = function assemble() {
 
         this.collectorName === 'enb' &&
             this.log.write('').info(' ==> bower install...').write('') &&
-                this.shell.exec('cd ' + this.projectName + ' && ./node_modules/.bin/bower i');
+                this.shell.exec('cd ' + this.projectName + ' && ' + '.' + path.sep + path.join('node_modules', '.bin', 'bower') + ' i');
     }
 }
