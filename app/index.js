@@ -114,9 +114,9 @@ BemgenGenerator.prototype.askFor = function askFor() {
         when: function(input) {     // 'bem-core' --> 'bem-components' ==> 'design'
             var useComponents;
 
-            for (var lib in input.addLibraries) {
-                input.addLibraries[lib].name === 'bem-components' && (useComponents = true)
-            }
+            input.addLibraries.map(function(lib) {
+                lib.name === 'bem-components' && (useComponents = true);
+            });
 
             return useComponents
         }
@@ -128,9 +128,10 @@ BemgenGenerator.prototype.askFor = function askFor() {
             // returns the list of possible preprocessors in dependence of the previous answers
             var isEnb = input.collector === 'enb';
             var useComponents;
-            for (var lib in input.addLibraries) {
-                input.addLibraries[lib].name === 'bem-components' && (useComponents = true)
-            }
+
+            input.addLibraries.map(function(lib) {
+                lib.name === 'bem-components' && (useComponents = true);
+            });
 
             if (isEnb && useComponents) {
                 return [{
@@ -208,9 +209,14 @@ BemgenGenerator.prototype.askFor = function askFor() {
         choices: function(input) {
             var toMinimize = [ { value: 'css' } ];
 
-            for (var tech in input.techs) {
-                input.techs[tech] !== 'bemjson.js' && toMinimize.push( { value: input.techs[tech] } );
-            }
+            input.techs.map(function(tech) {
+                if (tech === 'browser.js') {
+                    toMinimize.push( { value: 'js' } );
+                    return;
+                }
+
+                tech !== 'bemjson.js' && toMinimize.push( { value: tech } );
+            });
 
             (input.templateSystem && input.templateSystem !== 'my') && toMinimize.push( { value: 'bemhtml.js' } );
 
@@ -386,10 +392,9 @@ BemgenGenerator.prototype.addPackages = function addPackages() {
         deps = this.collectorName === 'bem-tools' ? pack.dependencies : pack.devDependencies,
         inJSON = _this.technologies.inJSON;
 
-    // adds the necessary packages to 'package.json' in the created project
-    for (var _package in inJSON) {
-        deps[inJSON[_package]] = getLibVersion('other', inJSON[_package]);
-    }
+    inJSON.map(function(_package) {
+        deps[_package] = getLibVersion('other', _package);
+    });
 
     this.collectorName === 'bem-tools' &&
         this.roole.require !== '' && (deps['bem-tools-autoprefixer'] = getLibVersion('other', 'bem-tools-autoprefixer'));

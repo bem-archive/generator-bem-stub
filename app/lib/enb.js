@@ -35,17 +35,15 @@ exports.getSourceCode = function(configPath, collector) {
 // receives, for example, pls['desktop', 'common'] and libs['bem-core'], returns platforms['bem-core/desktop.blocks', 'bem-core/common.blocks']
 exports.getPlatforms = function(pls, libs, design) {
     var platforms = [];
-    for (var lib in libs) {
-        for (var platform in pls) {
 
-            if (libs[lib].name === 'bem-mvc' && (pls[platform].indexOf('touch') > -1 || pls[platform] === 'desktop')) continue;
+    libs.map(function(lib) {
+        pls.map(function(platform) {
+            platform.indexOf('touch-') === -1 &&   // 'bem-bl' ==> 'blocks-common', 'blocks-desktop', 'blocks-touch' ...
+                platforms.push(lib.name + '/' + platform + '.blocks');
 
-            pls[platform].indexOf('touch-') === -1 &&   // 'bem-bl' ==> 'blocks-common', 'blocks-desktop', 'blocks-touch' ...
-                platforms.push(libs[lib].name + '/' + pls[platform] + '.blocks');
-
-            design && libs[lib].name === 'bem-components' && platforms.push(libs[lib].name + '/design/' + pls[platform] + '.blocks');
-        }
-    }
+            design && lib.name === 'bem-components' && platforms.push(lib.name + '/design/' + platform + '.blocks');
+        });
+    });
 
     return platforms;
 }
@@ -58,7 +56,7 @@ exports.getTechnologies = function(configPath, techs, toMinify) {
 
     // 'inTechs' ==> 'nodeConfig.addTechs' | 'inTargets' ==> 'nodeConfig.addTargets'
     var technologies = {
-            inTechs : [ 'enb/techs/files', 'enb/techs/deps' ],  // 'files' and 'deps' are always included
+            inTechs : [ 'require(\'enb/techs/files\')', 'require(\'enb/techs/deps\')' ],  // 'files' and 'deps' are always included
             inTargets : [],
             inJSON : []
         },
@@ -81,12 +79,20 @@ exports.getTechnologies = function(configPath, techs, toMinify) {
                 inTechs.push(getTechVal('roole'));
                 inJSON.push('roole', 'enb-roole');  // 'roole' ==> 'roole', 'enb-roole' in 'package.json'
                 break;
+            case 'design-roole':
+                inTechs.push(getTechVal('design-roole'));
+                inJSON.push('roole', 'enb-roole');
+                break;
             case 'less':
                 inTechs.push(getTechVal('less'));
                 inJSON.push('less');
                 break;
+            case 'browser.js':
+                inTechs.push(getTechVal('browser.js'));
+                inTargets.push(toMinify.indexOf('js') > -1 ? 'min.js' : 'js');  // 'bem-core' --> 'browser.js' ==> 'js'
+                break;
             case 'bemhtml.js':   // 'bem-core' ==> 'bemhtml-old' from package 'enb-bemxjst'
-                inTechs.push(getTechVal('bemhtml.js') + '-old');
+                inTechs.push(getTechVal('core-bemhtml.js'));
                 inTargets.push(toMinify.indexOf('bemhtml.js') > -1 ? 'min.bemhtml.js' : 'bemhtml.js');
                 inJSON.push('enb-bemxjst');
                 break;
@@ -114,7 +120,8 @@ exports.getTechnologies = function(configPath, techs, toMinify) {
 
 // preprocessors: 'stylus', 'roole', 'less', 'pure css'
 exports.addPreprocessor = function(input, preprocessor) {
-    preprocessor && input.push(preprocessor);
+    // 'bem-core' --> 'bem-components' --> 'design' ==> 'preprocessor === undefined' ==> 'design-roole'
+    preprocessor ? input.push(preprocessor) : input.push('design-roole');
 
     return input;
 }

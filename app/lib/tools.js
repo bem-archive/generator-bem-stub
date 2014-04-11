@@ -37,12 +37,14 @@ exports.getSourceCode = function(configPath, collector) {
 // receives, for example, pls['desktop', 'common'] and libs['bem-core'], returns platforms['bem-core/desktop.blocks', 'bem-core/common.blocks']
 exports.getPlatforms = function(pls, libs, design) {
     var platforms = [];
-    for (var lib in libs) {
-        for (var platform in pls) {     // 'bem-bl' ==> 'blocks-common', 'blocks-desktop', 'blocks-touch' ...
-            platforms.push(libs[lib].name + '/' + pls[platform] + '.blocks');
-            design && libs[lib].name === 'bem-components' && platforms.push(libs[lib].name + '/design/' + pls[platform] + '.blocks');
-        }
-    }
+
+    libs.map(function(lib) {
+        pls.map(function(platform) {
+            platforms.push(lib.name + '/' + platform + '.blocks');
+
+            design && lib.name === 'bem-components' && platforms.push(lib.name + '/design/' + platform + '.blocks');
+        });
+    });
 
     return platforms;
 }
