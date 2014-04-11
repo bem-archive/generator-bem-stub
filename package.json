@@ -22,7 +22,10 @@
   },
   "dependencies": {
     "yeoman-generator": "~0.14.0",
-    "lodash": "^2.4.1"
+    "lodash": "2.4.1",
+    "vow": "0.4.1",
+    "vow-fs": "0.3.0",
+    "shelljs": "0.2.6"
   },
   "devDependencies": {
     "mocha": "~1.14.0"
