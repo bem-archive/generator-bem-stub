@@ -1,6 +1,5 @@
 /* jshint node:true */
-/* global MAKE */
-<%= roole.require %>
+/* global MAKE */<%= roole.require %>
 
 //process.env.YENV = 'production';
 //process.env.XJST_ASYNCIFY = 'yes';

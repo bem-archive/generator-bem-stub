@@ -296,7 +296,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
 
         _this.roole = (_this.collectorName === 'bem-tools' && (props.preprocessor === 'roole' || props.design)) ?
         {
-            require: '\nrequire(\'bem-tools-autoprefixer\').extendMake(MAKE);', // requires 'autoprefixer' in make.js
+            require: '\n\nrequire(\'bem-tools-autoprefixer\').extendMake(MAKE);', // requires 'autoprefixer' in make.js
             code: collector.getSourceCode(configPath, 'tools', 'roole') // source code for 'roole' in make.js
         } :
         {
