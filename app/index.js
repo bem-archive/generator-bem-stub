@@ -228,7 +228,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
     }];
 
     function getAnswers(props) {
-
+        console.log(props)
         var collector = require('.' + path.sep + path.join('lib', (_this.collectorName = props.collector) === 'bem-tools' ? 'tools' : 'enb'));
 
         // General information
@@ -315,7 +315,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
         // enb ==> 'index.bemjson.js'
         // --------------------------
 
-        _this.collectorName === 'enb' && (_this.scripts = collector.getScripts(_this.technologies.inTargets, _this.toMinify));
+        _this.collectorName === 'enb' && (_this.scripts = collector.getScripts(_this.technologies.inTargets));
 
         // --------------------------
 

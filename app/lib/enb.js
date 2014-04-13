@@ -121,7 +121,7 @@ exports.getTechnologies = function(configPath, techs, toMinify) {
 // preprocessors: 'stylus', 'roole', 'less', 'pure css'
 exports.addPreprocessor = function(input, preprocessor) {
     // 'bem-core' --> 'bem-components' --> 'design' ==> 'preprocessor === undefined' ==> 'design-roole'
-    preprocessor ? input.push(preprocessor) : input.push('design-roole');
+    input.push(preprocessor || 'design-roole');
 
     return input;
 }
@@ -139,22 +139,17 @@ exports.addIe = function(input) {
 }
 
 // To 'index.bemjson.js'
-exports.getScripts = function(techs, toMin) {
+exports.getScripts = function(techs) {
     var scripts = [];
 
-    techs.indexOf('css') > -1 && scripts.push({
+    (techs.indexOf('css') > -1 || techs.indexOf('min.css') > -1) && scripts.push({
         elem: 'css',
-        url: toMin.indexOf('css') > -1 ? 'min.css' : 'css'
+        url: techs.indexOf('css') > -1 ? 'css' : 'min.css'
     });
 
-    techs.indexOf('browser.js') > -1 && scripts.push({
+    (techs.indexOf('js') > -1 || techs.indexOf('min.js') > -1) && scripts.push({
         elem: 'js',
-        url: toMin.indexOf('browser.js') > -1 ? 'min.browser.js' : 'browser.js'
-    });
-
-    techs.indexOf('js') > -1 && scripts.push({
-        elem: 'js',
-        url: toMin.indexOf('js') > -1 ? 'min.js' : 'js'
+        url: techs.indexOf('js') > -1 ? 'js' : 'min.js'
     });
 
     return scripts;
