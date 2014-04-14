@@ -2,7 +2,7 @@
   "versions": {
     "core": {
       "bem-core": "v2.1.0",
-      "bem-components": "git://github.com/bem/bem-components.git#v2"
+      "bem-components": "v2"
     },
     "other": {
       "roole": "0.9.0",

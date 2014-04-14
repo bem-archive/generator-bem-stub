@@ -274,7 +274,9 @@ BemgenGenerator.prototype.askFor = function askFor() {
         // ------------
 
         // 'ieN' ==> 'ie.css' | preprocessor
-        props.techs = collector.addIe(collector.addPreprocessor(props.techs, props.preprocessor));
+        props.techs = collector.addPreprocessor(props.techs, props.preprocessor);
+
+        _this.collectorName === 'bem-tools' && (props.techs = collector.addIe(props.techs));
 
         // 'enb' --> 'bem-core' ==> 'bemhtml', 'bh'
         props.templateSystem && props.templateSystem !== 'my' && props.techs.push(props.templateSystem);
