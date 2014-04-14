@@ -126,18 +126,6 @@ exports.addPreprocessor = function(input, preprocessor) {
     return input;
 }
 
-// 'ieN' ==> ie.css'
-exports.addIe = function(input) {
-    var ie = /ie[0-9]{0,2}\.css/.exec(input);
-
-    if (ie) {
-        input.push('ie.css');
-        input = _.uniq(input);
-    }
-
-    return input;
-}
-
 // To 'index.bemjson.js'
 exports.getScripts = function(techs) {
     var scripts = [];
