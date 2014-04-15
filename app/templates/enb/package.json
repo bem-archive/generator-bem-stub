@@ -2,7 +2,10 @@
   "author": "<%= author %>",
   "name": "<%= projectName %>",
   "email": "<%= email %>",
-  "version": "0.0.1",
+  "version": "0.0.0",
+  "engines": {
+    "node": ">=0.10"
+  },
   "dependencies": {},
   "devDependencies": {
     "enb": "0.10.0",

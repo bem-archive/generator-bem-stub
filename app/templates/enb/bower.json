@@ -2,7 +2,7 @@
   "author": "<%= author %>",
   "name": "<%= projectName %>",
   "email": "<%= email %>",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "ignore": [
     ".bem/cache",
     "node_modules",
