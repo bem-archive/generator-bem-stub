@@ -1,6 +1,6 @@
 # generator-bem-stub
 
-A generator for [Yeoman](http://yeoman.io).
+A generator on [Yeoman](http://yeoman.io) of bem-project-stub.
 
 ## Install
 
