@@ -1,7 +1,7 @@
 {
   "name": "generator-bem-stub",
   "version": "0.0.1-alpha2",
-  "description": "A generator for Yeoman",
+  "description": "A generator of bem-project-stub",
   "keywords": [
     "yeoman-generator"
   ],
