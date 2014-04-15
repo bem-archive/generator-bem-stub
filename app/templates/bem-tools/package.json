@@ -2,11 +2,7 @@
   "author": "<%= author %>",
   "name": "<%= projectName %>",
   "email": "<%= email %>",
-  "version": "1.0.0",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/bem/project-stub.git"
-  },
+  "version": "0.0.0",
   "engines": {
     "node": ">=0.10"
   },
