@@ -5,14 +5,12 @@ A generator for [Yeoman](http://yeoman.io).
 ## Install
 
 ```
-$ npm install -g yo
-
-$ npm install -g generator-bem-stub
+$ npm install generator-bem-stub
 ```
 
 ## Usage
 
-Run from any directory you want:
+Run:
 
 ```
 $ yo bem-stub
