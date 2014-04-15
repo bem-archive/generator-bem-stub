@@ -7,11 +7,7 @@ A generator for [Yeoman](http://yeoman.io).
 ```
 $ npm install -g yo
 
-$ git clone https://github.com/eGavr/generator-bem-stub.git
-
-$ cd generator-bem-stub
-
-$ npm link
+$ npm install -g generator-bem-stub
 ```
 
 ## Usage
