@@ -90,6 +90,7 @@ exports.getTechnologies = function(configPath, techs, toMinify) {
             case 'browser.js':
                 inTechs.push(getTechVal('browser.js'));
                 inTargets.push(toMinify.indexOf('js') > -1 ? 'min.js' : 'js');  // 'bem-core' --> 'browser.js' ==> 'js'
+                inJSON.push('enb-diverse-js');
                 break;
             case 'bemhtml.js':   // 'bem-core' ==> 'bemhtml-old' from package 'enb-bemxjst'
                 inTechs.push(getTechVal('core-bemhtml.js'));
@@ -105,7 +106,7 @@ exports.getTechnologies = function(configPath, techs, toMinify) {
                 inTechs.push(getTechVal(techs[tech]));
                 inTargets.push(toMinify.indexOf(techs[tech]) > -1 ? 'min.' + techs[tech] : techs[tech]);
 
-                (techs[tech] === 'node.js' || techs[tech] === 'browser.js') && inJSON.push('enb-diverse-js');
+                techs[tech] === 'node.js' && inJSON.push('enb-diverse-js');
                 techs[tech] === 'bemtree.js' && inJSON.push('enb-bemxjst');
 
         }

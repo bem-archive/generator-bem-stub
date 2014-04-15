@@ -2,7 +2,7 @@ module.exports = function(config) {
 
     config.nodes('*.bundles/*', function(nodeConfig) {
         nodeConfig.addTechs([<%= design %>
-            [ require('enb/techs/file-provider'), { target: <%= "'?." + target + "'" %> } ],
+            [ require('enb/techs/file-provider'), { target: <%= "'?." + (isBemjson ? 'bemjson.js' : 'bemdecl.js') + "'" %> } ],
 <%= _.map(technologies.inTechs, function(technology) { return "            [ " + technology + " ]"}).join(',\n') %>
         ]);
 
