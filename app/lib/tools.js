@@ -66,37 +66,80 @@ exports.getTechnologies = function(configPath, techs) {
     // 'inLevels' ==> '.bem/levels/' | 'inMake' ==> '.bem/make.js'
     var technologies = {
             // 'bemdecl.js' and 'deps.js' are always included
-            inLevels : [ getTechDecl('bemdecl.js'), getTechDecl('deps.js')],
-            inMake : [ 'bemdecl.js', 'deps.js'],
-            inJSON : []
+            inBlocks: {
+                V2: [ getTechDecl('bemdecl.js'), getTechDecl('deps.js')],
+                notV2: [],
+                defaultTechs: []
+            },
+            inMake: {
+                techs: [ 'bemdecl.js', 'deps.js'],
+                forked: []
+            },
+            inBundles: [],
+            inJSON: []
         },
-        inLevels = technologies.inLevels,
+        inBlocks = technologies.inBlocks,
+        inBundles = technologies.inBundles,
         inMake = technologies.inMake,
         inJSON = technologies.inJSON;   // to 'package.json'
 
     Object.keys(techs).forEach(function(tech) {
         switch (techs[tech]) {
             case 'bemjson.js':  // puts 'bemjson.js' on the top (it always goes the first in technologies)
-                inLevels.unshift(getTechDecl('bemjson.js'));
-                inMake.unshift('bemjson.js');
+                inMake.techs.unshift('bemjson.js');
                 break;
             case 'browser.js+bemhtml':  // 'bem-core' --> 'browser.js+bemhtml' ==> 'vanilla.js', 'browser.js' and 'js'
-                inLevels.push(getTechDecl('browser.js+bemhtml'), getTechDecl('browser.js'), getTechDecl('vanilla.js'), getTechDecl('js'));
-                inMake.push('browser.js+bemhtml');
+                inBlocks.V2.push(getTechDecl('js')),
+                inBlocks.notV2.push('browser.js', 'vanilla.js'),
+                inBlocks.defaultTechs.push('browser.js');
+
+                inBundles.push('browser.js+bemhtml');
+
+                inMake.techs.push('browser.js+bemhtml');
+                inMake.forked.push('browser.js+bemhtml');
                 break;
             case 'node.js': // 'bem-core' --> 'node.js' ==> 'vanilla.js' and 'js'
-                inLevels.push(getTechDecl('node.js'), getTechDecl('vanilla.js'), getTechDecl('js'));
-                inMake.push('node.js');
+                inBlocks.V2.push(getTechDecl('js')),
+                inBlocks.notV2.push('node.js', 'vanilla.js');
+
+                inMake.techs.push('node.js');
+                break;
+            case 'bemhtml':
+                inBlocks.notV2.push('bemhtml');
+                inBlocks.defaultTechs.push('bemhtml');
+
+                inMake.techs.push('bemhtml');
+                break;
+            case 'bemtree':
+                inBlocks.notV2.push('bemtree');
+
+                inMake.techs.push('bemtree');
+                break;
+            case 'html':
+                inBundles.push('html');
+
+                inMake.techs.push('html');
+                break;
+            case 'roole':
+                inBlocks.V2.push(getTechDecl('roole'));
+                inBlocks.defaultTechs.push('roole');
+
+                inMake.techs.push('roole');
+                inMake.forked.push('roole');
+
+                inJSON.push('roole');
                 break;
             default:
-                inLevels.push(getTechDecl(techs[tech]));
-                inMake.push(techs[tech]);
+                inBlocks.V2.push(getTechDecl(techs[tech]));
 
-                techs[tech] === 'roole' && inJSON.push(techs[tech]);
+                inMake.techs.push(techs[tech]);
         }
     });
 
-    technologies.inLevels = _.uniq(inLevels);
+    inBlocks.defaultTechs.indexOf('roole') === -1 && inBlocks.defaultTechs.push('css');
+
+    technologies.inBlocks.V2 = _.uniq(inBlocks.V2);
+    technologies.inBlocks.notV2 = _.uniq(inBlocks.notV2);
 
     return technologies;
 }

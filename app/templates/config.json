@@ -13,13 +13,12 @@
       "enb-bemxjst": "1.1.1",
       "enb-xjst": "1.0.4",
       "bh": "1.1.1",
-      "bem-tools-autoprefixer": "0.0.2",
+      "bem-tools-autoprefixer": "0.0.3",
       "enb-autoprefixer": "0.1.0"
     }
   },
   "technologies": {
     "tools": {
-      "bemjson.js"         : "join(PRJ_TECHS, 'bemjson.js')",
       "bemdecl.js"         : "v2/bemdecl.js",
       "deps.js"            : "v2/deps.js",
       "roole"              : "v2/roole",
@@ -29,14 +28,7 @@
       "ie7.css"            : "v2/ie7.css",
       "ie8.css"            : "v2/ie8.css",
       "ie9.css"            : "v2/ie9.css",
-      "bemtree"            : "join(BEM_TECHS, 'bemtree.js')",
-      "bemhtml"            : "join(BEM_TECHS, 'bemhtml.js')",
-      "node.js"            : "join(BEM_TECHS, 'node.js.js')",
-      "vanilla.js"         : "join(BEM_TECHS, 'vanilla.js.js')",
-      "js"                 : "v2/js-i",
-      "browser.js+bemhtml" : "join(BEM_TECHS, 'browser.js+bemhtml.js')",
-      "browser.js"         : "join(BEM_TECHS, 'browser.js.js')",
-      "html"               : "join(BEM_TECHS, 'html.js')"
+      "js"                 : "v2/js-i"
     },
     "enb": {
       "bemjson.js"         : "require('enb/techs/bemdecl-from-bemjson')",
@@ -60,11 +52,11 @@
   },
   "sourceCode": {
     "tools": {
-      "roole"              : ",\n    'create-css-node' : function(tech, bundleNode, magicNode) {\n        var source = this.getBundlePath('roole');\n        if(this.ctx.arch.hasNode(source)) {\n            return this.createAutoprefixerNode(tech, this.ctx.arch.getNode(source), bundleNode, magicNode);\n        }\n    }",
-      "design"             : "\n\nMAKE.decl('AutoprefixerNode', {\n\n    getPlatform : function() {\n        return this.output.split('.')[0];\n    },\n\n    getBrowsers : function() {\n        var platform = this.getPlatform();\n        switch(platform) {\n",
-      "desktop"            : "\n        case 'desktop':\n            return [\n                'last 2 versions',\n                'ie 10',\n                'ff 24',\n                'opera 12.16'\n            ];\n\n        }\n\n        return this.__base();\n    }\n\n});",
-      "touch-pad"          : "\n        case 'touch-pad':\n            return [\n                'android 4',\n                'ios 5'\n            ];\n\n        }\n\n        return this.__base();\n    }\n\n});",
-      "touch-phone"        : "\n        case 'touch-phone':\n            return [\n                'android 4',\n                'ios 6',\n                'ie 10'\n            ];\n\n        }\n\n        return this.__base();\n    }\n\n});"
+      "roole"              : ",\n\n    'create-css-node' : function(tech, bundleNode, magicNode) {\n        var source = this.getBundlePath('roole');\n        if(this.ctx.arch.hasNode(source)) {\n            return this.createAutoprefixerNode(tech, this.ctx.arch.getNode(source), bundleNode, magicNode);\n        }\n    }",
+      "design"             : "\n\nMAKE.decl('AutoprefixerNode', {\n\n    getBrowsers : function() {\n        return [\n            ",
+      "desktop"            : "'last 2 versions',\n            'ie 10',\n            'ff 24',\n            'opera 12.16'\n        ];\n    }\n\n});",
+      "touch-pad"          : "'android 4',\n            'ios 5'\n        ];\n    }\n\n});",
+      "touch-phone"        : "'android 4',\n            'ios 6',\n            'ie 10'\n        ];\n    }\n\n});"
     },
     "enb": {
       "design"             : "\n            [ require('enb-autoprefixer/techs/css-autoprefixer'), {\n                browserSupport: ",

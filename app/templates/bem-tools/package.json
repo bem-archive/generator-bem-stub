@@ -2,7 +2,11 @@
   "author": "<%= author %>",
   "name": "<%= projectName %>",
   "email": "<%= email %>",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bem/project-stub.git"
+  },
   "engines": {
     "node": ">=0.10"
   },
@@ -10,7 +14,7 @@
     "bem-environ": "1.4.0"
   },
   "devDependencies": {
-    "bem": "0.7.9",
+    "bem": "0.8.0",
     "bower": "1.2.8",
     "bower-npm-install": "0.5.4"
   },

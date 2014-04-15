@@ -1,18 +1,23 @@
 var PATH = require('path'),
     environ = require('bem-environ'),
-    join = PATH.join,
+    getTechResolver = environ.getTechResolver,
 
     PRJ_ROOT = environ.PRJ_ROOT,
-    PRJ_TECHS = join(PRJ_ROOT, '.bem/techs'),
+    PRJ_TECHS = PATH.resolve(PRJ_ROOT, '.bem/techs'),
     BEMCORE_TECHS = environ.getLibPath('bem-core', '.bem/techs');
-    BEMBL_TECHS = environ.getLibPath('bem-bl', 'blocks-common/i-bem/bem/techs/v2');
 
 exports.getTechs = function() {
-
-    return {
-<%= _.map(technologies.inLevels, function(technology) { return "        " + technology}).join(',\n') %>
+    var techs = {
+<%= _.map(technologies.inBlocks.V2, function(tech) { return "        " + tech }).join(',\n') %>
     };
 
+    // use techs from project (.bem/techs)
+    [<%= isBemjson ? "'bemjson.js'" : "" %>].forEach(getTechResolver(techs, PRJ_TECHS));
+
+    // use techs from bem-core library
+    [<%= _.map(technologies.inBlocks.notV2, function(tech) { return "'" + tech + "'" }).join(', ') %>].forEach(getTechResolver(techs, BEMCORE_TECHS));
+
+    return techs;
 };
 
-exports.defaultTechs = ['css', 'browser.js', 'bemhtml'];
+exports.defaultTechs = [<%= _.map(technologies.inBlocks.defaultTechs, function(tech) { return "'" + tech + "'" }).join(', ') %>];
