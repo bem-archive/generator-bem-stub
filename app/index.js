@@ -288,7 +288,6 @@ BemgenGenerator.prototype.askFor = function askFor() {
 
         // 'enb' --> 'bemjson.js' ==> '{ target: '?.bemjson.js' }'
         _this.isBemjson = props.techs.indexOf('bemjson.js') > -1;
-        _this.technologies.inTargets && (_this.target = _this.isBemjson ? 'bemjson.js' : 'bemdecl.js');
 
         // ------------
 
@@ -358,21 +357,16 @@ BemgenGenerator.prototype.app = function app() {
 
         var dirname = path.dirname(f);
 
-        if (this.collectorName === 'enb') {
-            if (this.isBemjson && f === path.join('bundles', 'index', 'index.bemdecl.js')) return;
+        if (this.isBemjson && f === path.join('bundles', 'index', 'index.bemdecl.js')) return;
 
-            if (!this.isBemjson && f === path.join('bundles', 'index', 'index.bemjson.js')) return;
+        if (!this.isBemjson && f === path.join('bundles', 'index', 'index.bemjson.js')) return;
 
-            (f === path.join('bundles', 'index', 'index.bemdecl.js') || f === path.join('bundles', 'index', 'index.bemjson.js')) &&
+        (f === path.join('bundles', 'index', 'index.bemdecl.js') || f === path.join('bundles', 'index', 'index.bemjson.js')) &&
                 (dirname = path.join(platforms[platforms.length - 1] + '.bundles', 'index'));
-        }
-        else {
-            (f === path.join('blocks', '.bem', 'level.js')) && (dirname = path.join(platforms[platforms.length - 1] + '.blocks', '.bem'));
 
-            (f === path.join('bundles', '.bem', 'level.js')) && (dirname = path.join(platforms[platforms.length - 1] + '.bundles', '.bem'));
+        (f === path.join('blocks', '.bem', 'level.js')) && (dirname = path.join(platforms[platforms.length - 1] + '.blocks', '.bem'));
 
-            (f === path.join('bundles', 'index', 'index.bemjson.js')) && (dirname = path.join(platforms[platforms.length - 1] + '.bundles', 'index'));
-        }
+        (f === path.join('bundles', '.bem', 'level.js')) && (dirname = path.join(platforms[platforms.length - 1] + '.bundles', '.bem'));
 
         var src = path.join(root, f);   // copy from
         var dest = path.join(this.destinationRoot(), this.projectName, dirname, path.basename(f));  // where to copy
