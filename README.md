@@ -56,7 +56,7 @@ I will give more examples of ```JSON-files``` later.
 
 ## Installation of dependencies
 
-```generator-bem-stub``` will install all the dependences from ```package.json``` automatically.
+```generator-bem-stub``` will install all dependences from ```package.json``` automatically.
 
 If you want to do it manually:
 
