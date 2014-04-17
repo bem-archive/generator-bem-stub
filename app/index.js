@@ -24,10 +24,6 @@ BemgenGenerator.prototype.askFor = function askFor() {
         _this = this,
         configPath = path.join(_this.sourceRoot(), 'config.json'); // path to 'config.json' in templates
 
-    function validateName(value) {
-        return !value.match(/[^0-9a-zA-Z._-]/g);
-    }
-
     function getLibVersion(base, value) {
         return JSON.parse(_this.readFileAsString(configPath)).versions[base][value];
     }
@@ -37,7 +33,9 @@ BemgenGenerator.prototype.askFor = function askFor() {
         type: 'input',
         name: 'projectName',
         message: 'How would you like to name the project?',
-        validate: validateName,
+        validate: function(input) {
+            return !input.match(/[^0-9a-zA-Z._-]/g);
+        },
         default: 'project-stub'
     }, {
         type: 'input',
@@ -93,7 +91,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
             return choices;
         }
     }, {
-        type: 'list',
+        type: 'checkbox',
         name: 'platforms',
         message: 'What platforms to use?',
         choices: [{
@@ -105,7 +103,10 @@ BemgenGenerator.prototype.askFor = function askFor() {
         }, {
             name: 'touch-phone',
             value: ['common', 'touch', 'touch-phone']
-        }]
+        }],
+        validate: function(input) {
+            return input.length > 0;
+        }
     }, {
         type: 'confirm',
         name: 'design',
@@ -228,7 +229,6 @@ BemgenGenerator.prototype.askFor = function askFor() {
     }];
 
     function getAnswers(props) {
-        console.log(props)
         var collector = require('.' + path.sep + path.join('lib', (_this.collectorName = props.collector) === 'bem-tools' ? 'tools' : 'enb'));
 
         // General information
@@ -253,10 +253,12 @@ BemgenGenerator.prototype.askFor = function askFor() {
         // Platforms
         // ---------
 
+        var platforms = collector.getPlatforms(props.platforms, _this.libs, props.design);
+
         // 'withPath' ==> 'bem-core/common.blocks' | 'withoutPath' ==> 'common'
         _this.platforms = {
-            withPath :  collector.getPlatforms(props.platforms, _this.libs, props.design),
-            withoutPath : props.platforms
+            withPath :  platforms.withPath,
+            withoutPath : platforms.withoutPath
         }
 
         // ---------
@@ -292,25 +294,20 @@ BemgenGenerator.prototype.askFor = function askFor() {
         // ------------
 
 
-        // Source code
+        // Roole
         // -----------
 
-        _this.roole = (_this.collectorName === 'bem-tools' && (props.preprocessor === 'roole' || props.design)) ?
-        {
-            require: '\n\nrequire(\'bem-tools-autoprefixer\').extendMake(MAKE);', // requires 'autoprefixer' in make.js
-            code: collector.getSourceCode(configPath, 'tools', 'roole') // source code for 'roole' in make.js
-        } :
-        {
-            require: '',
-            code: ''
-        }
-
-        var platforms = _this.platforms.withoutPath;
-
-        // gets the source code for 'design'
-        _this.design = props.design ? collector.getSourceCode(configPath, _this.collectorName === 'bem-tools' ? 'tools' : 'enb', 'design', platforms[platforms.length - 1]) : '';
+        _this.roole = (_this.collectorName === 'bem-tools' && (props.preprocessor === 'roole' || props.design));
 
         // -----------
+
+
+        // Design
+        // ------
+
+        _this.design = props.design && (_this.browsers = collector.getBrowsers(configPath, _this.platforms.withoutPath));
+
+        // ------
 
 
         // enb ==> 'index.bemjson.js'
@@ -350,27 +347,41 @@ BemgenGenerator.prototype.askFor = function askFor() {
 
 BemgenGenerator.prototype.app = function app() {
     var platforms = this.platforms.withoutPath;
+
     var root = path.join(this.sourceRoot(), this.collectorName); // path to templates
     var files = this.expandFiles('**', { dot: true, cwd: root });   // roots of all files
 
     this._.each(files, function (f) {
 
-        var dirname = path.dirname(f);
+        function formDirnames(ending, folder) {
+            dirnames = [];
+            Object.keys(platforms).forEach(function(platform) {
+                var pl = platforms[platform];
+
+                dirnames.push(path.join(pl[pl.length - 1] + ending, folder));
+            });
+        }
+
+        var dirnames = [];
+        dirnames.push(path.dirname(f));
 
         if (this.isBemjson && f === path.join('bundles', 'index', 'index.bemdecl.js')) return;
 
         if (!this.isBemjson && f === path.join('bundles', 'index', 'index.bemjson.js')) return;
 
-        (f === path.join('bundles', 'index', 'index.bemdecl.js') || f === path.join('bundles', 'index', 'index.bemjson.js')) &&
-                (dirname = path.join(platforms[platforms.length - 1] + '.bundles', 'index'));
+        (f === path.join('bundles', 'index', 'index.bemdecl.js') ||
+            f === path.join('bundles', 'index', 'index.bemjson.js')) && formDirnames('.bundles', 'index');
 
-        (f === path.join('blocks', '.bem', 'level.js')) && (dirname = path.join(platforms[platforms.length - 1] + '.blocks', '.bem'));
+        (f === path.join('blocks', '.bem', 'level.js')) && formDirnames('.blocks', '.bem');
 
-        (f === path.join('bundles', '.bem', 'level.js')) && (dirname = path.join(platforms[platforms.length - 1] + '.bundles', '.bem'));
+        (f === path.join('bundles', '.bem', 'level.js')) && formDirnames('.bundles', '.bem');
 
         var src = path.join(root, f);   // copy from
-        var dest = path.join(this.destinationRoot(), this.projectName, dirname, path.basename(f));  // where to copy
-        this.template(src, dest);
+
+        for (var dir in dirnames) {
+            var dest = path.join(this.destinationRoot(), this.projectName, dirnames[dir], path.basename(f));  // where to copy
+            this.template(src, dest);
+        }
     }.bind(this));
 };
 
@@ -385,18 +396,18 @@ BemgenGenerator.prototype.addPackages = function addPackages() {
     var configPath = path.join(_this.sourceRoot(), 'config.json'), // path to 'config.json' in templates
         packagePath = path.join(_this.destinationRoot(), _this.projectName, 'package.json'),    // path to 'package.json' in the created project
         pack = JSON.parse(_this.readFileAsString(packagePath)),
-        deps = this.collectorName === 'bem-tools' ? pack.dependencies : pack.devDependencies,
+        deps = _this.collectorName === 'bem-tools' ? pack.dependencies : pack.devDependencies,
         inJSON = _this.technologies.inJSON;
 
     inJSON.map(function(_package) {
         deps[_package] = getLibVersion('other', _package);
     });
 
-    this.collectorName === 'bem-tools' &&
-        this.roole.require !== '' && (deps['bem-tools-autoprefixer'] = getLibVersion('other', 'bem-tools-autoprefixer'));
+    _this.collectorName === 'bem-tools' &&
+        this.roole && (deps['bem-tools-autoprefixer'] = getLibVersion('other', 'bem-tools-autoprefixer'));
 
-    this.collectorName === 'enb' &&
-        this.design && (deps['enb-autoprefixer'] = getLibVersion('other', 'enb-autoprefixer')) &&
+    _this.collectorName === 'enb' &&
+        _this.design && (deps['enb-autoprefixer'] = getLibVersion('other', 'enb-autoprefixer')) &&
             (deps['enb-roole'] = getLibVersion('other', 'enb-roole'))
 
     fs.writeFileSync(packagePath, JSON.stringify(pack, null, '  ') + '\n');
@@ -404,11 +415,30 @@ BemgenGenerator.prototype.addPackages = function addPackages() {
 
 // Makes the necessary empty folders in the created project
 BemgenGenerator.prototype.createFolders = function createFolders() {
-    var platforms = this.platforms.withoutPath;
+    var platforms = this.platforms.withoutPath,
+        projectName = this.projectName;
 
-    this.shell.exec('cd ' + this.projectName +
-        ' && mkdir common.blocks ' + ((platforms[platforms.length - 2] !== 'common') ? platforms[platforms.length - 2] + ".blocks " : '') +
-            ((this.collectorName === 'enb') ? platforms[platforms.length - 1] + ".blocks" : ''));
+    fs.mkdir(path.join(projectName, 'common.blocks'), function(err) {
+        if (err) {
+            this.log.error('Can not create the folder \'common.blocks\'');
+        }
+    });
+
+    (platforms['touch-pad'] || platforms['touch-phone']) &&
+        fs.mkdir(path.join(projectName, 'touch.blocks'), function(err) {
+            if (err) {
+                this.log.error('Can not create the folder \'touch.blocks\'');
+            }
+        });
+
+    this.collectorName === 'enb' &&
+        Object.keys(platforms).forEach(function(platform) {
+            fs.mkdir(path.join(projectName, platform + '.blocks'), function(err) {
+                if (err) {
+                    this.log.error('Can not create the folder ' + platform + '\'.blocks\'')
+                }
+            });
+        });
 }
 
 // --no-deps

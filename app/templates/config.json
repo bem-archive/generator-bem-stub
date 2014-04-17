@@ -50,19 +50,9 @@
       "html"               : "require('enb/techs/html-from-bemjson')"
     }
   },
-  "sourceCode": {
-    "tools": {
-      "roole"              : ",\n\n    'create-css-node' : function(tech, bundleNode, magicNode) {\n        var source = this.getBundlePath('roole');\n        if(this.ctx.arch.hasNode(source)) {\n            return this.createAutoprefixerNode(tech, this.ctx.arch.getNode(source), bundleNode, magicNode);\n        }\n    }",
-      "design"             : "\n\nMAKE.decl('AutoprefixerNode', {\n\n    getBrowsers : function() {\n        return [\n            ",
-      "desktop"            : "'last 2 versions',\n            'ie 10',\n            'ff 24',\n            'opera 12.16'\n        ];\n    }\n\n});",
-      "touch-pad"          : "'android 4',\n            'ios 5'\n        ];\n    }\n\n});",
-      "touch-phone"        : "'android 4',\n            'ios 6',\n            'ie 10'\n        ];\n    }\n\n});"
-    },
-    "enb": {
-      "design"             : "\n            [ require('enb-autoprefixer/techs/css-autoprefixer'), {\n                browserSupport: ",
-      "desktop"            : "['last 2 versions', 'ie 10', 'ff 24', 'opera 12.16'],\n                sourceTarget: '?.noprefix.css'\n            }],",
-      "touch-pad"          : "['android 4', 'ios 5'],\n                sourceTarget: '?.noprefix.css'\n            }],",
-      "touch-phone"        : "['android 4', 'ios 6', 'ie 10'],\n                sourceTarget: '?.noprefix.css'\n            }],"
-    }
+  "autoprefixer": {
+    "desktop": [ "last 2 versions", "ie 10", "ff 24", "opera 12.16" ],
+    "touch-pad": [ "android 4", "ios 5" ],
+    "touch-phone": [ "android 4", "ios 6", "ie 10" ]
   }
 }

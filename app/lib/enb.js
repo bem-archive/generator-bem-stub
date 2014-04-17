@@ -22,26 +22,26 @@ exports.scripts = {
     ]
 };
 
-// gets the piece of code from 'templates/config.json' which should be inserted in the source code
-exports.getSourceCode = function(configPath, collector) {
-    var res = '';
-
-    for (var value = 2; value < arguments.length; value++)
-        res += JSON.parse(fs.readFileSync(configPath).toString()).sourceCode[collector][arguments[value]];
-
-    return res;
-}
-
 // receives, for example, pls['desktop', 'common'] and libs['bem-core'], returns platforms['bem-core/desktop.blocks', 'bem-core/common.blocks']
 exports.getPlatforms = function(pls, libs, design) {
-    var platforms = [];
+    var platforms = {
+        withPath: {},
+        withoutPath: {}
+    };
 
-    libs.map(function(lib) {
-        pls.map(function(platform) {
-            platform.indexOf('touch-') === -1 &&   // 'bem-bl' ==> 'blocks-common', 'blocks-desktop', 'blocks-touch' ...
-                platforms.push(lib.name + '/' + platform + '.blocks');
+    pls.map(function(pl) {
+        var platform = pl[pl.length - 1];
 
-            design && lib.name === 'bem-components' && platforms.push(lib.name + '/design/' + platform + '.blocks');
+        platforms.withPath[platform] = [];
+        platforms.withoutPath[platform] = pl;
+
+        libs.map(function(lib) {
+            pl.map(function(level) {
+                level.indexOf('touch-') === -1 &&   // 'bem-bl' ==> 'blocks-common', 'blocks-desktop', 'blocks-touch' ...
+                    platforms.withPath[platform].push(lib.name + '/' + level + '.blocks');
+
+                design && lib.name === 'bem-components' && platforms.withPath[platform].push(lib.name + '/design/' + level + '.blocks');
+            });
         });
     });
 
@@ -66,8 +66,8 @@ exports.getTechnologies = function(configPath, techs, toMinify) {
 
     inTargets.push(toMinify.indexOf('css') > -1 ? 'min.css' : 'css');
 
-    Object.keys(techs).forEach(function(tech) {
-        switch(techs[tech]) {
+    techs.map(function(tech) {
+        switch(tech) {
             case 'bemjson.js': // 'bemjson.js' ==> only in techs
                 inTechs.push(getTechVal('bemjson.js'));
                 break;
@@ -103,11 +103,11 @@ exports.getTechnologies = function(configPath, techs, toMinify) {
                 inJSON.push('bh');
                 break;
             default:
-                inTechs.push(getTechVal(techs[tech]));
-                inTargets.push(toMinify.indexOf(techs[tech]) > -1 ? 'min.' + techs[tech] : techs[tech]);
+                inTechs.push(getTechVal(tech));
+                inTargets.push(toMinify.indexOf(tech) > -1 ? 'min.' + tech : tech);
 
-                techs[tech] === 'node.js' && inJSON.push('enb-diverse-js');
-                techs[tech] === 'bemtree.js' && inJSON.push('enb-bemxjst');
+                tech === 'node.js' && inJSON.push('enb-diverse-js');
+                tech === 'bemtree.js' && inJSON.push('enb-bemxjst');
 
         }
     });
@@ -120,11 +120,11 @@ exports.getTechnologies = function(configPath, techs, toMinify) {
 }
 
 // preprocessors: 'stylus', 'roole', 'less', 'pure css'
-exports.addPreprocessor = function(input, preprocessor) {
+exports.addPreprocessor = function(techs, preprocessor) {
     // 'bem-core' --> 'bem-components' --> 'design' ==> 'preprocessor === undefined' ==> 'design-roole'
-    input.push(preprocessor || 'design-roole');
+    techs.push(preprocessor || 'design-roole');
 
-    return input;
+    return techs;
 }
 
 // To 'index.bemjson.js'
@@ -142,4 +142,14 @@ exports.getScripts = function(techs) {
     });
 
     return scripts;
+}
+
+exports.getBrowsers = function(configPath, platforms) {
+    var browsers = {};
+
+    Object.keys(platforms).forEach(function(platform) {
+        browsers[platform] = JSON.parse(fs.readFileSync(configPath).toString()).autoprefixer[platform];
+    });
+
+    return browsers;
 }

@@ -24,25 +24,25 @@ exports.scripts = {
     ],
 };
 
-// gets the piece of code from 'templates/config.json' which should be inserted in the source code
-exports.getSourceCode = function(configPath, collector) {
-    var res = '';
-
-    for (var value = 2; value < arguments.length; value++)
-        res += JSON.parse(fs.readFileSync(configPath).toString()).sourceCode[collector][arguments[value]];
-
-    return res;
-}
-
 // receives, for example, pls['desktop', 'common'] and libs['bem-core'], returns platforms['bem-core/desktop.blocks', 'bem-core/common.blocks']
 exports.getPlatforms = function(pls, libs, design) {
-    var platforms = [];
+    var platforms = {
+        withPath: {},
+        withoutPath: {}
+    };
 
-    libs.map(function(lib) {
-        pls.map(function(platform) {
-            platforms.push(lib.name + '/' + platform + '.blocks');
+    pls.map(function(pl) {
+        var platform = pl[pl.length - 1];
 
-            design && lib.name === 'bem-components' && platforms.push(lib.name + '/design/' + platform + '.blocks');
+        platforms.withPath[platform] = [];
+        platforms.withoutPath[platform] = pl;
+
+        libs.map(function(lib) {
+            pl.map(function(level) {
+                platforms.withPath[platform].push(lib.name + '/' + level + '.blocks');
+
+                design && lib.name === 'bem-components' && platforms.withPath[platform].push(lib.name + '/design/' + level + '.blocks');
+            });
         });
     });
 
@@ -54,9 +54,9 @@ exports.getTechnologies = function(configPath, techs) {
     function getTechDecl(tech) {
         // gets the 'techs[value]' property from 'templates/config.json'
         function getTechVal(tech) {
-            var _tech = JSON.parse(fs.readFileSync(configPath).toString()).technologies.tools[tech].replace('BEM_TECHS', 'BEMCORE_TECHS');
+            var _tech = JSON.parse(fs.readFileSync(configPath).toString()).technologies.tools[tech];
 
-            return _tech.indexOf('join(') > -1 ? _tech : '\'' + _tech + '\'';
+            return '\'' + _tech + '\'';
         }
 
         // for example, returns ==> 'bemjson.js'         : join(PRJ_TECHS, 'bemjson.js')
@@ -83,8 +83,8 @@ exports.getTechnologies = function(configPath, techs) {
         inMake = technologies.inMake,
         inJSON = technologies.inJSON;   // to 'package.json'
 
-    Object.keys(techs).forEach(function(tech) {
-        switch (techs[tech]) {
+    techs.map(function(tech) {
+        switch (tech) {
             case 'bemjson.js':  // puts 'bemjson.js' on the top (it always goes the first in technologies)
                 inMake.techs.unshift('bemjson.js');
                 break;
@@ -130,9 +130,9 @@ exports.getTechnologies = function(configPath, techs) {
                 inJSON.push('roole');
                 break;
             default:
-                inBlocks.V2.push(getTechDecl(techs[tech]));
+                inBlocks.V2.push(getTechDecl(tech));
 
-                inMake.techs.push(techs[tech]);
+                inMake.techs.push(tech);
         }
     });
 
@@ -145,31 +145,41 @@ exports.getTechnologies = function(configPath, techs) {
 }
 
 // preprocessors: 'roole', 'pure css'
-exports.addPreprocessor = function(input, preprocessor) {
+exports.addPreprocessor = function(techs, preprocessor) {
     if (preprocessor === 'css') {
-        input.splice(input.indexOf('bemjson.js') + 1, 0, 'css');
+        techs.splice(techs.indexOf('bemjson.js') + 1, 0, 'css');
 
-        return input;
+        return techs;
     }
     else if (preprocessor === 'roole' || !preprocessor) {
-        input.splice(input.indexOf('bemjson.js') + 1, 0, 'roole', 'css');
+        techs.splice(techs.indexOf('bemjson.js') + 1, 0, 'roole', 'css');
 
-        return input;
+        return techs;
     }
 
-    input.splice(input.indexOf('bemjson.js') + 1, 0, preprocessor);
+    techs.splice(techs.indexOf('bemjson.js') + 1, 0, preprocessor);
 
-    return input;
+    return techs;
 }
 
 // 'ieN' ==> ie.css'
-exports.addIe = function(input) {
-    var ie = /ie[0-9]{0,2}\.css/.exec(input);
+exports.addIe = function(techs) {
+    var ie = /ie[0-9]{0,2}\.css/.exec(techs);
 
     if (ie) {
-        input.splice(input.indexOf(ie[0]), 0, 'ie.css');
-        input = _.uniq(input);
+        techs.splice(techs.indexOf(ie[0]), 0, 'ie.css');
+        techs = _.uniq(techs);
     }
 
-    return input;
+    return techs;
+}
+
+exports.getBrowsers = function(configPath, platforms) {
+    var browsers = {};
+
+    Object.keys(platforms).forEach(function(platform) {
+        browsers[platform] = JSON.parse(fs.readFileSync(configPath).toString()).autoprefixer[platform];
+    });
+
+    return browsers;
 }
