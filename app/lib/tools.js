@@ -1,7 +1,6 @@
 'use strict';
 var fs = require('fs'),
-    _ = require('lodash'),
-    path = require('path');
+    _ = require('lodash');
 
 // technologies
 exports.commonTech = [
@@ -24,7 +23,28 @@ exports.scripts = {
     ],
 };
 
-// receives, for example, pls['desktop', 'common'] and libs['bem-core'], returns platforms['bem-core/desktop.blocks', 'bem-core/common.blocks']
+/**
+ * Returns platforms with path and without path
+ *
+ * @example
+ *  [ [ 'common', 'desktop' ], [ 'common', 'touch', 'touch-pad' ] ] and [ 'bem-core' ] ==>
+ *
+ *      ->  withPath:
+ *              { desktop: [ 'bem-core/common.blocks', 'bem-core/desktop.blocks' ],
+ *                'touch-pad':
+ *                  [ 'bem-core/common.blocks',
+ *                    'bem-core/touch.blocks',
+ *                    'bem-core/touch-pad.blocks' ] },
+ *      ->  withouPath:
+ *              { desktop: [ 'common', 'desktop' ],
+ *                'touch-pad': [ 'common', 'touch', 'touch-pad' ] } }
+ *
+ * @param {Array of arrays} pls
+ * @param {Array} libs
+ * @param {Boolean} design
+ * @returns {Object} platforms
+ */
+
 exports.getPlatforms = function(pls, libs, design) {
     var platforms = {
         withPath: {},
@@ -49,21 +69,47 @@ exports.getPlatforms = function(pls, libs, design) {
     return platforms;
 }
 
-// handles selected technologies
+/**
+ * Returns technologies
+ *
+ * @param {String} configPath
+ * @param {Array} techs
+ * @returns {Object} technologies
+ */
+
 exports.getTechnologies = function(configPath, techs) {
+
     function getTechDecl(tech) {
-        // gets the 'techs[value]' property from 'templates/config.json'
+
         function getTechVal(tech) {
             var _tech = JSON.parse(fs.readFileSync(configPath).toString()).technologies.tools[tech];
 
             return '\'' + _tech + '\'';
         }
 
-        // for example, returns ==> 'bemjson.js'         : join(PRJ_TECHS, 'bemjson.js')
+        /*
+            for example, returns ==>
+
+                'bemdecl.js'         : 'v2/bemdecl.js'
+        */
         return '\'' + tech + '\'' + new Array(22 - tech.length).join(' ') + ': ' + getTechVal(tech);
     }
 
-    // 'inLevels' ==> '.bem/levels/' | 'inMake' ==> '.bem/make.js'
+    /*
+        'inBlocks' ==> '.bem/levels/blocks.js'
+            'V2'           -->  'techs',
+            'notV2'        -->  techs from 'bem-core' library,
+            'defaultTechs' -->  'exports.defaultTechs'
+
+        'inMake' ==> '.bem/make.js'
+            techs   --> 'getTechs',
+            forked  --> 'getForkedTechs'
+
+        'inBundles' ==> '.bem/levels/bundles.js' --> 'use techs from lib bem-core',
+        'inJSON' ==> 'package.json'
+
+    */
+
     var technologies = {
             // 'bemdecl.js' and 'deps.js' are always included
             inBlocks: {
@@ -144,7 +190,14 @@ exports.getTechnologies = function(configPath, techs) {
     return technologies;
 }
 
-// preprocessors: 'roole', 'pure css'
+/**
+ * Adds chosen preprocessor in technologies
+ *
+ * @param {Array} techs
+ * @param {String} preprocessor
+ * @returns {Array} techs
+ */
+
 exports.addPreprocessor = function(techs, preprocessor) {
     if (preprocessor === 'css') {
         techs.splice(techs.indexOf('bemjson.js') + 1, 0, 'css');
@@ -162,7 +215,13 @@ exports.addPreprocessor = function(techs, preprocessor) {
     return techs;
 }
 
-// 'ieN' ==> ie.css'
+/**
+ * Adds 'ie.css' to technologies
+ *
+ * @param {Array} techs
+ * @returns {Array} techs
+ */
+
 exports.addIe = function(techs) {
     var ie = /ie[0-9]{0,2}\.css/.exec(techs);
 
@@ -173,6 +232,14 @@ exports.addIe = function(techs) {
 
     return techs;
 }
+
+/**
+ * Returns browsers for given platforms
+ *
+ * @param {String} configPath
+ * @param {Object} platforms
+ * @returns {Object} browsers
+ */
 
 exports.getBrowsers = function(configPath, platforms) {
     var browsers = {};

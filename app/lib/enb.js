@@ -22,7 +22,25 @@ exports.scripts = {
     ]
 };
 
-// receives, for example, pls['desktop', 'common'] and libs['bem-core'], returns platforms['bem-core/desktop.blocks', 'bem-core/common.blocks']
+/**
+ * Returns platforms with path and without path
+ *
+ * @example
+ *  [ [ 'common', 'desktop' ], [ 'common', 'touch', 'touch-pad' ] ] and [ 'bem-core' ] ==>
+ *
+ *      ->  withPath:
+ *              { desktop: [ 'bem-core/common.blocks', 'bem-core/desktop.blocks' ],
+ *                'touch-pad': [ 'bem-core/common.blocks', 'bem-core/touch.blocks' ] }
+ *      ->  withouPath:
+ *              { desktop: [ 'common', 'desktop' ],
+ *                'touch-pad': [ 'common', 'touch', 'touch-pad' ] } }
+ *
+ * @param {Array of arrays} pls
+ * @param {Array} libs
+ * @param {Boolean} design
+ * @returns {Object} platforms
+ */
+
 exports.getPlatforms = function(pls, libs, design) {
     var platforms = {
         withPath: {},
@@ -37,7 +55,7 @@ exports.getPlatforms = function(pls, libs, design) {
 
         libs.map(function(lib) {
             pl.map(function(level) {
-                level.indexOf('touch-') === -1 &&   // 'bem-bl' ==> 'blocks-common', 'blocks-desktop', 'blocks-touch' ...
+                level.indexOf('touch-') === -1 && // 'touch-pad' and 'touch-phone' can not be added
                     platforms.withPath[platform].push(lib.name + '/' + level + '.blocks');
 
                 design && lib.name === 'bem-components' && platforms.withPath[platform].push(lib.name + '/design/' + level + '.blocks');
@@ -48,13 +66,27 @@ exports.getPlatforms = function(pls, libs, design) {
     return platforms;
 }
 
-// handles selected technologies
+/**
+ * Returns technologies
+ *
+ * @param {String} configPath
+ * @param {Array} techs
+ * @param {Array} toMinify
+ * @returns {Object} technologies
+ */
+
 exports.getTechnologies = function(configPath, techs, toMinify) {
+
     function getTechVal(tech) {
         return JSON.parse(fs.readFileSync(configPath).toString()).technologies.enb[tech];
     }
 
-    // 'inTechs' ==> 'nodeConfig.addTechs' | 'inTargets' ==> 'nodeConfig.addTargets'
+    /*
+       'inTechs' ==> '.enb/make.js' --> 'nodeConfig.addTechs',
+       'inTargets' ==> '.enb/make.js' --> 'nodeConfig.addTargets',
+       'inJSON' ==> 'package.json',
+    */
+
     var technologies = {
             inTechs : [ 'require(\'enb/techs/files\')', 'require(\'enb/techs/deps\')' ],  // 'files' and 'deps' are always included
             inTargets : [],
@@ -62,13 +94,13 @@ exports.getTechnologies = function(configPath, techs, toMinify) {
         },
         inTechs = technologies.inTechs,
         inTargets = technologies.inTargets,
-        inJSON = technologies.inJSON;   // to 'package.json'
+        inJSON = technologies.inJSON;
 
     inTargets.push(toMinify.indexOf('css') > -1 ? 'min.css' : 'css');
 
     techs.map(function(tech) {
         switch(tech) {
-            case 'bemjson.js': // 'bemjson.js' ==> only in techs
+            case 'bemjson.js': // 'bemjson.js' ==> only 'inTechs'
                 inTechs.push(getTechVal('bemjson.js'));
                 break;
             case 'stylus':
@@ -99,7 +131,7 @@ exports.getTechnologies = function(configPath, techs, toMinify) {
                 break;
             case 'bh':
                 inTechs.push(getTechVal('bh'));
-                inTargets.push(toMinify.indexOf('bemhtml.js') > -1 ? 'min.bemhtml.js' : 'bemhtml.js');   // 'bh' ==> '?.bemhtml.js' in 'targets'
+                inTargets.push(toMinify.indexOf('bemhtml.js') > -1 ? 'min.bemhtml.js' : 'bemhtml.js');   // 'bh' ==> '?.bemhtml.js' 'inTargets'
                 inJSON.push('bh');
                 break;
             default:
@@ -119,7 +151,14 @@ exports.getTechnologies = function(configPath, techs, toMinify) {
     return technologies;
 }
 
-// preprocessors: 'stylus', 'roole', 'less', 'pure css'
+/**
+ * Adds chosen preprocessor in technologies
+ *
+ * @param {Array} techs
+ * @param {String} preprocessor
+ * @returns {Array} techs
+ */
+
 exports.addPreprocessor = function(techs, preprocessor) {
     // 'bem-core' --> 'bem-components' --> 'design' ==> 'preprocessor === undefined' ==> 'design-roole'
     techs.push(preprocessor || 'design-roole');
@@ -127,7 +166,13 @@ exports.addPreprocessor = function(techs, preprocessor) {
     return techs;
 }
 
-// To 'index.bemjson.js'
+/**
+ * Returns scripts which will be added to 'index.bemjson.js'
+ *
+ * @param {Array} techs
+ * @returns {Array} scripts
+ */
+
 exports.getScripts = function(techs) {
     var scripts = [];
 
@@ -143,6 +188,14 @@ exports.getScripts = function(techs) {
 
     return scripts;
 }
+
+/**
+ * Returns browsers for given platforms
+ *
+ * @param {String} configPath
+ * @param {Object} platforms
+ * @returns {Object} browsers
+ */
 
 exports.getBrowsers = function(configPath, platforms) {
     var browsers = {};
