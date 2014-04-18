@@ -2,8 +2,7 @@
 var util = require('util'),
     path = require('path'),
     yeoman = require('yeoman-generator'),
-    fs = require('fs'),
-    _ = require('lodash');
+    fs = require('fs');
 
 var BemgenGenerator = module.exports = function BemgenGenerator(args, options, config) {
     yeoman.generators.Base.apply(this, arguments);
@@ -105,7 +104,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
             value: ['common', 'touch', 'touch-phone']
         }],
         validate: function(input) {
-            return input.length > 0;
+            return input.length > 0 ? true : 'Please select something';
         }
     }, {
         type: 'confirm',
@@ -275,9 +274,9 @@ BemgenGenerator.prototype.askFor = function askFor() {
         // Technologies
         // ------------
 
-        // 'ieN' ==> 'ie.css' | preprocessor
         props.techs = collector.addPreprocessor(props.techs, props.preprocessor);
 
+        // 'bem-tools' --> 'ieN' ==> 'ie.css'
         _this.collectorName === 'bem-tools' && (props.techs = collector.addIe(props.techs));
 
         // 'enb' --> 'bem-core' ==> 'bemhtml', 'bh'
@@ -285,21 +284,19 @@ BemgenGenerator.prototype.askFor = function askFor() {
 
         props.html && props.techs.push('html');
 
-        // if 'bem-tools', returns ==> 'technologies.inLevels' && 'technologies.inMake' | if 'enb', returns ==> 'technologies.inTechs' && 'technologies.inTargets'
         _this.technologies = collector.getTechnologies(configPath, props.techs, _this.toMinify);
 
-        // 'enb' --> 'bemjson.js' ==> '{ target: '?.bemjson.js' }'
         _this.isBemjson = props.techs.indexOf('bemjson.js') > -1;
 
         // ------------
 
 
         // Roole
-        // -----------
+        // -----
 
         _this.roole = (_this.collectorName === 'bem-tools' && (props.preprocessor === 'roole' || props.design));
 
-        // -----------
+        // -----
 
 
         // Design
@@ -333,7 +330,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
             var answersFromJSON = params.first && JSON.parse(_this.readFileAsString(params.first));
         }
         catch(e) {
-            this.log.error('Invalid path to JSON-file');
+            this.log.error('Invalid parameter');
             process.exit(1);
         }
 
@@ -342,7 +339,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
 
     answersFromJSON ?
         getAnswers(answersFromJSON) :
-        _this.prompt(prompts, function (props) { getAnswers(props); }.bind(_this));
+        _this.prompt(prompts, function(props) { getAnswers(props); }.bind(_this));
 };
 
 BemgenGenerator.prototype.app = function app() {
@@ -394,15 +391,20 @@ BemgenGenerator.prototype.addPackages = function addPackages() {
     }
 
     var configPath = path.join(_this.sourceRoot(), 'config.json'), // path to 'config.json' in templates
+
         packagePath = path.join(_this.destinationRoot(), _this.projectName, 'package.json'),    // path to 'package.json' in the created project
+
         pack = JSON.parse(_this.readFileAsString(packagePath)),
+
         deps = _this.collectorName === 'bem-tools' ? pack.dependencies : pack.devDependencies,
+
         inJSON = _this.technologies.inJSON;
 
     inJSON.map(function(_package) {
         deps[_package] = getLibVersion('other', _package);
     });
 
+    // autoprefixer
     _this.collectorName === 'bem-tools' &&
         this.roole && (deps['bem-tools-autoprefixer'] = getLibVersion('other', 'bem-tools-autoprefixer'));
 
