@@ -66,6 +66,17 @@ $ yo bem-stub --no-deps
 $ yo bem-stub ПОЛНЫЙ_ПУТЬ_К_JSON-ФАЙЛУ --no-deps
 ```
 
+## Локализация
+
+```generator-bem-stub``` поддерживает два языка - русский и английский.
+
+Чтобы переключиться между языками:
+
+```
+$ yo bem-stub --language
+
+```
+
 ## Лицензия
 
 [MIT License](http://en.wikipedia.org/wiki/MIT_License)

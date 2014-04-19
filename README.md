@@ -37,10 +37,7 @@ For example, we have the file with answers ```example.json``` which lies in the 
     "version": "v2.1.0"
   },
   "addLibraries": [],
-  "platforms": [
-    "common",
-    "desktop"
-  ],
+  "platforms": [ [ "common", "desktop" ] ],
   "preprocessor": "roole",
   "techs": []
 }
@@ -66,6 +63,16 @@ If you want to do it manually:
 $ yo bem-stub --no-deps
 
 $ yo bem-stub FULL_PATH_TO_JSON-FILE --no-deps
+```
+
+## Localization
+
+```generator-bem-stub``` provides two languages - English and Russian.
+
+If you want to switch between languages:
+
+```
+$ yo bem-stub --language
 ```
 
 ## License
