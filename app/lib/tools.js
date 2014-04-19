@@ -98,14 +98,14 @@ exports.getTechnologies = function(configPath, techs) {
     /*
         'inBlocks' ==> '.bem/levels/blocks.js'
             'V2'           -->  'techs',
-            'notV2'        -->  techs from 'bem-core' library,
+            'notV2'        -->  'techs' from 'bem-core' library,
             'defaultTechs' -->  'exports.defaultTechs'
 
         'inMake' ==> '.bem/make.js'
             techs   --> 'getTechs',
             forked  --> 'getForkedTechs'
 
-        'inBundles' ==> '.bem/levels/bundles.js' --> 'use techs from lib bem-core',
+        'inBundles' ==> '.bem/levels/bundles.js' --> use 'techs' from 'bem-core' library,
         'inJSON' ==> 'package.json'
 
     */
@@ -127,7 +127,7 @@ exports.getTechnologies = function(configPath, techs) {
         inBlocks = technologies.inBlocks,
         inBundles = technologies.inBundles,
         inMake = technologies.inMake,
-        inJSON = technologies.inJSON;   // to 'package.json'
+        inJSON = technologies.inJSON;
 
     techs.map(function(tech) {
         switch (tech) {
