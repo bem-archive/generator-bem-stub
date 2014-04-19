@@ -19,37 +19,68 @@ var BemgenGenerator = module.exports = function BemgenGenerator(args, options, c
 util.inherits(BemgenGenerator, yeoman.generators.Base);
 
 BemgenGenerator.prototype.askFor = function askFor() {
+
     var cb = this.async(),
         _this = this,
-        configPath = path.join(_this.sourceRoot(), 'config.json'); // path to 'config.json' in templates
+        configPath = path.join(_this.sourceRoot(), 'config.json'), // path to 'config.json' in templates
+        localPath = path.join(_this.sourceRoot(), '..', 'local', 'local.json'), // path to 'local.json' in local
+        local = JSON.parse(_this.readFileAsString(localPath));
 
     function getLibVersion(base, value) {
         return JSON.parse(_this.readFileAsString(configPath)).versions[base][value];
     }
 
+    function getQuestion(question) {
+        var language = local.language;
+
+        return local[language][question];
+    }
+
     // questions to user
     var prompts = [{
+        type: 'list',
+        name: 'appLanguage',
+        message: getQuestion('appLanguage'),
+        choices: [{
+            value: 'English'
+        }, {
+            name: 'Русский',
+            value: 'Russian'
+        }],
+        when: function() {
+            return _this.appLanguage;
+        },
+        filter: function(input) {
+            local.language = input;
+
+            fs.writeFileSync(localPath, JSON.stringify(local, null, '  ') + '\n');
+
+            _this.log.write('').ok(input === 'English' ? 'English language has been chosen' : 'Выбран русский язык');
+
+            process.exit(1);
+        }
+    }, {
         type: 'input',
         name: 'projectName',
-        message: 'How would you like to name the project?',
+        message: getQuestion('projectName'),
         validate: function(input) {
-            return !input.match(/[^0-9a-zA-Z._-]/g);
+            return !input.match(/[^0-9a-zA-Z._-]/g) ? true : local.language === 'English' ? 'Please, enter a valid value' : 'Пожалуйста, введите корректное значение';
         },
         default: 'project-stub'
     }, {
         type: 'input',
         name: 'author',
-        message: 'Who will mantain this project?',
+        message: getQuestion('author'),
         default: _this.user.git.username || 'Ivan Ivanovich'
     }, {
         type: 'input',
         name: 'email',
-        message: 'Which email should we use?',
+        message: getQuestion('email'),
         default: _this.user.git.email || 'ivan@yandex-team.ru'
     }, {
         type: 'list',
         name: 'collector',
-        message: 'What collector to use?',
+        message: getQuestion('collector'),
         choices: [{
             value: 'bem-tools'
         }, {
@@ -58,7 +89,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'list',
         name: 'baseLibrary',
-        message: 'What base library to use?',
+        message: getQuestion('baseLibrary'),
         choices: function() {
             var choices = [];
 
@@ -75,7 +106,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'checkbox',
         name: 'addLibraries',
-        message: 'Would you like any additional libraries?',
+        message: getQuestion('addLibraries'),
         choices: function(input) {  // 'bem-core' ==> 'bem-components'
             var choices = [];
 
@@ -92,7 +123,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'checkbox',
         name: 'platforms',
-        message: 'What platforms to use?',
+        message: getQuestion('platforms'),
         choices: [{
             name: 'desktop',
             value: ['common', 'desktop']
@@ -104,12 +135,12 @@ BemgenGenerator.prototype.askFor = function askFor() {
             value: ['common', 'touch', 'touch-phone']
         }],
         validate: function(input) {
-            return input.length > 0 ? true : 'Please select something';
+            return input.length > 0 ? true : local.language === 'English' ? 'Please, select something' : 'Пожалуйста, выберите что-нибудь';
         }
     }, {
         type: 'confirm',
         name: 'design',
-        message: 'Use design from bem-components?',
+        message: getQuestion('design'),
         default: true,
         when: function(input) {     // 'bem-core' --> 'bem-components' ==> 'design'
             var useComponents;
@@ -123,7 +154,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'list',
         name: 'preprocessor',
-        message: 'What preprocessor to use?',
+        message: getQuestion('preprocessor'),
         choices: function(input) {
             // returns the list of possible preprocessors in dependence of the previous answers
             var isEnb = input.collector === 'enb';
@@ -168,7 +199,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'checkbox',
         name: 'techs',
-        message: 'What technologies to use?',
+        message: getQuestion('techs'),
         choices: function(input) {
             // returns the list of possible technologies to choose in dependence of the previous answers
             var collector = require('.' + path.sep + path.join('lib', input.collector === 'bem-tools' ? 'tools' : 'enb'));
@@ -178,14 +209,14 @@ BemgenGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'list',
         name: 'templateSystem',
-        message: 'What template system to use?',
+        message: getQuestion('templateSystem'),
         choices: [{
             name: 'bemhtml',
             value: 'bemhtml.js'
         }, {
             value: 'bh'
         }, {
-            name: 'My template system',
+            name: local.language === 'English' ? 'My template system' : 'Мой шаблонизатор',
             value: 'my'
         }],
         when: function(input) { // 'enb' --> 'bem-core' ==> 'template system'
@@ -194,7 +225,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'confirm',
         name: 'html',
-        message: 'Build static html?',
+        message: getQuestion('html'),
         default: true,
         when: function(input) { // 'bemjson' --> 'template system' ==> 'html'
             if (input.collector === 'bem-tools') return input.techs.indexOf('bemjson.js') > -1 && input.techs.indexOf('bemhtml') > -1;
@@ -205,7 +236,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'checkbox',
         name: 'minimization',
-        message: 'Which files do you want to minimize?',
+        message: getQuestion('minimization'),
         choices: function(input) {
             var toMinimize = [ { value: 'css' } ];
 
@@ -228,6 +259,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
     }];
 
     function getAnswers(props) {
+
         var collector = require('.' + path.sep + path.join('lib', (_this.collectorName = props.collector) === 'bem-tools' ? 'tools' : 'enb'));
 
         // General information
@@ -317,29 +349,47 @@ BemgenGenerator.prototype.askFor = function askFor() {
         cb();
     }
 
-    //----------------------------------------------------------START--------------------------------------------------------------------//
+    //--------------------START--------------------//
 
     var params = {
         first: process.argv[3],
         second: process.argv[4]
     }
 
-    if (_this.npmi = !(params.first === '--no-deps')) {
-        // 'answersFromJSON !== undefined' when a valid path to JSON-file was given as a first parameter, for example, 'yo bemgen test.json'
-        try {
-            var answersFromJSON = params.first && JSON.parse(_this.readFileAsString(params.first));
-        }
-        catch(e) {
-            this.log.error('Invalid parameter');
-            process.exit(1);
-        }
+    _this.npmi = true;
 
-        _this.npmi = !(params.second === '--no-deps');
+    try {
+        switch (params.first) {
+            case '--language':
+                _this.appLanguage = true;
+                if (params.second) throw e;
+                break;
+            case '--no-deps':
+                _this.npmi = false;
+                if (params.second) throw e;
+                break;
+            default:
+                /*
+                    'answersFromJSON' !== 'undefined' when a valid path to 'JSON-file' was given as a first parameter,
+                    for example, 'yo bem-stub test.json'
+                */
+                var answersFromJSON = params.first && JSON.parse(_this.readFileAsString(params.first));
+
+                _this.npmi = !(params.second === '--no-deps')
+
+                if (params.second && _this.npmi) throw e;
+        }
+    }
+    catch(e) {
+        this.log.error('Invalid parameter');
+        process.exit(1);
     }
 
     answersFromJSON ?
         getAnswers(answersFromJSON) :
         _this.prompt(prompts, function(props) { getAnswers(props); }.bind(_this));
+
+    //---------------------------------------------//
 };
 
 BemgenGenerator.prototype.app = function app() {
