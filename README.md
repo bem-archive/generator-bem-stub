@@ -1,6 +1,6 @@
 # generator-bem-stub
 
-This README also available in [russian](https://github.com/eGavr/generator-bem-stub/blob/v0.0.1/README.ru.md).
+This README is also available in [russian](https://github.com/eGavr/generator-bem-stub/blob/v0.0.1/README.ru.md).
 
 A generator of BEM-projects for [Yeoman](http://yeoman.io).
 
