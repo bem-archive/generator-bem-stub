@@ -35,10 +35,7 @@ $ yo bem-stub ПОЛНЫЙ_ПУТЬ_К_JSON-ФАЙЛУ
     "version": "v2.1.0"
   },
   "addLibraries": [],
-  "platforms": [
-    "common",
-    "desktop"
-  ],
+  "platforms": [ [ "common", "desktop" ] ],
   "preprocessor": "roole",
   "techs": []
 }
@@ -74,7 +71,6 @@ $ yo bem-stub ПОЛНЫЙ_ПУТЬ_К_JSON-ФАЙЛУ --no-deps
 
 ```
 $ yo bem-stub --language
-
 ```
 
 ## Лицензия
