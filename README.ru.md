@@ -1,0 +1,3 @@
+# generator-bem-stub
+
+Скоро...
