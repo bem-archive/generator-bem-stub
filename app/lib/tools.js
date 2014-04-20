@@ -131,9 +131,11 @@ exports.getTechnologies = function(configPath, techs) {
 
     techs.map(function(tech) {
         switch (tech) {
+
             case 'bemjson.js':  // puts 'bemjson.js' on the top (it always goes the first in technologies)
                 inMake.techs.unshift('bemjson.js');
                 break;
+
             case 'browser.js+bemhtml':  // 'bem-core' --> 'browser.js+bemhtml' ==> 'vanilla.js', 'browser.js' and 'js'
                 inBlocks.V2.push(getTechDecl('js')),
                 inBlocks.notV2.push('browser.js', 'vanilla.js'),
@@ -144,28 +146,33 @@ exports.getTechnologies = function(configPath, techs) {
                 inMake.techs.push('browser.js+bemhtml');
                 inMake.forked.push('browser.js+bemhtml');
                 break;
+
             case 'node.js': // 'bem-core' --> 'node.js' ==> 'vanilla.js' and 'js'
                 inBlocks.V2.push(getTechDecl('js')),
                 inBlocks.notV2.push('node.js', 'vanilla.js');
 
                 inMake.techs.push('node.js');
                 break;
+
             case 'bemhtml':
                 inBlocks.notV2.push('bemhtml');
                 inBlocks.defaultTechs.push('bemhtml');
 
                 inMake.techs.push('bemhtml');
                 break;
+
             case 'bemtree':
                 inBlocks.notV2.push('bemtree');
 
                 inMake.techs.push('bemtree');
                 break;
+
             case 'html':
                 inBundles.push('html');
 
                 inMake.techs.push('html');
                 break;
+
             case 'roole':
                 inBlocks.V2.push(getTechDecl('roole'));
                 inBlocks.defaultTechs.push('roole');
@@ -175,6 +182,7 @@ exports.getTechnologies = function(configPath, techs) {
 
                 inJSON.push('roole');
                 break;
+
             default:
                 inBlocks.V2.push(getTechDecl(tech));
 

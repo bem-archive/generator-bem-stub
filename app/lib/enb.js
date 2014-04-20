@@ -100,42 +100,62 @@ exports.getTechnologies = function(configPath, techs, toMinify) {
 
     techs.map(function(tech) {
         switch(tech) {
+
             case 'bemjson.js': // 'bemjson.js' ==> only 'inTechs'
                 inTechs.push(getTechVal('bemjson.js'));
                 break;
+
             case 'stylus':
                 inTechs.push(getTechVal('stylus'));
+
                 inJSON.push('enb-stylus');
                 break;
+
             case 'roole':
                 inTechs.push(getTechVal('roole'));
+
                 inJSON.push('roole', 'enb-roole');  // 'roole' ==> 'roole', 'enb-roole' in 'package.json'
                 break;
+
             case 'design-roole':
                 inTechs.push(getTechVal('design-roole'));
+
                 inJSON.push('roole', 'enb-roole');
                 break;
+
             case 'less':
                 inTechs.push(getTechVal('less'));
+
                 inJSON.push('less');
                 break;
+
             case 'browser.js':
                 inTechs.push(getTechVal('browser.js'));
+
                 inTargets.push(toMinify.indexOf('js') > -1 ? 'min.js' : 'js');  // 'bem-core' --> 'browser.js' ==> 'js'
+
                 inJSON.push('enb-diverse-js');
                 break;
+
             case 'bemhtml.js':   // 'bem-core' ==> 'bemhtml-old' from package 'enb-bemxjst'
                 inTechs.push(getTechVal('core-bemhtml.js'));
+
                 inTargets.push(toMinify.indexOf('bemhtml.js') > -1 ? 'min.bemhtml.js' : 'bemhtml.js');
+
                 inJSON.push('enb-bemxjst');
                 break;
+
             case 'bh':
                 inTechs.push(getTechVal('bh'));
+
                 inTargets.push(toMinify.indexOf('bemhtml.js') > -1 ? 'min.bemhtml.js' : 'bemhtml.js');   // 'bh' ==> '?.bemhtml.js' 'inTargets'
+
                 inJSON.push('bh');
                 break;
+
             default:
                 inTechs.push(getTechVal(tech));
+
                 inTargets.push(toMinify.indexOf(tech) > -1 ? 'min.' + tech : tech);
 
                 tech === 'node.js' && inJSON.push('enb-diverse-js');
