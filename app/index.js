@@ -4,7 +4,7 @@ var util = require('util'),
     yeoman = require('yeoman-generator'),
     fs = require('fs');
 
-var BemgenGenerator = module.exports = function BemgenGenerator(args, options, config) {
+var BemGenerator = module.exports = function BemGenerator(args, options, config) {
     yeoman.generators.Base.apply(this, arguments);
 
     this.pkg = JSON.parse(this.readFileAsString(path.join(__dirname, path.join('..', 'package.json'))));
@@ -16,14 +16,14 @@ var BemgenGenerator = module.exports = function BemgenGenerator(args, options, c
     });
 };
 
-util.inherits(BemgenGenerator, yeoman.generators.Base);
+util.inherits(BemGenerator, yeoman.generators.Base);
 
-BemgenGenerator.prototype.askFor = function askFor() {
+BemGenerator.prototype.askFor = function askFor() {
 
     var cb = this.async(),
         _this = this,
         configPath = path.join(_this.sourceRoot(), 'config.json'), // path to 'config.json' in templates
-        localPath = path.join(_this.sourceRoot(), '..', 'local', 'local.json'), // path to 'local.json' in local
+        localPath = path.join(_this.sourceRoot(), '..', 'locale', 'questions.json'), // path to 'local.json' in local
         local = JSON.parse(_this.readFileAsString(localPath));
 
     function getLibVersion(base, value) {
@@ -259,7 +259,7 @@ BemgenGenerator.prototype.askFor = function askFor() {
     }];
 
     function getAnswers(props) {
-
+        console.log(props);
         var collector = require('.' + path.sep + path.join('lib', (_this.collectorName = props.collector) === 'bem-tools' ? 'tools' : 'enb'));
 
         // General information
@@ -353,12 +353,15 @@ BemgenGenerator.prototype.askFor = function askFor() {
 
     var params = {
         first: process.argv[3],
-        second: process.argv[4]
+        second: process.argv[4],
+        third: process.argv[5]
     }
 
     _this.npmi = true;
 
     try {
+        if (params.third) throw e;
+
         switch (params.first) {
             case '--language':
                 _this.appLanguage = true;
@@ -392,13 +395,25 @@ BemgenGenerator.prototype.askFor = function askFor() {
     //---------------------------------------------//
 };
 
-BemgenGenerator.prototype.app = function app() {
-    var platforms = this.platforms.withoutPath;
+BemGenerator.prototype.app = function app() {
 
-    var root = path.join(this.sourceRoot(), this.collectorName); // path to templates
-    var files = this.expandFiles('**', { dot: true, cwd: root });   // roots of all files
+    var _this = this,
+        platforms = _this.platforms.withoutPath,
+        root = path.join(_this.sourceRoot(), _this.collectorName), // path to templates
+        files = _this.expandFiles('**', { dot: true, cwd: root });   // roots of all files
 
-    this._.each(files, function (f) {
+    // Makes the necessary empty folders in the created project
+    _this.mkdir(path.join(_this.projectName, 'common.blocks'));
+
+    (platforms['touch-pad'] || platforms['touch-phone']) && _this.mkdir(path.join(_this.projectName, 'touch.blocks'));
+
+    _this.collectorName === 'enb' &&
+        Object.keys(platforms).forEach(function(platform) {
+            _this.mkdir(path.join(_this.projectName, platform + '.blocks'));
+        });
+
+
+    _this._.each(files, function (f) {
 
         function formDirnames(ending, folder) {
             dirnames = [];
@@ -412,9 +427,9 @@ BemgenGenerator.prototype.app = function app() {
         var dirnames = [];
         dirnames.push(path.dirname(f));
 
-        if (this.isBemjson && f === path.join('bundles', 'index', 'index.bemdecl.js')) return;
+        if (_this.isBemjson && f === path.join('bundles', 'index', 'index.bemdecl.js')) return;
 
-        if (!this.isBemjson && f === path.join('bundles', 'index', 'index.bemjson.js')) return;
+        if (!_this.isBemjson && f === path.join('bundles', 'index', 'index.bemjson.js')) return;
 
         (f === path.join('bundles', 'index', 'index.bemdecl.js') ||
             f === path.join('bundles', 'index', 'index.bemjson.js')) && formDirnames('.bundles', 'index');
@@ -425,22 +440,23 @@ BemgenGenerator.prototype.app = function app() {
 
         var src = path.join(root, f);   // copy from
 
-        for (var dir in dirnames) {
-            var dest = path.join(this.destinationRoot(), this.projectName, dirnames[dir], path.basename(f));  // where to copy
-            this.template(src, dest);
-        }
-    }.bind(this));
+        dirnames.map(function(dirname) {
+            var dest = path.join(_this.destinationRoot(), _this.projectName, dirname, path.basename(f));  // where to copy
+            _this.template(src, dest);
+        });
+    }.bind(_this));
 };
 
 // Adds dependencies in 'package.json'
-BemgenGenerator.prototype.addPackages = function addPackages() {
-    var _this = this;
+BemGenerator.prototype.addPackages = function addPackages() {
 
     function getLibVersion(base, value) {
         return JSON.parse(_this.readFileAsString(configPath)).versions[base][value];
     }
 
-    var configPath = path.join(_this.sourceRoot(), 'config.json'), // path to 'config.json' in templates
+    var _this = this,
+
+        configPath = path.join(_this.sourceRoot(), 'config.json'), // path to 'config.json' in templates
 
         packagePath = path.join(_this.destinationRoot(), _this.projectName, 'package.json'),    // path to 'package.json' in the created project
 
@@ -465,36 +481,8 @@ BemgenGenerator.prototype.addPackages = function addPackages() {
     fs.writeFileSync(packagePath, JSON.stringify(pack, null, '  ') + '\n');
 };
 
-// Makes the necessary empty folders in the created project
-BemgenGenerator.prototype.createFolders = function createFolders() {
-    var platforms = this.platforms.withoutPath,
-        projectName = this.projectName;
-
-    fs.mkdir(path.join(projectName, 'common.blocks'), function(err) {
-        if (err) {
-            this.log.error('Can not create the folder \'common.blocks\'');
-        }
-    });
-
-    (platforms['touch-pad'] || platforms['touch-phone']) &&
-        fs.mkdir(path.join(projectName, 'touch.blocks'), function(err) {
-            if (err) {
-                this.log.error('Can not create the folder \'touch.blocks\'');
-            }
-        });
-
-    this.collectorName === 'enb' &&
-        Object.keys(platforms).forEach(function(platform) {
-            fs.mkdir(path.join(projectName, platform + '.blocks'), function(err) {
-                if (err) {
-                    this.log.error('Can not create the folder ' + platform + '\'.blocks\'')
-                }
-            });
-        });
-}
-
 // --no-deps
-BemgenGenerator.prototype.assemble = function assemble() {
+BemGenerator.prototype.assemble = function assemble() {
     if (this.npmi) {
         this.log.write('').info(' ==> npm install...').write('');
         this.shell.exec('cd ' + this.projectName + ' && npm i');
