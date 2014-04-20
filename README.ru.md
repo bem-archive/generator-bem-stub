@@ -34,10 +34,24 @@ $ yo bem-stub ПОЛНЫЙ_ПУТЬ_К_JSON-ФАЙЛУ
     "name": "bem-core",
     "version": "v2.1.0"
   },
-  "addLibraries": [],
-  "platforms": [ [ "common", "desktop" ] ],
-  "preprocessor": "roole",
-  "techs": []
+  "addLibraries": [ {
+    "name": "bem-components",
+    "version": "v2"
+  } ],
+  "platforms": [
+    [ "common", "desktop" ],
+    [ "common", "touch", "touch-pad" ],
+    [ "common", "touch", "touch-phone" ]
+  ],
+  "design": true,
+  "techs": [
+    "bemjson.js",
+    "bemtree",
+    "bemhtml",
+    "node.js",
+    "browser.js+bemhtml"
+  ],
+  "html": true
 }
 ```
 
