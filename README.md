@@ -65,7 +65,7 @@ $ yo bem-stub example.json
 
 ```generator-bem-stub``` will take the content of ```example.json``` as answers.
 
-You can see more examples of ```JSON-files``` with answers in the folder ```test```.
+I will give more examples of ```JSON-files``` with answers later.
 
 ## Installation of dependencies
 
