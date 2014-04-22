@@ -9,7 +9,7 @@ module.exports = function(config) {
         nodeConfig.addTargets([
 <%= _.map(technologies.inTargets, function(technology) { return "            '?." + technology + "'" }).join(',\n') %>
         ]);
-    }); <%= (platforms.withoutPath['desktop'] ?
+    });<%= (platforms.withoutPath['desktop'] ?
 
                 "\n\n    config.nodes('desktop.bundles/*', function(nodeConfig) {\n        nodeConfig.addTechs([\n            [ require('enb/techs/levels'), { levels: getDesktops(config) } ]" +
 
@@ -63,7 +63,7 @@ module.exports = function(config) {
 
                     "\n        ]);\n    });" : "")
         %>
-    <%= toMinify.length > 0 ?
+<%= toMinify.length > 0 ?
 
         "\n    config.mode('development', function(modeConfig) {\n        config.nodes('*.bundles/*', function(nodeConfig) {\n            nodeConfig.addTechs([\n" +
 
@@ -78,7 +78,7 @@ module.exports = function(config) {
         }).join(',\n') +
 
         "\n            ]);\n        });\n    });\n" : ""
-    %>
+%>
 };<%= (platforms.withoutPath['desktop'] ?
 
         "\n\nfunction getDesktops(config) {\n    return [\n" +
@@ -125,4 +125,5 @@ module.exports = function(config) {
             return "        '" + platform + ".blocks'";
         }).join(',\n') +
 
-        "\n    ].map(function(level) {\n        return config.resolvePath(level);\n    });\n}" : "") %>
+        "\n    ].map(function(level) {\n        return config.resolvePath(level);\n    });\n}" : "")
+    %>

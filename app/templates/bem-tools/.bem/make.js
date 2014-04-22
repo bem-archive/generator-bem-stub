@@ -96,7 +96,7 @@ MAKE.decl('BundleNode', {
 
     : "" %>
 
-}); <%= design ?
+});<%= design ?
 
         "\n\nMAKE.decl('AutoprefixerNode', {\n\n    getPlatform : function() {\n        return this.output.split('.')[0];\n    },\n\n    getBrowsers : function() {\n        var platform = this.getPlatform();\n        switch(platform) {\n" +
 
