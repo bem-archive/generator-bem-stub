@@ -1,0 +1,22 @@
+{
+  "author": "Ivan Ibanov",
+  "name": "node.tools.test.1",
+  "email": "ivanr@yandex.ru",
+  "version": "0.0.0",
+  "engines": {
+    "node": ">=0.10"
+  },
+  "dependencies": {
+    "bem-environ": "1.4.0"
+  },
+  "devDependencies": {
+    "bem": "0.8.0",
+    "bower": "1.2.8",
+    "bower-npm-install": "0.5.4"
+  },
+  "scripts": {
+    "postinstall": "bower-npm-install --non-interactive",
+    "deps": "bower-npm-install --non-interactive"
+  },
+  "private": true
+}

@@ -1,0 +1,14 @@
+{
+  "author": "Ivan Ibanov",
+  "name": "bemdecl.tools.test.1",
+  "email": "ivanr@yandex.ru",
+  "version": "0.0.0",
+  "ignore": [
+    ".bem/cache",
+    "node_modules",
+    "libs"
+  ],
+  "dependencies": {
+    "bem-core": "v2.1.0"
+  }
+}

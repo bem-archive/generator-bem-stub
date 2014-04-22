@@ -1,0 +1,14 @@
+{
+  "author": "Ivan Ivanov",
+  "name": "bh.enb.test.1",
+  "email": "ivan@yandex.ru",
+  "version": "0.0.0",
+  "ignore": [
+    ".bem/cache",
+    "node_modules",
+    "libs"
+  ],
+  "dependencies": {
+    "bem-core": "v2.1.0"
+  }
+}

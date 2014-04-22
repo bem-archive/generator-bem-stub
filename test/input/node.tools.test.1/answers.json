@@ -1,0 +1,21 @@
+{
+  "projectName": "node.tools.test.1",
+  "author": "Ivan Ibanov",
+  "email": "ivanr@yandex.ru",
+  "collector": "bem-tools",
+  "baseLibrary": {
+    "name": "bem-core",
+    "version": "v2.1.0"
+  },
+  "addLibraries": [],
+  "platforms": [
+    [ "common", "desktop" ],
+    [ "common", "touch", "touch-pad" ],
+    [ "common", "touch", "touch-phone" ]
+  ],
+  "preprocessor": "css",
+  "techs": [
+    "bemjson.js",
+    "node.js"
+  ]
+}
