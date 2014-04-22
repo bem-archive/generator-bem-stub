@@ -190,7 +190,7 @@ exports.getTechnologies = function(configPath, techs) {
         }
     });
 
-    inBlocks.defaultTechs.indexOf('roole') === -1 && inBlocks.defaultTechs.push('css');
+    inBlocks.defaultTechs.indexOf('roole') === -1 && inBlocks.defaultTechs.unshift('css');
 
     technologies.inBlocks.V2 = _.uniq(inBlocks.V2);
     technologies.inBlocks.notV2 = _.uniq(inBlocks.notV2);
