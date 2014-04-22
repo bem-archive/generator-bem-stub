@@ -1,0 +1,42 @@
+{
+  "projectName": "base.enb.test.3",
+  "author": "Ivan Ivanov",
+  "email": "ivan@yandex.ru",
+  "collector": "enb",
+  "baseLibrary": {
+    "name": "bem-core",
+    "version": "v2.1.0"
+  },
+  "addLibraries": [],
+  "platforms": [
+    [ "common", "desktop" ],
+    [ "common", "touch", "touch-pad" ],
+    [ "common", "touch", "touch-phone" ]
+  ],
+  "preprocessor": "css",
+  "techs": [
+    "bemjson.js",
+    "ie.css",
+    "ie6.css",
+    "ie7.css",
+    "ie8.css",
+    "ie9.css",
+    "bemtree.js",
+    "node.js",
+    "browser.js"
+   ],
+  "templateSystem": "bemhtml.js",
+  "html": true,
+  "minimization": [
+    "css",
+    "ie.css",
+    "ie6.css",
+    "ie7.css",
+    "ie8.css",
+    "ie9.css",
+    "bemtree.js",
+    "node.js",
+    "js",
+    "bemhtml.js"
+  ]
+}
