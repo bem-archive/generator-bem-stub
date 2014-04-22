@@ -82,7 +82,7 @@ exports.getTechnologies = function(configPath, techs) {
     function getTechDecl(tech) {
 
         function getTechVal(tech) {
-            var _tech = JSON.parse(fs.readFileSync(configPath).toString()).technologies.tools[tech];
+            var _tech = JSON.parse(fs.readFileSync(configPath, 'utf-8')).technologies.tools[tech];
 
             return '\'' + _tech + '\'';
         }
@@ -253,7 +253,7 @@ exports.getBrowsers = function(configPath, platforms) {
     var browsers = {};
 
     Object.keys(platforms).forEach(function(platform) {
-        browsers[platform] = JSON.parse(fs.readFileSync(configPath).toString()).autoprefixer[platform];
+        browsers[platform] = JSON.parse(fs.readFileSync(configPath, 'utf-8')).autoprefixer[platform];
     });
 
     return browsers;

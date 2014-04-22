@@ -78,7 +78,7 @@ exports.getPlatforms = function(pls, libs, design) {
 exports.getTechnologies = function(configPath, techs, toMinify) {
 
     function getTechVal(tech) {
-        return JSON.parse(fs.readFileSync(configPath).toString()).technologies.enb[tech];
+        return JSON.parse(fs.readFileSync(configPath, 'utf-8')).technologies.enb[tech];
     }
 
     /*
@@ -221,7 +221,7 @@ exports.getBrowsers = function(configPath, platforms) {
     var browsers = {};
 
     Object.keys(platforms).forEach(function(platform) {
-        browsers[platform] = JSON.parse(fs.readFileSync(configPath).toString()).autoprefixer[platform];
+        browsers[platform] = JSON.parse(fs.readFileSync(configPath, 'utf-8')).autoprefixer[platform];
     });
 
     return browsers;
