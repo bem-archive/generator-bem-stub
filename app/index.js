@@ -23,7 +23,7 @@ BemGenerator.prototype.askFor = function askFor() {
     var cb = this.async(),
         _this = this,
         configPath = path.join(_this.sourceRoot(), 'config.json'), // path to 'config.json' in templates
-        localPath = path.join(_this.sourceRoot(), '..', 'locale', 'questions.json'), // path to 'local.json' in local
+        localPath = path.join(_this.sourceRoot(), '..', 'locale', 'questions.json'), // path to 'questions.json' in locale
         local = JSON.parse(_this.readFileAsString(localPath));
 
     function getLibVersion(base, value) {
