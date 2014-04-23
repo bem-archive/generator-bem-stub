@@ -3,13 +3,18 @@
   "version": "0.0.1-alpha5",
   "description": "A generator of BEM-projects",
   "keywords": [
-    "yeoman-generator"
+    "yeoman",
+    "yeoman-generator",
+    "generator",
+    "bem",
+    "bem-tools",
+    "enb"
   ],
   "homepage": "https://github.com/eGavr/generator-bem-stub",
   "bugs": "https://github.com/eGavr/generator-bem-stub/issues",
   "author": {
     "name": "Evgeniy Gavryushin",
-    "email": "",
+    "email": "job.egavr@yandex.ru",
     "url": "https://github.com/eGavr"
   },
   "main": "app/index.js",
