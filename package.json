@@ -1,13 +1,13 @@
 {
   "name": "generator-bem-stub",
-  "version": "0.0.1-alpha5",
+  "version": "0.0.1-alpha6",
   "description": "A generator of BEM-projects",
   "keywords": [
-    "yeoman",
     "yeoman-generator",
+    "yeoman",
     "generator",
-    "bem",
     "bem-tools",
+    "bem",
     "enb"
   ],
   "homepage": "https://github.com/eGavr/generator-bem-stub",
