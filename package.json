@@ -1,6 +1,6 @@
 {
   "name": "generator-bem-stub",
-  "version": "0.0.1-alpha6",
+  "version": "0.0.1",
   "description": "A generator of BEM-projects",
   "keywords": [
     "yeoman-generator",
