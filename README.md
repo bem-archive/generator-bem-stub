@@ -20,9 +20,9 @@ $ yo bem-stub
 
 ## Installation of dependencies
 
-```generator-bem-stub``` will install all dependences after generation of the project.
+```generator-bem-stub``` will install all dependencies after generation of the project.
 
-If you do not want to install dependences, use option ```--no-deps```
+If you do not want to install dependencies, use option ```--no-deps```
 
 ```bash
 $ yo bem-stub --no-deps
