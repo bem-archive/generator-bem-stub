@@ -1,0 +1,47 @@
+{
+  "name": "generator-bem-stub",
+  "version": "0.0.1-alpha6",
+  "description": "A generator of BEM-projects",
+  "keywords": [
+    "yeoman-generator",
+    "yeoman",
+    "generator",
+    "bem-tools",
+    "bem",
+    "enb"
+  ],
+  "homepage": "https://github.com/eGavr/generator-bem-stub",
+  "bugs": "https://github.com/eGavr/generator-bem-stub/issues",
+  "author": {
+    "name": "Evgeniy Gavryushin",
+    "email": "job.egavr@yandex.ru",
+    "url": "https://github.com/eGavr"
+  },
+  "main": "app/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/eGavr/generator-bem-stub.git"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "dependencies": {
+    "yeoman-generator": "~0.14.0",
+    "lodash": "2.4.1"
+  },
+  "devDependencies": {
+    "mocha": "~1.14.0"
+  },
+  "peerDependencies": {
+    "yo": ">=1.0.0"
+  },
+  "engines": {
+    "node": ">=0.8.0",
+    "npm": ">=1.2.10"
+  },
+  "licenses": [
+    {
+      "type": "MIT"
+    }
+  ]
+}
