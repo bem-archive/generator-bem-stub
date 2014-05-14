@@ -1,6 +1,6 @@
 # generator-bem-stub
 
-Генератор BEM-проектов на [Yeoman](http://yeoman.io).
+Генератор БЭМ-проектов на [Yeoman](http://yeoman.io).
 
 ## Установка
 
