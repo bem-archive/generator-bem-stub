@@ -174,7 +174,7 @@ BemGenerator.prototype.askFor = function askFor() {
             // returns the list of possible technologies to choose in dependence of the previous answers
             var collector = require('.' + path.sep + path.join('lib', input.collector === 'bem-tools' ? 'tools' : 'enb'));
 
-            return collector.commonTech.concat(collector.templates.core, collector.scripts.coreWithoutLocal);
+            return collector.commonTechs.concat(collector.templates.core, collector.scripts.coreWithoutLocal);
         }
     }, {
         type: 'list',

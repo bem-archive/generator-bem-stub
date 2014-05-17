@@ -3,7 +3,7 @@ var fs = require('fs'),
     _ = require('lodash');
 
 // technologies
-exports.commonTech = [
+var commonTechs = [
     { value: 'bemjson.js' },
     { value: 'ie.css' },
     { value: 'ie6.css' },
@@ -11,12 +11,13 @@ exports.commonTech = [
     { value: 'ie8.css' },
     { value: 'ie9.css' }
 ],
-exports.templates = {
+templates = {
     core: [
         { value: 'bemtree'  },
-        { value: 'bemhtml' } ]
+        { value: 'bemhtml' }
+    ]
 },
-exports.scripts = {
+scripts = {
     coreWithoutLocal: [
         { value: 'node.js' },
         { value: 'browser.js+bemhtml' }
@@ -27,7 +28,7 @@ exports.scripts = {
  * Returns platforms with path and without path
  *
  * @example
- *  [ [ 'common', 'desktop' ], [ 'common', 'touch', 'touch-pad' ] ] and [ 'bem-core' ] ==>
+ *  [ [ 'common', 'desktop' ], [ 'common', 'touch', 'touch-pad' ] ] and [ { name: 'bem-core', version: '' } ] ==>
  *
  *      ->  withPath:
  *              { desktop: [ 'bem-core/common.blocks', 'bem-core/desktop.blocks' ],
@@ -40,12 +41,12 @@ exports.scripts = {
  *                'touch-pad': [ 'common', 'touch', 'touch-pad' ] } }
  *
  * @param {Array of arrays} pls
- * @param {Array} libs
+ * @param {Array of objects} libs
  * @param {Boolean} design
  * @returns {Object} platforms
  */
 
-exports.getPlatforms = function(pls, libs, design) {
+function getPlatforms(pls, libs, design) {
     var platforms = {
         withPath: {},
         withoutPath: {}
@@ -70,6 +71,49 @@ exports.getPlatforms = function(pls, libs, design) {
 }
 
 /**
+ * Adds chosen preprocessor in technologies
+ *
+ * @param {Array} techs
+ * @param {String} preprocessor
+ * @returns {Array} techs
+ */
+
+function addPreprocessor(techs, preprocessor) {
+    if (preprocessor === 'css') {
+        techs.splice(techs.indexOf('bemjson.js') + 1, 0, 'css');
+
+        return techs;
+    }
+    else if (preprocessor === 'roole' || !preprocessor) {
+        techs.splice(techs.indexOf('bemjson.js') + 1, 0, 'roole', 'css');
+
+        return techs;
+    }
+
+    techs.splice(techs.indexOf('bemjson.js') + 1, 0, preprocessor);
+
+    return techs;
+}
+
+/**
+ * Adds 'ie.css' to technologies
+ *
+ * @param {Array} techs
+ * @returns {Array} techs
+ */
+
+function addIe(techs) {
+    var ie = /ie[0-9]{0,2}\.css/.exec(techs);
+
+    if (ie) {
+        techs.splice(techs.indexOf(ie[0]), 0, 'ie.css');
+        techs = _.uniq(techs);
+    }
+
+    return techs;
+}
+
+/**
  * Returns technologies
  *
  * @param {String} configPath
@@ -77,7 +121,7 @@ exports.getPlatforms = function(pls, libs, design) {
  * @returns {Object} technologies
  */
 
-exports.getTechnologies = function(configPath, techs) {
+function getTechnologies(configPath, techs) {
 
     function getTechDecl(tech) {
 
@@ -199,57 +243,16 @@ exports.getTechnologies = function(configPath, techs) {
 }
 
 /**
- * Adds chosen preprocessor in technologies
- *
- * @param {Array} techs
- * @param {String} preprocessor
- * @returns {Array} techs
- */
-
-exports.addPreprocessor = function(techs, preprocessor) {
-    if (preprocessor === 'css') {
-        techs.splice(techs.indexOf('bemjson.js') + 1, 0, 'css');
-
-        return techs;
-    }
-    else if (preprocessor === 'roole' || !preprocessor) {
-        techs.splice(techs.indexOf('bemjson.js') + 1, 0, 'roole', 'css');
-
-        return techs;
-    }
-
-    techs.splice(techs.indexOf('bemjson.js') + 1, 0, preprocessor);
-
-    return techs;
-}
-
-/**
- * Adds 'ie.css' to technologies
- *
- * @param {Array} techs
- * @returns {Array} techs
- */
-
-exports.addIe = function(techs) {
-    var ie = /ie[0-9]{0,2}\.css/.exec(techs);
-
-    if (ie) {
-        techs.splice(techs.indexOf(ie[0]), 0, 'ie.css');
-        techs = _.uniq(techs);
-    }
-
-    return techs;
-}
-
-/**
  * Returns browsers for given platforms
+ * @example
+ *  { desktop: [ 'common', 'desktop' ] } ==> { desktop: [ 'last 2 versions', 'ie 10', 'ff 24', 'opera 12.16' ] }
  *
  * @param {String} configPath
- * @param {Object} platforms
+ * @param {Object} platforms --> without path
  * @returns {Object} browsers
  */
 
-exports.getBrowsers = function(configPath, platforms) {
+function getBrowsers(configPath, platforms) {
     var browsers = {};
 
     Object.keys(platforms).forEach(function(platform) {
@@ -258,3 +261,15 @@ exports.getBrowsers = function(configPath, platforms) {
 
     return browsers;
 }
+
+// fields
+exports.commonTechs = commonTechs;
+exports.templates = templates;
+exports.scripts = scripts;
+
+// methods
+exports.getPlatforms = getPlatforms;
+exports.addPreprocessor = addPreprocessor;
+exports.addIe = addIe;
+exports.getTechnologies = getTechnologies;
+exports.getBrowsers = getBrowsers;
