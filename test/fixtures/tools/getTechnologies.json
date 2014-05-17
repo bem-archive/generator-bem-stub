@@ -1,0 +1,56 @@
+{
+    "inBlocks": {
+        "V2": [
+            "'bemdecl.js'           : 'v2/bemdecl.js'",
+            "'deps.js'              : 'v2/deps.js'",
+            "'roole'                : 'v2/roole'",
+            "'css'                  : 'v2/css'",
+            "'ie.css'               : 'v2/ie.css'",
+            "'ie6.css'              : 'v2/ie6.css'",
+            "'ie7.css'              : 'v2/ie7.css'",
+            "'ie8.css'              : 'v2/ie8.css'",
+            "'ie9.css'              : 'v2/ie9.css'",
+            "'js'                   : 'v2/js-i'"
+        ],
+        "notV2": [
+            "bemtree",
+            "bemhtml",
+            "node.js",
+            "vanilla.js",
+            "browser.js"
+        ],
+        "defaultTechs": [
+            "roole",
+            "bemhtml",
+            "browser.js"
+        ]
+    },
+    "inMake": {
+        "techs": [
+            "bemjson.js",
+            "bemdecl.js",
+            "deps.js",
+            "roole",
+            "css",
+            "ie.css",
+            "ie6.css",
+            "ie7.css",
+            "ie8.css",
+            "ie9.css",
+            "bemtree",
+            "bemhtml",
+            "node.js",
+            "browser.js+bemhtml",
+            "html"
+      ],
+      "forked": [
+          "roole",
+          "browser.js+bemhtml"
+      ]
+    },
+    "inBundles": [
+        "browser.js+bemhtml",
+        "html"
+    ],
+    "inJSON": [ "roole" ]
+}
