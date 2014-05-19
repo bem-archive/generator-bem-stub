@@ -1,7 +1,7 @@
 {
   "versions": {
     "core": {
-      "bem-core": "v2.1.0",
+      "bem-core": "v2.2.1",
       "bem-components": "v2"
     },
     "other": {
