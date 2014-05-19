@@ -11,7 +11,7 @@ module.exports = function(config) {
         ]);
     });<%= (platforms.withoutPath['desktop'] ?
 
-                "\n\n    config.nodes('desktop.bundles/*', function(nodeConfig) {\n        nodeConfig.addTechs([\n            [ require('enb/techs/levels'), { levels: getDesktops(config) } ]" +
+                "\n\n    config.nodes('*desktop.bundles/*', function(nodeConfig) {\n        nodeConfig.addTechs([\n            [ require('enb/techs/levels'), { levels: getDesktops(config) } ]" +
 
                 (design ?
 
@@ -29,7 +29,7 @@ module.exports = function(config) {
 
             (platforms.withoutPath['touch-pad'] ?
 
-                "\n\n    config.nodes('touch-pad.bundles/*', function(nodeConfig) {\n        nodeConfig.addTechs([\n            [ require('enb/techs/levels'), { levels: getTouchPads(config) } ]" +
+                "\n\n    config.nodes('*touch-pad.bundles/*', function(nodeConfig) {\n        nodeConfig.addTechs([\n            [ require('enb/techs/levels'), { levels: getTouchPads(config) } ]" +
 
                 (design ?
 
@@ -47,7 +47,7 @@ module.exports = function(config) {
 
             (platforms.withoutPath['touch-phone'] ?
 
-                "\n\n    config.nodes('touch-phone.bundles/*', function(nodeConfig) {\n        nodeConfig.addTechs([\n            [ require('enb/techs/levels'), { levels: getTouchPhones(config) } ]" +
+                "\n\n    config.nodes('*touch-phone.bundles/*', function(nodeConfig) {\n        nodeConfig.addTechs([\n            [ require('enb/techs/levels'), { levels: getTouchPhones(config) } ]" +
 
                     (design ?
 
