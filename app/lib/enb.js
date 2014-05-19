@@ -3,7 +3,7 @@ var fs = require('fs'),
     _ = require('lodash');
 
 // technologies
-exports.commonTech = [
+var commonTechs = [
     { value: 'bemjson.js' },
     { value: 'ie.css' },
     { value: 'ie6.css' },
@@ -11,11 +11,12 @@ exports.commonTech = [
     { value: 'ie8.css' },
     { value: 'ie9.css' }
 ],
-exports.templates = {
+templates = {
     core: [
-        { value: 'bemtree.js'  } ]
+        { value: 'bemtree.js'  }
+    ]
 },
-exports.scripts = {
+scripts = {
     coreWithoutLocal: [
         { value: 'node.js' },
         { value: 'browser.js' }
@@ -26,22 +27,22 @@ exports.scripts = {
  * Returns platforms with path and without path
  *
  * @example
- *  [ [ 'common', 'desktop' ], [ 'common', 'touch', 'touch-pad' ] ] and [ 'bem-core' ] ==>
+ *  [ [ 'common', 'desktop' ], [ 'common', 'touch', 'touch-pad' ] ] and [ { name: 'bem-core', version: '' } ] ==>
  *
- *      ->  withPath:
- *              { desktop: [ 'bem-core/common.blocks', 'bem-core/desktop.blocks' ],
- *                'touch-pad': [ 'bem-core/common.blocks', 'bem-core/touch.blocks' ] }
- *      ->  withouPath:
- *              { desktop: [ 'common', 'desktop' ],
- *                'touch-pad': [ 'common', 'touch', 'touch-pad' ] } }
+ *      -->  withPath:
+ *               { desktop: [ 'bem-core/common.blocks', 'bem-core/desktop.blocks' ],
+ *                 'touch-pad': [ 'bem-core/common.blocks', 'bem-core/touch.blocks' ] }
+ *      -->  withouPath:
+ *               { desktop: [ 'common', 'desktop' ],
+ *                 'touch-pad': [ 'common', 'touch', 'touch-pad' ] } }
  *
  * @param {Array of arrays} pls
- * @param {Array} libs
+ * @param {Array of objects} libs
  * @param {Boolean} design
  * @returns {Object} platforms
  */
 
-exports.getPlatforms = function(pls, libs, design) {
+function getPlatforms(pls, libs, design) {
     var platforms = {
         withPath: {},
         withoutPath: {}
@@ -67,6 +68,21 @@ exports.getPlatforms = function(pls, libs, design) {
 }
 
 /**
+ * Adds chosen preprocessor in technologies
+ *
+ * @param {Array} techs
+ * @param {String} preprocessor
+ * @returns {Array} techs
+ */
+
+function addPreprocessor(techs, preprocessor) {
+    // 'bem-core' --> 'bem-components' --> 'design' ==> 'preprocessor === undefined' ==> 'design-roole'
+    techs.push(preprocessor || 'design-roole');
+
+    return techs;
+}
+
+/**
  * Returns technologies
  *
  * @param {String} configPath
@@ -75,7 +91,7 @@ exports.getPlatforms = function(pls, libs, design) {
  * @returns {Object} technologies
  */
 
-exports.getTechnologies = function(configPath, techs, toMinify) {
+function getTechnologies(configPath, techs, toMinify) {
 
     function getTechVal(tech) {
         return JSON.parse(fs.readFileSync(configPath, 'utf-8')).technologies.enb[tech];
@@ -172,28 +188,41 @@ exports.getTechnologies = function(configPath, techs, toMinify) {
 }
 
 /**
- * Adds chosen preprocessor in technologies
+ * Returns browsers for given platforms
+ * @example
+ *  { desktop: [ 'common', 'desktop' ] } ==> { desktop: [ 'last 2 versions', 'ie 10', 'ff 24', 'opera 12.16' ] }
  *
- * @param {Array} techs
- * @param {String} preprocessor
- * @returns {Array} techs
+ * @param {String} configPath
+ * @param {Object} platforms --> without path
+ * @returns {Object} browsers
  */
 
-exports.addPreprocessor = function(techs, preprocessor) {
-    // 'bem-core' --> 'bem-components' --> 'design' ==> 'preprocessor === undefined' ==> 'design-roole'
-    techs.push(preprocessor || 'design-roole');
+function getBrowsers(configPath, platforms) {
+    var browsers = {};
 
-    return techs;
+    Object.keys(platforms).forEach(function(platform) {
+        browsers[platform] = JSON.parse(fs.readFileSync(configPath, 'utf-8')).autoprefixer[platform];
+    });
+
+    return browsers;
 }
 
 /**
  * Returns scripts which will be added to 'index.bemjson.js'
+ * @example
+ * [ 'min.css', 'js' ] ==> [{
+ *                              elem: 'css',
+ *                              url: 'min.css'
+ *                          }, {
+ *                              elem: 'js',
+ *                              url: 'js'
+ *                          }];
  *
  * @param {Array} techs
- * @returns {Array} scripts
+ * @returns {Array of objects} scripts
  */
 
-exports.getScripts = function(techs) {
+function getScripts(techs) {
     var scripts = [];
 
     (techs.indexOf('css') > -1 || techs.indexOf('min.css') > -1) && scripts.push({
@@ -209,20 +238,14 @@ exports.getScripts = function(techs) {
     return scripts;
 }
 
-/**
- * Returns browsers for given platforms
- *
- * @param {String} configPath
- * @param {Object} platforms
- * @returns {Object} browsers
- */
+// fields
+exports.commonTechs = commonTechs;
+exports.templates = templates;
+exports.scripts = scripts;
 
-exports.getBrowsers = function(configPath, platforms) {
-    var browsers = {};
-
-    Object.keys(platforms).forEach(function(platform) {
-        browsers[platform] = JSON.parse(fs.readFileSync(configPath, 'utf-8')).autoprefixer[platform];
-    });
-
-    return browsers;
-}
+// methods
+exports.getPlatforms = getPlatforms;
+exports.addPreprocessor = addPreprocessor;
+exports.getTechnologies = getTechnologies;
+exports.getBrowsers = getBrowsers;
+exports.getScripts = getScripts;

@@ -22,65 +22,35 @@ BemGenerator.prototype.askFor = function askFor() {
 
     var cb = this.async(),
         _this = this,
-        configPath = path.join(_this.sourceRoot(), 'config.json'), // path to 'config.json' in templates
-        localPath = path.join(_this.sourceRoot(), '..', 'locale', 'questions.json'), // path to 'questions.json' in locale
-        local = JSON.parse(_this.readFileAsString(localPath));
+        configPath = path.join(_this.sourceRoot(), 'config.json');
 
     function getLibVersion(base, value) {
         return JSON.parse(_this.readFileAsString(configPath)).versions[base][value];
     }
 
-    function getQuestion(question) {
-        var language = local.language;
-
-        return local[language][question];
-    }
-
     // questions to user
     var prompts = [{
-        type: 'list',
-        name: 'appLanguage',
-        message: getQuestion('appLanguage'),
-        choices: [{
-            value: 'English'
-        }, {
-            name: 'Русский',
-            value: 'Russian'
-        }],
-        when: function() {
-            return _this.appLanguage;
-        },
-        filter: function(input) {
-            local.language = input;
-
-            fs.writeFileSync(localPath, JSON.stringify(local, null, '  ') + '\n');
-
-            _this.log.write('').ok(input === 'English' ? 'English language has been chosen' : 'Выбран русский язык');
-
-            process.exit(1);
-        }
-    }, {
         type: 'input',
         name: 'projectName',
-        message: getQuestion('projectName'),
+        message: "How to name the project?",
         validate: function(input) {
-            return !input.match(/[^0-9a-zA-Z._-]/g) ? true : local.language === 'English' ? 'Please, enter a valid value' : 'Пожалуйста, введите корректное значение';
+            return !input.match(/[^0-9a-zA-Z._-]/g) ? true : 'Please, enter a valid value';
         },
         default: 'project-stub'
     }, {
         type: 'input',
         name: 'author',
-        message: getQuestion('author'),
+        message: "Who will mantain this project?",
         default: _this.user.git.username || 'Ivan Ivanovich'
     }, {
         type: 'input',
         name: 'email',
-        message: getQuestion('email'),
+        message: "What email to use?",
         default: _this.user.git.email || 'ivan@yandex-team.ru'
     }, {
         type: 'list',
         name: 'collector',
-        message: getQuestion('collector'),
+        message: "What collector to use?",
         choices: [{
             value: 'bem-tools'
         }, {
@@ -89,7 +59,7 @@ BemGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'list',
         name: 'baseLibrary',
-        message: getQuestion('baseLibrary'),
+        message: "What base library to use?",
         choices: function() {
             var choices = [];
 
@@ -106,7 +76,7 @@ BemGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'checkbox',
         name: 'addLibraries',
-        message: getQuestion('addLibraries'),
+        message: "Would you like any additional libraries?",
         choices: function(input) {  // 'bem-core' ==> 'bem-components'
             var choices = [];
 
@@ -123,7 +93,7 @@ BemGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'checkbox',
         name: 'platforms',
-        message: getQuestion('platforms'),
+        message: "What platforms to use?",
         choices: [{
             name: 'desktop',
             value: ['common', 'desktop']
@@ -135,12 +105,12 @@ BemGenerator.prototype.askFor = function askFor() {
             value: ['common', 'touch', 'touch-phone']
         }],
         validate: function(input) {
-            return input.length > 0 ? true : local.language === 'English' ? 'Please, select something' : 'Пожалуйста, выберите что-нибудь';
+            return input.length > 0 ? true : 'Please, select something';
         }
     }, {
         type: 'confirm',
         name: 'design',
-        message: getQuestion('design'),
+        message: "Use design from bem-components?",
         default: true,
         when: function(input) {     // 'bem-core' --> 'bem-components' ==> 'design'
             var useComponents;
@@ -154,7 +124,7 @@ BemGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'list',
         name: 'preprocessor',
-        message: getQuestion('preprocessor'),
+        message: "What preprocessor to use?",
         choices: function(input) {
             // returns the list of possible preprocessors in dependence of the previous answers
             var isEnb = input.collector === 'enb';
@@ -199,24 +169,24 @@ BemGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'checkbox',
         name: 'techs',
-        message: getQuestion('techs'),
+        message: "What technologies to use?",
         choices: function(input) {
             // returns the list of possible technologies to choose in dependence of the previous answers
             var collector = require('.' + path.sep + path.join('lib', input.collector === 'bem-tools' ? 'tools' : 'enb'));
 
-            return collector.commonTech.concat(collector.templates.core, collector.scripts.coreWithoutLocal);
+            return collector.commonTechs.concat(collector.templates.core, collector.scripts.coreWithoutLocal);
         }
     }, {
         type: 'list',
         name: 'templateSystem',
-        message: getQuestion('templateSystem'),
+        message: "What template system to use?",
         choices: [{
             name: 'bemhtml',
             value: 'bemhtml.js'
         }, {
             value: 'bh'
         }, {
-            name: local.language === 'English' ? 'My template system' : 'Мой шаблонизатор',
+            name: 'My template system',
             value: 'my'
         }],
         when: function(input) { // 'enb' --> 'bem-core' ==> 'template system'
@@ -225,7 +195,7 @@ BemGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'confirm',
         name: 'html',
-        message: getQuestion('html'),
+        message: "Build static html?",
         default: true,
         when: function(input) { // 'bemjson' --> 'template system' ==> 'html'
             if (input.collector === 'bem-tools') return input.techs.indexOf('bemjson.js') > -1 && input.techs.indexOf('bemhtml') > -1;
@@ -236,7 +206,7 @@ BemGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'checkbox',
         name: 'minimization',
-        message: getQuestion('minimization'),
+        message: "What files to minimize?",
         choices: function(input) {
             var toMinimize = [ { value: 'css' } ];
 
@@ -363,10 +333,6 @@ BemGenerator.prototype.askFor = function askFor() {
         if (params.third) throw e;
 
         switch (params.first) {
-            case '--language':
-                _this.appLanguage = true;
-                if (params.second) throw e;
-                break;
             case '--no-deps':
                 _this.npmi = false;
                 if (params.second) throw e;
