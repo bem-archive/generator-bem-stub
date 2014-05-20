@@ -23,13 +23,13 @@
     "url": "git://github.com/eGavr/generator-bem-stub.git"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha test"
   },
   "dependencies": {
     "yeoman-generator": "~0.14.0",
     "lodash": "2.4.1"
   },
-  "devDependecies": {
+  "devDependencies": {
     "mocha": "1.18.2",
     "must": "0.11.0"
   },
@@ -37,7 +37,7 @@
     "yo": ">=1.0.0"
   },
   "engines": {
-    "node": ">=0.8.0",
+    "node": ">=0.10.0",
     "npm": ">=1.2.10"
   },
   "licenses": [

@@ -1,4 +1,4 @@
-# generator-bem-stub
+# generator-bem-stub [![Build Status](https://travis-ci.org/bem/generator-bem-stub.svg)](https://travis-ci.org/bem/generator-bem-stub)
 
 Генератор БЭМ-проектов на [Yeoman](http://yeoman.io).
 
