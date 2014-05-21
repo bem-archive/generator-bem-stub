@@ -409,13 +409,32 @@ describe('\'enb\'', function () {
             'html'
         ],
 
-        output = [{
-            elem: 'css',
-            url: 'css'
-        }, {
-            elem: 'js',
-            url: 'js'
-        }];
+        output = {
+            css_js: [{
+                elem: 'css',
+                url: 'css'
+            }, {
+                elem: 'js',
+                url: 'js'
+            }],
+
+            ie: [{
+                elem: 'css',
+                url: 'ie.css'
+            },{
+                elem: 'css',
+                url: 'ie6.css'
+            }, {
+                elem: 'css',
+                url: 'ie7.css'
+            }, {
+                elem: 'css',
+                url: 'ie8.css'
+            }, {
+                elem: 'css',
+                url: 'ie9.css'
+            }]
+        }
 
         enb.getScripts(techs).must.eql(output);
     });
@@ -436,13 +455,32 @@ describe('\'enb\'', function () {
             'html'
         ],
 
-        output = [{
-            elem: 'css',
-            url: 'min.css'
-        }, {
-            elem: 'js',
-            url: 'min.js'
-        }];
+        output = {
+            css_js: [{
+                elem: 'css',
+                url: 'min.css'
+            }, {
+                elem: 'js',
+                url: 'min.js'
+            }],
+
+            ie: [{
+                elem: 'css',
+                url: 'min.ie.css'
+            },{
+                elem: 'css',
+                url: 'min.ie6.css'
+            }, {
+                elem: 'css',
+                url: 'min.ie7.css'
+            }, {
+                elem: 'css',
+                url: 'min.ie8.css'
+            }, {
+                elem: 'css',
+                url: 'min.ie9.css'
+            }]
+        }
 
         enb.getScripts(techs).must.eql(output);
     });
