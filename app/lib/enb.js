@@ -210,29 +210,52 @@ function getBrowsers(configPath, platforms) {
 /**
  * Returns scripts which will be added to 'index.bemjson.js'
  * @example
- * [ 'min.css', 'js' ] ==> [{
- *                              elem: 'css',
- *                              url: 'min.css'
- *                          }, {
- *                              elem: 'js',
- *                              url: 'js'
- *                          }];
+ * [ 'min.css',     ==>     {
+ *   'ie.css',                  css_js: [{
+ *   'ie6.css',                     elem: 'css',
+ *   'min.ie9.css'                  url: 'css'
+ *   'js' ]                     }, {
+ *                                  elem: 'js',
+ *                                  url: 'js'
+ *                              }],
+ *                              ie: [{
+ *                                  elem: 'css',
+ *                                  url: 'ie.css',
+ *                              }, {
+ *                                   elem: 'css',
+ *                                   url: 'ie6.css',
+ *                              }, {
+ *                                  elem: 'css',
+ *                                  url: 'min.ie9.css',
+ *                              }
+ *                          }
  *
  * @param {Array} techs
- * @returns {Array of objects} scripts
+ * @returns {Object} scripts
  */
 
 function getScripts(techs) {
-    var scripts = [];
+    var scripts = {
+        css_js: [],
+        ie: []
+    };
 
-    (techs.indexOf('css') > -1 || techs.indexOf('min.css') > -1) && scripts.push({
+    (techs.indexOf('css') > -1 || techs.indexOf('min.css') > -1) && scripts.css_js.push({
         elem: 'css',
         url: techs.indexOf('css') > -1 ? 'css' : 'min.css'
     });
 
-    (techs.indexOf('js') > -1 || techs.indexOf('min.js') > -1) && scripts.push({
+    (techs.indexOf('js') > -1 || techs.indexOf('min.js') > -1) && scripts.css_js.push({
         elem: 'js',
         url: techs.indexOf('js') > -1 ? 'js' : 'min.js'
+    });
+
+    var ies = [ 'ie.css', 'ie6.css', 'ie7.css', 'ie8.css', 'ie9.css' ];
+    ies.forEach(function(ie) {
+        (techs.indexOf(ie) > -1 || techs.indexOf('min.' + ie) > -1) && scripts.ie.push({
+            elem: 'css',
+            url: techs.indexOf(ie) > -1 ? ie : 'min.' + ie
+        });
     });
 
     return scripts;
