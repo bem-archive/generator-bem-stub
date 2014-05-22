@@ -410,7 +410,7 @@ describe('\'enb\'', function () {
         ],
 
         output = {
-            css_js: [{
+            cssJS: [{
                 elem: 'css',
                 url: 'css'
             }, {
@@ -418,22 +418,12 @@ describe('\'enb\'', function () {
                 url: 'js'
             }],
 
-            ie: [{
-                elem: 'css',
-                url: 'ie.css'
-            },{
-                elem: 'css',
-                url: 'ie6.css'
-            }, {
-                elem: 'css',
-                url: 'ie7.css'
-            }, {
-                elem: 'css',
-                url: 'ie8.css'
-            }, {
-                elem: 'css',
-                url: 'ie9.css'
-            }]
+            ie: ['', 6, 7, 8, 9].map(function(i) {
+                return {
+                    elem: 'css',
+                    url: 'ie' + i + '.css'
+                };
+            })
         }
 
         enb.getScripts(techs).must.eql(output);
@@ -456,7 +446,7 @@ describe('\'enb\'', function () {
         ],
 
         output = {
-            css_js: [{
+            cssJS: [{
                 elem: 'css',
                 url: 'min.css'
             }, {
@@ -464,22 +454,12 @@ describe('\'enb\'', function () {
                 url: 'min.js'
             }],
 
-            ie: [{
-                elem: 'css',
-                url: 'min.ie.css'
-            },{
-                elem: 'css',
-                url: 'min.ie6.css'
-            }, {
-                elem: 'css',
-                url: 'min.ie7.css'
-            }, {
-                elem: 'css',
-                url: 'min.ie8.css'
-            }, {
-                elem: 'css',
-                url: 'min.ie9.css'
-            }]
+            ie: ['', 6, 7, 8, 9].map(function(i) {
+                return {
+                    elem: 'css',
+                    url: 'min.ie' + i + '.css'
+                };
+            })
         }
 
         enb.getScripts(techs).must.eql(output);

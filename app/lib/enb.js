@@ -236,25 +236,26 @@ function getBrowsers(configPath, platforms) {
 
 function getScripts(techs) {
     var scripts = {
-        css_js: [],
+        cssJS: [],
         ie: []
     };
 
-    (techs.indexOf('css') > -1 || techs.indexOf('min.css') > -1) && scripts.css_js.push({
+    (techs.indexOf('css') > -1 || techs.indexOf('min.css') > -1) && scripts.cssJS.push({
         elem: 'css',
         url: techs.indexOf('css') > -1 ? 'css' : 'min.css'
     });
 
-    (techs.indexOf('js') > -1 || techs.indexOf('min.js') > -1) && scripts.css_js.push({
+    (techs.indexOf('js') > -1 || techs.indexOf('min.js') > -1) && scripts.cssJS.push({
         elem: 'js',
         url: techs.indexOf('js') > -1 ? 'js' : 'min.js'
     });
 
     var ies = [ 'ie.css', 'ie6.css', 'ie7.css', 'ie8.css', 'ie9.css' ];
     ies.forEach(function(ie) {
-        (techs.indexOf(ie) > -1 || techs.indexOf('min.' + ie) > -1) && scripts.ie.push({
+        var isIE = techs.indexOf(ie) > -1;
+        (isIE || techs.indexOf('min.' + ie) > -1) && scripts.ie.push({
             elem: 'css',
-            url: techs.indexOf(ie) > -1 ? ie : 'min.' + ie
+            url: isIE ? ie : 'min.' + ie
         });
     });
 
