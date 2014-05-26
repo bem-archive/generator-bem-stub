@@ -182,7 +182,7 @@ BemGenerator.prototype.askFor = function askFor() {
         message: "What template system to use?",
         choices: [{
             name: 'bemhtml',
-            value: 'bemhtml.js'
+            value: 'bemhtml'
         }, {
             value: 'bh'
         }, {
@@ -219,7 +219,8 @@ BemGenerator.prototype.askFor = function askFor() {
                 tech !== 'bemjson.js' && toMinimize.push( { value: tech } );
             });
 
-            (input.templateSystem && input.templateSystem !== 'my') && toMinimize.push( { value: 'bemhtml.js' } );
+            var templSys = input.templateSystem;
+            (templSys && templSys !== 'my') && toMinimize.push( { value: templSys + '.js' } );
 
             return toMinimize;
         },

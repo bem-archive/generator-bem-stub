@@ -12,7 +12,7 @@
       "enb-diverse-js": "0.1.0",
       "enb-bemxjst": "1.1.1",
       "enb-xjst": "1.0.4",
-      "bh": "1.1.1",
+      "enb-bh": "0.1.1",
       "bem-tools-autoprefixer": "0.0.3",
       "enb-autoprefixer": "0.1.1"
     }
@@ -43,8 +43,8 @@
       "ie8.css"            : "require('enb/techs/css-ie8')",
       "ie9.css"            : "require('enb/techs/css-ie9')",
       "bemtree.js"         : "require('enb-bemxjst/techs/bemtree-old')",
-      "core-bemhtml.js"    : "require('enb-bemxjst/techs/bemhtml-old')",
-      "bh"                 : "require('bh/techs/bh-server')",
+      "core-bemhtml"       : "require('enb-bemxjst/techs/bemhtml-old')",
+      "bh"                 : "require('enb-bh/techs/bh-server')",
       "node.js"            : "require('enb-diverse-js/techs/node-js')",
       "browser.js"         : "require('enb-diverse-js/techs/browser-js'), { target: '?.js' }",
       "html"               : "require('enb/techs/html-from-bemjson')"

@@ -331,7 +331,7 @@ describe('\'enb\'', function () {
             'node.js',
             'browser.js',
             'design-roole',
-            'bemhtml.js',
+            'bemhtml',
             'html'
         ],
 

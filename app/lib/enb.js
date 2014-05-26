@@ -153,8 +153,8 @@ function getTechnologies(configPath, techs, toMinify) {
                 inJSON.push('enb-diverse-js');
                 break;
 
-            case 'bemhtml.js':   // 'bem-core' ==> 'bemhtml-old' from package 'enb-bemxjst'
-                inTechs.push(getTechVal('core-bemhtml.js'));
+            case 'bemhtml':   // 'bem-core' ==> 'bemhtml-old' from package 'enb-bemxjst'
+                inTechs.push(getTechVal('core-bemhtml'));
 
                 inTargets.push(toMinify.indexOf('bemhtml.js') > -1 ? 'min.bemhtml.js' : 'bemhtml.js');
 
@@ -164,9 +164,16 @@ function getTechnologies(configPath, techs, toMinify) {
             case 'bh':
                 inTechs.push(getTechVal('bh'));
 
-                inTargets.push(toMinify.indexOf('bemhtml.js') > -1 ? 'min.bemhtml.js' : 'bemhtml.js');   // 'bh' ==> '?.bemhtml.js' 'inTargets'
+                inTargets.push(toMinify.indexOf('bh.js') > -1 ? 'min.bh.js' : 'bh.js');
 
-                inJSON.push('bh');
+                inJSON.push('enb-bh');
+                break;
+
+            case 'html': // 'bh' ==> 'enb-bh' in 'html' require path
+                var techVal = getTechVal('html');
+                inTechs.push(techs.indexOf('bh') > -1 ? techVal.replace('enb', 'enb-bh') : techVal);
+
+                inTargets.push('html');
                 break;
 
             default:
