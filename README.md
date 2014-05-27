@@ -20,11 +20,15 @@ $ yo bem-stub
 
 ```generator-bem-stub``` will install all dependencies after generation of the project.
 
-If you do not want to install dependencies, use option ```--no-deps```
+If you do not want to install dependencies, use the option ```--no-deps```
 
 ```bash
 $ yo bem-stub --no-deps
 ```
+
+## Versions
+
+You can check in the file ```app/templates/config.json``` which versions of the libraries and dependencies ```generator-bem-stub``` uses or click [here](https://github.com/bem/generator-bem-stub/blob/master/app/templates/config.json#L2-L19).
 
 ## License
 
