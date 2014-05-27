@@ -1,0 +1,42 @@
+{
+    "withPath": {
+        "desktop": [
+            "bem-core/common.blocks",
+            "bem-core/desktop.blocks",
+            "bem-components/common.blocks",
+            "bem-components/desktop.blocks"
+        ],
+        "touch-pad": [
+            "bem-core/common.blocks",
+            "bem-core/touch.blocks",
+            "bem-core/touch-pad.blocks",
+            "bem-components/common.blocks",
+            "bem-components/touch.blocks",
+            "bem-components/touch-pad.blocks"
+        ],
+        "touch-phone": [
+            "bem-core/common.blocks",
+            "bem-core/touch.blocks",
+            "bem-core/touch-phone.blocks",
+            "bem-components/common.blocks",
+            "bem-components/touch.blocks",
+            "bem-components/touch-phone.blocks"
+        ]
+    },
+    "withoutPath": {
+        "desktop": [
+            "common",
+            "desktop"
+        ],
+        "touch-pad": [
+            "common",
+            "touch",
+            "touch-pad"
+        ],
+        "touch-phone": [
+            "common",
+            "touch",
+            "touch-phone"
+        ]
+    }
+}

@@ -1,0 +1,13 @@
+{
+    "inTechs": [
+        "require('enb/techs/files')",
+        "require('enb/techs/deps')",
+        "require('enb-stylus/techs/css-stylus')"
+    ],
+    "inTargets": [
+        "css"
+    ],
+    "inJSON": [
+        "enb-stylus"
+    ]
+}

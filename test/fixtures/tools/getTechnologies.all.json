@@ -42,15 +42,17 @@
             "node.js",
             "browser.js+bemhtml",
             "html"
-      ],
-      "forked": [
-          "roole",
-          "browser.js+bemhtml"
-      ]
+        ],
+        "forked": [
+            "roole",
+            "browser.js+bemhtml"
+        ]
     },
     "inBundles": [
         "browser.js+bemhtml",
         "html"
     ],
-    "inJSON": [ "roole" ]
+    "inJSON": [
+        "roole"
+    ]
 }
