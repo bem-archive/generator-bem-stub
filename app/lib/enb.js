@@ -169,9 +169,14 @@ function getTechnologies(configPath, techs, toMinify) {
                 inJSON.push('enb-bh');
                 break;
 
-            case 'html': // 'bh' ==> 'enb-bh' in 'html' require path
+            case 'html': // 'bh' ==> 'enb-bh' in 'html' require path | 'bemhtml' ==> 'enb-bemxjst' in 'html' require path
                 var techVal = getTechVal('html');
-                inTechs.push(techs.indexOf('bh') > -1 ? techVal.replace('enb', 'enb-bh') : techVal);
+
+                techs.indexOf('bemhtml') > -1 && (techVal = techVal.replace('enb', 'enb-bemxjst'));
+
+                techs.indexOf('bh') > -1 && (techVal = techVal.replace('enb', 'enb-bh'));
+
+                inTechs.push(techVal);
 
                 inTargets.push('html');
                 break;
