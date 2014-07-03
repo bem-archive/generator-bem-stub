@@ -5,7 +5,7 @@
         "require('enb/techs/bemdecl-from-bemjson')",
         "require('enb/techs/css')",
         "require('enb-bemxjst/techs/bemhtml-old')",
-        "require('enb/techs/html-from-bemjson')"
+        "require('enb-bemxjst/techs/html-from-bemjson')"
     ],
     "inTargets": [
         "css",
