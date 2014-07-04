@@ -565,7 +565,7 @@ describe('\'enb\'', function () {
             'bemtree.js',
             'node.js',
             'browser.js',
-            'design-roole'
+            'stylus'
         ];
 
         enb.addPreprocessor(techs, preprocessor).must.eql(output);
@@ -598,7 +598,7 @@ describe('\'enb\'', function () {
         enb.getTechnologies(configPath, techs, toMinify).must.eql(output);
     });
 
-    it('getTechnologies --> roole without design', function () {
+    it('getTechnologies --> roole', function () {
 
         var techs = [
             'roole'
@@ -607,19 +607,6 @@ describe('\'enb\'', function () {
         toMinify = []
 
         output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.roole.json', 'utf-8'));
-
-        enb.getTechnologies(configPath, techs, toMinify).must.eql(output);
-    });
-
-    it('getTechnologies --> roole with design', function () {
-
-        var techs = [
-            'design-roole'
-        ],
-
-        toMinify = []
-
-        output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.roole.design.json', 'utf-8'));
 
         enb.getTechnologies(configPath, techs, toMinify).must.eql(output);
     });
