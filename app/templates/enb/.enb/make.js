@@ -13,7 +13,7 @@ module.exports = function(config) {
 
                 "\n\n    config.nodes('*desktop.bundles/*', function(nodeConfig) {\n        nodeConfig.addTechs([\n            [ require('enb/techs/levels'), { levels: getDesktops(config) } ]" +
 
-                (design ?
+                (preprocessor ?
 
                     ",\n            [ require('enb-autoprefixer/techs/css-autoprefixer'), {\n                browserSupport: [ " +
 
@@ -31,7 +31,7 @@ module.exports = function(config) {
 
                 "\n\n    config.nodes('*touch-pad.bundles/*', function(nodeConfig) {\n        nodeConfig.addTechs([\n            [ require('enb/techs/levels'), { levels: getTouchPads(config) } ]" +
 
-                (design ?
+                (preprocessor ?
 
                     ",\n            [ require('enb-autoprefixer/techs/css-autoprefixer'), {\n                browserSupport: [ " +
 
@@ -49,19 +49,19 @@ module.exports = function(config) {
 
                 "\n\n    config.nodes('*touch-phone.bundles/*', function(nodeConfig) {\n        nodeConfig.addTechs([\n            [ require('enb/techs/levels'), { levels: getTouchPhones(config) } ]" +
 
-                    (design ?
+                (preprocessor ?
 
-                        ",\n            [ require('enb-autoprefixer/techs/css-autoprefixer'), {\n                browserSupport: [ " +
+                    ",\n            [ require('enb-autoprefixer/techs/css-autoprefixer'), {\n                browserSupport: [ " +
 
-                        _.map(browsers['touch-phone'], function(browser) {
-                            return "'" + browser + "'";
-                        }).join(', ') +
+                    _.map(browsers['touch-phone'], function(browser) {
+                        return "'" + browser + "'";
+                    }).join(', ') +
 
-                        " ],\n                sourceTarget: '?.noprefix.css'\n            }]"
+                    " ],\n                sourceTarget: '?.noprefix.css'\n            }]"
 
-                    : "") +
+                : "") +
 
-                    "\n        ]);\n    });" : "")
+                "\n        ]);\n    });" : "")
         %>
 <%= toMinify.length > 0 ?
 
