@@ -1,18 +1,18 @@
 {
   "versions": {
     "core": {
-      "bem-core": "v2.2.2",
+      "bem-core": "v2.3.0",
       "bem-components": "git://github.com/bem/bem-components.git#f72047c18062630ca2280674233e986e7b9f2ee8"
     },
     "other": {
       "roole": "0.9.0",
-      "less": "1.7.0",
+      "less": "1.7.3",
       "enb-roole": "0.2.1",
-      "enb-stylus": "0.0.3",
+      "enb-stylus": "1.0.0",
       "enb-diverse-js": "0.1.0",
-      "enb-bemxjst": "1.1.1",
-      "enb-xjst": "1.0.4",
-      "enb-bh": "0.1.1",
+      "enb-bemxjst": "1.2.0",
+      "enb-bh": "0.2.1",
+      "bh": "1.2.3",
       "bem-tools-autoprefixer": "0.0.3",
       "enb-autoprefixer": "0.1.1"
     }
