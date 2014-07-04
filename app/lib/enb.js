@@ -76,8 +76,8 @@ function getPlatforms(pls, libs, design) {
  */
 
 function addPreprocessor(techs, preprocessor) {
-    // 'bem-core' --> 'bem-components' --> 'design' ==> 'preprocessor === undefined' ==> 'design-roole'
-    techs.push(preprocessor || 'design-roole');
+    // 'bem-core' --> 'bem-components' ==> 'preprocessor === undefined' ==> 'stylus'
+    techs.push(preprocessor || 'stylus');
 
     return techs;
 }
@@ -131,12 +131,6 @@ function getTechnologies(configPath, techs, toMinify) {
                 inTechs.push(getTechVal('roole'));
 
                 inJSON.push('roole', 'enb-roole');  // 'roole' ==> 'roole', 'enb-roole' in 'package.json'
-                break;
-
-            case 'design-roole':
-                inTechs.push(getTechVal('design-roole'));
-
-                inJSON.push('roole', 'enb-roole');
                 break;
 
             case 'less':

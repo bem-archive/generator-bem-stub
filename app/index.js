@@ -84,7 +84,7 @@ BemGenerator.prototype.askFor = function askFor() {
                 name: 'bem-components',
                 value: {
                     name: 'bem-components',
-                    version: getLibVersion('core', 'bem-components')
+                    version: getLibVersion('core', input.collector === 'enb' ? 'enb-bem-components' : 'bem-components')
                 }
             });
 
@@ -127,30 +127,8 @@ BemGenerator.prototype.askFor = function askFor() {
         message: "What preprocessor to use?",
         choices: function(input) {
             // returns the list of possible preprocessors in dependence of the previous answers
-            var isEnb = input.collector === 'enb';
-            var useComponents;
 
-            input.addLibraries.map(function(lib) {
-                lib.name === 'bem-components' && (useComponents = true);
-            });
-
-            if (isEnb && useComponents) {
-                return [{
-                        value: 'roole'
-                    }, {
-                        name: 'Only pure css',
-                        value: 'roole'
-                    }]
-            }
-            else if (!isEnb) {
-                return [{
-                        value: 'roole'
-                    }, {
-                        name: 'Only pure css',
-                        value: 'css'
-                    }]
-            }
-            else {
+            if (input.collector === 'enb') {
                 return [{
                         value: 'stylus'
                     }, {
@@ -160,11 +138,24 @@ BemGenerator.prototype.askFor = function askFor() {
                     }, {
                         name: 'Only pure css',
                         value: 'css'
-                    }]
-            }
+                    }];
+            };
+
+            return [{
+                value: 'roole'
+            }, {
+                name: 'Only pure css',
+                value: 'css'
+            }];
         },
-        when: function(input) {     // 'design' ==> 'roole'
-            return !input.design;
+        when: function(input) {    // 'bem-tools' -> 'bem-components' -> 'design' ==> 'roole' | 'enb' -> 'bem-components' ==> 'stylus'
+            var useComponents;
+
+            input.addLibraries.map(function(lib) {
+                lib.name === 'bem-components' && (useComponents = true);
+            });
+
+            return !(input.design || (input.collector === 'enb' && useComponents));
         }
     }, {
         type: 'checkbox',
@@ -294,6 +285,13 @@ BemGenerator.prototype.askFor = function askFor() {
         // ------------
 
 
+        // Preprocessor
+        // ------------
+
+        _this.preprocessor = props.preprocessor !== 'css';
+
+        // ------------
+
         // Roole
         // -----
 
@@ -305,9 +303,17 @@ BemGenerator.prototype.askFor = function askFor() {
         // Design
         // ------
 
-        _this.design = props.design && (_this.browsers = collector.getBrowsers(configPath, _this.platforms.withoutPath));
+        _this.design = props.design;
 
         // ------
+
+
+        // Autoprefixer
+        // ------------
+
+        _this.browsers = collector.getBrowsers(configPath, _this.platforms.withoutPath);
+
+        // ------------
 
 
         // enb ==> 'index.bemjson.js'
@@ -442,8 +448,7 @@ BemGenerator.prototype.addPackages = function addPackages() {
         this.roole && (deps['bem-tools-autoprefixer'] = getLibVersion('other', 'bem-tools-autoprefixer'));
 
     _this.collectorName === 'enb' &&
-        _this.design && (deps['enb-autoprefixer'] = getLibVersion('other', 'enb-autoprefixer')) &&
-            (deps['enb-roole'] = getLibVersion('other', 'enb-roole'))
+        _this.preprocessor && (deps['enb-autoprefixer'] = getLibVersion('other', 'enb-autoprefixer'));
 
     fs.writeFileSync(packagePath, JSON.stringify(pack, null, '  ') + '\n');
 };
