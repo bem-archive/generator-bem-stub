@@ -28,6 +28,16 @@ BemGenerator.prototype.askFor = function askFor() {
         return JSON.parse(_this.readFileAsString(configPath)).versions[base][value];
     }
 
+    function hasBemComponents(addLibraries) {
+        var hasBemComponents = false;
+
+        addLibraries.map(function(lib) {
+            lib.name === 'bem-components' && (hasBemComponents = true);
+        });
+
+        return hasBemComponents;
+    }
+
     // questions to user
     var prompts = [{
         type: 'input',
@@ -113,13 +123,8 @@ BemGenerator.prototype.askFor = function askFor() {
         message: "Use design from bem-components?",
         default: true,
         when: function(input) {     // 'bem-core' --> 'bem-components' ==> 'design'
-            var useComponents;
 
-            input.addLibraries.map(function(lib) {
-                lib.name === 'bem-components' && (useComponents = true);
-            });
-
-            return useComponents
+            return hasBemComponents(input.addLibraries);
         }
     }, {
         type: 'list',
@@ -139,7 +144,7 @@ BemGenerator.prototype.askFor = function askFor() {
                         name: 'Only pure css',
                         value: 'css'
                     }];
-            };
+            }
 
             return [{
                 value: 'roole'
@@ -149,13 +154,8 @@ BemGenerator.prototype.askFor = function askFor() {
             }];
         },
         when: function(input) {    // 'bem-tools' -> 'bem-components' -> 'design' ==> 'roole' | 'enb' -> 'bem-components' ==> 'stylus'
-            var useComponents;
 
-            input.addLibraries.map(function(lib) {
-                lib.name === 'bem-components' && (useComponents = true);
-            });
-
-            return !(input.design || (input.collector === 'enb' && useComponents));
+            return !(input.design || (input.collector === 'enb' && hasBemComponents(input.addLibraries)));
         }
     }, {
         type: 'checkbox',
@@ -238,7 +238,15 @@ BemGenerator.prototype.askFor = function askFor() {
         // ---------
 
         _this.libs = props.addLibraries;
+
+        _this.libsToBowerDeps = [];     // to 'bower.json'
+        props.addLibraries.forEach(function(elem) {
+            _this.libsToBowerDeps.push(elem);
+        })
+
         _this.libs.unshift(props.baseLibrary);  // base lib on the top
+
+        !hasBemComponents(_this.libsToBowerDeps) && _this.libsToBowerDeps.unshift(props.baseLibrary); // 'bem-components' will automatically install 'bem-core'
 
         // ---------
 
