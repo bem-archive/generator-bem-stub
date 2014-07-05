@@ -29,13 +29,11 @@ BemGenerator.prototype.askFor = function askFor() {
     }
 
     function hasBemComponents(addLibraries) {
-        var hasBemComponents = false;
+        for (var lib in addLibraries) {
+            if (addLibraries[lib].name === 'bem-components') return true;
+        }
 
-        addLibraries.map(function(lib) {
-            lib.name === 'bem-components' && (hasBemComponents = true);
-        });
-
-        return hasBemComponents;
+        return false;
     }
 
     // questions to user
@@ -246,7 +244,7 @@ BemGenerator.prototype.askFor = function askFor() {
 
         _this.libs.unshift(props.baseLibrary);  // base lib on the top
 
-        !hasBemComponents(_this.libsToBowerDeps) && _this.libsToBowerDeps.unshift(props.baseLibrary); // 'bem-components' will automatically install 'bem-core'
+        hasBemComponents(_this.libsToBowerDeps) || _this.libsToBowerDeps.unshift(props.baseLibrary); // 'bem-components' will automatically install 'bem-core'
 
         // ---------
 
