@@ -81,16 +81,10 @@ function getPlatforms(pls, libs, design) {
 function addPreprocessor(techs, preprocessor) {
     if (preprocessor === 'css') {
         techs.splice(techs.indexOf('bemjson.js') + 1, 0, 'css');
-
-        return techs;
     }
-    else if (preprocessor === 'roole' || !preprocessor) {
-        techs.splice(techs.indexOf('bemjson.js') + 1, 0, 'roole', 'css');
-
-        return techs;
+    else {
+        techs.splice(techs.indexOf('bemjson.js') + 1, 0, preprocessor ? preprocessor : 'stylus', 'css');
     }
-
-    techs.splice(techs.indexOf('bemjson.js') + 1, 0, preprocessor);
 
     return techs;
 }
@@ -227,6 +221,16 @@ function getTechnologies(configPath, techs) {
                 inJSON.push('roole');
                 break;
 
+            case 'stylus':
+                inBlocks.V2.push(getTechDecl('stylus'));
+                inBlocks.defaultTechs.push('stylus');
+
+                inMake.techs.push('stylus');
+                inMake.forked.push('stylus');
+
+                inJSON.push('stylus');
+                break;
+
             default:
                 inBlocks.V2.push(getTechDecl(tech));
 
@@ -234,7 +238,9 @@ function getTechnologies(configPath, techs) {
         }
     });
 
-    inBlocks.defaultTechs.indexOf('roole') === -1 && inBlocks.defaultTechs.unshift('css');
+    if (inBlocks.defaultTechs.indexOf('stylus') === -1 && inBlocks.defaultTechs.indexOf('roole') === -1) {
+        inBlocks.defaultTechs.unshift('css');
+    }
 
     technologies.inBlocks.V2 = _.uniq(inBlocks.V2);
     technologies.inBlocks.notV2 = _.uniq(inBlocks.notV2);
