@@ -6,6 +6,7 @@
       "enb-bem-components": "git://github.com/bem/bem-components.git#28816d26221a7f320d24d093d80be386aeab3d34"
     },
     "other": {
+      "stylus": "0.47.1",
       "roole": "0.9.0",
       "less": "1.7.3",
       "enb-roole": "0.2.1",
@@ -22,7 +23,9 @@
     "tools": {
       "bemdecl.js"         : "v2/bemdecl.js",
       "deps.js"            : "v2/deps.js",
+      "stylus"             : "v2/styl",
       "roole"              : "v2/roole",
+      "less"               : "v2/less",
       "css"                : "v2/css",
       "ie.css"             : "v2/ie.css",
       "ie6.css"            : "v2/ie6.css",
