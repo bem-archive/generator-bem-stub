@@ -15,7 +15,7 @@
     "bower-npm-install": "0.5.8"
   },
   "scripts": {
-    "postinstall": "bower-npm-install --non-interactive",
+    "postinstall": "bower-npm-install",
     "deps": "bower-npm-install --non-interactive"
   },
   "private": true
