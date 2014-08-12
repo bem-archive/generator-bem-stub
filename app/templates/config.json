@@ -9,7 +9,7 @@
       "roole": "0.9.0",
       "less": "1.7.3",
       "enb-roole": "0.2.1",
-      "enb-stylus": "1.0.0",
+      "enb-stylus": "https://github.com/tadatuta/enb-stylus/archive/master.tar.gz",
       "enb-diverse-js": "0.1.0",
       "enb-bemxjst": "1.2.0",
       "enb-bh": "0.2.1",
