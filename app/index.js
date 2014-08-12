@@ -92,7 +92,7 @@ BemGenerator.prototype.askFor = function askFor() {
                 name: 'bem-components',
                 value: {
                     name: 'bem-components',
-                    version: getLibVersion('core', input.collector === 'enb' ? 'enb-bem-components' : 'bem-components')
+                    version: getLibVersion('core', 'bem-components')
                 }
             });
 
