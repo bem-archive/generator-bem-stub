@@ -13,7 +13,7 @@ var commonTechs = [
 ],
 templates = {
     core: [
-        { value: 'bemtree.js'  }
+        { name: 'bemtree', value: 'bemtree.js' }
     ]
 },
 scripts = {
