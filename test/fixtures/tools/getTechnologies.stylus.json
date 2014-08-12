@@ -1,0 +1,29 @@
+{
+    "inBlocks": {
+        "V2": [
+            "'bemdecl.js'           : 'v2/bemdecl.js'",
+            "'deps.js'              : 'v2/deps.js'",
+            "'stylus'               : 'v2/styl'",
+            "'css'                  : 'v2/css'"
+        ],
+        "notV2": [],
+        "defaultTechs": [
+            "stylus"
+        ]
+    },
+    "inMake": {
+        "techs": [
+            "bemdecl.js",
+            "deps.js",
+            "stylus",
+            "css"
+        ],
+        "forked": [
+            "stylus"
+        ]
+    },
+    "inBundles": [],
+    "inJSON": [
+        "stylus"
+    ]
+}

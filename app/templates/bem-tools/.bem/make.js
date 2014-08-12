@@ -2,7 +2,7 @@
 
 // process.env.YENV = 'production';
 
-var PATH = require('path');<%= roole ? "\n\nrequire(\'bem-tools-autoprefixer\').extendMake(MAKE);" : "" %>
+var PATH = require('path');<%= isPreprocessor ? "\n\nrequire(\'bem-tools-autoprefixer\').extendMake(MAKE);" : "" %>
 
 MAKE.decl('Arch', {
 
@@ -90,9 +90,9 @@ MAKE.decl('BundleNode', {
         return levels
             .map(function(path) { return resolve(path); })
             .concat(resolve(PATH.dirname(this.getNodePrefix()), 'blocks'));
-    }<%= roole ?
+    }<%= isPreprocessor ?
 
-        ",\n\n    'create-css-node' : function(tech, bundleNode, magicNode) {\n        var source = this.getBundlePath('roole');\n        if(this.ctx.arch.hasNode(source)) {\n            return this.createAutoprefixerNode(tech, this.ctx.arch.getNode(source), bundleNode, magicNode);\n        }\n    }"
+        ",\n\n    'create-css-node' : function(tech, bundleNode, magicNode) {\n        var source = this.getBundlePath('" + preprocessor + "');\n        if(this.ctx.arch.hasNode(source)) {\n            return this.createAutoprefixerNode(tech, this.ctx.arch.getNode(source), bundleNode, magicNode);\n        }\n    }"
 
     : "" %>
 

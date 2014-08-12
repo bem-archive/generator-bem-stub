@@ -92,7 +92,7 @@ BemGenerator.prototype.askFor = function askFor() {
                 name: 'bem-components',
                 value: {
                     name: 'bem-components',
-                    version: getLibVersion('core', input.collector === 'enb' ? 'enb-bem-components' : 'bem-components')
+                    version: getLibVersion('core', 'bem-components')
                 }
             });
 
@@ -131,29 +131,20 @@ BemGenerator.prototype.askFor = function askFor() {
         choices: function(input) {
             // returns the list of possible preprocessors in dependence of the previous answers
 
-            if (input.collector === 'enb') {
-                return [{
-                        value: 'stylus'
-                    }, {
-                        value: 'roole',
-                    }, {
-                        value: 'less',
-                    }, {
-                        name: 'Only pure css',
-                        value: 'css'
-                    }];
-            }
-
             return [{
-                value: 'roole'
+                value: 'stylus'
+            }, {
+                value: 'roole',
+            }, {
+                value: 'less',
             }, {
                 name: 'Only pure css',
                 value: 'css'
             }];
         },
-        when: function(input) {    // 'bem-tools' -> 'bem-components' -> 'design' ==> 'roole' | 'enb' -> 'bem-components' ==> 'stylus'
+        when: function(input) {    // 'bem-tools' || enb' -> 'bem-components' ==> 'stylus'
 
-            return !(input.design || (input.collector === 'enb' && hasBemComponents(input.addLibraries)));
+            return !(hasBemComponents(input.addLibraries));
         }
     }, {
         type: 'checkbox',
@@ -274,7 +265,9 @@ BemGenerator.prototype.askFor = function askFor() {
         // Technologies
         // ------------
 
-        props.techs = collector.addPreprocessor(props.techs, props.preprocessor);
+        var preprocessor = props.preprocessor;
+
+        props.techs = collector.addPreprocessor(props.techs, preprocessor);
 
         // 'bem-tools' --> 'ieN' ==> 'ie.css'
         _this.collectorName === 'bem-tools' && (props.techs = collector.addIe(props.techs));
@@ -294,16 +287,10 @@ BemGenerator.prototype.askFor = function askFor() {
         // Preprocessor
         // ------------
 
-        _this.preprocessor = props.preprocessor !== 'css';
+        _this.isPreprocessor = preprocessor !== 'css';
+        _this.isPreprocessor && (_this.preprocessor = !preprocessor ? 'stylus' : preprocessor);
 
         // ------------
-
-        // Roole
-        // -----
-
-        _this.roole = (_this.collectorName === 'bem-tools' && (props.preprocessor === 'roole' || props.design));
-
-        // -----
 
 
         // Design
@@ -451,10 +438,10 @@ BemGenerator.prototype.addPackages = function addPackages() {
 
     // autoprefixer
     _this.collectorName === 'bem-tools' &&
-        this.roole && (deps['bem-tools-autoprefixer'] = getLibVersion('other', 'bem-tools-autoprefixer'));
+        this.isPreprocessor && (deps['bem-tools-autoprefixer'] = getLibVersion('other', 'bem-tools-autoprefixer'));
 
     _this.collectorName === 'enb' &&
-        _this.preprocessor && (deps['enb-autoprefixer'] = getLibVersion('other', 'enb-autoprefixer'));
+        _this.isPreprocessor && (deps['enb-autoprefixer'] = getLibVersion('other', 'enb-autoprefixer'));
 
     fs.writeFileSync(packagePath, JSON.stringify(pack, null, '  ') + '\n');
 };

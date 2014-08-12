@@ -81,16 +81,10 @@ function getPlatforms(pls, libs, design) {
 function addPreprocessor(techs, preprocessor) {
     if (preprocessor === 'css') {
         techs.splice(techs.indexOf('bemjson.js') + 1, 0, 'css');
-
-        return techs;
     }
-    else if (preprocessor === 'roole' || !preprocessor) {
-        techs.splice(techs.indexOf('bemjson.js') + 1, 0, 'roole', 'css');
-
-        return techs;
+    else {
+        techs.splice(techs.indexOf('bemjson.js') + 1, 0, preprocessor ? preprocessor : 'stylus', 'css');
     }
-
-    techs.splice(techs.indexOf('bemjson.js') + 1, 0, preprocessor);
 
     return techs;
 }
@@ -173,8 +167,9 @@ function getTechnologies(configPath, techs) {
         inMake = technologies.inMake,
         inJSON = technologies.inJSON;
 
+    var isPreprocessor = false;
     techs.map(function(tech) {
-        switch (tech) {
+        switch(tech) {
 
             case 'bemjson.js':  // puts 'bemjson.js' on the top (it always goes the first in technologies)
                 inMake.techs.unshift('bemjson.js');
@@ -217,24 +212,27 @@ function getTechnologies(configPath, techs) {
                 inMake.techs.push('html');
                 break;
 
-            case 'roole':
-                inBlocks.V2.push(getTechDecl('roole'));
-                inBlocks.defaultTechs.push('roole');
-
-                inMake.techs.push('roole');
-                inMake.forked.push('roole');
-
-                inJSON.push('roole');
-                break;
-
             default:
+                if (tech === 'roole' || tech === 'stylus' || tech === 'less') {
+                    inBlocks.defaultTechs.push(tech);
+
+                    inMake.forked.push(tech);
+
+                    inJSON.push(tech);
+
+                    isPreprocessor = true;
+                }
+
                 inBlocks.V2.push(getTechDecl(tech));
 
                 inMake.techs.push(tech);
         }
+
     });
 
-    inBlocks.defaultTechs.indexOf('roole') === -1 && inBlocks.defaultTechs.unshift('css');
+    if (!isPreprocessor) {
+        inBlocks.defaultTechs.unshift('css');
+    }
 
     technologies.inBlocks.V2 = _.uniq(inBlocks.V2);
     technologies.inBlocks.notV2 = _.uniq(inBlocks.notV2);
