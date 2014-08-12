@@ -2,7 +2,7 @@
   "versions": {
     "core": {
       "bem-core": "v2.3.0",
-      "bem-components": "git://github.com/bem/bem-components.git#f72047c18062630ca2280674233e986e7b9f2ee8",
+      "bem-components": "0b09f205e38cfd535c692ae1a0cfb36a713d90d0",
       "enb-bem-components": "git://github.com/bem/bem-components.git#28816d26221a7f320d24d093d80be386aeab3d34"
     },
     "other": {
