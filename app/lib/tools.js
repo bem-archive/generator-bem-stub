@@ -167,8 +167,9 @@ function getTechnologies(configPath, techs) {
         inMake = technologies.inMake,
         inJSON = technologies.inJSON;
 
+    var isPreprocessor = false;
     techs.map(function(tech) {
-        switch (tech) {
+        switch(tech) {
 
             case 'bemjson.js':  // puts 'bemjson.js' on the top (it always goes the first in technologies)
                 inMake.techs.unshift('bemjson.js');
@@ -211,34 +212,25 @@ function getTechnologies(configPath, techs) {
                 inMake.techs.push('html');
                 break;
 
-            case 'roole':
-                inBlocks.V2.push(getTechDecl('roole'));
-                inBlocks.defaultTechs.push('roole');
-
-                inMake.techs.push('roole');
-                inMake.forked.push('roole');
-
-                inJSON.push('roole');
-                break;
-
-            case 'stylus':
-                inBlocks.V2.push(getTechDecl('stylus'));
-                inBlocks.defaultTechs.push('stylus');
-
-                inMake.techs.push('stylus');
-                inMake.forked.push('stylus');
-
-                inJSON.push('stylus');
-                break;
-
             default:
+                if (tech === 'roole' || tech === 'stylus' || tech === 'less') {
+                    inBlocks.defaultTechs.push(tech);
+
+                    inMake.forked.push(tech);
+
+                    inJSON.push(tech);
+
+                    isPreprocessor = true;
+                }
+
                 inBlocks.V2.push(getTechDecl(tech));
 
                 inMake.techs.push(tech);
         }
+
     });
 
-    if (inBlocks.defaultTechs.indexOf('stylus') === -1 && inBlocks.defaultTechs.indexOf('roole') === -1) {
+    if (!isPreprocessor) {
         inBlocks.defaultTechs.unshift('css');
     }
 
