@@ -52,6 +52,41 @@ describe('\'bem-tools\'', function () {
         tools.getPlatforms(pls, libs, design).must.eql(output);
     });
 
+    it('addPreprocessor --> stylus', function () {
+
+        var techs = [
+            'bemjson.js',
+            'ie.css',
+            'ie6.css',
+            'ie7.css',
+            'ie8.css',
+            'ie9.css',
+            'bemtree',
+            'bemhtml',
+            'node.js',
+            'browser.js+bemhtml'
+        ],
+
+        preprocessor = 'stylus';
+
+        output = [
+            'bemjson.js',
+            'stylus',
+            'css',
+            'ie.css',
+            'ie6.css',
+            'ie7.css',
+            'ie8.css',
+            'ie9.css',
+            'bemtree',
+            'bemhtml',
+            'node.js',
+            'browser.js+bemhtml'
+        ];
+
+        tools.addPreprocessor(techs, preprocessor).must.eql(output);
+    });
+
     it('addPreprocessor --> roole', function () {
 
         var techs = [
@@ -87,6 +122,41 @@ describe('\'bem-tools\'', function () {
         tools.addPreprocessor(techs, preprocessor).must.eql(output);
     });
 
+    it('addPreprocessor --> less', function () {
+
+        var techs = [
+            'bemjson.js',
+            'ie.css',
+            'ie6.css',
+            'ie7.css',
+            'ie8.css',
+            'ie9.css',
+            'bemtree',
+            'bemhtml',
+            'node.js',
+            'browser.js+bemhtml'
+        ],
+
+        preprocessor = 'less';
+
+        output = [
+            'bemjson.js',
+            'less',
+            'css',
+            'ie.css',
+            'ie6.css',
+            'ie7.css',
+            'ie8.css',
+            'ie9.css',
+            'bemtree',
+            'bemhtml',
+            'node.js',
+            'browser.js+bemhtml'
+        ];
+
+        tools.addPreprocessor(techs, preprocessor).must.eql(output);
+    });
+
     it('addPreprocessor --> css', function () {
 
         var techs = [
@@ -106,6 +176,41 @@ describe('\'bem-tools\'', function () {
 
         output = [
             'bemjson.js',
+            'css',
+            'ie.css',
+            'ie6.css',
+            'ie7.css',
+            'ie8.css',
+            'ie9.css',
+            'bemtree',
+            'bemhtml',
+            'node.js',
+            'browser.js+bemhtml'
+        ];
+
+        tools.addPreprocessor(techs, preprocessor).must.eql(output);
+    });
+
+    it('addPreprocessor --> undefined', function () {
+
+        var techs = [
+            'bemjson.js',
+            'ie.css',
+            'ie6.css',
+            'ie7.css',
+            'ie8.css',
+            'ie9.css',
+            'bemtree',
+            'bemhtml',
+            'node.js',
+            'browser.js+bemhtml'
+        ],
+
+        preprocessor = undefined;
+
+        output = [
+            'bemjson.js',
+            'stylus',
             'css',
             'ie.css',
             'ie6.css',
@@ -193,6 +298,18 @@ describe('\'bem-tools\'', function () {
         tools.getTechnologies(configPath, techs).must.eql(output);
     });
 
+    it('getTechnologies --> stylus', function () {
+
+        var techs = [
+            'stylus',
+            'css'
+        ],
+
+        output = JSON.parse(fs.readFileSync('test/fixtures/tools/getTechnologies.stylus.json', 'utf-8'));
+
+        tools.getTechnologies(configPath, techs).must.eql(output);
+    });
+
     it('getTechnologies --> roole', function () {
 
         var techs = [
@@ -201,6 +318,18 @@ describe('\'bem-tools\'', function () {
         ],
 
         output = JSON.parse(fs.readFileSync('test/fixtures/tools/getTechnologies.roole.json', 'utf-8'));
+
+        tools.getTechnologies(configPath, techs).must.eql(output);
+    });
+
+    it('getTechnologies --> less', function () {
+
+        var techs = [
+            'less',
+            'css'
+        ],
+
+        output = JSON.parse(fs.readFileSync('test/fixtures/tools/getTechnologies.less.json', 'utf-8'));
 
         tools.getTechnologies(configPath, techs).must.eql(output);
     });
