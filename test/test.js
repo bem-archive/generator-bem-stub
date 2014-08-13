@@ -486,6 +486,62 @@ describe('\'bem-tools\'', function () {
         tools.getBrowsers(configPath, platforms).must.eql(output);
     });
 
+    it('getStyles', function () {
+
+        var techs = [
+            'css',
+            'ie.css',
+            'ie6.css',
+            'ie7.css',
+            'ie8.css',
+            'ie9.css',
+        ],
+
+        output = {
+            css: [{
+                elem: 'css',
+                url: 'css'
+            }],
+
+            ies: ['', 6, 7, 8, 9].map(function(i) {
+                return {
+                    elem: 'css',
+                    url: 'ie' + i + '.css'
+                };
+            })
+        }
+
+        tools.getStyles(techs).must.eql(output);
+    });
+
+    it('getScripts --> node.js', function () {
+
+        var techs = [
+            'node.js'
+        ],
+
+        output = [{
+            elem: 'js',
+            url: 'js'
+        }]
+
+        tools.getScripts(techs).must.eql(output);
+    });
+
+    it('getScripts --> browser.js+bemhtml', function () {
+
+        var techs = [
+            'browser.js+bemhtml'
+        ],
+
+        output = [{
+            elem: 'js',
+            url: 'js'
+        }]
+
+        tools.getScripts(techs).must.eql(output);
+    });
+
 });
 
 // ---------------------------------------
@@ -1046,7 +1102,7 @@ describe('\'enb\'', function () {
         enb.getBrowsers(configPath, platforms).must.eql(output);
     });
 
-    it('getScripts', function () {
+    it('getStyles', function () {
 
         var techs = [
             'css',
@@ -1055,19 +1111,15 @@ describe('\'enb\'', function () {
             'ie7.css',
             'ie8.css',
             'ie9.css',
-            'js'
         ],
 
         output = {
-            cssJS: [{
+            css: [{
                 elem: 'css',
                 url: 'css'
-            }, {
-                elem: 'js',
-                url: 'js'
             }],
 
-            ie: ['', 6, 7, 8, 9].map(function(i) {
+            ies: ['', 6, 7, 8, 9].map(function(i) {
                 return {
                     elem: 'css',
                     url: 'ie' + i + '.css'
@@ -1075,10 +1127,10 @@ describe('\'enb\'', function () {
             })
         }
 
-        enb.getScripts(techs).must.eql(output);
+        enb.getStyles(techs).must.eql(output);
     });
 
-    it('getScripts --> minimized', function () {
+    it('getStyles --> minimized', function () {
 
         var techs = [
             'min.css',
@@ -1087,25 +1139,49 @@ describe('\'enb\'', function () {
             'min.ie7.css',
             'min.ie8.css',
             'min.ie9.css',
-            'min.js'
         ],
 
         output = {
-            cssJS: [{
+            css: [{
                 elem: 'css',
                 url: 'min.css'
-            }, {
-                elem: 'js',
-                url: 'min.js'
             }],
 
-            ie: ['', 6, 7, 8, 9].map(function(i) {
+            ies: ['', 6, 7, 8, 9].map(function(i) {
                 return {
                     elem: 'css',
                     url: 'min.ie' + i + '.css'
                 };
             })
         }
+
+        enb.getStyles(techs).must.eql(output);
+    });
+
+    it('getScripts', function () {
+
+        var techs = [
+            'js'
+        ],
+
+        output = [{
+            elem: 'js',
+            url: 'js'
+        }]
+
+        enb.getScripts(techs).must.eql(output);
+    });
+
+    it('getScripts --> minimized', function () {
+
+        var techs = [
+            'min.js'
+        ],
+
+        output = [{
+            elem: 'js',
+            url: 'min.js'
+        }]
 
         enb.getScripts(techs).must.eql(output);
     });
