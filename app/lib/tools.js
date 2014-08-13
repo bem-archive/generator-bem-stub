@@ -260,6 +260,71 @@ function getBrowsers(configPath, platforms) {
     return browsers;
 }
 
+/**
+ * Returns styles which will be added to 'index.bemjson.js'
+ * @example
+ * [ 'css',     ==>        {
+ *   'ie.css',                 css: [{
+ *   'ie6.css',                    elem: 'css',
+ *                                 url: 'css'
+ *                             }],
+ *                             ies: [{
+ *                                 elem: 'css',
+ *                                 url: 'ie.css',
+ *                             }, {
+ *                                 elem: 'css',
+ *                                 url: 'ie6.css',
+ *                             }]
+ *                         }
+ *
+ * @param {Array} techs
+ * @returns {Object} styles
+ */
+
+function getStyles(techs) {
+    var styles = {
+        css: [{
+            elem: 'css',
+            url: 'css'
+        }],
+        ies: []
+    };
+
+    var ies = [ 'ie.css', 'ie6.css', 'ie7.css', 'ie8.css', 'ie9.css' ];
+    ies.forEach(function(ie) {
+        var isIE = techs.indexOf(ie) > -1;
+        isIE && styles.ies.push({
+            elem: 'css',
+            url: ie
+        });
+    });
+
+    return styles;
+}
+
+/**
+ * Returns scripts which will be added to 'index.bemjson.js'
+ * @example
+ * [ 'js' ]     ==>         [{
+ *                              elem: 'js',
+ *                              url: 'js'
+ *                          }]
+ *
+ * @param {Array} techs
+ * @returns {Object} scripts
+ */
+
+function getScripts(techs) {
+    var scripts = [];
+
+    (techs.indexOf('browser.js+bemhtml') > -1 || techs.indexOf('node.js') > -1) && scripts.push({
+        elem: 'js',
+        url: 'js'
+    });
+
+    return scripts;
+}
+
 // fields
 exports.commonTechs = commonTechs;
 exports.templates = templates;
@@ -271,3 +336,5 @@ exports.addPreprocessor = addPreprocessor;
 exports.addIe = addIe;
 exports.getTechnologies = getTechnologies;
 exports.getBrowsers = getBrowsers;
+exports.getStyles = getStyles;
+exports.getScripts = getScripts;
