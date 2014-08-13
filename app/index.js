@@ -309,12 +309,14 @@ BemGenerator.prototype.askFor = function askFor() {
         // ------------
 
 
-        // enb ==> 'index.bemjson.js'
-        // --------------------------
+        // Styles and scripts in 'bemjson.js'
+        // ----------------------------------
 
-        _this.collectorName === 'enb' && (_this.scripts = collector.getScripts(_this.technologies.inTargets));
+        var technologies = _this.collectorName === 'bem-tools' ? _this.technologies.inMake.techs : _this.technologies.inTargets;
+        _this.styles = collector.getStyles(technologies);
+        _this.scripts = collector.getScripts(technologies);
 
-        // --------------------------
+        // ----------------------------------
 
         cb();
     }
