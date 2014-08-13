@@ -214,55 +214,68 @@ function getBrowsers(configPath, platforms) {
 }
 
 /**
- * Returns scripts which will be added to 'index.bemjson.js'
+ * Returns styles which will be added to 'index.bemjson.js'
  * @example
  * [ 'min.css',     ==>     {
- *   'ie.css',                  css_js: [{
+ *   'ie.css',                  css: [{
  *   'ie6.css',                     elem: 'css',
- *   'min.ie9.css'                  url: 'css'
- *   'js' ]                     }, {
- *                                  elem: 'js',
- *                                  url: 'js'
+ *   'min.ie9.css' ]                url: 'min.css'
  *                              }],
- *                              ie: [{
+ *                              ies: [{
  *                                  elem: 'css',
  *                                  url: 'ie.css',
  *                              }, {
- *                                   elem: 'css',
- *                                   url: 'ie6.css',
+ *                                  elem: 'css',
+ *                                  url: 'ie6.css',
  *                              }, {
  *                                  elem: 'css',
  *                                  url: 'min.ie9.css',
- *                              }
+ *                              }]
  *                          }
+ *
+ * @param {Array} techs
+ * @returns {Object} styles
+ */
+
+function getStyles(techs) {
+    var styles = {
+        css: [{
+            elem: 'css',
+            url: techs.indexOf('css') > -1 ? 'css' : 'min.css'
+        }],
+        ies: []
+    };
+
+    var ies = [ 'ie.css', 'ie6.css', 'ie7.css', 'ie8.css', 'ie9.css' ];
+    ies.forEach(function(ie) {
+        var isIE = techs.indexOf(ie) > -1;
+        (isIE || techs.indexOf('min.' + ie) > -1) && styles.ies.push({
+            elem: 'css',
+            url: isIE ? ie : 'min.' + ie
+        });
+    });
+
+    return styles;
+}
+
+/**
+ * Returns scripts which will be added to 'index.bemjson.js'
+ * @example
+ * [ 'min.js' ]     ==>     [{
+ *                              elem: 'js',
+ *                              url: 'min.js'
+ *                          }]
  *
  * @param {Array} techs
  * @returns {Object} scripts
  */
 
 function getScripts(techs) {
-    var scripts = {
-        cssJS: [],
-        ie: []
-    };
+    var scripts = [];
 
-    (techs.indexOf('css') > -1 || techs.indexOf('min.css') > -1) && scripts.cssJS.push({
-        elem: 'css',
-        url: techs.indexOf('css') > -1 ? 'css' : 'min.css'
-    });
-
-    (techs.indexOf('js') > -1 || techs.indexOf('min.js') > -1) && scripts.cssJS.push({
+    (techs.indexOf('js') > -1 || techs.indexOf('min.js') > -1) && scripts.push({
         elem: 'js',
         url: techs.indexOf('js') > -1 ? 'js' : 'min.js'
-    });
-
-    var ies = [ 'ie.css', 'ie6.css', 'ie7.css', 'ie8.css', 'ie9.css' ];
-    ies.forEach(function(ie) {
-        var isIE = techs.indexOf(ie) > -1;
-        (isIE || techs.indexOf('min.' + ie) > -1) && scripts.ie.push({
-            elem: 'css',
-            url: isIE ? ie : 'min.' + ie
-        });
     });
 
     return scripts;
@@ -278,4 +291,5 @@ exports.getPlatforms = getPlatforms;
 exports.addPreprocessor = addPreprocessor;
 exports.getTechnologies = getTechnologies;
 exports.getBrowsers = getBrowsers;
+exports.getStyles = getStyles;
 exports.getScripts = getScripts;
