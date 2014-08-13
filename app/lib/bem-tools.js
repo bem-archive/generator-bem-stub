@@ -120,7 +120,7 @@ function getTechnologies(configPath, techs) {
     function getTechDecl(tech) {
 
         function getTechVal(tech) {
-            var _tech = JSON.parse(fs.readFileSync(configPath, 'utf-8')).technologies.tools[tech];
+            var _tech = JSON.parse(fs.readFileSync(configPath, 'utf-8')).technologies['bem-tools'][tech];
 
             return '\'' + _tech + '\'';
         }

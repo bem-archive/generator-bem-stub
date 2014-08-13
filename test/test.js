@@ -1,5 +1,5 @@
 var fs = require('fs'),
-    tools = require('../app/lib/tools'),
+    bemtools = require('../app/lib/bem-tools'),
     enb = require('../app/lib/enb'),
     configPath = 'app/templates/config.json';
 
@@ -25,9 +25,9 @@ describe('\'bem-tools\'', function () {
 
             design = false,
 
-        output = JSON.parse(fs.readFileSync('test/fixtures/tools/getPlatforms.no.design.json', 'utf-8'));
+        output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getPlatforms.no.design.json', 'utf-8'));
 
-        tools.getPlatforms(pls, libs, design).must.eql(output);
+        bemtools.getPlatforms(pls, libs, design).must.eql(output);
     });
 
     it('getPlatforms --> with design', function () {
@@ -47,9 +47,9 @@ describe('\'bem-tools\'', function () {
 
             design = true,
 
-        output = JSON.parse(fs.readFileSync('test/fixtures/tools/getPlatforms.design.json', 'utf-8'));
+        output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getPlatforms.design.json', 'utf-8'));
 
-        tools.getPlatforms(pls, libs, design).must.eql(output);
+        bemtools.getPlatforms(pls, libs, design).must.eql(output);
     });
 
     it('addPreprocessor --> stylus', function () {
@@ -84,7 +84,7 @@ describe('\'bem-tools\'', function () {
             'browser.js+bemhtml'
         ];
 
-        tools.addPreprocessor(techs, preprocessor).must.eql(output);
+        bemtools.addPreprocessor(techs, preprocessor).must.eql(output);
     });
 
     it('addPreprocessor --> roole', function () {
@@ -119,7 +119,7 @@ describe('\'bem-tools\'', function () {
             'browser.js+bemhtml'
         ];
 
-        tools.addPreprocessor(techs, preprocessor).must.eql(output);
+        bemtools.addPreprocessor(techs, preprocessor).must.eql(output);
     });
 
     it('addPreprocessor --> less', function () {
@@ -154,7 +154,7 @@ describe('\'bem-tools\'', function () {
             'browser.js+bemhtml'
         ];
 
-        tools.addPreprocessor(techs, preprocessor).must.eql(output);
+        bemtools.addPreprocessor(techs, preprocessor).must.eql(output);
     });
 
     it('addPreprocessor --> css', function () {
@@ -188,7 +188,7 @@ describe('\'bem-tools\'', function () {
             'browser.js+bemhtml'
         ];
 
-        tools.addPreprocessor(techs, preprocessor).must.eql(output);
+        bemtools.addPreprocessor(techs, preprocessor).must.eql(output);
     });
 
     it('addPreprocessor --> undefined', function () {
@@ -223,7 +223,7 @@ describe('\'bem-tools\'', function () {
             'browser.js+bemhtml'
         ];
 
-        tools.addPreprocessor(techs, preprocessor).must.eql(output);
+        bemtools.addPreprocessor(techs, preprocessor).must.eql(output);
     });
 
     it('addIe', function () {
@@ -257,7 +257,7 @@ describe('\'bem-tools\'', function () {
             'browser.js+bemhtml'
         ];
 
-        tools.addIe(techs).must.eql(output);
+        bemtools.addIe(techs).must.eql(output);
     });
 
 
@@ -283,7 +283,7 @@ describe('\'bem-tools\'', function () {
             'browser.js+bemhtml'
         ];
 
-        tools.addIe(techs).must.eql(output);
+        bemtools.addIe(techs).must.eql(output);
     });
 
     it('getTechnologies --> bemjson.js', function () {
@@ -293,9 +293,9 @@ describe('\'bem-tools\'', function () {
             'css'
         ],
 
-        output = JSON.parse(fs.readFileSync('test/fixtures/tools/getTechnologies.bemjson.json', 'utf-8'));
+        output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.bemjson.json', 'utf-8'));
 
-        tools.getTechnologies(configPath, techs).must.eql(output);
+        bemtools.getTechnologies(configPath, techs).must.eql(output);
     });
 
     it('getTechnologies --> stylus', function () {
@@ -305,9 +305,9 @@ describe('\'bem-tools\'', function () {
             'css'
         ],
 
-        output = JSON.parse(fs.readFileSync('test/fixtures/tools/getTechnologies.stylus.json', 'utf-8'));
+        output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.stylus.json', 'utf-8'));
 
-        tools.getTechnologies(configPath, techs).must.eql(output);
+        bemtools.getTechnologies(configPath, techs).must.eql(output);
     });
 
     it('getTechnologies --> roole', function () {
@@ -317,9 +317,9 @@ describe('\'bem-tools\'', function () {
             'css'
         ],
 
-        output = JSON.parse(fs.readFileSync('test/fixtures/tools/getTechnologies.roole.json', 'utf-8'));
+        output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.roole.json', 'utf-8'));
 
-        tools.getTechnologies(configPath, techs).must.eql(output);
+        bemtools.getTechnologies(configPath, techs).must.eql(output);
     });
 
     it('getTechnologies --> less', function () {
@@ -329,9 +329,9 @@ describe('\'bem-tools\'', function () {
             'css'
         ],
 
-        output = JSON.parse(fs.readFileSync('test/fixtures/tools/getTechnologies.less.json', 'utf-8'));
+        output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.less.json', 'utf-8'));
 
-        tools.getTechnologies(configPath, techs).must.eql(output);
+        bemtools.getTechnologies(configPath, techs).must.eql(output);
     });
 
     it('getTechnologies --> css', function () {
@@ -340,9 +340,9 @@ describe('\'bem-tools\'', function () {
             'css'
         ],
 
-        output = JSON.parse(fs.readFileSync('test/fixtures/tools/getTechnologies.css.json', 'utf-8'));
+        output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.css.json', 'utf-8'));
 
-        tools.getTechnologies(configPath, techs).must.eql(output);
+        bemtools.getTechnologies(configPath, techs).must.eql(output);
     });
 
     it('getTechnologies --> ie', function () {
@@ -356,9 +356,9 @@ describe('\'bem-tools\'', function () {
             'ie9.css',
         ],
 
-        output = JSON.parse(fs.readFileSync('test/fixtures/tools/getTechnologies.ie.json', 'utf-8'));
+        output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.ie.json', 'utf-8'));
 
-        tools.getTechnologies(configPath, techs).must.eql(output);
+        bemtools.getTechnologies(configPath, techs).must.eql(output);
     });
 
     it('getTechnologies --> bemtree', function () {
@@ -368,9 +368,9 @@ describe('\'bem-tools\'', function () {
             'bemtree'
         ],
 
-        output = JSON.parse(fs.readFileSync('test/fixtures/tools/getTechnologies.bemtree.json', 'utf-8'));
+        output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.bemtree.json', 'utf-8'));
 
-        tools.getTechnologies(configPath, techs).must.eql(output);
+        bemtools.getTechnologies(configPath, techs).must.eql(output);
     });
 
     it('getTechnologies --> bemhtml', function () {
@@ -380,9 +380,9 @@ describe('\'bem-tools\'', function () {
             'bemhtml'
         ],
 
-        output = JSON.parse(fs.readFileSync('test/fixtures/tools/getTechnologies.bemhtml.json', 'utf-8'));
+        output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.bemhtml.json', 'utf-8'));
 
-        tools.getTechnologies(configPath, techs).must.eql(output);
+        bemtools.getTechnologies(configPath, techs).must.eql(output);
     });
 
     it('getTechnologies --> node.js', function () {
@@ -392,9 +392,9 @@ describe('\'bem-tools\'', function () {
             'node.js'
         ],
 
-        output = JSON.parse(fs.readFileSync('test/fixtures/tools/getTechnologies.node.json', 'utf-8'));
+        output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.node.json', 'utf-8'));
 
-        tools.getTechnologies(configPath, techs).must.eql(output);
+        bemtools.getTechnologies(configPath, techs).must.eql(output);
     });
 
     it('getTechnologies --> browser.js+bemhtml', function () {
@@ -404,9 +404,9 @@ describe('\'bem-tools\'', function () {
             'browser.js+bemhtml'
         ],
 
-        output = JSON.parse(fs.readFileSync('test/fixtures/tools/getTechnologies.browser.json', 'utf-8'));
+        output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.browser.json', 'utf-8'));
 
-        tools.getTechnologies(configPath, techs).must.eql(output);
+        bemtools.getTechnologies(configPath, techs).must.eql(output);
     });
 
     it('getTechnologies --> html', function () {
@@ -418,9 +418,9 @@ describe('\'bem-tools\'', function () {
             'html'
         ],
 
-        output = JSON.parse(fs.readFileSync('test/fixtures/tools/getTechnologies.html.json', 'utf-8'));
+        output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.html.json', 'utf-8'));
 
-        tools.getTechnologies(configPath, techs).must.eql(output);
+        bemtools.getTechnologies(configPath, techs).must.eql(output);
     });
 
     it('getTechnologies --> all', function () {
@@ -441,9 +441,9 @@ describe('\'bem-tools\'', function () {
             'html'
         ],
 
-        output = JSON.parse(fs.readFileSync('test/fixtures/tools/getTechnologies.all.json', 'utf-8'));
+        output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.all.json', 'utf-8'));
 
-        tools.getTechnologies(configPath, techs).must.eql(output);
+        bemtools.getTechnologies(configPath, techs).must.eql(output);
     });
 
     it('getBrowsers', function () {
@@ -483,7 +483,7 @@ describe('\'bem-tools\'', function () {
             ]
         }
 
-        tools.getBrowsers(configPath, platforms).must.eql(output);
+        bemtools.getBrowsers(configPath, platforms).must.eql(output);
     });
 
     it('getStyles', function () {
@@ -511,7 +511,7 @@ describe('\'bem-tools\'', function () {
             })
         }
 
-        tools.getStyles(techs).must.eql(output);
+        bemtools.getStyles(techs).must.eql(output);
     });
 
     it('getScripts --> node.js', function () {
@@ -525,7 +525,7 @@ describe('\'bem-tools\'', function () {
             url: 'js'
         }]
 
-        tools.getScripts(techs).must.eql(output);
+        bemtools.getScripts(techs).must.eql(output);
     });
 
     it('getScripts --> browser.js+bemhtml', function () {
@@ -539,7 +539,7 @@ describe('\'bem-tools\'', function () {
             url: 'js'
         }]
 
-        tools.getScripts(techs).must.eql(output);
+        bemtools.getScripts(techs).must.eql(output);
     });
 
 });
