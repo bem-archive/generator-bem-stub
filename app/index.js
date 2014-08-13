@@ -152,7 +152,7 @@ BemGenerator.prototype.askFor = function askFor() {
         message: "What technologies to use?",
         choices: function(input) {
             // returns the list of possible technologies to choose in dependence of the previous answers
-            var collector = require('.' + path.sep + path.join('lib', input.collector === 'bem-tools' ? 'tools' : 'enb'));
+            var collector = require('.' + path.sep + path.join('lib', input.collector === 'bem-tools' ? 'bem-tools' : 'enb'));
 
             return collector.commonTechs.concat(collector.templates.core, collector.scripts.coreWithoutLocal);
         }
@@ -211,7 +211,7 @@ BemGenerator.prototype.askFor = function askFor() {
 
     function getAnswers(props) {
 
-        var collector = require('.' + path.sep + path.join('lib', (_this.collectorName = props.collector) === 'bem-tools' ? 'tools' : 'enb'));
+        var collector = require('.' + path.sep + path.join('lib', (_this.collectorName = props.collector) === 'bem-tools' ? 'bem-tools' : 'enb'));
 
         // General information
         // -------------------
