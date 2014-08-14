@@ -1,14 +1,9 @@
 {
-    "inTechs": [
-        "require('enb/techs/files')",
-        "require('enb/techs/deps')",
-        "require('enb-roole/techs/css-roole'), { target: '?.noprefix.css' }"
-    ],
-    "inTargets": [
-        "css"
-    ],
-    "inJSON": [
-        "roole",
-        "enb-roole"
-    ]
+  "inTechs": [
+    "require('enb/techs/files')",
+    "require('enb/techs/deps')",
+    "require('enb-roole/techs/css-roole'), { target: '?.noprefix.css' }"
+  ],
+  "inTargets": ["css"],
+  "inJSON": ["roole", "enb-roole"]
 }
