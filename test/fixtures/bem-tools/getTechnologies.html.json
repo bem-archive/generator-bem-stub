@@ -1,31 +1,17 @@
 {
-    "inBlocks": {
-        "V2": [
-            "'bemdecl.js'           : 'v2/bemdecl.js'",
-            "'deps.js'              : 'v2/deps.js'",
-            "'css'                  : 'v2/css'"
-        ],
-        "notV2": [
-            "bemhtml"
-        ],
-        "defaultTechs": [
-            "css",
-            "bemhtml"
-        ]
-    },
-    "inMake": {
-        "techs": [
-            "bemjson.js",
-            "bemdecl.js",
-            "deps.js",
-            "css",
-            "bemhtml",
-            "html"
-        ],
-        "forked": []
-    },
-    "inBundles": [
-        "html"
+  "inBlocks": {
+    "V2": [
+      "'bemdecl.js'           : 'v2/bemdecl.js'",
+      "'deps.js'              : 'v2/deps.js'",
+      "'css'                  : 'v2/css'"
     ],
-    "inJSON": []
+    "notV2": ["bemhtml"],
+    "defaultTechs": ["css", "bemhtml"]
+  },
+  "inMake": {
+    "techs": ["bemjson.js", "bemdecl.js", "deps.js", "css", "bemhtml", "html"],
+    "forked": []
+  },
+  "inBundles": ["html"],
+  "inJSON": []
 }

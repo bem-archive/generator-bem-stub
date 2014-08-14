@@ -1,13 +1,9 @@
 {
-    "inTechs": [
-        "require('enb/techs/files')",
-        "require('enb/techs/deps')",
-        "require('enb/techs/css-less'), { target: '?.noprefix.css' }"
-    ],
-    "inTargets": [
-        "css"
-    ],
-    "inJSON": [
-        "less"
-    ]
+  "inTechs": [
+    "require('enb/techs/files')",
+    "require('enb/techs/deps')",
+    "require('enb/techs/css-less'), { target: '?.noprefix.css' }"
+  ],
+  "inTargets": ["css"],
+  "inJSON": ["less"]
 }

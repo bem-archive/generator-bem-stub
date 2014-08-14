@@ -1,21 +1,14 @@
 {
-    "inTechs": [
-        "require('enb/techs/files')",
-        "require('enb/techs/deps')",
-        "require('enb/techs/css-ie')",
-        "require('enb/techs/css-ie6')",
-        "require('enb/techs/css-ie7')",
-        "require('enb/techs/css-ie8')",
-        "require('enb/techs/css-ie9')",
-        "require('enb/techs/css')"
-    ],
-    "inTargets": [
-        "css",
-        "ie.css",
-        "ie6.css",
-        "ie7.css",
-        "ie8.css",
-        "ie9.css"
-    ],
-    "inJSON": []
+  "inTechs": [
+    "require('enb/techs/files')",
+    "require('enb/techs/deps')",
+    "require('enb/techs/css-ie')",
+    "require('enb/techs/css-ie6')",
+    "require('enb/techs/css-ie7')",
+    "require('enb/techs/css-ie8')",
+    "require('enb/techs/css-ie9')",
+    "require('enb/techs/css')"
+  ],
+  "inTargets": ["css", "ie.css", "ie6.css", "ie7.css", "ie8.css", "ie9.css"],
+  "inJSON": []
 }

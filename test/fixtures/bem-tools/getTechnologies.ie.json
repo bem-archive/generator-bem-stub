@@ -1,33 +1,22 @@
 {
-    "inBlocks": {
-        "V2": [
-            "'bemdecl.js'           : 'v2/bemdecl.js'",
-            "'deps.js'              : 'v2/deps.js'",
-            "'css'                  : 'v2/css'",
-            "'ie.css'               : 'v2/ie.css'",
-            "'ie6.css'              : 'v2/ie6.css'",
-            "'ie7.css'              : 'v2/ie7.css'",
-            "'ie8.css'              : 'v2/ie8.css'",
-            "'ie9.css'              : 'v2/ie9.css'"
-        ],
-        "notV2": [],
-        "defaultTechs": [
-            "css"
-        ]
-    },
-    "inMake": {
-        "techs": [
-            "bemdecl.js",
-            "deps.js",
-            "css",
-            "ie.css",
-            "ie6.css",
-            "ie7.css",
-            "ie8.css",
-            "ie9.css"
-        ],
-        "forked": []
-    },
-    "inBundles": [],
-    "inJSON": []
+  "inBlocks": {
+    "V2": [
+      "'bemdecl.js'           : 'v2/bemdecl.js'",
+      "'deps.js'              : 'v2/deps.js'",
+      "'css'                  : 'v2/css'",
+      "'ie.css'               : 'v2/ie.css'",
+      "'ie6.css'              : 'v2/ie6.css'",
+      "'ie7.css'              : 'v2/ie7.css'",
+      "'ie8.css'              : 'v2/ie8.css'",
+      "'ie9.css'              : 'v2/ie9.css'"
+    ],
+    "notV2": [],
+    "defaultTechs": ["css"]
+  },
+  "inMake": {
+    "techs": ["bemdecl.js", "deps.js", "css", "ie.css", "ie6.css", "ie7.css", "ie8.css", "ie9.css"],
+    "forked": []
+  },
+  "inBundles": [],
+  "inJSON": []
 }
