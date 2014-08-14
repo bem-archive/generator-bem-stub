@@ -1,13 +1,9 @@
 {
-    "inTechs": [
-        "require('enb/techs/files')",
-        "require('enb/techs/deps')",
-        "require('enb-stylus/techs/css-stylus'), { target: '?.noprefix.css' }"
-    ],
-    "inTargets": [
-        "css"
-    ],
-    "inJSON": [
-        "enb-stylus"
-    ]
+  "inTechs": [
+    "require('enb/techs/files')",
+    "require('enb/techs/deps')",
+    "require('enb-stylus/techs/css-stylus'), { target: '?.noprefix.css' }"
+  ],
+  "inTargets": ["css"],
+  "inJSON": ["enb-stylus"]
 }

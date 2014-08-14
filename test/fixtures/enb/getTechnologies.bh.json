@@ -1,16 +1,10 @@
 {
-    "inTechs": [
-        "require('enb/techs/files')",
-        "require('enb/techs/deps')",
-        "require('enb-bh/techs/bh-server')",
-        "require('enb/techs/css')"
-    ],
-    "inTargets": [
-        "css",
-        "bh.js"
-    ],
-    "inJSON": [
-        "enb-bh",
-        "bh"
-    ]
+  "inTechs": [
+    "require('enb/techs/files')",
+    "require('enb/techs/deps')",
+    "require('enb-bh/techs/bh-server')",
+    "require('enb/techs/css')"
+  ],
+  "inTargets": ["css", "bh.js"],
+  "inJSON": ["enb-bh", "bh"]
 }
