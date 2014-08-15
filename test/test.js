@@ -204,7 +204,10 @@ describe('\'bem-tools\'', function () {
             output = {
                 css: [{ elem: 'css', url: 'css' }],
                 ies: ['', 6, 7, 8, 9].map(function(i) {
-                    return { elem: 'css', url: 'ie' + i + '.css' };
+                    return {
+                        elem: 'css',
+                        url: 'ie' + i + '.css'
+                    };
                 })
             };
 
@@ -455,7 +458,10 @@ describe('\'enb\'', function () {
             output = {
                 css: [{ elem: 'css', url: 'css' }],
                 ies: ['', 6, 7, 8, 9].map(function(i) {
-                    return { elem: 'css', url: 'ie' + i + '.css' };
+                    return {
+                        elem: 'css',
+                        url: 'ie' + i + '.css'
+                    };
                 })
             };
 
@@ -468,7 +474,10 @@ describe('\'enb\'', function () {
             output = {
                 css: [{ elem: 'css', url: 'min.css' }],
                 ies: ['', 6, 7, 8, 9].map(function(i) {
-                    return { elem: 'css', url: 'min.ie' + i + '.css' };
+                    return {
+                        elem: 'css',
+                        url: 'min.ie' + i + '.css'
+                    };
                 })
             };
 

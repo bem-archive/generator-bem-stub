@@ -20,14 +20,21 @@ util.inherits(BemGenerator, yeoman.generators.Base);
 
 BemGenerator.prototype.askFor = function askFor() {
 
-    var cb = this.async(),
-        _this = this,
-        configPath = path.join(_this.sourceRoot(), 'config.json');
-
+    /**
+     * Returns a version of a library from 'config.json'
+     * @param {String} base
+     * @param {String} value
+     * @returns {String}
+     */
     function getLibVersion(base, value) {
         return JSON.parse(_this.readFileAsString(configPath)).versions[base][value];
     }
 
+    /**
+     * Checks whether a given list of libs has 'bem-components' one
+     * @param {Array} addLibraries
+     * @returns {Boolean}
+     */
     function hasBemComponents(addLibraries) {
         for (var lib in addLibraries) {
             if (addLibraries[lib].name === 'bem-components') return true;
@@ -36,11 +43,15 @@ BemGenerator.prototype.askFor = function askFor() {
         return false;
     }
 
+    var cb = this.async(),
+        _this = this,
+        configPath = path.join(_this.sourceRoot(), 'config.json'); // app/templates/config.json
+
     // questions to user
     var prompts = [{
         type: 'input',
         name: 'projectName',
-        message: "How to name the project?",
+        message: 'How to name the project?',
         validate: function(input) {
             return !input.match(/[^0-9a-zA-Z._-]/g) ? true : 'Please, enter a valid value';
         },
@@ -48,17 +59,17 @@ BemGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'input',
         name: 'author',
-        message: "Who will mantain this project?",
-        default: _this.user.git.username || 'Ivan Ivanovich'
+        message: 'Who will mantain this project?',
+        default: _this.user.git.username || 'Ivan Ivanov'
     }, {
         type: 'input',
         name: 'email',
-        message: "What email to use?",
-        default: _this.user.git.email || 'ivan@yandex-team.ru'
+        message: 'What email to use?',
+        default: _this.user.git.email || 'ivan@yandex.com'
     }, {
         type: 'list',
         name: 'collector',
-        message: "What collector to use?",
+        message: 'What collector to use?',
         choices: [{
             value: 'bem-tools'
         }, {
@@ -67,7 +78,7 @@ BemGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'list',
         name: 'baseLibrary',
-        message: "What base library to use?",
+        message: 'What base library to use?',
         choices: function() {
             var choices = [];
 
@@ -84,7 +95,7 @@ BemGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'checkbox',
         name: 'addLibraries',
-        message: "Would you like any additional libraries?",
+        message: 'Would you like any additional libraries?',
         choices: function(input) {  // 'bem-core' ==> 'bem-components'
             var choices = [];
 
@@ -101,7 +112,7 @@ BemGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'checkbox',
         name: 'platforms',
-        message: "What platforms to use?",
+        message: 'What platforms to use?',
         choices: [{
             name: 'desktop',
             value: ['common', 'desktop']
@@ -118,19 +129,19 @@ BemGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'confirm',
         name: 'design',
-        message: "Use design from bem-components?",
+        message: 'Use design from \'bem-components?\'',
         default: true,
-        when: function(input) {     // 'bem-core' --> 'bem-components' ==> 'design'
+        when: function(input) {     // 'bem-components' ==> 'design'
 
             return hasBemComponents(input.addLibraries);
         }
     }, {
         type: 'list',
         name: 'preprocessor',
-        message: "What preprocessor to use?",
+        message: 'What preprocessor to use?',
         choices: function(input) {
-            // returns the list of possible preprocessors in dependence of the previous answers
 
+            // returns the list of possible preprocessors to choose in dependence of the previous answers
             return [{
                 value: 'stylus'
             }, {
@@ -142,14 +153,14 @@ BemGenerator.prototype.askFor = function askFor() {
                 value: 'css'
             }];
         },
-        when: function(input) {    // 'bem-tools' || enb' -> 'bem-components' ==> 'stylus'
+        when: function(input) {    // 'bem-components' ==> 'stylus' as default
 
             return !(hasBemComponents(input.addLibraries));
         }
     }, {
         type: 'checkbox',
         name: 'techs',
-        message: "What technologies to use?",
+        message: 'What technologies to use?',
         choices: function(input) {
             // returns the list of possible technologies to choose in dependence of the previous answers
             var collector = require('.' + path.sep + path.join('lib', input.collector === 'bem-tools' ? 'bem-tools' : 'enb'));
@@ -159,7 +170,7 @@ BemGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'list',
         name: 'templateSystem',
-        message: "What template system to use?",
+        message: 'What template system to use?',
         choices: [{
             name: 'bemhtml',
             value: 'bemhtml'
@@ -175,36 +186,36 @@ BemGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'confirm',
         name: 'html',
-        message: "Build static html?",
+        message: 'Build static html?',
         default: true,
-        when: function(input) { // 'bemjson' --> 'template system' ==> 'html'
-            if (input.collector === 'bem-tools') return input.techs.indexOf('bemjson.js') > -1 && input.techs.indexOf('bemhtml') > -1;
+        when: function(input) { // 'bemjson' --> 'bemhtml' || 'bh' ==> 'html'
 
-            else return (input.templateSystem && (input.templateSystem !== 'my' || input.techs.indexOf('bemhtml.js') > -1) &&
-                input.techs.indexOf('bemjson.js') > -1)
+            return ((input.templateSystem && input.templateSystem !== 'my') || input.techs.indexOf('bemhtml') > -1) &&
+                input.techs.indexOf('bemjson.js') > -1;
         }
     }, {
         type: 'checkbox',
         name: 'minimization',
-        message: "What files to minimize?",
+        message: 'What files to minimize?',
         choices: function(input) {
-            var toMinimize = [ { value: 'css' } ];
+            var toMinimize = [{ value: 'css' }];
 
             input.techs.map(function(tech) {
                 if (tech === 'browser.js') {
-                    toMinimize.push( { value: 'js' } );
+                    toMinimize.push({ value: 'js' });
+
                     return;
                 }
 
-                tech !== 'bemjson.js' && toMinimize.push( { value: tech } );
+                tech !== 'bemjson.js' && toMinimize.push({ value: tech });
             });
 
             var templSys = input.templateSystem;
-            (templSys && templSys !== 'my') && toMinimize.push( { value: templSys + '.js' } );
+            (templSys && templSys !== 'my') && toMinimize.push({ value: templSys + '.js' });
 
             return toMinimize;
         },
-        when: function(input) {
+        when: function(input) { // 'enb' ==> minimization
             return input.collector === 'enb';
         }
     }];
@@ -231,9 +242,9 @@ BemGenerator.prototype.askFor = function askFor() {
         _this.libsToBowerDeps = [];     // to 'bower.json'
         props.addLibraries.forEach(function(elem) {
             _this.libsToBowerDeps.push(elem);
-        })
+        });
 
-        _this.libs.unshift(props.baseLibrary);  // base lib on the top
+        _this.libs.unshift(props.baseLibrary);  // base lib on the top (for 'bem-tools' it is vital)
 
         hasBemComponents(_this.libsToBowerDeps) || _this.libsToBowerDeps.unshift(props.baseLibrary); // 'bem-components' will automatically install 'bem-core'
 
@@ -249,7 +260,7 @@ BemGenerator.prototype.askFor = function askFor() {
         _this.platforms = {
             withPath :  platforms.withPath,
             withoutPath : platforms.withoutPath
-        }
+        };
 
         // ---------
 
@@ -257,7 +268,8 @@ BemGenerator.prototype.askFor = function askFor() {
         // Minimization
         // ------------
 
-        props.minimization && (_this.toMinify = props.minimization);
+        // 'enb' ==> minimization
+        _this.collectorName === 'enb' && (_this.toMinify = props.minimization);
 
         // ------------
 
@@ -265,32 +277,33 @@ BemGenerator.prototype.askFor = function askFor() {
         // Technologies
         // ------------
 
-        var preprocessor = props.preprocessor;
+        var preprocessor = props.preprocessor,
+            techs = props.techs;
 
-        props.techs = collector.addPreprocessor(props.techs, preprocessor);
+        techs = collector.addPreprocessor(techs, preprocessor);
 
         // 'bem-tools' --> 'ieN' ==> 'ie.css'
-        _this.collectorName === 'bem-tools' && (props.techs = collector.addIe(props.techs));
+        _this.collectorName === 'bem-tools' && (techs = collector.addIe(techs));
 
         // 'enb' --> 'bem-core' ==> 'bemhtml', 'bh'
-        props.templateSystem && props.templateSystem !== 'my' && props.techs.push(props.templateSystem);
+        _this.collectorName === 'enb' && props.templateSystem !== 'my' && techs.push(props.templateSystem);
 
-        props.html && props.techs.push('html');
+        props.html && techs.push('html');
 
-        _this.technologies = collector.getTechnologies(configPath, props.techs, _this.toMinify);
+        _this.technologies = collector.getTechnologies(configPath, techs, _this.toMinify);
 
-        _this.isBemjson = props.techs.indexOf('bemjson.js') > -1;
-
-        // ------------
-
-
-        // Preprocessor
-        // ------------
-
-        _this.isPreprocessor = preprocessor !== 'css';
-        _this.isPreprocessor && (_this.preprocessor = !preprocessor ? 'stylus' : preprocessor);
+        _this.isBemjson = techs.indexOf('bemjson.js') > -1;
 
         // ------------
+
+
+        // Preprocessor (this is need only for 'bem-tools')
+        // ------------------------------------------------
+
+        _this.hasPreprocessor = preprocessor !== 'css';
+        _this.hasPreprocessor && (_this.preprocessor = !preprocessor ? 'stylus' : preprocessor);
+
+        // ------------------------------------------------
 
 
         // Design
@@ -301,15 +314,16 @@ BemGenerator.prototype.askFor = function askFor() {
         // ------
 
 
-        // Autoprefixer
-        // ------------
+        // Autoprefixer (will be added to the generated config when 'design' is 'true')
+        // @TODO: create the separate question about autoprefixer
+        // ----------------------------------------------------------------------------
 
         _this.browsers = collector.getBrowsers(configPath, _this.platforms.withoutPath);
 
-        // ------------
+        // ----------------------------------------------------------------------------
 
 
-        // Styles and scripts in 'bemjson.js'
+        // Styles and scripts to 'bemjson.js'
         // ----------------------------------
 
         var technologies = _this.collectorName === 'bem-tools' ? _this.technologies.inMake.techs : _this.technologies.inTargets;
@@ -327,7 +341,7 @@ BemGenerator.prototype.askFor = function askFor() {
         first: process.argv[3],
         second: process.argv[4],
         third: process.argv[5]
-    }
+    };
 
     _this.npmi = true;
 
@@ -335,10 +349,12 @@ BemGenerator.prototype.askFor = function askFor() {
         if (params.third) throw e;
 
         switch (params.first) {
+
             case '--no-deps':
                 _this.npmi = false;
-                if (params.second) throw e;
+                if (params.second) throw err;
                 break;
+
             default:
                 /*
                     'answersFromJSON' !== 'undefined' when a valid path to 'JSON-file' was given as a first parameter,
@@ -346,12 +362,12 @@ BemGenerator.prototype.askFor = function askFor() {
                 */
                 var answersFromJSON = params.first && JSON.parse(_this.readFileAsString(params.first));
 
-                _this.npmi = !(params.second === '--no-deps')
+                _this.npmi = !(params.second === '--no-deps');
 
                 if (params.second && _this.npmi) throw e;
         }
     }
-    catch(e) {
+    catch(err) {
         this.log.error('Invalid parameter');
         process.exit(1);
     }
@@ -367,29 +383,37 @@ BemGenerator.prototype.app = function app() {
 
     var _this = this,
         platforms = _this.platforms.withoutPath,
-        root = path.join(_this.sourceRoot(), _this.collectorName), // path to templates
-        files = _this.expandFiles('**', { dot: true, cwd: root });   // roots of all files
+        root = path.join(_this.sourceRoot(), _this.collectorName), // path to the templates
+        files = _this.expandFiles('**', { dot: true, cwd: root });   // roots of the all files in the templates
 
-    // Makes the necessary empty folders in the created project
-    _this.mkdir(path.join(_this.projectName, 'common.blocks'));
+    // Makes the necessary empty folders in the created project (only for 'enb')
+    if (_this.collectorName === 'enb') {
+        _this.mkdir(path.join(_this.projectName, 'common.blocks'));
+        (platforms['touch-pad'] || platforms['touch-phone']) && _this.mkdir(path.join(_this.projectName, 'touch.blocks'));
 
-    (platforms['touch-pad'] || platforms['touch-phone']) && _this.mkdir(path.join(_this.projectName, 'touch.blocks'));
-
-    _this.collectorName === 'enb' &&
         Object.keys(platforms).forEach(function(platform) {
             _this.mkdir(path.join(_this.projectName, platform + '.blocks'));
         });
+    }
 
 
     _this._.each(files, function (f) {
 
+        /**
+         * Forms dir names for chosen platforms
+         * @param {String} ending
+         * @param {String} folder
+         * @returns {Array}
+         */
         function formDirnames(ending, folder) {
-            dirnames = [];
+            var names = [];
             Object.keys(platforms).forEach(function(platform) {
                 var pl = platforms[platform];
 
-                dirnames.push(path.join(pl[pl.length - 1] + ending, folder));
+                names.push(path.join(pl[pl.length - 1] + ending, folder));
             });
+
+            return names;
         }
 
         var dirnames = [];
@@ -399,12 +423,21 @@ BemGenerator.prototype.app = function app() {
 
         if (!_this.isBemjson && f === path.join('bundles', 'index', 'index.bemjson.js')) return;
 
+        // only for 'bem-tools'
+        if (f === path.join('blocks', '.bem', 'level.js')) {
+            dirnames = [];
+
+            dirnames.push(path.join('common.blocks', 'bem'));
+            (platforms['touch-pad'] || platforms['touch-phone']) && dirnames.push(path.join('touch.blocks', '.bem'));
+
+            dirnames = dirnames.concat(formDirnames('.blocks', '.bem'));
+        }
+
         (f === path.join('bundles', 'index', 'index.bemdecl.js') ||
-            f === path.join('bundles', 'index', 'index.bemjson.js')) && formDirnames('.bundles', 'index');
+            f === path.join('bundles', 'index', 'index.bemjson.js')) && (dirnames = formDirnames('.bundles', 'index'));
 
-        (f === path.join('blocks', '.bem', 'level.js')) && formDirnames('.blocks', '.bem');
-
-        (f === path.join('bundles', '.bem', 'level.js')) && formDirnames('.bundles', '.bem');
+        // only for 'bem-tools'
+        (f === path.join('bundles', '.bem', 'level.js')) && (dirnames = formDirnames('.bundles', '.bem'));
 
         var src = path.join(root, f);   // copy from
 
@@ -415,23 +448,24 @@ BemGenerator.prototype.app = function app() {
     }.bind(_this));
 };
 
-// Adds dependencies in 'package.json'
+// Adds dependencies to 'package.json'
 BemGenerator.prototype.addPackages = function addPackages() {
 
+    /**
+     * Returns a version of a library from 'config.json'
+     * @param {String} base
+     * @param {String} value
+     * @returns {String}
+     */
     function getLibVersion(base, value) {
         return JSON.parse(_this.readFileAsString(configPath)).versions[base][value];
     }
 
     var _this = this,
-
-        configPath = path.join(_this.sourceRoot(), 'config.json'), // path to 'config.json' in templates
-
+        configPath = path.join(_this.sourceRoot(), 'config.json'), // app/templates/config.json
         packagePath = path.join(_this.destinationRoot(), _this.projectName, 'package.json'),    // path to 'package.json' in the created project
-
         pack = JSON.parse(_this.readFileAsString(packagePath)),
-
-        deps = _this.collectorName === 'bem-tools' ? pack.dependencies : pack.devDependencies,
-
+        deps = pack.devDependencies,
         inJSON = _this.technologies.inJSON;
 
     inJSON.map(function(_package) {
@@ -440,10 +474,9 @@ BemGenerator.prototype.addPackages = function addPackages() {
 
     // autoprefixer
     _this.collectorName === 'bem-tools' &&
-        this.isPreprocessor && (deps['bem-tools-autoprefixer'] = getLibVersion('other', 'bem-tools-autoprefixer'));
-
+        this.hasPreprocessor && (deps['bem-tools-autoprefixer'] = getLibVersion('other', 'bem-tools-autoprefixer'));
     _this.collectorName === 'enb' &&
-        _this.isPreprocessor && (deps['enb-autoprefixer'] = getLibVersion('other', 'enb-autoprefixer'));
+        _this.hasPreprocessor && (deps['enb-autoprefixer'] = getLibVersion('other', 'enb-autoprefixer'));
 
     fs.writeFileSync(packagePath, JSON.stringify(pack, null, '  ') + '\n');
 };
@@ -451,11 +484,7 @@ BemGenerator.prototype.addPackages = function addPackages() {
 // --no-deps
 BemGenerator.prototype.assemble = function assemble() {
     if (this.npmi) {
-        this.log.write('').info(' ==> npm install...').write('');
+        this.log.write('').info(' ==> npm and bower install...').write('');
         this.shell.exec('cd ' + this.projectName + ' && npm i');
-
-        this.collectorName === 'enb' &&
-            this.log.write('').info(' ==> bower install...').write('') &&
-                this.shell.exec('cd ' + this.projectName + ' && ' + '.' + path.sep + path.join('node_modules', '.bin', 'bower') + ' i');
     }
-}
+};
