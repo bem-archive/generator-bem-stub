@@ -4,25 +4,25 @@ var fs = require('fs'),
 
 // technologies
 var commonTechs = [
-    { value: 'bemjson.js' },
-    { value: 'ie.css' },
-    { value: 'ie6.css' },
-    { value: 'ie7.css' },
-    { value: 'ie8.css' },
-    { value: 'ie9.css' }
-],
-templates = {
-    core: [
-        { value: 'bemtree'  },
-        { value: 'bemhtml' }
-    ]
-},
-scripts = {
-    coreWithoutLocal: [
-        { value: 'node.js' },
-        { value: 'browser.js+bemhtml' }
+        { value: 'bemjson.js' },
+        { value: 'ie.css' },
+        { value: 'ie6.css' },
+        { value: 'ie7.css' },
+        { value: 'ie8.css' },
+        { value: 'ie9.css' }
     ],
-};
+    templates = {
+        core: [
+            { value: 'bemtree'  },
+            { value: 'bemhtml' }
+        ]
+    },
+    scripts = {
+        coreWithoutLocal: [
+            { value: 'node.js' },
+            { value: 'browser.js+bemhtml' }
+        ],
+    };
 
 /**
  * Returns platforms with path and without path
@@ -43,14 +43,13 @@ scripts = {
  * @param {Array of arrays} pls
  * @param {Array of objects} libs
  * @param {Boolean} design
- * @returns {Object} platforms
+ * @returns {Object}
  */
-
 function getPlatforms(pls, libs, design) {
     var platforms = {
-        withPath: {},
-        withoutPath: {}
-    };
+            withPath: {},
+            withoutPath: {}
+        };
 
     pls.map(function(pl) {
         var platform = pl[pl.length - 1];
@@ -75,14 +74,13 @@ function getPlatforms(pls, libs, design) {
  *
  * @param {Array} techs
  * @param {String} preprocessor
- * @returns {Array} techs
+ * @returns {Array}
  */
-
 function addPreprocessor(techs, preprocessor) {
     if (preprocessor === 'css') {
         techs.splice(techs.indexOf('bemjson.js') + 1, 0, 'css');
     }
-    else {
+    else {  // 'bem-core' --> 'bem-components' ==> 'preprocessor === undefined' ==> 'stylus'
         techs.splice(techs.indexOf('bemjson.js') + 1, 0, preprocessor ? preprocessor : 'stylus', 'css');
     }
 
@@ -93,15 +91,15 @@ function addPreprocessor(techs, preprocessor) {
  * Adds 'ie.css' to technologies
  *
  * @param {Array} techs
- * @returns {Array} techs
+ * @returns {Array}
  */
-
 function addIe(techs) {
-    var ie = /ie[0-9]{0,2}\.css/.exec(techs);
+    if (techs.indexOf('ie.css') > -1) return techs;
+
+    var ie = /ie[0-9]{1,2}\.css/.exec(techs);
 
     if (ie) {
         techs.splice(techs.indexOf(ie[0]), 0, 'ie.css');
-        techs = _.uniq(techs);
     }
 
     return techs;
@@ -112,11 +110,13 @@ function addIe(techs) {
  *
  * @param {String} configPath
  * @param {Array} techs
- * @returns {Object} technologies
+ * @returns {Object}
  */
-
 function getTechnologies(configPath, techs) {
 
+    /*
+        for example, returns ==> bemdecl.js'         : 'v2/bemdecl.js'
+    */
     function getTechDecl(tech) {
 
         function getTechVal(tech) {
@@ -125,11 +125,6 @@ function getTechnologies(configPath, techs) {
             return '\'' + _tech + '\'';
         }
 
-        /*
-            for example, returns ==>
-
-                'bemdecl.js'         : 'v2/bemdecl.js'
-        */
         return '\'' + tech + '\'' + new Array(22 - tech.length).join(' ') + ': ' + getTechVal(tech);
     }
 
@@ -145,7 +140,6 @@ function getTechnologies(configPath, techs) {
 
         'inBundles' ==> '.bem/levels/bundles.js' --> use 'techs' from 'bem-core' library,
         'inJSON' ==> 'package.json'
-
     */
 
     var technologies = {
@@ -167,7 +161,7 @@ function getTechnologies(configPath, techs) {
         inMake = technologies.inMake,
         inJSON = technologies.inJSON;
 
-    var isPreprocessor = false;
+    var hasPreprocessor = false;
     techs.map(function(tech) {
         switch(tech) {
 
@@ -176,8 +170,8 @@ function getTechnologies(configPath, techs) {
                 break;
 
             case 'browser.js+bemhtml':  // 'bem-core' --> 'browser.js+bemhtml' ==> 'vanilla.js', 'browser.js' and 'js'
-                inBlocks.V2.push(getTechDecl('js')),
-                inBlocks.notV2.push('browser.js', 'vanilla.js'),
+                inBlocks.V2.push(getTechDecl('js'));
+                inBlocks.notV2.push('browser.js', 'vanilla.js');
                 inBlocks.defaultTechs.push('browser.js');
 
                 inBundles.push('browser.js+bemhtml');
@@ -187,7 +181,7 @@ function getTechnologies(configPath, techs) {
                 break;
 
             case 'node.js': // 'bem-core' --> 'node.js' ==> 'vanilla.js' and 'js'
-                inBlocks.V2.push(getTechDecl('js')),
+                inBlocks.V2.push(getTechDecl('js'));
                 inBlocks.notV2.push('node.js', 'vanilla.js');
 
                 inMake.techs.push('node.js');
@@ -220,7 +214,7 @@ function getTechnologies(configPath, techs) {
 
                     inJSON.push(tech);
 
-                    isPreprocessor = true;
+                    hasPreprocessor = true;
                 }
 
                 inBlocks.V2.push(getTechDecl(tech));
@@ -230,7 +224,7 @@ function getTechnologies(configPath, techs) {
 
     });
 
-    if (!isPreprocessor) {
+    if (!hasPreprocessor) {
         inBlocks.defaultTechs.unshift('css');
     }
 
@@ -247,9 +241,8 @@ function getTechnologies(configPath, techs) {
  *
  * @param {String} configPath
  * @param {Object} platforms --> without path
- * @returns {Object} browsers
+ * @returns {Object}
  */
-
 function getBrowsers(configPath, platforms) {
     var browsers = {};
 
@@ -265,7 +258,7 @@ function getBrowsers(configPath, platforms) {
  * @example
  * [ 'css',     ==>        {
  *   'ie.css',                 css: [{
- *   'ie6.css',                    elem: 'css',
+ *   'ie6.css' ]                   elem: 'css',
  *                                 url: 'css'
  *                             }],
  *                             ies: [{
@@ -278,15 +271,11 @@ function getBrowsers(configPath, platforms) {
  *                         }
  *
  * @param {Array} techs
- * @returns {Object} styles
+ * @returns {Object}
  */
-
 function getStyles(techs) {
     var styles = {
-        css: [{
-            elem: 'css',
-            url: 'css'
-        }],
+        css: [{ elem: 'css', url: 'css' }],
         ies: []
     };
 
@@ -311,30 +300,30 @@ function getStyles(techs) {
  *                          }]
  *
  * @param {Array} techs
- * @returns {Object} scripts
+ * @returns {Object}
  */
-
 function getScripts(techs) {
     var scripts = [];
 
     (techs.indexOf('browser.js+bemhtml') > -1 || techs.indexOf('node.js') > -1) && scripts.push({
-        elem: 'js',
-        url: 'js'
+        elem: 'js', url: 'js'
     });
 
     return scripts;
 }
 
-// fields
-exports.commonTechs = commonTechs;
-exports.templates = templates;
-exports.scripts = scripts;
+module.exports = {
+    // fields
+    commonTechs: commonTechs,
+    templates: templates,
+    scripts: scripts,
 
-// methods
-exports.getPlatforms = getPlatforms;
-exports.addPreprocessor = addPreprocessor;
-exports.addIe = addIe;
-exports.getTechnologies = getTechnologies;
-exports.getBrowsers = getBrowsers;
-exports.getStyles = getStyles;
-exports.getScripts = getScripts;
+    // methods
+    getPlatforms: getPlatforms,
+    addPreprocessor: addPreprocessor,
+    addIe: addIe,
+    getTechnologies: getTechnologies,
+    getBrowsers: getBrowsers,
+    getStyles: getStyles,
+    getScripts: getScripts
+};

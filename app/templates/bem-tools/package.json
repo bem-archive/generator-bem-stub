@@ -17,6 +17,5 @@
   "scripts": {
     "postinstall": "bower-npm-install",
     "deps": "bower-npm-install --non-interactive"
-  },
-  "private": true
+  }
 }

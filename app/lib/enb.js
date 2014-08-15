@@ -4,24 +4,24 @@ var fs = require('fs'),
 
 // technologies
 var commonTechs = [
-    { value: 'bemjson.js' },
-    { value: 'ie.css' },
-    { value: 'ie6.css' },
-    { value: 'ie7.css' },
-    { value: 'ie8.css' },
-    { value: 'ie9.css' }
-],
-templates = {
-    core: [
-        { name: 'bemtree', value: 'bemtree.js' }
-    ]
-},
-scripts = {
-    coreWithoutLocal: [
-        { value: 'node.js' },
-        { value: 'browser.js' }
-    ]
-};
+        { value: 'bemjson.js' },
+        { value: 'ie.css' },
+        { value: 'ie6.css' },
+        { value: 'ie7.css' },
+        { value: 'ie8.css' },
+        { value: 'ie9.css' }
+    ],
+    templates = {
+        core: [
+            { name: 'bemtree', value: 'bemtree.js' }
+        ]
+    },
+    scripts = {
+        coreWithoutLocal: [
+            { value: 'node.js' },
+            { value: 'browser.js' }
+        ]
+    };
 
 /**
  * Returns platforms with path and without path
@@ -39,14 +39,13 @@ scripts = {
  * @param {Array of arrays} pls
  * @param {Array of objects} libs
  * @param {Boolean} design
- * @returns {Object} platforms
+ * @returns {Object}
  */
-
 function getPlatforms(pls, libs, design) {
     var platforms = {
-        withPath: {},
-        withoutPath: {}
-    };
+            withPath: {},
+            withoutPath: {}
+        };
 
     pls.map(function(pl) {
         var platform = pl[pl.length - 1];
@@ -72,9 +71,8 @@ function getPlatforms(pls, libs, design) {
  *
  * @param {Array} techs
  * @param {String} preprocessor
- * @returns {Array} techs
+ * @returns {Array}
  */
-
 function addPreprocessor(techs, preprocessor) {
     // 'bem-core' --> 'bem-components' ==> 'preprocessor === undefined' ==> 'stylus'
     techs.push(preprocessor || 'stylus');
@@ -88,9 +86,8 @@ function addPreprocessor(techs, preprocessor) {
  * @param {String} configPath
  * @param {Array} techs
  * @param {Array} toMinify
- * @returns {Object} technologies
+ * @returns {Object}
  */
-
 function getTechnologies(configPath, techs, toMinify) {
 
     function getTechVal(tech) {
@@ -100,7 +97,7 @@ function getTechnologies(configPath, techs, toMinify) {
     /*
        'inTechs' ==> '.enb/make.js' --> 'nodeConfig.addTechs',
        'inTargets' ==> '.enb/make.js' --> 'nodeConfig.addTargets',
-       'inJSON' ==> 'package.json',
+       'inJSON' ==> 'package.json'
     */
 
     var technologies = {
@@ -112,6 +109,7 @@ function getTechnologies(configPath, techs, toMinify) {
         inTargets = technologies.inTargets,
         inJSON = technologies.inJSON;
 
+    // 'css' will be always added 'inTargets'
     inTargets.push(toMinify.indexOf('css') > -1 ? 'min.css' : 'css');
 
     techs.map(function(tech) {
@@ -186,9 +184,7 @@ function getTechnologies(configPath, techs, toMinify) {
         }
     });
 
-    technologies.inTechs = _.uniq(inTechs);
     technologies.inTargets = _.uniq(inTargets);
-    technologies.inJSON = _.uniq(inJSON);
 
     return technologies;
 }
@@ -200,9 +196,8 @@ function getTechnologies(configPath, techs, toMinify) {
  *
  * @param {String} configPath
  * @param {Object} platforms --> without path
- * @returns {Object} browsers
+ * @returns {Object}
  */
-
 function getBrowsers(configPath, platforms) {
     var browsers = {};
 
@@ -234,9 +229,8 @@ function getBrowsers(configPath, platforms) {
  *                          }
  *
  * @param {Array} techs
- * @returns {Object} styles
+ * @returns {Object}
  */
-
 function getStyles(techs) {
     var styles = {
         css: [{
@@ -281,15 +275,17 @@ function getScripts(techs) {
     return scripts;
 }
 
-// fields
-exports.commonTechs = commonTechs;
-exports.templates = templates;
-exports.scripts = scripts;
+module.exports = {
+    // fields
+    commonTechs: commonTechs,
+    templates: templates,
+    scripts: scripts,
 
-// methods
-exports.getPlatforms = getPlatforms;
-exports.addPreprocessor = addPreprocessor;
-exports.getTechnologies = getTechnologies;
-exports.getBrowsers = getBrowsers;
-exports.getStyles = getStyles;
-exports.getScripts = getScripts;
+    // methods
+    getPlatforms: getPlatforms,
+    addPreprocessor: addPreprocessor,
+    getTechnologies: getTechnologies,
+    getBrowsers: getBrowsers,
+    getStyles: getStyles,
+    getScripts: getScripts
+};
