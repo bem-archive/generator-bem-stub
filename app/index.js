@@ -7,10 +7,18 @@ var util = require('util'),
 var BemGenerator = module.exports = function BemGenerator(args, options, config) {
     yeoman.generators.Base.apply(this, arguments);
 
-    this.pkg = JSON.parse(this.readFileAsString(path.join(__dirname, path.join('..', 'package.json'))));
-    this.username = this.user.git.email.split('@')[0] || this.shell.exec('whoami').output.trim();
+    this.option('skip-install', {
+        desc: 'Skip the install of dependencies and libraries after generation of the project',
+        type: Boolean,
+        required: 'false'
+    });
 
     this.on('end', function () {
+        if (!this.options['skip-install']) {
+            this.log.write('').info(' ==> npm and bower install...').write('');
+            this.shell.exec('cd ' + this.projectName + ' && npm i');
+        }
+
         this.log.write('').ok('Done!');
         setTimeout(process.exit, 0, 0);   // force exit
     });
@@ -337,44 +345,7 @@ BemGenerator.prototype.askFor = function askFor() {
 
     //--------------------START--------------------//
 
-    var params = {
-        first: process.argv[3],
-        second: process.argv[4],
-        third: process.argv[5]
-    };
-
-    _this.npmi = true;
-
-    try {
-        if (params.third) throw e;
-
-        switch (params.first) {
-
-            case '--no-deps':
-                _this.npmi = false;
-                if (params.second) throw err;
-                break;
-
-            default:
-                /*
-                    'answersFromJSON' !== 'undefined' when a valid path to 'JSON-file' was given as a first parameter,
-                    for example, 'yo bem-stub test.json'
-                */
-                var answersFromJSON = params.first && JSON.parse(_this.readFileAsString(params.first));
-
-                _this.npmi = !(params.second === '--no-deps');
-
-                if (params.second && _this.npmi) throw e;
-        }
-    }
-    catch(err) {
-        this.log.error('Invalid parameter');
-        process.exit(1);
-    }
-
-    answersFromJSON ?
-        getAnswers(answersFromJSON) :
-        _this.prompt(prompts, function(props) { getAnswers(props); }.bind(_this));
+    _this.prompt(prompts, function(props) { getAnswers(props); }.bind(_this));
 
     //---------------------------------------------//
 };
@@ -479,12 +450,4 @@ BemGenerator.prototype.addPackages = function addPackages() {
         _this.hasPreprocessor && (deps['enb-autoprefixer'] = getLibVersion('other', 'enb-autoprefixer'));
 
     fs.writeFileSync(packagePath, JSON.stringify(pack, null, '  ') + '\n');
-};
-
-// --no-deps
-BemGenerator.prototype.assemble = function assemble() {
-    if (this.npmi) {
-        this.log.write('').info(' ==> npm and bower install...').write('');
-        this.shell.exec('cd ' + this.projectName + ' && npm i');
-    }
 };
