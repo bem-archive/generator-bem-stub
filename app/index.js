@@ -137,7 +137,7 @@ BemGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'confirm',
         name: 'design',
-        message: 'Use design from \'bem-components?\'',
+        message: 'Use design + autoprefixer from library \'bem-components\'?',
         default: true,
         when: function(input) {     // 'bem-components' ==> 'design'
 
@@ -146,7 +146,7 @@ BemGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'list',
         name: 'preprocessor',
-        message: 'What preprocessor to use?',
+        message: 'What CSS pre-processor to use?',
         choices: function(input) {
 
             // returns the list of possible preprocessors to choose in dependence of the previous answers
@@ -194,7 +194,7 @@ BemGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'confirm',
         name: 'html',
-        message: 'Build static html?',
+        message: 'Build static HTML?',
         default: true,
         when: function(input) { // 'bemjson' --> 'bemhtml' || 'bh' ==> 'html'
 
