@@ -12,33 +12,30 @@ var commonTechs = [
         { value: 'ie9.css' }
     ],
     templates = {
-        core: [
-            { value: 'bemtree'  },
-            { value: 'bemhtml' }
-        ]
+        core: [{ value: 'bemtree'  }]
     },
     scripts = {
         coreWithoutLocal: [
             { value: 'node.js' },
             { value: 'browser.js+bemhtml' }
-        ],
+        ]
     };
 
 /**
  * Returns platforms with path and without path
  *
  * @example
- *  [ [ 'common', 'desktop' ], [ 'common', 'touch', 'touch-pad' ] ] and [ { name: 'bem-core', version: '' } ] ==>
+ *  [['common', 'desktop'], ['common', 'touch', 'touch-pad']] and [{ name: 'bem-core', version: '' }] ==>
  *
  *      ->  withPath:
- *              { desktop: [ 'bem-core/common.blocks', 'bem-core/desktop.blocks' ],
+ *              { desktop: ['bem-core/common.blocks', 'bem-core/desktop.blocks'],
  *                'touch-pad':
- *                  [ 'bem-core/common.blocks',
- *                    'bem-core/touch.blocks',
- *                    'bem-core/touch-pad.blocks' ] },
+ *                  ['bem-core/common.blocks',
+ *                   'bem-core/touch.blocks',
+ *                   'bem-core/touch-pad.blocks'] },
  *      ->  withouPath:
- *              { desktop: [ 'common', 'desktop' ],
- *                'touch-pad': [ 'common', 'touch', 'touch-pad' ] } }
+ *              { desktop: ['common', 'desktop'],
+ *                'touch-pad': ['common', 'touch', 'touch-pad'] } }
  *
  * @param {Array of arrays} pls
  * @param {Array of objects} libs
@@ -145,12 +142,12 @@ function getTechnologies(configPath, techs) {
     var technologies = {
             // 'bemdecl.js' and 'deps.js' are always included
             inBlocks: {
-                V2: [ getTechDecl('bemdecl.js'), getTechDecl('deps.js')],
+                V2: [getTechDecl('bemdecl.js'), getTechDecl('deps.js')],
                 notV2: [],
                 defaultTechs: []
             },
             inMake: {
-                techs: [ 'bemdecl.js', 'deps.js'],
+                techs: ['bemdecl.js', 'deps.js'],
                 forked: []
             },
             inBundles: [],
@@ -237,7 +234,7 @@ function getTechnologies(configPath, techs) {
 /**
  * Returns browsers for given platforms
  * @example
- *  { desktop: [ 'common', 'desktop' ] } ==> { desktop: [ 'last 2 versions', 'ie 10', 'ff 24', 'opera 12.16' ] }
+ *  { desktop: ['common', 'desktop'] } ==> { desktop: ['last 2 versions', 'ie 10', 'ff 24', 'opera 12.16'] }
  *
  * @param {String} configPath
  * @param {Object} platforms --> without path
@@ -256,9 +253,9 @@ function getBrowsers(configPath, platforms) {
 /**
  * Returns styles which will be added to 'index.bemjson.js'
  * @example
- * [ 'css',     ==>        {
- *   'ie.css',                 css: [{
- *   'ie6.css' ]                   elem: 'css',
+ * ['css',     ==>         {
+ *  'ie.css',                  css: [{
+ *  'ie6.css']                    elem: 'css',
  *                                 url: 'css'
  *                             }],
  *                             ies: [{
@@ -279,7 +276,7 @@ function getStyles(techs) {
         ies: []
     };
 
-    var ies = [ 'ie.css', 'ie6.css', 'ie7.css', 'ie8.css', 'ie9.css' ];
+    var ies = ['ie.css', 'ie6.css', 'ie7.css', 'ie8.css', 'ie9.css'];
     ies.forEach(function(ie) {
         var isIE = techs.indexOf(ie) > -1;
         isIE && styles.ies.push({
@@ -294,10 +291,7 @@ function getStyles(techs) {
 /**
  * Returns scripts which will be added to 'index.bemjson.js'
  * @example
- * [ 'js' ]     ==>         [{
- *                              elem: 'js',
- *                              url: 'js'
- *                          }]
+ * ['js']           ==>     [{ elem: 'js', url: 'js' }]
  *
  * @param {Array} techs
  * @returns {Object}
