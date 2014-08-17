@@ -1,19 +1,19 @@
 {
   "versions": {
     "core": {
-      "bem-core": "v2.3.0",
+      "bem-core": "bfe5e79f7243be6c9ffd99f0975f0b5e4e3f5dbd",
       "bem-components": "0b09f205e38cfd535c692ae1a0cfb36a713d90d0"
     },
     "other": {
-      "stylus": "0.47.1",
+      "stylus": "0.47.3",
       "roole": "0.9.0",
-      "less": "1.7.3",
+      "less": "1.7.4",
       "enb-roole": "0.2.1",
       "enb-stylus": "https://github.com/tadatuta/enb-stylus/archive/master.tar.gz",
       "enb-diverse-js": "0.1.0",
-      "enb-bemxjst": "1.2.0",
-      "enb-bh": "0.2.1",
-      "bh": "1.2.3",
+      "enb-bemxjst": "1.3.2",
+      "enb-bh": "0.2.2",
+      "bh": "3.0.0",
       "bem-tools-autoprefixer": "0.0.3",
       "enb-autoprefixer": "0.1.1"
     }
@@ -53,8 +53,8 @@
     }
   },
   "browsers": {
-    "desktop": [ "last 2 versions", "ie 10", "ff 24", "opera 12.16" ],
-    "touch-pad": [ "android 4", "ios 5" ],
-    "touch-phone": [ "android 4", "ios 6", "ie 10" ]
+    "desktop": ["last 2 versions", "ie 10", "ff 24", "opera 12.16"],
+    "touch-pad": ["android 4", "ios 5"],
+    "touch-phone": ["android 4", "ios 6", "ie 10"]
   }
 }
