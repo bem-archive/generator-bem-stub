@@ -81,6 +81,7 @@ BemGenerator.prototype.askFor = function askFor() {
         choices: [{
             value: 'bem-tools'
         }, {
+            name: 'ENB',
             value: 'enb'
         }]
     }, {
@@ -179,27 +180,26 @@ BemGenerator.prototype.askFor = function askFor() {
         type: 'list',
         name: 'templateSystem',
         message: 'What template system to use?',
-        choices: [{
-            name: 'bemhtml',
-            value: 'bemhtml'
-        }, {
-            value: 'bh'
-        }, {
-            name: 'My template system',
-            value: 'my'
-        }],
-        when: function(input) { // 'enb' --> 'bem-core' ==> 'template system'
-            return input.collector === 'enb';
+        choices: function(input) {
+            var choices = [{
+                value: 'bemhtml'
+            }, {
+                name: 'My template system',
+                value: 'my'
+            }];
+
+            input.collector === 'enb' && choices.splice(1, 0, { value: 'bh' });
+
+            return choices;
         }
     }, {
         type: 'confirm',
         name: 'html',
         message: 'Build static HTML?',
         default: true,
-        when: function(input) { // 'bemjson' --> 'bemhtml' || 'bh' ==> 'html'
+        when: function(input) { // 'bemjson.js' --> 'bemhtml' || 'bh' ==> 'html'
 
-            return ((input.templateSystem && input.templateSystem !== 'my') || input.techs.indexOf('bemhtml') > -1) &&
-                input.techs.indexOf('bemjson.js') > -1;
+            return input.templateSystem !== 'my' && input.techs.indexOf('bemjson.js') > -1;
         }
     }, {
         type: 'checkbox',
@@ -223,7 +223,7 @@ BemGenerator.prototype.askFor = function askFor() {
 
             return toMinimize;
         },
-        when: function(input) { // 'enb' ==> minimization
+        when: function(input) { // 'ENB' ==> minimization
             return input.collector === 'enb';
         }
     }];
@@ -259,7 +259,7 @@ BemGenerator.prototype.askFor = function askFor() {
             withoutPath : platforms.withoutPath // 'common'
         };
 
-        // Minimization (this is need only for 'enb')
+        // Minimization (this is needed only for 'ENB')
         _this.collectorName === 'enb' && (_this.toMinify = props.minimization);
 
         // Technologies
@@ -268,11 +268,9 @@ BemGenerator.prototype.askFor = function askFor() {
 
         techs = collector.addPreprocessor(techs, preprocessor);
 
-        _this.collectorName === 'bem-tools' &&  // 'bem-tools' --> 'ieN' ==> 'ie.css'
-            (techs = collector.addIe(techs));
+        _this.collectorName === 'bem-tools' && (techs = collector.addIe(techs)); // 'bem-tools' --> 'ieN' ==> 'ie.css'
 
-        _this.collectorName === 'enb' && // 'enb' --> 'bem-core' ==> 'bemhtml', 'bh'
-            props.templateSystem !== 'my' && techs.push(props.templateSystem);
+        techs = collector.addTemplateSystem(techs, props.templateSystem); // bem-core' ==> 'bemhtml', 'bh'
 
         props.html && techs.push('html');
 
@@ -280,7 +278,7 @@ BemGenerator.prototype.askFor = function askFor() {
 
         _this.isBemjson = techs.indexOf('bemjson.js') > -1;
 
-        // Preprocessor (this is need only for 'bem-tools')
+        // Preprocessor (this is needed only for 'bem-tools')
         _this.hasPreprocessor = preprocessor !== 'css';
         _this.hasPreprocessor && (_this.preprocessor = !preprocessor ? 'stylus' : preprocessor);
 
@@ -314,7 +312,7 @@ BemGenerator.prototype.app = function app() {
         root = path.join(_this.sourceRoot(), _this.collectorName), // path to the templates
         files = _this.expandFiles('**', { dot: true, cwd: root });   // roots of the all files in the templates
 
-    // Makes the necessary empty folders in the created project (only for 'enb')
+    // Makes the necessary empty folders in the created project (only for 'ENB')
     if (_this.collectorName === 'enb') {
         _this.mkdir(path.join(_this.projectName, 'common.blocks'));
         (platforms['touch-pad'] || platforms['touch-phone']) && _this.mkdir(path.join(_this.projectName, 'touch.blocks'));

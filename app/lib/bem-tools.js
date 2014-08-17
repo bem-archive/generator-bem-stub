@@ -23,7 +23,6 @@ var commonTechs = [
 
 /**
  * Returns platforms with path and without path
- *
  * @example
  *  [['common', 'desktop'], ['common', 'touch', 'touch-pad']] and [{ name: 'bem-core', version: '' }] ==>
  *
@@ -67,8 +66,7 @@ function getPlatforms(pls, libs, design) {
 }
 
 /**
- * Adds chosen preprocessor in technologies
- *
+ * Adds the chosen preprocessor to technologies
  * @param {Array} techs
  * @param {String} preprocessor
  * @returns {Array}
@@ -86,7 +84,6 @@ function addPreprocessor(techs, preprocessor) {
 
 /**
  * Adds 'ie.css' to technologies
- *
  * @param {Array} techs
  * @returns {Array}
  */
@@ -103,8 +100,27 @@ function addIe(techs) {
 }
 
 /**
+ * Adds the template system to technologies
+ * @param {Array} techs
+ * @returns {Array}
+ */
+function addTemplateSystem(techs, templateSystem) {
+    if (templateSystem === 'my') return techs;
+
+    var _scripts = scripts.coreWithoutLocal;
+
+    for (var i in _scripts) {
+        var index = techs.indexOf(_scripts[i].value);
+        if (index > -1) break;
+    }
+
+    index > -1 ? techs.splice(index, 0, templateSystem) : techs.push(templateSystem);
+
+    return techs;
+}
+
+/**
  * Returns technologies
- *
  * @param {String} configPath
  * @param {Array} techs
  * @returns {Object}
@@ -316,6 +332,7 @@ module.exports = {
     getPlatforms: getPlatforms,
     addPreprocessor: addPreprocessor,
     addIe: addIe,
+    addTemplateSystem: addTemplateSystem,
     getTechnologies: getTechnologies,
     getBrowsers: getBrowsers,
     getStyles: getStyles,

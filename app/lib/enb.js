@@ -23,7 +23,6 @@ var commonTechs = [
 
 /**
  * Returns platforms with path and without path
- *
  * @example
  *  [['common', 'desktop'], ['common', 'touch', 'touch-pad']] and [{ name: 'bem-core', version: '' }] ==>
  *
@@ -65,8 +64,7 @@ function getPlatforms(pls, libs, design) {
 }
 
 /**
- * Adds chosen preprocessor in technologies
- *
+ * Adds the chosen preprocessor to technologies
  * @param {Array} techs
  * @param {String} preprocessor
  * @returns {Array}
@@ -79,8 +77,18 @@ function addPreprocessor(techs, preprocessor) {
 }
 
 /**
+ * Adds the chosen template system to technologies
+ * @param {Array} techs
+ * @returns {Array}
+ */
+function addTemplateSystem(techs, templateSystem) {
+    if (templateSystem !== 'my') techs.push(templateSystem);
+
+    return techs;
+}
+
+/**
  * Returns technologies
- *
  * @param {String} configPath
  * @param {Array} techs
  * @param {Array} toMinify
@@ -279,6 +287,7 @@ module.exports = {
     // methods
     getPlatforms: getPlatforms,
     addPreprocessor: addPreprocessor,
+    addTemplateSystem: addTemplateSystem,
     getTechnologies: getTechnologies,
     getBrowsers: getBrowsers,
     getStyles: getStyles,
