@@ -55,7 +55,7 @@ BemGenerator.prototype.askFor = function askFor() {
         _this = this,
         configPath = path.join(_this.sourceRoot(), 'config.json'); // app/templates/config.json
 
-    // questions to user
+    // questions to a user
     var prompts = [{
         type: 'input',
         name: 'projectName',
@@ -81,6 +81,7 @@ BemGenerator.prototype.askFor = function askFor() {
         choices: [{
             value: 'bem-tools'
         }, {
+            name: 'ENB',
             value: 'enb'
         }]
     }, {
@@ -137,7 +138,7 @@ BemGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'confirm',
         name: 'design',
-        message: 'Use design from \'bem-components?\'',
+        message: 'Use design + autoprefixer from library \'bem-components\'?',
         default: true,
         when: function(input) {     // 'bem-components' ==> 'design'
 
@@ -146,7 +147,7 @@ BemGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'list',
         name: 'preprocessor',
-        message: 'What preprocessor to use?',
+        message: 'What CSS pre-processor to use?',
         choices: function(input) {
 
             // returns the list of possible preprocessors to choose in dependence of the previous answers
@@ -179,27 +180,26 @@ BemGenerator.prototype.askFor = function askFor() {
         type: 'list',
         name: 'templateSystem',
         message: 'What template system to use?',
-        choices: [{
-            name: 'bemhtml',
-            value: 'bemhtml'
-        }, {
-            value: 'bh'
-        }, {
-            name: 'My template system',
-            value: 'my'
-        }],
-        when: function(input) { // 'enb' --> 'bem-core' ==> 'template system'
-            return input.collector === 'enb';
+        choices: function(input) {
+            var choices = [{
+                value: 'bemhtml'
+            }, {
+                name: 'My template system',
+                value: 'my'
+            }];
+
+            input.collector === 'enb' && choices.splice(1, 0, { value: 'bh' });
+
+            return choices;
         }
     }, {
         type: 'confirm',
         name: 'html',
-        message: 'Build static html?',
+        message: 'Build static HTML?',
         default: true,
-        when: function(input) { // 'bemjson' --> 'bemhtml' || 'bh' ==> 'html'
+        when: function(input) { // 'bemjson.js' --> 'bemhtml' || 'bh' ==> 'html'
 
-            return ((input.templateSystem && input.templateSystem !== 'my') || input.techs.indexOf('bemhtml') > -1) &&
-                input.techs.indexOf('bemjson.js') > -1;
+            return input.templateSystem !== 'my' && input.techs.indexOf('bemjson.js') > -1;
         }
     }, {
         type: 'checkbox',
@@ -223,7 +223,7 @@ BemGenerator.prototype.askFor = function askFor() {
 
             return toMinimize;
         },
-        when: function(input) { // 'enb' ==> minimization
+        when: function(input) { // 'ENB' ==> minimization
             return input.collector === 'enb';
         }
     }];
@@ -233,18 +233,11 @@ BemGenerator.prototype.askFor = function askFor() {
         var collector = require('.' + path.sep + path.join('lib', (_this.collectorName = props.collector) === 'bem-tools' ? 'bem-tools' : 'enb'));
 
         // General information
-        // -------------------
-
         _this.author = props.author;
         _this.email = props.email;
         _this.projectName = props.projectName;
 
-        // -------------------
-
-
         // Libraries
-        // ---------
-
         _this.libs = props.addLibraries;
 
         _this.libsToBowerDeps = [];     // to 'bower.json'
@@ -254,47 +247,30 @@ BemGenerator.prototype.askFor = function askFor() {
 
         _this.libs.unshift(props.baseLibrary);  // base lib on the top (for 'bem-tools' it is vital)
 
-        hasBemComponents(_this.libsToBowerDeps) || _this.libsToBowerDeps.unshift(props.baseLibrary); // 'bem-components' will automatically install 'bem-core'
 
-        // ---------
-
+        hasBemComponents(_this.libsToBowerDeps) ||
+            _this.libsToBowerDeps.unshift(props.baseLibrary); // 'bem-components' will automatically install 'bem-core'
 
         // Platforms
-        // ---------
-
         var platforms = collector.getPlatforms(props.platforms, _this.libs, props.design);
 
-        // 'withPath' ==> 'bem-core/common.blocks' | 'withoutPath' ==> 'common'
         _this.platforms = {
-            withPath :  platforms.withPath,
-            withoutPath : platforms.withoutPath
+            withPath :  platforms.withPath,     // 'bem-core/common.blocks'
+            withoutPath : platforms.withoutPath // 'common'
         };
 
-        // ---------
-
-
-        // Minimization
-        // ------------
-
-        // 'enb' ==> minimization
+        // Minimization (this is needed only for 'ENB')
         _this.collectorName === 'enb' && (_this.toMinify = props.minimization);
 
-        // ------------
-
-
         // Technologies
-        // ------------
-
         var preprocessor = props.preprocessor,
             techs = props.techs;
 
         techs = collector.addPreprocessor(techs, preprocessor);
 
-        // 'bem-tools' --> 'ieN' ==> 'ie.css'
-        _this.collectorName === 'bem-tools' && (techs = collector.addIe(techs));
+        _this.collectorName === 'bem-tools' && (techs = collector.addIe(techs)); // 'bem-tools' --> 'ieN' ==> 'ie.css'
 
-        // 'enb' --> 'bem-core' ==> 'bemhtml', 'bh'
-        _this.collectorName === 'enb' && props.templateSystem !== 'my' && techs.push(props.templateSystem);
+        techs = collector.addTemplateSystem(techs, props.templateSystem); // bem-core' ==> 'bemhtml', 'bh'
 
         props.html && techs.push('html');
 
@@ -302,43 +278,22 @@ BemGenerator.prototype.askFor = function askFor() {
 
         _this.isBemjson = techs.indexOf('bemjson.js') > -1;
 
-        // ------------
-
-
-        // Preprocessor (this is need only for 'bem-tools')
-        // ------------------------------------------------
-
+        // Preprocessor (this is needed only for 'bem-tools')
         _this.hasPreprocessor = preprocessor !== 'css';
         _this.hasPreprocessor && (_this.preprocessor = !preprocessor ? 'stylus' : preprocessor);
 
-        // ------------------------------------------------
-
-
         // Design
-        // ------
-
         _this.design = props.design;
-
-        // ------
-
 
         // Autoprefixer (will be added to the generated config when 'design' is 'true')
         // @TODO: create the separate question about autoprefixer
-        // ----------------------------------------------------------------------------
-
         _this.browsers = collector.getBrowsers(configPath, _this.platforms.withoutPath);
 
-        // ----------------------------------------------------------------------------
-
-
         // Styles and scripts to 'bemjson.js'
-        // ----------------------------------
-
         var technologies = _this.collectorName === 'bem-tools' ? _this.technologies.inMake.techs : _this.technologies.inTargets;
+
         _this.styles = collector.getStyles(technologies);
         _this.scripts = collector.getScripts(technologies);
-
-        // ----------------------------------
 
         cb();
     }
@@ -357,7 +312,7 @@ BemGenerator.prototype.app = function app() {
         root = path.join(_this.sourceRoot(), _this.collectorName), // path to the templates
         files = _this.expandFiles('**', { dot: true, cwd: root });   // roots of the all files in the templates
 
-    // Makes the necessary empty folders in the created project (only for 'enb')
+    // Makes the necessary empty folders in the created project (only for 'ENB')
     if (_this.collectorName === 'enb') {
         _this.mkdir(path.join(_this.projectName, 'common.blocks'));
         (platforms['touch-pad'] || platforms['touch-phone']) && _this.mkdir(path.join(_this.projectName, 'touch.blocks'));
@@ -366,7 +321,6 @@ BemGenerator.prototype.app = function app() {
             _this.mkdir(path.join(_this.projectName, platform + '.blocks'));
         });
     }
-
 
     _this._.each(files, function (f) {
 

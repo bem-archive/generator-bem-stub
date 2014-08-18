@@ -12,9 +12,7 @@ var commonTechs = [
         { value: 'ie9.css' }
     ],
     templates = {
-        core: [
-            { name: 'bemtree', value: 'bemtree.js' }
-        ]
+        core: [{ name: 'bemtree', value: 'bemtree.js' }]
     },
     scripts = {
         coreWithoutLocal: [
@@ -25,16 +23,15 @@ var commonTechs = [
 
 /**
  * Returns platforms with path and without path
- *
  * @example
- *  [ [ 'common', 'desktop' ], [ 'common', 'touch', 'touch-pad' ] ] and [ { name: 'bem-core', version: '' } ] ==>
+ *  [['common', 'desktop'], ['common', 'touch', 'touch-pad']] and [{ name: 'bem-core', version: '' }] ==>
  *
  *      -->  withPath:
- *               { desktop: [ 'bem-core/common.blocks', 'bem-core/desktop.blocks' ],
- *                 'touch-pad': [ 'bem-core/common.blocks', 'bem-core/touch.blocks' ] }
+ *               { desktop: ['bem-core/common.blocks', 'bem-core/desktop.blocks'],
+ *                 'touch-pad': ['bem-core/common.blocks', 'bem-core/touch.blocks'] }
  *      -->  withouPath:
- *               { desktop: [ 'common', 'desktop' ],
- *                 'touch-pad': [ 'common', 'touch', 'touch-pad' ] } }
+ *               { desktop: ['common', 'desktop'],
+ *                 'touch-pad': ['common', 'touch', 'touch-pad'] } }
  *
  * @param {Array of arrays} pls
  * @param {Array of objects} libs
@@ -67,8 +64,7 @@ function getPlatforms(pls, libs, design) {
 }
 
 /**
- * Adds chosen preprocessor in technologies
- *
+ * Adds the chosen preprocessor to technologies
  * @param {Array} techs
  * @param {String} preprocessor
  * @returns {Array}
@@ -81,8 +77,18 @@ function addPreprocessor(techs, preprocessor) {
 }
 
 /**
+ * Adds the chosen template system to technologies
+ * @param {Array} techs
+ * @returns {Array}
+ */
+function addTemplateSystem(techs, templateSystem) {
+    if (templateSystem !== 'my') techs.push(templateSystem);
+
+    return techs;
+}
+
+/**
  * Returns technologies
- *
  * @param {String} configPath
  * @param {Array} techs
  * @param {Array} toMinify
@@ -101,7 +107,7 @@ function getTechnologies(configPath, techs, toMinify) {
     */
 
     var technologies = {
-            inTechs : [ 'require(\'enb/techs/files\')', 'require(\'enb/techs/deps\')' ],  // 'files' and 'deps' are always included
+            inTechs : ['require(\'enb/techs/files\')', 'require(\'enb/techs/deps\')'],  // 'files' and 'deps' are always included
             inTargets : [],
             inJSON : []
         },
@@ -192,7 +198,7 @@ function getTechnologies(configPath, techs, toMinify) {
 /**
  * Returns browsers for given platforms
  * @example
- *  { desktop: [ 'common', 'desktop' ] } ==> { desktop: [ 'last 2 versions', 'ie 10', 'ff 24', 'opera 12.16' ] }
+ *  { desktop: ['common', 'desktop'] } ==> { desktop: ['last 2 versions', 'ie 10', 'ff 24', 'opera 12.16'] }
  *
  * @param {String} configPath
  * @param {Object} platforms --> without path
@@ -211,10 +217,10 @@ function getBrowsers(configPath, platforms) {
 /**
  * Returns styles which will be added to 'index.bemjson.js'
  * @example
- * [ 'min.css',     ==>     {
- *   'ie.css',                  css: [{
- *   'ie6.css',                     elem: 'css',
- *   'min.ie9.css' ]                url: 'min.css'
+ * ['min.css',     ==>      {
+ *  'ie.css',                   css: [{
+ *  'ie6.css',                      elem: 'css',
+ *  'min.ie9.css']                  url: 'min.css'
  *                              }],
  *                              ies: [{
  *                                  elem: 'css',
@@ -240,7 +246,7 @@ function getStyles(techs) {
         ies: []
     };
 
-    var ies = [ 'ie.css', 'ie6.css', 'ie7.css', 'ie8.css', 'ie9.css' ];
+    var ies = ['ie.css', 'ie6.css', 'ie7.css', 'ie8.css', 'ie9.css'];
     ies.forEach(function(ie) {
         var isIE = techs.indexOf(ie) > -1;
         (isIE || techs.indexOf('min.' + ie) > -1) && styles.ies.push({
@@ -255,10 +261,7 @@ function getStyles(techs) {
 /**
  * Returns scripts which will be added to 'index.bemjson.js'
  * @example
- * [ 'min.js' ]     ==>     [{
- *                              elem: 'js',
- *                              url: 'min.js'
- *                          }]
+ * ['min.js']       ==>     [{ elem: 'js', url: 'min.js' }]
  *
  * @param {Array} techs
  * @returns {Object} scripts
@@ -284,6 +287,7 @@ module.exports = {
     // methods
     getPlatforms: getPlatforms,
     addPreprocessor: addPreprocessor,
+    addTemplateSystem: addTemplateSystem,
     getTechnologies: getTechnologies,
     getBrowsers: getBrowsers,
     getStyles: getStyles,

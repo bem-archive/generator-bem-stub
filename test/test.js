@@ -4,7 +4,7 @@ var fs = require('fs'),
     configPath = 'app/templates/config.json';
 
 // bem-tools
-// ---------------------------------------
+// --------------------------------------
 
 describe('\'bem-tools\'', function () {
 
@@ -40,24 +40,24 @@ describe('\'bem-tools\'', function () {
         bemtools.getPlatforms(pls, libs, true).must.eql(output);
     });
 
-    it('must add preprocessor \'stylus\'', function () {
+    it('must add preprocessor', function () {
 
         bemtools.addPreprocessor([], 'stylus').must.eql(['stylus', 'css']);
     });
 
-    it('must add preprocessor \'roole\'', function () {
+    it('must add preprocessor after technology \'bemjson.js\'', function () {
 
-        bemtools.addPreprocessor([], 'roole').must.eql(['roole', 'css']);
-    });
-
-    it('must add preprocessor \'less\'', function () {
-
-        bemtools.addPreprocessor([], 'less').must.eql(['less', 'css']);
+        bemtools.addPreprocessor(['bemjson.js'], 'stylus').must.eql(['bemjson.js', 'stylus', 'css']);
     });
 
     it('must add \'pure css\'', function () {
 
         bemtools.addPreprocessor([], 'css').must.eql(['css']);
+    });
+
+    it('must add \'pure css\' after technology \'bemjson.js\'', function () {
+
+        bemtools.addPreprocessor(['bemjson.js'], 'css').must.eql(['bemjson.js', 'css']);
     });
 
     it('must add preprocessor \'stylus\' as default', function () {
@@ -80,6 +80,21 @@ describe('\'bem-tools\'', function () {
             output = ['ie.css', 'ie6.css', 'ie7.css', 'ie8.css', 'ie9.css'];
 
         bemtools.addIe(techs).must.eql(output);
+    });
+
+    it('must add template system \'bemhtml\' before technology \'node.js\'', function() {
+
+        bemtools.addTemplateSystem(['css', 'node.js'], 'bemhtml').must.eql(['css', 'bemhtml', 'node.js']);
+    });
+
+    it('must add template system \'bemhtml\' before technology \'browser.js+bemhtml\'', function() {
+
+        bemtools.addTemplateSystem(['css', 'browser.js+bemhtml'], 'bemhtml').must.eql(['css', 'bemhtml', 'browser.js+bemhtml']);
+    });
+
+    it('must not add template system ', function() {
+
+        bemtools.addTemplateSystem([], 'my').must.eql([]);
     });
 
     it('must get technology \'bemjson.js\'', function () {
@@ -229,10 +244,10 @@ describe('\'bem-tools\'', function () {
 // ---------------------------------------
 
 
-// enb
+// ENB
 // ---------------------------------------
 
-describe('\'enb\'', function () {
+describe('\'ENB\'', function () {
 
     it('must get all platforms without design', function () {
 
@@ -266,29 +281,24 @@ describe('\'enb\'', function () {
         enb.getPlatforms(pls, libs, true).must.eql(output);
     });
 
-    it('must add preprocessor \'stylus\'', function () {
+    it('must add preprocessor', function () {
 
         enb.addPreprocessor([], 'stylus').must.eql(['stylus']);
-    });
-
-    it('must add preprocessor \'roole\'', function () {
-
-        enb.addPreprocessor([], 'roole').must.eql(['roole']);
-    });
-
-    it('must add preprocessor \'less\'', function () {
-
-        enb.addPreprocessor([], 'less').must.eql(['less']);
-    });
-
-    it('must add \'pure css\'', function () {
-
-        enb.addPreprocessor([], 'css').must.eql(['css']);
     });
 
     it('must add preprocessor \'stylus\' as default', function () {
 
         enb.addPreprocessor([], undefined).must.eql(['stylus']);
+    });
+
+    it('must add add template system', function () {
+
+        enb.addTemplateSystem(['css'], 'bh').must.eql(['css', 'bh']);
+    });
+
+    it('must not add add template system', function () {
+
+        enb.addTemplateSystem(['css'], 'my').must.eql(['css']);
     });
 
     it('must get technology \'bemjson.js\'', function () {
