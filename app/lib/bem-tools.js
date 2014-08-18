@@ -307,7 +307,7 @@ function getStyles(techs) {
 /**
  * Returns scripts which will be added to 'index.bemjson.js'
  * @example
- * ['js']           ==>     [{ elem: 'js', url: 'js' }]
+ * ['browser.js+bemhtml']  ==>  [{ elem: 'js', url: 'js' }]
  *
  * @param {Array} techs
  * @returns {Object}
@@ -315,7 +315,7 @@ function getStyles(techs) {
 function getScripts(techs) {
     var scripts = [];
 
-    (techs.indexOf('browser.js+bemhtml') > -1 || techs.indexOf('node.js') > -1) && scripts.push({
+    techs.indexOf('browser.js+bemhtml') > -1 && scripts.push({
         elem: 'js', url: 'js'
     });
 

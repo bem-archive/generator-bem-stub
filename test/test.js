@@ -229,12 +229,7 @@ describe('\'bem-tools\'', function () {
         bemtools.getStyles(techs).must.eql(output);
     });
 
-    it('must get scripts --> node.js', function () {
-
-        bemtools.getScripts(['node.js']).must.eql([{ elem: 'js', url: 'js' }]);
-    });
-
-    it('must get scripts --> browser.js+bemhtml', function () {
+    it('must get scripts', function () {
 
         bemtools.getScripts(['browser.js+bemhtml']).must.eql([{ elem: 'js', url: 'js' }]);
     });
