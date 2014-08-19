@@ -119,6 +119,15 @@ BemGenerator.prototype.askFor = function askFor() {
             return choices;
         }
     }, {
+        type: 'confirm',
+        name: 'design',
+        message: 'Use design + autoprefixer from library \'bem-components\'?',
+        default: true,
+        when: function(input) {     // 'bem-components' ==> 'design'
+
+            return hasBemComponents(input.addLibraries);
+        }
+    }, {
         type: 'checkbox',
         name: 'platforms',
         message: 'What platforms to use?',
@@ -134,15 +143,6 @@ BemGenerator.prototype.askFor = function askFor() {
         }],
         validate: function(input) {
             return input.length > 0 ? true : 'Please, select something';
-        }
-    }, {
-        type: 'confirm',
-        name: 'design',
-        message: 'Use design + autoprefixer from library \'bem-components\'?',
-        default: true,
-        when: function(input) {     // 'bem-components' ==> 'design'
-
-            return hasBemComponents(input.addLibraries);
         }
     }, {
         type: 'list',
