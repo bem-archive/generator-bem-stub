@@ -4,7 +4,7 @@ var fs = require('fs'),
 
 // technologies
 var commonTechs = [
-        { value: 'bemjson.js' },
+        { name: 'BEMJSON', value: 'bemjson.js' },
         { value: 'ie.css' },
         { value: 'ie6.css' },
         { value: 'ie7.css' },
@@ -12,7 +12,7 @@ var commonTechs = [
         { value: 'ie9.css' }
     ],
     templates = {
-        core: [{ value: 'bemtree'  }]
+        core: [{ name: 'BEMTREE', value: 'bemtree'  }]
     },
     scripts = {
         coreWithoutLocal: [

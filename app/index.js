@@ -197,7 +197,7 @@ BemGenerator.prototype.askFor = function askFor() {
         name: 'html',
         message: 'Build static HTML?',
         default: true,
-        when: function(input) { // 'bemjson.js' --> 'bemhtml' || 'bh' ==> 'html'
+        when: function(input) { // 'BEMJSON' --> 'bemhtml' || 'bh' ==> 'html'
 
             return input.templateSystem !== 'my' && input.techs.indexOf('bemjson.js') > -1;
         }
