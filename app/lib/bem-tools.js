@@ -100,12 +100,12 @@ function addIe(techs) {
 }
 
 /**
- * Adds the template system to technologies
+ * Adds the template engine to technologies
  * @param {Array} techs
  * @returns {Array}
  */
-function addTemplateSystem(techs, templateSystem) {
-    if (templateSystem === 'my') return techs;
+function addTemplateEngine(techs, templateEngine) {
+    if (templateEngine === 'my') return techs;
 
     var _scripts = scripts.coreWithoutLocal;
 
@@ -114,7 +114,7 @@ function addTemplateSystem(techs, templateSystem) {
         if (index > -1) break;
     }
 
-    index > -1 ? techs.splice(index, 0, templateSystem) : techs.push(templateSystem);
+    index > -1 ? techs.splice(index, 0, templateEngine) : techs.push(templateEngine);
 
     return techs;
 }
@@ -332,7 +332,7 @@ module.exports = {
     getPlatforms: getPlatforms,
     addPreprocessor: addPreprocessor,
     addIe: addIe,
-    addTemplateSystem: addTemplateSystem,
+    addTemplateEngine: addTemplateEngine,
     getTechnologies: getTechnologies,
     getBrowsers: getBrowsers,
     getStyles: getStyles,

@@ -178,17 +178,18 @@ BemGenerator.prototype.askFor = function askFor() {
         }
     }, {
         type: 'list',
-        name: 'templateSystem',
-        message: 'What template system to use?',
+        name: 'templateEngine',
+        message: 'What template engine to use?',
         choices: function(input) {
             var choices = [{
+                name: 'BEMHTML',
                 value: 'bemhtml'
             }, {
-                name: 'My template system',
+                name: 'My template engine',
                 value: 'my'
             }];
 
-            input.collector === 'enb' && choices.splice(1, 0, { value: 'bh' });
+            input.collector === 'enb' && choices.splice(1, 0, { name: 'BH', value: 'bh' });
 
             return choices;
         }
@@ -199,7 +200,7 @@ BemGenerator.prototype.askFor = function askFor() {
         default: true,
         when: function(input) { // 'BEMJSON' --> 'bemhtml' || 'bh' ==> 'html'
 
-            return input.templateSystem !== 'my' && input.techs.indexOf('bemjson.js') > -1;
+            return input.templateEngine !== 'my' && input.techs.indexOf('bemjson.js') > -1;
         }
     }, {
         type: 'checkbox',
@@ -218,7 +219,7 @@ BemGenerator.prototype.askFor = function askFor() {
                 tech !== 'bemjson.js' && toMinimize.push({ value: tech });
             });
 
-            var templSys = input.templateSystem;
+            var templSys = input.templateEngine;
             (templSys && templSys !== 'my') && toMinimize.push({ value: templSys + '.js' });
 
             return toMinimize;
@@ -270,7 +271,7 @@ BemGenerator.prototype.askFor = function askFor() {
 
         _this.collectorName === 'bem-tools' && (techs = collector.addIe(techs)); // 'bem-tools' --> 'ieN' ==> 'ie.css'
 
-        techs = collector.addTemplateSystem(techs, props.templateSystem); // bem-core' ==> 'bemhtml', 'bh'
+        techs = collector.addTemplateEngine(techs, props.templateEngine); // bem-core' ==> 'bemhtml', 'bh'
 
         props.html && techs.push('html');
 

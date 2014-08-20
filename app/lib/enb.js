@@ -77,12 +77,12 @@ function addPreprocessor(techs, preprocessor) {
 }
 
 /**
- * Adds the chosen template system to technologies
+ * Adds the chosen template engine to technologies
  * @param {Array} techs
  * @returns {Array}
  */
-function addTemplateSystem(techs, templateSystem) {
-    if (templateSystem !== 'my') techs.push(templateSystem);
+function addTemplateEngine(techs, templateEngine) {
+    if (templateEngine !== 'my') techs.push(templateEngine);
 
     return techs;
 }
@@ -287,7 +287,7 @@ module.exports = {
     // methods
     getPlatforms: getPlatforms,
     addPreprocessor: addPreprocessor,
-    addTemplateSystem: addTemplateSystem,
+    addTemplateEngine: addTemplateEngine,
     getTechnologies: getTechnologies,
     getBrowsers: getBrowsers,
     getStyles: getStyles,
