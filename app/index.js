@@ -147,18 +147,21 @@ BemGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'list',
         name: 'preprocessor',
-        message: 'What CSS pre-processor to use?',
+        message: 'What CSS preprocessor to use?',
         choices: function(input) {
 
             // returns the list of possible preprocessors to choose in dependence of the previous answers
             return [{
+                name: 'Stylus',
                 value: 'stylus'
             }, {
+                name: 'Roole',
                 value: 'roole',
             }, {
+                name: 'Less',
                 value: 'less',
             }, {
-                name: 'Only pure css',
+                name: 'Only pure CSS',
                 value: 'css'
             }];
         },

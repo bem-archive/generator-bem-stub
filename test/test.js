@@ -50,12 +50,12 @@ describe('\'bem-tools\'', function () {
         bemtools.addPreprocessor(['bemjson.js'], 'stylus').must.eql(['bemjson.js', 'stylus', 'css']);
     });
 
-    it('must add \'pure css\'', function () {
+    it('must add \'css\'', function () {
 
         bemtools.addPreprocessor([], 'css').must.eql(['css']);
     });
 
-    it('must add \'pure css\' after technology \'bemjson.js\'', function () {
+    it('must add \'css\' after technology \'bemjson.js\'', function () {
 
         bemtools.addPreprocessor(['bemjson.js'], 'css').must.eql(['bemjson.js', 'css']);
     });
