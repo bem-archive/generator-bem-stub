@@ -282,9 +282,9 @@ BemGenerator.prototype.askFor = function askFor() {
 
         _this.isBemjson = techs.indexOf('bemjson.js') > -1;
 
-        // Preprocessor (this is needed only for 'bem-tools')
-        _this.hasPreprocessor = preprocessor !== 'css';
-        _this.hasPreprocessor && (_this.preprocessor = !preprocessor ? 'stylus' : preprocessor);
+        // Preprocessor
+        _this.isPreprocessor = preprocessor !== 'css';
+        _this.isPreprocessor && (_this.preprocessor = !preprocessor ? 'stylus' : preprocessor); // for 'bem-tools'
 
         // Design
         _this.design = props.design;
@@ -403,9 +403,9 @@ BemGenerator.prototype.addPackages = function addPackages() {
 
     // autoprefixer
     _this.assemblerName === 'bem-tools' &&
-        this.hasPreprocessor && (deps['bem-tools-autoprefixer'] = getLibVersion('other', 'bem-tools-autoprefixer'));
+        this.isPreprocessor && (deps['bem-tools-autoprefixer'] = getLibVersion('other', 'bem-tools-autoprefixer'));
     _this.assemblerName === 'enb' &&
-        _this.hasPreprocessor && (deps['enb-autoprefixer'] = getLibVersion('other', 'enb-autoprefixer'));
+        _this.isPreprocessor && (deps['enb-autoprefixer'] = getLibVersion('other', 'enb-autoprefixer'));
 
     fs.writeFileSync(packagePath, JSON.stringify(pack, null, '  ') + '\n');
 };

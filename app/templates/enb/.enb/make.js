@@ -13,7 +13,7 @@ module.exports = function(config) {
 
                 "\n\n    config.nodes('*desktop.bundles/*', function(nodeConfig) {\n        nodeConfig.addTechs([\n            [ require('enb/techs/levels'), { levels: getDesktops(config) } ]" +
 
-                (preprocessor ?
+                (isPreprocessor ?
 
                     ",\n            [ require('enb-autoprefixer/techs/css-autoprefixer'), {\n                browserSupport: [ " +
 
@@ -31,7 +31,7 @@ module.exports = function(config) {
 
                 "\n\n    config.nodes('*touch-pad.bundles/*', function(nodeConfig) {\n        nodeConfig.addTechs([\n            [ require('enb/techs/levels'), { levels: getTouchPads(config) } ]" +
 
-                (preprocessor ?
+                (isPreprocessor ?
 
                     ",\n            [ require('enb-autoprefixer/techs/css-autoprefixer'), {\n                browserSupport: [ " +
 
@@ -49,7 +49,7 @@ module.exports = function(config) {
 
                 "\n\n    config.nodes('*touch-phone.bundles/*', function(nodeConfig) {\n        nodeConfig.addTechs([\n            [ require('enb/techs/levels'), { levels: getTouchPhones(config) } ]" +
 
-                (preprocessor ?
+                (isPreprocessor ?
 
                     ",\n            [ require('enb-autoprefixer/techs/css-autoprefixer'), {\n                browserSupport: [ " +
 
