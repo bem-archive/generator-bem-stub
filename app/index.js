@@ -121,7 +121,7 @@ BemGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'confirm',
         name: 'design',
-        message: 'Use design + autoprefixer from library \'bem-components\'?',
+        message: 'Use design from library \'bem-components\'?',
         default: true,
         when: function(input) {     // 'bem-components' ==> 'design'
 
