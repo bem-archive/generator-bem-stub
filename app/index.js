@@ -72,7 +72,7 @@ BemGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'input',
         name: 'email',
-        message: 'What email to use?',
+        message: 'What is maintainer\'s email?',
         default: _this.user.git.email || 'ivan@yandex.com'
     }, {
         type: 'list',
