@@ -76,8 +76,8 @@ BemGenerator.prototype.askFor = function askFor() {
         default: _this.user.git.email || 'ivan@yandex.com'
     }, {
         type: 'list',
-        name: 'collector',
-        message: 'What collector to use?',
+        name: 'assembler',
+        message: 'What assembler to use?',
         choices: [{
             value: 'bem-tools'
         }, {
@@ -175,9 +175,9 @@ BemGenerator.prototype.askFor = function askFor() {
         message: 'What technologies to use?',
         choices: function(input) {
             // returns the list of possible technologies to choose in dependence of the previous answers
-            var collector = require('.' + path.sep + path.join('lib', input.collector === 'bem-tools' ? 'bem-tools' : 'enb'));
+            var assembler = require('.' + path.sep + path.join('lib', input.assembler === 'bem-tools' ? 'bem-tools' : 'enb'));
 
-            return collector.commonTechs.concat(collector.templates.core, collector.scripts.coreWithoutLocal);
+            return assembler.commonTechs.concat(assembler.templates.core, assembler.scripts.coreWithoutLocal);
         }
     }, {
         type: 'list',
@@ -192,7 +192,7 @@ BemGenerator.prototype.askFor = function askFor() {
                 value: 'my'
             }];
 
-            input.collector === 'enb' && choices.splice(1, 0, { name: 'BH', value: 'bh' });
+            input.assembler === 'enb' && choices.splice(1, 0, { name: 'BH', value: 'bh' });
 
             return choices;
         }
@@ -228,13 +228,13 @@ BemGenerator.prototype.askFor = function askFor() {
             return toMinimize;
         },
         when: function(input) { // 'ENB' ==> minimization
-            return input.collector === 'enb';
+            return input.assembler === 'enb';
         }
     }];
 
     function getAnswers(props) {
 
-        var collector = require('.' + path.sep + path.join('lib', (_this.collectorName = props.collector) === 'bem-tools' ? 'bem-tools' : 'enb'));
+        var assembler = require('.' + path.sep + path.join('lib', (_this.assemblerName = props.assembler) === 'bem-tools' ? 'bem-tools' : 'enb'));
 
         // General information
         _this.author = props.author;
@@ -256,7 +256,7 @@ BemGenerator.prototype.askFor = function askFor() {
             _this.libsToBowerDeps.unshift(props.baseLibrary); // 'bem-components' will automatically install 'bem-core'
 
         // Platforms
-        var platforms = collector.getPlatforms(props.platforms, _this.libs, props.design);
+        var platforms = assembler.getPlatforms(props.platforms, _this.libs, props.design);
 
         _this.platforms = {
             withPath :  platforms.withPath,     // 'bem-core/common.blocks'
@@ -264,21 +264,21 @@ BemGenerator.prototype.askFor = function askFor() {
         };
 
         // Minimization (this is needed only for 'ENB')
-        _this.collectorName === 'enb' && (_this.toMinify = props.minimization);
+        _this.assemblerName === 'enb' && (_this.toMinify = props.minimization);
 
         // Technologies
         var preprocessor = props.preprocessor,
             techs = props.techs;
 
-        techs = collector.addPreprocessor(techs, preprocessor);
+        techs = assembler.addPreprocessor(techs, preprocessor);
 
-        _this.collectorName === 'bem-tools' && (techs = collector.addIe(techs)); // 'bem-tools' --> 'ieN' ==> 'ie.css'
+        _this.assemblerName === 'bem-tools' && (techs = assembler.addIe(techs)); // 'bem-tools' --> 'ieN' ==> 'ie.css'
 
-        techs = collector.addTemplateEngine(techs, props.templateEngine); // bem-core' ==> 'bemhtml', 'bh'
+        techs = assembler.addTemplateEngine(techs, props.templateEngine); // bem-core' ==> 'bemhtml', 'bh'
 
         props.html && techs.push('html');
 
-        _this.technologies = collector.getTechnologies(configPath, techs, _this.toMinify);
+        _this.technologies = assembler.getTechnologies(configPath, techs, _this.toMinify);
 
         _this.isBemjson = techs.indexOf('bemjson.js') > -1;
 
@@ -291,13 +291,13 @@ BemGenerator.prototype.askFor = function askFor() {
 
         // Autoprefixer (will be added to the generated config when 'design' is 'true')
         // @TODO: create the separate question about autoprefixer
-        _this.browsers = collector.getBrowsers(configPath, _this.platforms.withoutPath);
+        _this.browsers = assembler.getBrowsers(configPath, _this.platforms.withoutPath);
 
         // Styles and scripts to 'bemjson.js'
-        var technologies = _this.collectorName === 'bem-tools' ? _this.technologies.inMake.techs : _this.technologies.inTargets;
+        var technologies = _this.assemblerName === 'bem-tools' ? _this.technologies.inMake.techs : _this.technologies.inTargets;
 
-        _this.styles = collector.getStyles(technologies);
-        _this.scripts = collector.getScripts(technologies);
+        _this.styles = assembler.getStyles(technologies);
+        _this.scripts = assembler.getScripts(technologies);
 
         cb();
     }
@@ -313,11 +313,11 @@ BemGenerator.prototype.app = function app() {
 
     var _this = this,
         platforms = _this.platforms.withoutPath,
-        root = path.join(_this.sourceRoot(), _this.collectorName), // path to the templates
+        root = path.join(_this.sourceRoot(), _this.assemblerName), // path to the templates
         files = _this.expandFiles('**', { dot: true, cwd: root });   // roots of the all files in the templates
 
     // Makes the necessary empty folders in the created project (only for 'ENB')
-    if (_this.collectorName === 'enb') {
+    if (_this.assemblerName === 'enb') {
         _this.mkdir(path.join(_this.projectName, 'common.blocks'));
         (platforms['touch-pad'] || platforms['touch-phone']) && _this.mkdir(path.join(_this.projectName, 'touch.blocks'));
 
@@ -402,9 +402,9 @@ BemGenerator.prototype.addPackages = function addPackages() {
     });
 
     // autoprefixer
-    _this.collectorName === 'bem-tools' &&
+    _this.assemblerName === 'bem-tools' &&
         this.hasPreprocessor && (deps['bem-tools-autoprefixer'] = getLibVersion('other', 'bem-tools-autoprefixer'));
-    _this.collectorName === 'enb' &&
+    _this.assemblerName === 'enb' &&
         _this.hasPreprocessor && (deps['enb-autoprefixer'] = getLibVersion('other', 'enb-autoprefixer'));
 
     fs.writeFileSync(packagePath, JSON.stringify(pack, null, '  ') + '\n');
