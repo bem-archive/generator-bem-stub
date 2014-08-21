@@ -50,12 +50,12 @@ describe('\'bem-tools\'', function () {
         bemtools.addPreprocessor(['bemjson.js'], 'stylus').must.eql(['bemjson.js', 'stylus', 'css']);
     });
 
-    it('must add \'pure css\'', function () {
+    it('must add \'css\'', function () {
 
         bemtools.addPreprocessor([], 'css').must.eql(['css']);
     });
 
-    it('must add \'pure css\' after technology \'bemjson.js\'', function () {
+    it('must add \'css\' after technology \'bemjson.js\'', function () {
 
         bemtools.addPreprocessor(['bemjson.js'], 'css').must.eql(['bemjson.js', 'css']);
     });
@@ -82,19 +82,19 @@ describe('\'bem-tools\'', function () {
         bemtools.addIe(techs).must.eql(output);
     });
 
-    it('must add template system \'bemhtml\' before technology \'node.js\'', function() {
+    it('must add template engine \'bemhtml\' before technology \'node.js\'', function() {
 
-        bemtools.addTemplateSystem(['css', 'node.js'], 'bemhtml').must.eql(['css', 'bemhtml', 'node.js']);
+        bemtools.addTemplateEngine(['css', 'node.js'], 'bemhtml').must.eql(['css', 'bemhtml', 'node.js']);
     });
 
-    it('must add template system \'bemhtml\' before technology \'browser.js+bemhtml\'', function() {
+    it('must add template engine \'bemhtml\' before technology \'browser.js+bemhtml\'', function() {
 
-        bemtools.addTemplateSystem(['css', 'browser.js+bemhtml'], 'bemhtml').must.eql(['css', 'bemhtml', 'browser.js+bemhtml']);
+        bemtools.addTemplateEngine(['css', 'browser.js+bemhtml'], 'bemhtml').must.eql(['css', 'bemhtml', 'browser.js+bemhtml']);
     });
 
-    it('must not add template system ', function() {
+    it('must not add template engine ', function() {
 
-        bemtools.addTemplateSystem([], 'my').must.eql([]);
+        bemtools.addTemplateEngine([], 'my').must.eql([]);
     });
 
     it('must get technology \'bemjson.js\'', function () {
@@ -286,14 +286,14 @@ describe('\'ENB\'', function () {
         enb.addPreprocessor([], undefined).must.eql(['stylus']);
     });
 
-    it('must add add template system', function () {
+    it('must add template engine', function () {
 
-        enb.addTemplateSystem(['css'], 'bh').must.eql(['css', 'bh']);
+        enb.addTemplateEngine(['css'], 'bh').must.eql(['css', 'bh']);
     });
 
-    it('must not add add template system', function () {
+    it('must not add template engine', function () {
 
-        enb.addTemplateSystem(['css'], 'my').must.eql(['css']);
+        enb.addTemplateEngine(['css'], 'my').must.eql(['css']);
     });
 
     it('must get technology \'bemjson.js\'', function () {
