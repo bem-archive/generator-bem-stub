@@ -39,11 +39,11 @@ BemGenerator.prototype.askFor = function askFor() {
     }
 
     /**
-     * Checks whether a given list of libs has 'bem-components' one
+     * Checks whether there is library 'bem-components' in the given libs
      * @param {Array} addLibraries
      * @returns {Boolean}
      */
-    function hasBemComponents(addLibraries) {
+    function isBemComponents(addLibraries) {
         for (var lib in addLibraries) {
             if (addLibraries[lib].name === 'bem-components') return true;
         }
@@ -125,7 +125,7 @@ BemGenerator.prototype.askFor = function askFor() {
         default: true,
         when: function(input) {     // 'bem-components' ==> 'design'
 
-            return hasBemComponents(input.addLibraries);
+            return isBemComponents(input.addLibraries);
         }
     }, {
         type: 'checkbox',
@@ -167,7 +167,7 @@ BemGenerator.prototype.askFor = function askFor() {
         },
         when: function(input) {    // 'bem-components' ==> 'stylus' as default
 
-            return !(hasBemComponents(input.addLibraries));
+            return !(isBemComponents(input.addLibraries));
         }
     }, {
         type: 'checkbox',
@@ -251,8 +251,7 @@ BemGenerator.prototype.askFor = function askFor() {
 
         _this.libs.unshift(props.baseLibrary);  // base lib on the top (for 'bem-tools' it is vital)
 
-
-        hasBemComponents(_this.libsToBowerDeps) ||
+        (_this.isBemComponents = isBemComponents(_this.libsToBowerDeps)) ||
             _this.libsToBowerDeps.unshift(props.baseLibrary); // 'bem-components' will automatically install 'bem-core'
 
         // Platforms
