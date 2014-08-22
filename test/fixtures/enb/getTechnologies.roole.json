@@ -2,7 +2,7 @@
   "inTechs": [
     "require('enb/techs/files')",
     "require('enb/techs/deps')",
-    "require('enb-roole/techs/css-roole'), { target: '?.noprefix.css' }"
+    "require('enb-roole/techs/css-roole')"
   ],
   "inTargets": ["css"],
   "inJSON": ["roole", "enb-roole"]

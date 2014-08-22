@@ -310,11 +310,25 @@ describe('\'ENB\'', function () {
         enb.getTechnologies(configPath, ['stylus'], []).must.eql(output);
     });
 
+    it('must get technology \'stylus\' + \'autoprefixer\'', function () {
+
+        var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.stylus+autoprefixer.json', 'utf-8'));
+
+        enb.getTechnologies(configPath, ['stylus'], [], true).must.eql(output);
+    });
+
     it('must get technology \'roole\'', function () {
 
         var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.roole.json', 'utf-8'));
 
         enb.getTechnologies(configPath, ['roole'], []).must.eql(output);
+    });
+
+    it('must get technology \'roole\' + \'autoprefixer\'', function () {
+
+        var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.roole+autoprefixer.json', 'utf-8'));
+
+        enb.getTechnologies(configPath, ['roole'], [], true).must.eql(output);
     });
 
     it('must get technology \'less\'', function () {
@@ -324,6 +338,13 @@ describe('\'ENB\'', function () {
         enb.getTechnologies(configPath, ['less'], []).must.eql(output);
     });
 
+    it('must get technology \'less\' + \'autoprefixer\'', function () {
+
+        var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.less+autoprefixer.json', 'utf-8'));
+
+        enb.getTechnologies(configPath, ['less'], [], true).must.eql(output);
+    });
+
     it('must get technology \'css\'', function () {
 
         var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.css.json', 'utf-8'));
@@ -331,11 +352,25 @@ describe('\'ENB\'', function () {
         enb.getTechnologies(configPath, ['css'], []).must.eql(output);
     });
 
+    it('must get technology \'css\' + \'autoprefixer\'', function () {
+
+        var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.css+autoprefixer.json', 'utf-8'));
+
+        enb.getTechnologies(configPath, ['css'], [], true).must.eql(output);
+    });
+
     it('must get minimized technology \'css\'', function () {
 
         var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.css.min.json', 'utf-8'));
 
         enb.getTechnologies(configPath, ['css'], ['css']).must.eql(output);
+    });
+
+    it('must get minimized technology \'css\' + \'autoprefixer\'', function () {
+
+        var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.css+autoprefixer.min.json', 'utf-8'));
+
+        enb.getTechnologies(configPath, ['css'], ['css'], true).must.eql(output);
     });
 
     it('must get technologies \'ieN.css\'', function () {
