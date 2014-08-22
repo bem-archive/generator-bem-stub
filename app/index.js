@@ -261,8 +261,11 @@ BemGenerator.prototype.askFor = function askFor() {
         _this.libs.unshift(props.baseLibrary);  // base lib on the top (for 'bem-tools' it is vital)
 
         var isComponents = false;
+
         (isComponents = isBemComponents(_this.libsToBowerDeps)) ||
             _this.libsToBowerDeps.unshift(props.baseLibrary); // 'bem-components' will automatically install 'bem-core'
+
+        var isAutoprefixer = props.autoprefixer || isComponents;
 
         // Platforms
         var platforms = assembler.getPlatforms(props.platforms, _this.libs, props.design);
@@ -287,7 +290,7 @@ BemGenerator.prototype.askFor = function askFor() {
 
         props.html && techs.push('html');
 
-        _this.technologies = assembler.getTechnologies(configPath, techs, _this.toMinify);
+        _this.technologies = assembler.getTechnologies(configPath, techs, _this.toMinify, isAutoprefixer);
 
         _this.isBemjson = techs.indexOf('bemjson.js') > -1;
 
@@ -298,7 +301,7 @@ BemGenerator.prototype.askFor = function askFor() {
         _this.design = props.design;
 
         // Autoprefixer
-        (_this.isAutoprefixer = props.autoprefixer || isComponents) &&
+        (_this.isAutoprefixer = isAutoprefixer) &&
             (_this.browsers = assembler.getBrowsers(configPath, _this.platforms.withoutPath));
 
         // Styles and scripts to 'bemjson.js'

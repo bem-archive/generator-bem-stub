@@ -94,7 +94,7 @@ function addTemplateEngine(techs, templateEngine) {
  * @param {Array} toMinify
  * @returns {Object}
  */
-function getTechnologies(configPath, techs, toMinify) {
+function getTechnologies(configPath, techs, toMinify, isAutoprefixer) {
 
     function getTechVal(tech) {
         return JSON.parse(fs.readFileSync(configPath, 'utf-8')).technologies.enb[tech];
@@ -113,7 +113,8 @@ function getTechnologies(configPath, techs, toMinify) {
         },
         inTechs = technologies.inTechs,
         inTargets = technologies.inTargets,
-        inJSON = technologies.inJSON;
+        inJSON = technologies.inJSON,
+        autoprefixerTarget = ', { target: \'?.noprefix.css\' }';
 
     // 'css' will be always added 'inTargets'
     inTargets.push(toMinify.indexOf('css') > -1 ? 'min.css' : 'css');
@@ -125,20 +126,24 @@ function getTechnologies(configPath, techs, toMinify) {
                 inTechs.push(getTechVal('bemjson.js'));
                 break;
 
+            case 'css':
+                inTechs.push(getTechVal('css') + (isAutoprefixer ? autoprefixerTarget : ''));
+                break;
+
             case 'stylus':
-                inTechs.push(getTechVal('stylus'));
+                inTechs.push(getTechVal('stylus') + (isAutoprefixer ? autoprefixerTarget : ''));
 
                 inJSON.push('enb-stylus');
                 break;
 
             case 'roole':
-                inTechs.push(getTechVal('roole'));
+                inTechs.push(getTechVal('roole') + (isAutoprefixer ? autoprefixerTarget : ''));
 
                 inJSON.push('roole', 'enb-roole');  // 'roole' ==> 'roole', 'enb-roole' in 'package.json'
                 break;
 
             case 'less':
-                inTechs.push(getTechVal('less'));
+                inTechs.push(getTechVal('less') + (isAutoprefixer ? autoprefixerTarget : ''));
 
                 inJSON.push('less');
                 break;
