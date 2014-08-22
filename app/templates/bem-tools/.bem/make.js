@@ -2,7 +2,7 @@
 
 // process.env.YENV = 'production';
 
-var PATH = require('path');<%= isPreprocessor ? "\n\nrequire(\'bem-tools-autoprefixer\').extendMake(MAKE);" : "" %>
+var PATH = require('path');<%= isAutoprefixer ? "\n\nrequire(\'bem-tools-autoprefixer\').extendMake(MAKE);" : "" %>
 
 MAKE.decl('Arch', {
 
@@ -90,13 +90,13 @@ MAKE.decl('BundleNode', {
         return levels
             .map(function(path) { return resolve(path); })
             .concat(resolve(PATH.dirname(this.getNodePrefix()), 'blocks'));
-    }<%= isPreprocessor ?
+    }<%= isAutoprefixer ?
 
         ",\n\n    'create-css-node' : function(tech, bundleNode, magicNode) {\n        var source = this.getBundlePath('" + preprocessor + "');\n        if(this.ctx.arch.hasNode(source)) {\n            return this.createAutoprefixerNode(tech, this.ctx.arch.getNode(source), bundleNode, magicNode);\n        }\n    }"
 
     : "" %>
 
-});<%= design ?
+});<%= isAutoprefixer ?
 
         "\n\nMAKE.decl('AutoprefixerNode', {\n\n    getPlatform : function() {\n        return this.output.split('.')[0];\n    },\n\n    getBrowsers : function() {\n        var platform = this.getPlatform();\n        switch(platform) {\n" +
 

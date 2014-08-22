@@ -167,7 +167,16 @@ BemGenerator.prototype.askFor = function askFor() {
         },
         when: function(input) {    // 'bem-components' ==> 'stylus' as default
 
-            return !(isBemComponents(input.addLibraries));
+            return !isBemComponents(input.addLibraries);
+        }
+    }, {
+        type: 'confirm',
+        name: 'autoprefixer',
+        message: 'Would you like to use \'autoprefixer\'?',
+        default: true,
+        when: function(input) {
+
+            return !isBemComponents(input.addLibraries);
         }
     }, {
         type: 'checkbox',
@@ -251,7 +260,8 @@ BemGenerator.prototype.askFor = function askFor() {
 
         _this.libs.unshift(props.baseLibrary);  // base lib on the top (for 'bem-tools' it is vital)
 
-        (_this.isBemComponents = isBemComponents(_this.libsToBowerDeps)) ||
+        var isComponents = false;
+        (isComponents = isBemComponents(_this.libsToBowerDeps)) ||
             _this.libsToBowerDeps.unshift(props.baseLibrary); // 'bem-components' will automatically install 'bem-core'
 
         // Platforms
@@ -282,15 +292,14 @@ BemGenerator.prototype.askFor = function askFor() {
         _this.isBemjson = techs.indexOf('bemjson.js') > -1;
 
         // Preprocessor
-        _this.isPreprocessor = preprocessor !== 'css';
-        _this.isPreprocessor && (_this.preprocessor = !preprocessor ? 'stylus' : preprocessor); // for 'bem-tools'
+        _this.preprocessor = !preprocessor ? 'stylus' : preprocessor;
 
         // Design
         _this.design = props.design;
 
-        // Autoprefixer (will be added to the generated config when 'design' is 'true')
-        // @TODO: create the separate question about autoprefixer
-        _this.browsers = assembler.getBrowsers(configPath, _this.platforms.withoutPath);
+        // Autoprefixer
+        (_this.isAutoprefixer = props.autoprefixer || isComponents) &&
+            (_this.browsers = assembler.getBrowsers(configPath, _this.platforms.withoutPath));
 
         // Styles and scripts to 'bemjson.js'
         var technologies = _this.assemblerName === 'bem-tools' ? _this.technologies.inMake.techs : _this.technologies.inTargets;
@@ -401,10 +410,13 @@ BemGenerator.prototype.addPackages = function addPackages() {
     });
 
     // autoprefixer
-    _this.assemblerName === 'bem-tools' &&
-        this.isPreprocessor && (deps['bem-tools-autoprefixer'] = getLibVersion('other', 'bem-tools-autoprefixer'));
-    _this.assemblerName === 'enb' &&
-        _this.isPreprocessor && (deps['enb-autoprefixer'] = getLibVersion('other', 'enb-autoprefixer'));
+    if (_this.isAutoprefixer) {
+        _this.assemblerName === 'bem-tools' &&
+            (deps['bem-tools-autoprefixer'] = getLibVersion('other', 'bem-tools-autoprefixer'));
+
+        _this.assemblerName === 'enb' &&
+            (deps['enb-autoprefixer'] = getLibVersion('other', 'enb-autoprefixer'));
+    }
 
     fs.writeFileSync(packagePath, JSON.stringify(pack, null, '  ') + '\n');
 };
