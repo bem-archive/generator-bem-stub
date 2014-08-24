@@ -35,9 +35,9 @@
     },
     "enb": {
       "bemjson.js"         : "require('enb/techs/bemdecl-from-bemjson')",
-      "roole"              : "require('enb-roole/techs/css-roole'), { target: '?.noprefix.css' }",
-      "less"               : "require('enb/techs/css-less'), { target: '?.noprefix.css' }",
-      "stylus"             : "require('enb-stylus/techs/css-stylus'), { target: '?.noprefix.css' }",
+      "roole"              : "require('enb-roole/techs/css-roole')",
+      "less"               : "require('enb/techs/css-less')",
+      "stylus"             : "require('enb-stylus/techs/css-stylus')",
       "css"                : "require('enb/techs/css')",
       "ie.css"             : "require('enb/techs/css-ie')",
       "ie6.css"            : "require('enb/techs/css-ie6')",
