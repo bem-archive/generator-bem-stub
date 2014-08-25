@@ -1,9 +1,8 @@
 'use strict';
 var fs = require('fs'),
-    _ = require('lodash');
-
-// technologies
-var commonTechs = [
+    _ = require('lodash'),
+    // technologies
+    commonTechs = [
         { name: 'BEMJSON', value: 'bemjson.js' },
         { value: 'ie.css' },
         { value: 'ie6.css' },
@@ -47,17 +46,18 @@ function getPlatforms(pls, libs, design) {
             withoutPath: {}
         };
 
-    pls.map(function(pl) {
+    pls.map(function (pl) {
         var platform = pl[pl.length - 1];
 
         platforms.withPath[platform] = [];
         platforms.withoutPath[platform] = pl;
 
-        libs.map(function(lib) {
-            pl.map(function(level) {
+        libs.map(function (lib) {
+            pl.map(function (level) {
                 platforms.withPath[platform].push(lib.name + '/' + level + '.blocks');
 
-                design && lib.name === 'bem-components' && platforms.withPath[platform].push(lib.name + '/design/' + level + '.blocks');
+                design && lib.name === 'bem-components' &&
+                    platforms.withPath[platform].push(lib.name + '/design/' + level + '.blocks');
             });
         });
     });
@@ -74,8 +74,7 @@ function getPlatforms(pls, libs, design) {
 function addPreprocessor(techs, preprocessor) {
     if (preprocessor === 'css') {
         techs.splice(techs.indexOf('bemjson.js') + 1, 0, 'css');
-    }
-    else {  // 'bem-core' --> 'bem-components' ==> 'preprocessor === undefined' ==> 'stylus'
+    } else {  // 'bem-core' --> 'bem-components' ==> 'preprocessor === undefined' ==> 'stylus'
         techs.splice(techs.indexOf('bemjson.js') + 1, 0, preprocessor ? preprocessor : 'stylus', 'css');
     }
 
@@ -88,7 +87,7 @@ function addPreprocessor(techs, preprocessor) {
  * @returns {Array}
  */
 function addIe(techs) {
-    if (techs.indexOf('ie.css') > -1) return techs;
+    if (techs.indexOf('ie.css') > -1) { return techs; }
 
     var ie = /ie[0-9]{1,2}\.css/.exec(techs);
 
@@ -105,13 +104,16 @@ function addIe(techs) {
  * @returns {Array}
  */
 function addTemplateEngine(techs, templateEngine) {
-    if (templateEngine === 'my') return techs;
+    if (templateEngine === 'my') { return techs; }
 
-    var _scripts = scripts.coreWithoutLocal;
+    var _scripts = scripts.coreWithoutLocal,
+        index = -1;
 
     for (var i in _scripts) {
-        var index = techs.indexOf(_scripts[i].value);
-        if (index > -1) break;
+        if (_scripts.hasOwnProperty(i)) {
+            index = techs.indexOf(_scripts[i].value);
+            if (index > -1) { break; }
+        }
     }
 
     index > -1 ? techs.splice(index, 0, templateEngine) : techs.push(templateEngine);
@@ -126,12 +128,10 @@ function addTemplateEngine(techs, templateEngine) {
  * @returns {Object}
  */
 function getTechnologies(configPath, techs) {
-
     /*
         for example, returns ==> bemdecl.js'         : 'v2/bemdecl.js'
     */
     function getTechDecl(tech) {
-
         function getTechVal(tech) {
             var _tech = JSON.parse(fs.readFileSync(configPath, 'utf-8')).technologies['bem-tools'][tech];
 
@@ -172,12 +172,11 @@ function getTechnologies(configPath, techs) {
         inBlocks = technologies.inBlocks,
         inBundles = technologies.inBundles,
         inMake = technologies.inMake,
-        inJSON = technologies.inJSON;
+        inJSON = technologies.inJSON,
+        hasPreprocessor = false;
 
-    var hasPreprocessor = false;
-    techs.map(function(tech) {
-        switch(tech) {
-
+    techs.map(function (tech) {
+        switch (tech) {
             case 'bemjson.js':  // puts 'bemjson.js' on the top (it always goes the first in technologies)
                 inMake.techs.unshift('bemjson.js');
                 break;
@@ -234,7 +233,6 @@ function getTechnologies(configPath, techs) {
 
                 inMake.techs.push(tech);
         }
-
     });
 
     if (!hasPreprocessor) {
@@ -259,7 +257,7 @@ function getTechnologies(configPath, techs) {
 function getBrowsers(configPath, platforms) {
     var browsers = {};
 
-    Object.keys(platforms).forEach(function(platform) {
+    Object.keys(platforms).forEach(function (platform) {
         browsers[platform] = JSON.parse(fs.readFileSync(configPath, 'utf-8')).browsers[platform];
     });
 
@@ -288,12 +286,12 @@ function getBrowsers(configPath, platforms) {
  */
 function getStyles(techs) {
     var styles = {
-        css: [{ elem: 'css', url: 'css' }],
-        ies: []
-    };
+            css: [{ elem: 'css', url: 'css' }],
+            ies: []
+        },
+        ies = ['ie.css', 'ie6.css', 'ie7.css', 'ie8.css', 'ie9.css'];
 
-    var ies = ['ie.css', 'ie6.css', 'ie7.css', 'ie8.css', 'ie9.css'];
-    ies.forEach(function(ie) {
+    ies.forEach(function (ie) {
         var isIE = techs.indexOf(ie) > -1;
         isIE && styles.ies.push({
             elem: 'css',
