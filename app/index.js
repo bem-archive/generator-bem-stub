@@ -367,7 +367,7 @@ BemGenerator.prototype.app = function app() {
         if (f === path.join('blocks', '.bem', 'level.js')) {
             dirnames = [];
 
-            dirnames.push(path.join('common.blocks', 'bem'));
+            dirnames.push(path.join('common.blocks', '.bem'));
             (platforms['touch-pad'] || platforms['touch-phone']) && dirnames.push(path.join('touch.blocks', '.bem'));
 
             dirnames = dirnames.concat(formDirnames('.blocks', '.bem'));
