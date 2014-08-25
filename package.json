@@ -1,7 +1,7 @@
 {
   "name": "generator-bem-stub",
   "version": "0.0.3",
-  "description": "A generator of BEM-projects",
+  "description": "A generator of BEM projects",
   "keywords": [
     "yeoman-generator",
     "yeoman",
@@ -10,7 +10,7 @@
     "bem",
     "enb"
   ],
-  "homepage": "https://github.com/bem/generator-bem-stub",
+  "homepage": "http://bem.info/tools/bem/bem-stub",
   "bugs": "https://github.com/bem/generator-bem-stub/issues",
   "author": {
     "name": "Evgeniy Gavryushin",
@@ -28,13 +28,13 @@
     "cover": "istanbul cover _mocha -- test"
   },
   "dependencies": {
-    "yeoman-generator": "~0.14.0",
-    "lodash": "2.4.1",
-    "istanbul": "0.3.0"
+    "yeoman-generator": "0.16.0",
+    "lodash": "2.4.1"
   },
   "devDependencies": {
-    "mocha": "1.18.2",
-    "must": "0.11.0"
+    "mocha": "1.21.4",
+    "must": "0.12.0",
+    "istanbul": "0.3.0"
   },
   "peerDependencies": {
     "yo": ">=1.0.0"
