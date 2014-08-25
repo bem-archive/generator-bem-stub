@@ -6,38 +6,35 @@ var PATH = require('path');<%= isAutoprefixer ? "\n\nrequire(\'bem-tools-autopre
 
 MAKE.decl('Arch', {
 
-    blocksLevelsRegexp : /^.+?\.blocks/,
-    bundlesLevelsRegexp : /^.+?\.bundles$/
+    blocksLevelsRegexp: /^.+?\.blocks/,
+    bundlesLevelsRegexp: /^.+?\.bundles$/
 
 });
 
-
 MAKE.decl('BundleNode', {
 
-    getTechs: function() {
-
+    getTechs: function () {
         return [
-<%= _.map(technologies.inMake.techs, function(technology) { return "            '" + technology + "'" }).join(',\n') %>
+<%= _.map(technologies.inMake.techs, function (technology) { return "            '" + technology + "'" }).join(',\n') %>
         ];
-
     },
 
-    getForkedTechs : function() {
-        return this.__base().concat([<%= _.map(technologies.inMake.forked, function(tech) { return "'" + tech + "'" }).join(', ') %>]);
+    getForkedTechs: function () {
+        return this.__base().concat([<%= _.map(technologies.inMake.forked, function (tech) { return "'" + tech + "'" }).join(', ') %>]);
     },
 
-    getLevelsMap : function() {
+    getLevelsMap: function () {
         return {<%= (platforms.withoutPath['desktop'] ?
 
                         "\n            desktop: [\n" +
 
-                        _.map(platforms.withPath['desktop'], function(platform) {
+                        _.map(platforms.withPath['desktop'], function (platform) {
                             return "                'libs/" + platform + "',";
                         }).join('\n') +
 
                         "\n" +
 
-                        _.map(platforms.withoutPath['desktop'], function(platform) {
+                        _.map(platforms.withoutPath['desktop'], function (platform) {
                             return "                '" + platform + ".blocks'";
                         }).join(',\n') +
 
@@ -49,13 +46,13 @@ MAKE.decl('BundleNode', {
 
                         "            'touch-pad': [\n" +
 
-                        _.map(platforms.withPath['touch-pad'], function(platform) {
+                        _.map(platforms.withPath['touch-pad'], function (platform) {
                             return "                'libs/" + platform + "',";
                         }).join('\n') +
 
                         "\n" +
 
-                        _.map(platforms.withoutPath['touch-pad'], function(platform) {
+                        _.map(platforms.withoutPath['touch-pad'], function (platform) {
                             return "                '" + platform + ".blocks'";
                         }).join(',\n') +
 
@@ -67,13 +64,13 @@ MAKE.decl('BundleNode', {
 
                         "            'touch-phone': [\n" +
 
-                        _.map(platforms.withPath['touch-phone'], function(platform) {
+                        _.map(platforms.withPath['touch-phone'], function (platform) {
                             return "                'libs/" + platform + "',";
                         }).join('\n') +
 
                         "\n" +
 
-                        _.map(platforms.withoutPath['touch-phone'], function(platform) {
+                        _.map(platforms.withoutPath['touch-phone'], function (platform) {
                             return "                '" + platform + ".blocks'";
                         }).join(',\n') +
 
@@ -82,54 +79,54 @@ MAKE.decl('BundleNode', {
         };
     },
 
-    getLevels : function() {
+    getLevels: function () {
         var resolve = PATH.resolve.bind(PATH, this.root),
             buildLevel = this.getLevelPath().split('.')[0],
             levels = this.getLevelsMap()[buildLevel] || [];
 
         return levels
-            .map(function(path) { return resolve(path); })
+            .map(function (path) { return resolve(path); })
             .concat(resolve(PATH.dirname(this.getNodePrefix()), 'blocks'));
     }<%= isAutoprefixer ?
 
-        ",\n\n    'create-css-node' : function(tech, bundleNode, magicNode) {\n        var source = this.getBundlePath('" + preprocessor + "');\n        if(this.ctx.arch.hasNode(source)) {\n            return this.createAutoprefixerNode(tech, this.ctx.arch.getNode(source), bundleNode, magicNode);\n        }\n    }"
+        ",\n\n    'create-css-node': function (tech, bundleNode, magicNode) {\n        var source = this.getBundlePath('" + preprocessor + "');\n        if (this.ctx.arch.hasNode(source)) {\n            return this.createAutoprefixerNode(tech, this.ctx.arch.getNode(source), bundleNode, magicNode);\n        }\n    }"
 
     : "" %>
 
 });<%= isAutoprefixer ?
 
-        "\n\nMAKE.decl('AutoprefixerNode', {\n\n    getPlatform : function() {\n        return this.output.split('.')[0];\n    },\n\n    getBrowsers : function() {\n        var platform = this.getPlatform();\n        switch(platform) {\n" +
+        "\n\nMAKE.decl('AutoprefixerNode', {\n\n    getPlatform: function () {\n        return this.output.split('.')[0];\n    },\n\n    getBrowsers: function () {\n        var platform = this.getPlatform();\n        switch (platform) {\n" +
 
         (platforms.withoutPath['desktop'] ?
 
-            "\n        case 'desktop':\n            return [\n" +
+            "            case 'desktop':\n                return [\n" +
 
-            _.map(browsers['desktop'], function(browser) {
-                return "                '" + browser + "'";
+            _.map(browsers['desktop'], function (browser) {
+                return "                    '" + browser + "'";
             }).join(',\n') +
 
-            "\n            ];\n" : "") +
+            "\n                ];\n" : "") +
 
         (platforms.withoutPath['touch-pad'] ?
 
-            "\n        case 'touch-pad':\n            return [\n" +
+            "\n            case 'touch-pad':\n                return [\n" +
 
-            _.map(browsers['touch-pad'], function(browser) {
-                return "                '" + browser + "'";
+            _.map(browsers['touch-pad'], function (browser) {
+                return "                    '" + browser + "'";
             }).join(',\n') +
 
-            "\n            ];\n" : "") +
+            "\n                ];\n" : "") +
 
         (platforms.withoutPath['touch-phone'] ?
 
-            "\n        case 'touch-phone':\n            return [\n" +
+            "\n            case 'touch-phone':\n                return [\n" +
 
-            _.map(browsers['touch-phone'], function(browser) {
-                return "                '" + browser + "'";
+            _.map(browsers['touch-phone'], function (browser) {
+                return "                    '" + browser + "'";
             }).join(',\n') +
 
-            "\n            ];\n" : "") +
+            "\n                ];\n" : "") +
 
-        "\n        }\n\n        return this.__base();\n    }\n\n});"
+        "        }\n\n        return this.__base();\n    }\n\n});"
 
     : "" %>

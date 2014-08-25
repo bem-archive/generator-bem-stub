@@ -22,11 +22,6 @@
     "type": "git",
     "url": "git://github.com/bem/generator-bem-stub.git"
   },
-  "scripts": {
-    "test": "npm run func-test && npm run cover",
-    "func-test": "mocha test",
-    "cover": "istanbul cover _mocha -- test"
-  },
   "dependencies": {
     "yeoman-generator": "0.16.0",
     "lodash": "2.4.1"
@@ -34,10 +29,18 @@
   "devDependencies": {
     "mocha": "1.21.4",
     "must": "0.12.0",
-    "istanbul": "0.3.0"
+    "istanbul": "0.3.0",
+    "jshint": "2.5.3",
+    "jscs": "1.5.9"
   },
   "peerDependencies": {
     "yo": ">=1.0.0"
+  },
+  "scripts": {
+    "test": "npm run lint && npm run func-test && npm run cover",
+    "lint": "jshint . && jscs -c .jscs.js .",
+    "func-test": "mocha test",
+    "cover": "istanbul cover _mocha -- test"
   },
   "engines": {
     "node": ">=0.10.0",
