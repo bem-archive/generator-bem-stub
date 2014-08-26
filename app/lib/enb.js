@@ -148,11 +148,11 @@ function getTechnologies(configPath, techs, toMinify, isAutoprefixer) {
                 break;
 
             case 'browser.js':
-                inTechs.push(getTechVal('browser.js'));
+                inTechs.push(getTechVal('pre-browser.js'), getTechVal('browser.js'));
 
                 inTargets.push(toMinify.indexOf('js') > -1 ? 'min.js' : 'js');  // 'bem-core' --> 'browser.js' ==> 'js'
 
-                inJSON.push('enb-diverse-js');
+                inJSON.push('enb-diverse-js', 'enb-modules');
                 break;
 
             case 'bemhtml':   // 'bem-core' ==> 'bemhtml-old' from package 'enb-bemxjst'
