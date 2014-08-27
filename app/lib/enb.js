@@ -34,10 +34,10 @@ var fs = require('fs'),
  *
  * @param {Array of arrays} pls
  * @param {Array of objects} libs
- * @param {Boolean} design
+ * @param {Boolean} isDesign
  * @returns {Object}
  */
-function getPlatforms(pls, libs, design) {
+function getPlatforms(pls, libs, isDesign) {
     var platforms = {
             withPath: {},
             withoutPath: {}
@@ -54,7 +54,7 @@ function getPlatforms(pls, libs, design) {
                 level.indexOf('touch-') === -1 && // 'touch-pad' and 'touch-phone' can not be added
                     platforms.withPath[platform].push(lib.name + '/' + level + '.blocks');
 
-                design && lib.name === 'bem-components' &&
+                isDesign && lib.name === 'bem-components' &&
                     platforms.withPath[platform].push(lib.name + '/design/' + level + '.blocks');
             });
         });
@@ -227,13 +227,13 @@ function getBrowsers(configPath, platforms) {
  *                              }],
  *                              ies: [{
  *                                  elem: 'css',
- *                                  url: 'ie.css',
+ *                                  url: 'ie.css'
  *                              }, {
  *                                  elem: 'css',
- *                                  url: 'ie6.css',
+ *                                  url: 'ie6.css'
  *                              }, {
  *                                  elem: 'css',
- *                                  url: 'min.ie9.css',
+ *                                  url: 'min.ie9.css'
  *                              }]
  *                          }
  *

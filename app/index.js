@@ -120,7 +120,7 @@ BemGenerator.prototype.askFor = function askFor() {
         }
     }, {
         type: 'confirm',
-        name: 'design',
+        name: 'isDesign',
         message: 'Use design from library \'bem-components\'?',
         'default': true,
         when: function (input) {     // 'bem-components' ==> 'design'
@@ -168,7 +168,7 @@ BemGenerator.prototype.askFor = function askFor() {
         }
     }, {
         type: 'confirm',
-        name: 'autoprefixer',
+        name: 'isAutoprefixer',
         message: 'Would you like to use \'autoprefixer\'?',
         'default': true,
         when: function (input) {
@@ -204,7 +204,7 @@ BemGenerator.prototype.askFor = function askFor() {
         }
     }, {
         type: 'confirm',
-        name: 'html',
+        name: 'isHTML',
         message: 'Build static HTML?',
         'default': true,
         when: function (input) { // 'BEMJSON' --> 'bemhtml' || 'bh' ==> 'html'
@@ -261,11 +261,11 @@ BemGenerator.prototype.askFor = function askFor() {
         (isComponents = isBemComponents(_this.libsToBowerDeps)) ||
             _this.libsToBowerDeps.unshift(props.baseLibrary); // 'bem-components' will automatically install 'bem-core'
 
-        var isAutoprefixer = props.autoprefixer || isComponents;
+        var isAutoprefixer = props.isAutoprefixer || isComponents;
 
         // Platforms
         _this.platforms = {};
-        var platforms = assembler.getPlatforms(props.platforms, _this.libs, props.design);
+        var platforms = assembler.getPlatforms(props.platforms, _this.libs, props.isDesign);
 
         _this.platforms.withPath = platforms.withPath; // 'bem-core/common.blocks'
         _this.platforms.withoutPath = platforms.withoutPath; // 'common'
@@ -283,7 +283,7 @@ BemGenerator.prototype.askFor = function askFor() {
 
         techs = assembler.addTemplateEngine(techs, props.templateEngine); // bem-core' ==> 'bemhtml', 'bh'
 
-        props.html && techs.push('html');
+        props.isHtml && techs.push('html');
 
         _this.technologies = assembler.getTechnologies(configPath, techs, _this.toMinify, isAutoprefixer);
 
@@ -291,9 +291,6 @@ BemGenerator.prototype.askFor = function askFor() {
 
         // Preprocessor
         _this.preprocessor = !preprocessor ? 'stylus' : preprocessor;
-
-        // Design
-        _this.design = props.design;
 
         // Autoprefixer
         (_this.isAutoprefixer = isAutoprefixer) &&
