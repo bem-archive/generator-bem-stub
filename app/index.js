@@ -30,7 +30,7 @@ util.inherits(BemGenerator, yeoman.generators.Base);
 BemGenerator.prototype.askFor = function askFor() {
     var cb = this.async(),
     _this = this,
-    configPath = path.join(_this.sourceRoot(), 'config.json'); // app/templates/config.json
+    configPath = path.join(_this.sourceRoot(), '..', 'config', 'config.json'); // app/config/config.json
 
     /**
      * Returns a version of a library from 'config.json'
@@ -95,7 +95,7 @@ BemGenerator.prototype.askFor = function askFor() {
                 name: 'bem-core',
                 value: {
                     name: 'bem-core',
-                    version: getLibVersion('core', 'bem-core')
+                    version: getLibVersion('libs', 'bem-core')
                 }
             });
 
@@ -112,7 +112,7 @@ BemGenerator.prototype.askFor = function askFor() {
                 name: 'bem-components',
                 value: {
                     name: 'bem-components',
-                    version: getLibVersion('core', 'bem-components')
+                    version: getLibVersion('libs', 'bem-components')
                 }
             });
 
@@ -395,7 +395,7 @@ BemGenerator.prototype.addPackages = function addPackages() {
     }
 
     var _this = this,
-        configPath = path.join(_this.sourceRoot(), 'config.json'), // app/templates/config.json
+        configPath = path.join(_this.sourceRoot(), '..', 'config', 'config.json'), // app/config/config.json
         // path to 'package.json' in the created project
         packagePath = path.join(_this.destinationRoot(), _this.projectName, 'package.json'),
         pack = JSON.parse(_this.readFileAsString(packagePath)),
@@ -403,16 +403,16 @@ BemGenerator.prototype.addPackages = function addPackages() {
         inJSON = _this.technologies.inJSON;
 
     inJSON.map(function (_package) {
-        deps[_package] = getLibVersion('other', _package);
+        deps[_package] = getLibVersion('deps', _package);
     });
 
     // autoprefixer
     if (_this.isAutoprefixer) {
         _this.assemblerName === 'bem-tools' &&
-            (deps['bem-tools-autoprefixer'] = getLibVersion('other', 'bem-tools-autoprefixer'));
+            (deps['bem-tools-autoprefixer'] = getLibVersion('deps', 'bem-tools-autoprefixer'));
 
         _this.assemblerName === 'enb' &&
-            (deps['enb-autoprefixer'] = getLibVersion('other', 'enb-autoprefixer'));
+            (deps['enb-autoprefixer'] = getLibVersion('deps', 'enb-autoprefixer'));
     }
 
     fs.writeFileSync(packagePath, JSON.stringify(pack, null, '  ') + '\n');
