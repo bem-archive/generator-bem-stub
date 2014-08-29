@@ -1,7 +1,7 @@
 var fs = require('fs'),
     bemtools = require('../app/lib/bem-tools'),
     enb = require('../app/lib/enb'),
-    configPath = 'app/templates/config.json';
+    configPath = 'app/config/config.json';
 
 // bem-tools
 // --------------------------------------

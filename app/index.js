@@ -30,7 +30,7 @@ util.inherits(BemGenerator, yeoman.generators.Base);
 BemGenerator.prototype.askFor = function askFor() {
     var cb = this.async(),
     _this = this,
-    configPath = path.join(_this.sourceRoot(), 'config.json'); // app/templates/config.json
+    configPath = path.join(_this.sourceRoot(), '..', 'config', 'config.json'); // app/config/config.json
 
     /**
      * Returns a version of a library from 'config.json'
@@ -95,7 +95,7 @@ BemGenerator.prototype.askFor = function askFor() {
                 name: 'bem-core',
                 value: {
                     name: 'bem-core',
-                    version: getLibVersion('core', 'bem-core')
+                    version: getLibVersion('libs', 'bem-core')
                 }
             });
 
@@ -112,7 +112,7 @@ BemGenerator.prototype.askFor = function askFor() {
                 name: 'bem-components',
                 value: {
                     name: 'bem-components',
-                    version: getLibVersion('core', 'bem-components')
+                    version: getLibVersion('libs', 'bem-components')
                 }
             });
 
@@ -120,7 +120,7 @@ BemGenerator.prototype.askFor = function askFor() {
         }
     }, {
         type: 'confirm',
-        name: 'design',
+        name: 'isDesign',
         message: 'Use design from library \'bem-components\'?',
         'default': true,
         when: function (input) {     // 'bem-components' ==> 'design'
@@ -168,7 +168,7 @@ BemGenerator.prototype.askFor = function askFor() {
         }
     }, {
         type: 'confirm',
-        name: 'autoprefixer',
+        name: 'isAutoprefixer',
         message: 'Would you like to use \'autoprefixer\'?',
         'default': true,
         when: function (input) {
@@ -204,7 +204,7 @@ BemGenerator.prototype.askFor = function askFor() {
         }
     }, {
         type: 'confirm',
-        name: 'html',
+        name: 'isHTML',
         message: 'Build static HTML?',
         'default': true,
         when: function (input) { // 'BEMJSON' --> 'bemhtml' || 'bh' ==> 'html'
@@ -261,11 +261,11 @@ BemGenerator.prototype.askFor = function askFor() {
         (isComponents = isBemComponents(_this.libsToBowerDeps)) ||
             _this.libsToBowerDeps.unshift(props.baseLibrary); // 'bem-components' will automatically install 'bem-core'
 
-        var isAutoprefixer = props.autoprefixer || isComponents;
+        var isAutoprefixer = props.isAutoprefixer || isComponents;
 
         // Platforms
         _this.platforms = {};
-        var platforms = assembler.getPlatforms(props.platforms, _this.libs, props.design);
+        var platforms = assembler.getPlatforms(props.platforms, _this.libs, props.isDesign);
 
         _this.platforms.withPath = platforms.withPath; // 'bem-core/common.blocks'
         _this.platforms.withoutPath = platforms.withoutPath; // 'common'
@@ -283,7 +283,7 @@ BemGenerator.prototype.askFor = function askFor() {
 
         techs = assembler.addTemplateEngine(techs, props.templateEngine); // bem-core' ==> 'bemhtml', 'bh'
 
-        props.html && techs.push('html');
+        props.isHtml && techs.push('html');
 
         _this.technologies = assembler.getTechnologies(configPath, techs, _this.toMinify, isAutoprefixer);
 
@@ -291,9 +291,6 @@ BemGenerator.prototype.askFor = function askFor() {
 
         // Preprocessor
         _this.preprocessor = !preprocessor ? 'stylus' : preprocessor;
-
-        // Design
-        _this.design = props.design;
 
         // Autoprefixer
         (_this.isAutoprefixer = isAutoprefixer) &&
@@ -398,7 +395,7 @@ BemGenerator.prototype.addPackages = function addPackages() {
     }
 
     var _this = this,
-        configPath = path.join(_this.sourceRoot(), 'config.json'), // app/templates/config.json
+        configPath = path.join(_this.sourceRoot(), '..', 'config', 'config.json'), // app/config/config.json
         // path to 'package.json' in the created project
         packagePath = path.join(_this.destinationRoot(), _this.projectName, 'package.json'),
         pack = JSON.parse(_this.readFileAsString(packagePath)),
@@ -406,16 +403,16 @@ BemGenerator.prototype.addPackages = function addPackages() {
         inJSON = _this.technologies.inJSON;
 
     inJSON.map(function (_package) {
-        deps[_package] = getLibVersion('other', _package);
+        deps[_package] = getLibVersion('deps', _package);
     });
 
     // autoprefixer
     if (_this.isAutoprefixer) {
         _this.assemblerName === 'bem-tools' &&
-            (deps['bem-tools-autoprefixer'] = getLibVersion('other', 'bem-tools-autoprefixer'));
+            (deps['bem-tools-autoprefixer'] = getLibVersion('deps', 'bem-tools-autoprefixer'));
 
         _this.assemblerName === 'enb' &&
-            (deps['enb-autoprefixer'] = getLibVersion('other', 'enb-autoprefixer'));
+            (deps['enb-autoprefixer'] = getLibVersion('deps', 'enb-autoprefixer'));
     }
 
     fs.writeFileSync(packagePath, JSON.stringify(pack, null, '  ') + '\n');
