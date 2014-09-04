@@ -169,7 +169,7 @@ BemGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'confirm',
         name: 'isAutoprefixer',
-        message: 'Would you like to use \'autoprefixer\'?',
+        message: 'Would you like to use \'Autoprefixer\'?',
         'default': true,
         when: function (input) {
             return !isBemComponents(input.addLibraries);
