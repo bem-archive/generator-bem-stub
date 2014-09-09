@@ -204,7 +204,7 @@ BemGenerator.prototype.askFor = function askFor() {
         }
     }, {
         type: 'confirm',
-        name: 'isHTML',
+        name: 'isHtml',
         message: 'Build static HTML?',
         'default': true,
         when: function (input) { // 'BEMJSON' --> 'bemhtml' || 'bh' ==> 'html'
