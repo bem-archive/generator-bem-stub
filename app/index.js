@@ -9,7 +9,7 @@ BemGenerator = module.exports = function BemGenerator() {
     yeoman.generators.Base.apply(this, arguments);
 
     this.option('skip-install', {
-        desc: 'Skip the install of dependencies and libraries after generation of the project',
+        desc: 'Skip the installation of dependencies and libraries after generating the project',
         type: Boolean,
         required: 'false'
     });
