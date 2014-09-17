@@ -9,7 +9,7 @@ BemGenerator = module.exports = function BemGenerator() {
     yeoman.generators.Base.apply(this, arguments);
 
     this.option('skip-install', {
-        desc: 'Skip the installation of dependencies and libraries after generating the project',
+        desc: 'Skip the installation of dependencies and libraries after generation of the project',
         type: Boolean,
         required: 'false'
     });
@@ -59,7 +59,7 @@ BemGenerator.prototype.askFor = function askFor() {
     var prompts = [{
         type: 'input',
         name: 'projectName',
-        message: 'Enter your project\'s name',
+        message: 'Enter your project name:',
         validate: function (input) {
             return !input.match(/[^0-9a-zA-Z._-]/g) ? true : 'Please enter a valid name';
         },
@@ -67,17 +67,17 @@ BemGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'input',
         name: 'author',
-        message: 'Enter a name of project\'s owner',
+        message: 'Enter a name of project owner:',
         'default': _this.user.git.username || 'Ivan Ivanov'
     }, {
         type: 'input',
         name: 'email',
-        message: 'Enter an email of project\'s owner',
+        message: 'Enter an email of project owner:',
         'default': _this.user.git.email || 'ivan@yandex.com'
     }, {
         type: 'list',
         name: 'assembler',
-        message: 'Choose a toolkit to build the project',
+        message: 'Choose a toolkit to build the project:',
         choices: [{
             value: 'bem-tools'
         }, {
@@ -87,7 +87,7 @@ BemGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'list',
         name: 'baseLibrary',
-        message: 'Choose a base library',
+        message: 'Choose a base library:',
         choices: function () {
             var choices = [];
 
@@ -104,7 +104,7 @@ BemGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'checkbox',
         name: 'addLibraries',
-        message: 'Specify additional libraries if needed',
+        message: 'Specify additional libraries if needed:',
         choices: function () {  // 'bem-core' ==> 'bem-components'
             var choices = [];
 
@@ -121,7 +121,7 @@ BemGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'confirm',
         name: 'isDesign',
-        message: 'Do you want a design of \'bem-components\' library to be used by default?',
+        message: 'Do you want to use a design of \'bem-components\' library?',
         'default': true,
         when: function (input) {     // 'bem-components' ==> 'design'
             return isBemComponents(input.addLibraries);
@@ -129,7 +129,7 @@ BemGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'checkbox',
         name: 'platforms',
-        message: 'Choose target platforms',
+        message: 'Choose target platforms:',
         choices: [{
             name: 'desktop',
             value: ['common', 'desktop']
@@ -146,7 +146,7 @@ BemGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'list',
         name: 'preprocessor',
-        message: 'Choose CSS preprocessor',
+        message: 'Choose CSS preprocessor:',
         choices: function () {
             // returns the list of possible preprocessors to choose in dependence of the previous answers
             return [{
@@ -177,7 +177,7 @@ BemGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'checkbox',
         name: 'techs',
-        message: 'Choose technologies that will be used',
+        message: 'Choose technologies to be used in the project:',
         choices: function (input) {
             // returns the list of possible technologies to choose in dependence of the previous answers
             var assemblerName = input.assembler === 'bem-tools' ? 'bem-tools' : 'enb',
@@ -188,7 +188,7 @@ BemGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'list',
         name: 'templateEngine',
-        message: 'Choose a templating engine',
+        message: 'Choose a template engine:',
         choices: function (input) {
             var choices = [{
                 name: 'BEMHTML',
@@ -213,7 +213,7 @@ BemGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'checkbox',
         name: 'minimization',
-        message: 'Choose types of files which will be minimized',
+        message: 'Choose types of files to be minimized:',
         choices: function (input) {
             var toMinimize = [{ value: 'css' }];
 
