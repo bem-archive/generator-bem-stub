@@ -9,6 +9,9 @@
     "libs"
   ],
   "dependencies": {
-<%= _.map(libsToBowerDeps, function(lib) { return '    "' + lib.name + '": "' + lib.version + '"'}).join(',\n') %>
+<%= _.map(libs, function(lib) { return '    "' + lib.name + '": "' + lib.version + '"'}).join(',\n') %>
+  },
+  "resolutions": {
+    <%= '"' + baseLib.name + '": "' + baseLib.version + '"' %>
   }
 }

@@ -67,12 +67,12 @@ BemGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'input',
         name: 'author',
-        message: 'Enter a name of project owner:',
+        message: 'Enter a name of the project owner:',
         'default': _this.user.git.username || 'Ivan Ivanov'
     }, {
         type: 'input',
         name: 'email',
-        message: 'Enter an email of project owner:',
+        message: 'Enter an email of the project owner:',
         'default': _this.user.git.email || 'ivan@yandex.com'
     }, {
         type: 'list',
@@ -121,7 +121,7 @@ BemGenerator.prototype.askFor = function askFor() {
     }, {
         type: 'confirm',
         name: 'isDesign',
-        message: 'Do you want to use a design of \'bem-components\' library?',
+        message: 'Do you want to use design of \'bem-components\' library?',
         'default': true,
         when: function (input) {     // 'bem-components' ==> 'design'
             return isBemComponents(input.addLibraries);
@@ -249,19 +249,10 @@ BemGenerator.prototype.askFor = function askFor() {
         // Libraries
         _this.libs = props.addLibraries;
 
-        _this.libsToBowerDeps = [];     // to 'bower.json'
-        props.addLibraries.forEach(function (elem) {
-            _this.libsToBowerDeps.push(elem);
-        });
-
         _this.libs.unshift(props.baseLibrary);  // base lib on the top (for 'bem-tools' it is vital)
+        _this.baseLib = props.baseLibrary;
 
-        var isComponents = false;
-
-        (isComponents = isBemComponents(_this.libsToBowerDeps)) ||
-            _this.libsToBowerDeps.unshift(props.baseLibrary); // 'bem-components' will automatically install 'bem-core'
-
-        var isAutoprefixer = props.isAutoprefixer || isComponents;
+        var isAutoprefixer = props.isAutoprefixer || isBemComponents(_this.libs);
 
         // Platforms
         _this.platforms = {};
