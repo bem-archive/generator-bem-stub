@@ -83,7 +83,3 @@ Many questions in `generator-bem-stub` depend on the previous ones, for example:
 * You can build HTML only if you have chosen technology [BEMJSON](http://bem.info/technology/bemjson/current/bemjson/) and template engine [BEMHTML](http://bem.info/technology/bemhtml/current/intro/) or [BH](https://github.com/enb-make/bh).
 
 * You will be able to choose which separate files to minimize only if you have chosen assembler [ENB](https://github.com/enb-make/enb) ([bem-tools](http://bem.info/tools/bem/bem-tools/) does not support configuration of minimization, all possible files are minimized by [borschik](http://bem.info/tools/optimizers/borschik/)).
-
-## License
-
-[MIT License](http://en.wikipedia.org/wiki/MIT_License)

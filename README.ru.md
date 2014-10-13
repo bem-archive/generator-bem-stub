@@ -83,7 +83,3 @@ $ yo bem-stub --skip-install
 * Вы можете собирать HTML, только если выбрали технологию [BEMJSON](http://ru.bem.info/technology/bemjson/current/bemjson/) и шаблонизатор [BEMHTML](http://ru.bem.info/technology/bemhtml/current/intro/) или [BH](https://github.com/enb-make/bh).
 
 * У вас будет возможность выбрать, какие конкретно файлы минимизировать, только если вы выбрали сборщик [ENB](https://github.com/enb-make/enb) ([bem-tools](http://ru.bem.info/tools/bem/bem-tools/) не представляет возможность конфигурировать минимизацию файлов, все возможные файлы минимизируются с помощью [borschik](http://ru.bem.info/tools/optimizers/borschik/)).
-
-## Лицензия
-
-[Лицензия MIT](https://ru.wikipedia.org/wiki/Лицензия_MIT)
