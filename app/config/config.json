@@ -48,7 +48,8 @@
       "bemtree.js"         : "require('enb-bemxjst/techs/bemtree-old')",
       "core-bemhtml"       : "require('enb-bemxjst/techs/bemhtml-old')",
       "bh"                 : "require('enb-bh/techs/bh-server')",
-      "node.js"            : "require('enb-diverse-js/techs/node-js')",
+      "pre-node.js"        : "require('enb-diverse-js/techs/node-js'), { target: '?.pre.node.js' }",
+      "node.js"            : "require('enb-modules/techs/prepend-modules'), { source: '?.pre.node.js', target: '?.node.js' }",
       "pre-browser.js"     : "require('enb-diverse-js/techs/browser-js'), { target: '?.pre.js' }",
       "browser.js"         : "require('enb-modules/techs/prepend-modules'), { source: '?.pre.js', target: '?.js' }",
       "html"               : "require('enb/techs/html-from-bemjson')"
