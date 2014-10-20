@@ -147,6 +147,14 @@ function getTechnologies(configPath, techs, toMinify, isAutoprefixer) {
                 inJSON.push('less');
                 break;
 
+            case 'node.js':
+                inTechs.push(getTechVal('pre-node.js'), getTechVal('node.js'));
+
+                inTargets.push(toMinify.indexOf('node.js') > -1 ? 'min.node.js' : 'node.js');
+
+                inJSON.push('enb-diverse-js', 'enb-modules');
+                break;
+
             case 'browser.js':
                 inTechs.push(getTechVal('pre-browser.js'), getTechVal('browser.js'));
 
@@ -188,7 +196,6 @@ function getTechnologies(configPath, techs, toMinify, isAutoprefixer) {
 
                 inTargets.push(toMinify.indexOf(tech) > -1 ? 'min.' + tech : tech);
 
-                tech === 'node.js' && inJSON.push('enb-diverse-js');
                 tech === 'bemtree.js' && inJSON.push('enb-bemxjst');
         }
     });

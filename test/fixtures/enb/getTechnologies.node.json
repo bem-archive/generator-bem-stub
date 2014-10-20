@@ -2,9 +2,10 @@
   "inTechs": [
     "require('enb/techs/files')",
     "require('enb/techs/deps')",
-    "require('enb-diverse-js/techs/node-js')",
+    "require('enb-diverse-js/techs/node-js'), { target: '?.pre.node.js' }",
+    "require('enb-modules/techs/prepend-modules'), { source: '?.pre.node.js', target: '?.node.js' }",
     "require('enb/techs/css')"
   ],
   "inTargets": ["css", "node.js"],
-  "inJSON": ["enb-diverse-js"]
+  "inJSON": ["enb-diverse-js", "enb-modules"]
 }
