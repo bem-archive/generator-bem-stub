@@ -1,6 +1,11 @@
 History of changes
 ==================
 
+0.1.1
+-----
+
+* Fixed the generation of config for technolgy `node.js`.
+
 0.1.0
 -----
 
