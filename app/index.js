@@ -181,7 +181,7 @@ BemGenerator.prototype.askFor = function askFor() {
         choices: function (input) {
             // returns the list of possible technologies to choose in dependence of the previous answers
             var assemblerName = input.assembler === 'bem-tools' ? 'bem-tools' : 'enb',
-                assembler = require('.' + path.sep + path.join('lib', assemblerName));
+                assembler = require(['.', 'lib', assemblerName].join('/'));
 
             return assembler.commonTechs.concat(assembler.templates.core, assembler.scripts.coreWithoutLocal);
         }
@@ -239,7 +239,7 @@ BemGenerator.prototype.askFor = function askFor() {
 
     function getAnswers(props) {
         _this.assemblerName = props.assembler === 'bem-tools' ? 'bem-tools' : 'enb';
-        var assembler = require('.' + path.sep + path.join('lib', _this.assemblerName));
+        var assembler = require(['.', 'lib', _this.assemblerName].join('/'));
 
         // General information
         _this.author = props.author;
@@ -343,25 +343,25 @@ BemGenerator.prototype.app = function app() {
         var dirnames = [];
         dirnames.push(path.dirname(f));
 
-        if (_this.isBemjson && f === path.join('bundles', 'index', 'index.bemdecl.js')) { return; }
+        if (_this.isBemjson && f === ['bundles', 'index', 'index.bemdecl.js'].join('/')) { return; }
 
-        if (!_this.isBemjson && f === path.join('bundles', 'index', 'index.bemjson.js')) { return; }
+        if (!_this.isBemjson && f === ['bundles', 'index', 'index.bemjson.js'].join('/')) { return; }
 
         // only for 'bem-tools'
-        if (f === path.join('blocks', '.bem', 'level.js')) {
+        if (f === ['blocks', '.bem', 'level.js'].join('/')) {
             dirnames = [];
 
-            dirnames.push(path.join('common.blocks', '.bem'));
-            (platforms['touch-pad'] || platforms['touch-phone']) && dirnames.push(path.join('touch.blocks', '.bem'));
+            dirnames.push(['common.blocks', '.bem'].join('/'));
+            (platforms['touch-pad'] || platforms['touch-phone']) && dirnames.push(['touch.blocks', '.bem'].join('/'));
 
             dirnames = dirnames.concat(formDirnames('.blocks', '.bem'));
         }
 
-        (f === path.join('bundles', 'index', 'index.bemdecl.js') ||
-            f === path.join('bundles', 'index', 'index.bemjson.js')) && (dirnames = formDirnames('.bundles', 'index'));
+        (f === ['bundles', 'index', 'index.bemdecl.js'].join('/') ||
+            f === ['bundles', 'index', 'index.bemjson.js'].join('/')) && (dirnames = formDirnames('.bundles', 'index'));
 
         // only for 'bem-tools'
-        (f === path.join('bundles', '.bem', 'level.js')) && (dirnames = formDirnames('.bundles', '.bem'));
+        (f === ['bundles', '.bem', 'level.js'].join('/')) && (dirnames = formDirnames('.bundles', '.bem'));
 
         var src = path.join(root, f);   // copy from
 
