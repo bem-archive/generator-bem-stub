@@ -5,6 +5,6 @@
     "require('enb/techs/bemdecl-from-bemjson')",
     "require('enb/techs/css')"
   ],
-  "inTargets": ["css"],
+  "inTargets": ["?.css"],
   "inJSON": []
 }

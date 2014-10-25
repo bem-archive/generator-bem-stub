@@ -5,6 +5,9 @@
     "require('enb-bemxjst/techs/bemtree-old')",
     "require('enb/techs/css')"
   ],
-  "inTargets": ["css", "bemtree.js"],
-  "inJSON": ["enb-bemxjst"]
+  "inTargets": ["?.css", "?.bemtree.js"],
+  "inJSON": [{
+    "name": "enb-bemxjst",
+    "version": "*"
+  }]
 }

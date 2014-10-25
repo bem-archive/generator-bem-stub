@@ -15,7 +15,10 @@
   },
   "inBundles": [],
   "inJSON": [{
-    "name": "stylus",
-    "version": "*"
+      "name": "bem-tools-autoprefixer",
+      "version": "*"
+    },{
+      "name": "stylus",
+      "version": "*"
   }]
 }

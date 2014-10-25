@@ -4,6 +4,9 @@
     "require('enb/techs/deps')",
     "require('enb/techs/css-less')"
   ],
-  "inTargets": ["css"],
-  "inJSON": ["less"]
+  "inTargets": ["?.css"],
+  "inJSON": [{
+      "name": "less",
+      "version": "*"
+  }]
 }

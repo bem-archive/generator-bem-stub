@@ -4,6 +4,15 @@
     "require('enb/techs/deps')",
     "require('enb-roole/techs/css-roole'), { target: '?.noprefix.css' }"
   ],
-  "inTargets": ["css"],
-  "inJSON": ["roole", "enb-roole"]
+  "inTargets": ["?.css"],
+  "inJSON": [{
+      "name": "enb-autoprefixer",
+      "version": "*"
+    }, {
+      "name": "roole",
+      "version": "*"
+    }, {
+      "name": "enb-roole",
+      "version": "*"
+  }]
 }

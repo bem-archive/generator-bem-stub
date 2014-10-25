@@ -4,6 +4,12 @@
     "require('enb/techs/deps')",
     "require('enb-roole/techs/css-roole')"
   ],
-  "inTargets": ["css"],
-  "inJSON": ["roole", "enb-roole"]
+  "inTargets": ["?.css"],
+  "inJSON": [{
+      "name": "roole",
+      "version": "*"
+    }, {
+      "name": "enb-roole",
+      "version": "*"
+  }]
 }

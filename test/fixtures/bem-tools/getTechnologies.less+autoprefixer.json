@@ -15,7 +15,10 @@
   },
   "inBundles": [],
   "inJSON": [{
-    "name": "less",
-    "version": "*"
+      "name": "bem-tools-autoprefixer",
+      "version": "*"
+    }, {
+      "name": "less",
+      "version": "*"
   }]
 }

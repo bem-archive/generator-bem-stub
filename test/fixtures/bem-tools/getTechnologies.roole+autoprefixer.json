@@ -15,7 +15,10 @@
   },
   "inBundles": [],
   "inJSON": [{
-    "name": "roole",
-    "version": "*"
+      "name": "bem-tools-autoprefixer",
+      "version": "*"
+    }, {
+      "name": "roole",
+      "version": "*"
   }]
 }

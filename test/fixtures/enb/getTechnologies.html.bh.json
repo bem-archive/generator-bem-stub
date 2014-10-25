@@ -7,6 +7,12 @@
     "require('enb-bh/techs/bh-server')",
     "require('enb-bh/techs/html-from-bemjson')"
   ],
-  "inTargets": ["css", "bh.js", "html"],
-  "inJSON": ["enb-bh", "bh"]
+  "inTargets": ["?.css", "?.bh.js", "?.html"],
+  "inJSON": [{
+      "name": "enb-bh",
+      "version": "*"
+    }, {
+      "name": "bh",
+      "version": "*"
+  }]
 }

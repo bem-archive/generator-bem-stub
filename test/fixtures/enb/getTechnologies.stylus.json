@@ -4,6 +4,9 @@
     "require('enb/techs/deps')",
     "require('enb-stylus/techs/css-stylus')"
   ],
-  "inTargets": ["css"],
-  "inJSON": ["enb-stylus"]
+  "inTargets": ["?.css"],
+  "inJSON": [{
+    "name": "enb-stylus",
+    "version": "*"
+  }]
 }

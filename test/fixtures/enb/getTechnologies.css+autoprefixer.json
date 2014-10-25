@@ -4,6 +4,9 @@
     "require('enb/techs/deps')",
     "require('enb/techs/css'), { target: '?.noprefix.css' }"
   ],
-  "inTargets": ["css"],
-  "inJSON": []
+  "inTargets": ["?.css"],
+  "inJSON": [{
+    "name": "enb-autoprefixer",
+    "version": "*"
+  }]
 }

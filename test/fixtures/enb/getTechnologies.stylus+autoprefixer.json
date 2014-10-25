@@ -4,6 +4,12 @@
     "require('enb/techs/deps')",
     "require('enb-stylus/techs/css-stylus'), { target: '?.noprefix.css' }"
   ],
-  "inTargets": ["css"],
-  "inJSON": ["enb-stylus"]
+  "inTargets": ["?.css"],
+  "inJSON": [{
+      "name": "enb-autoprefixer",
+      "version": "*"
+    }, {
+      "name": "enb-stylus",
+      "version": "*"
+  }]
 }

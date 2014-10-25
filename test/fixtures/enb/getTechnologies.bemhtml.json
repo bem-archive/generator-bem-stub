@@ -5,6 +5,9 @@
     "require('enb-bemxjst/techs/bemhtml-old')",
     "require('enb/techs/css')"
   ],
-  "inTargets": ["css", "bemhtml.js"],
-  "inJSON": ["enb-bemxjst"]
+  "inTargets": ["?.css", "?.bemhtml.js"],
+  "inJSON": [{
+    "name": "enb-bemxjst",
+    "version": "*"
+  }]
 }
