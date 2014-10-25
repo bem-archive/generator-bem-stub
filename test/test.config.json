@@ -19,7 +19,7 @@
       "bem-tools-autoprefixer": "*"
     }
   },
-  "technologies": {
+  "techs": {
     "bem-tools": {
       "bemdecl.js"         : "v2/bemdecl.js",
       "deps.js"            : "v2/deps.js",

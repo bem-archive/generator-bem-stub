@@ -33,10 +33,23 @@ var BemGenerator = module.exports = function BemGenerator() {
 util.inherits(BemGenerator, yeoman.generators.Base);
 
 BemGenerator.prototype.askFor = function askFor() {
+    /**
+     * Returns one of the configs
+     * @param {String} config
+     * @returns {Object}
+     */
+    function getConfig(config) {
+        return JSON.parse(_this.readFileAsString(path.join(configPath, config)));
+    }
+
     var cb = this.async(),
     _this = this,
-    configPath = path.join(_this.sourceRoot(), '..', 'config', 'config.json'), // app/config/config.json
-    config = JSON.parse(_this.readFileAsString(configPath));
+    configPath = path.join(_this.sourceRoot(), '..', 'config'), // app/config/
+    config = {
+        versions: getConfig('versions.json'),
+        techs: getConfig('techs.json'),
+        browsers: getConfig('browsers.json')
+    };
 
     /**
      * Checks whether there is library 'bem-components' in the given libs
@@ -244,7 +257,6 @@ BemGenerator.prototype.askFor = function askFor() {
 
         // Libraries
         _this.libs = props.addLibraries;
-
         _this.libs.unshift(props.baseLibrary);  // base lib on the top (for 'bem-tools' it is vital)
         _this.baseLib = props.baseLibrary;
 
@@ -253,7 +265,6 @@ BemGenerator.prototype.askFor = function askFor() {
         // Platforms
         _this.platforms = {};
         var platforms = assembler.getPlatforms(props.platforms, _this.libs, props.isDesign);
-
         _this.platforms.withPath = platforms.withPath; // 'bem-core/common.blocks'
         _this.platforms.withoutPath = platforms.withoutPath; // 'common'
 
@@ -265,15 +276,10 @@ BemGenerator.prototype.askFor = function askFor() {
             techs = props.techs;
 
         techs = assembler.addPreprocessor(techs, preprocessor);
-
         _this.assemblerName === 'bem-tools' && (techs = assembler.addIe(techs)); // 'bem-tools' --> 'ieN' ==> 'ie.css'
-
         techs = assembler.addTemplateEngine(techs, props.templateEngine); // bem-core' ==> 'bemhtml', 'bh'
-
         props.isHtml && techs.push('html');
-
         _this.technologies = assembler.getTechnologies(config, techs, isAutoprefixer, _this.toMinify);
-
         _this.isBemjson = techs.indexOf('bemjson.js') > -1;
 
         // Preprocessor

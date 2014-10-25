@@ -31,8 +31,8 @@ var _ = require('lodash'),
  *               { desktop: ['common', 'desktop'],
  *                 'touch-pad': ['common', 'touch', 'touch-pad'] } }
  *
- * @param {Array of arrays} pls
- * @param {Array of objects} libs
+ * @param {Object[]} pls
+ * @param {Object[]} libs
  * @param {Boolean} isDesign
  * @returns {Object}
  */
@@ -64,9 +64,9 @@ function getPlatforms(pls, libs, isDesign) {
 
 /**
  * Adds the chosen preprocessor to technologies
- * @param {Array} techs
+ * @param {Object[]} techs
  * @param {String} preprocessor
- * @returns {Array}
+ * @returns {Object[]}
  */
 function addPreprocessor(techs, preprocessor) {
     // 'bem-core' --> 'bem-components' ==> 'preprocessor === undefined' ==> 'stylus'
@@ -77,8 +77,8 @@ function addPreprocessor(techs, preprocessor) {
 
 /**
  * Adds the chosen template engine to technologies
- * @param {Array} techs
- * @returns {Array}
+ * @param {Object[]} techs
+ * @returns {Object[]}
  */
 function addTemplateEngine(techs, templateEngine) {
     if (templateEngine !== 'my') { techs.push(templateEngine); }
@@ -89,9 +89,9 @@ function addTemplateEngine(techs, templateEngine) {
 /**
  * Returns technologies
  * @param {Object} config
- * @param {Array} techs
+ * @param {Object[]} techs
  * @param {Boolean} isAutoprefixer
- * @param {Array} toMinify
+ * @param {Object[]} toMinify
  * @returns {Object}
  */
 function getTechnologies(config, techs, isAutoprefixer, toMinify) {
@@ -123,15 +123,15 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
     techs.map(function (tech) {
         switch (tech) {
             case 'bemjson.js': // 'bemjson.js' ==> only 'inTechs'
-                inTechs.push(config.technologies.enb['bemjson.js']);
+                inTechs.push(config.techs.enb['bemjson.js']);
                 break;
 
             case 'css':
-                inTechs.push(config.technologies.enb['css'] + (isAutoprefixer ? autoprefixerTarget : ''));
+                inTechs.push(config.techs.enb['css'] + (isAutoprefixer ? autoprefixerTarget : ''));
                 break;
 
             case 'stylus':
-                inTechs.push(config.technologies.enb['stylus'] + (isAutoprefixer ? autoprefixerTarget : ''));
+                inTechs.push(config.techs.enb['stylus'] + (isAutoprefixer ? autoprefixerTarget : ''));
 
                 inJSON.push({
                     name: 'enb-stylus',
@@ -140,7 +140,7 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
                 break;
 
             case 'roole':
-                inTechs.push(config.technologies.enb['roole'] + (isAutoprefixer ? autoprefixerTarget : ''));
+                inTechs.push(config.techs.enb['roole'] + (isAutoprefixer ? autoprefixerTarget : ''));
 
                 inJSON.push({
                     name: 'roole',
@@ -152,7 +152,7 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
                 break;
 
             case 'less':
-                inTechs.push(config.technologies.enb['less'] + (isAutoprefixer ? autoprefixerTarget : ''));
+                inTechs.push(config.techs.enb['less'] + (isAutoprefixer ? autoprefixerTarget : ''));
 
                 inJSON.push({
                     name: 'less',
@@ -161,7 +161,7 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
                 break;
 
             case 'node.js':
-                inTechs.push(config.technologies.enb['pre-node.js'], config.technologies.enb['node.js']);
+                inTechs.push(config.techs.enb['pre-node.js'], config.techs.enb['node.js']);
 
                 inTargets.push(toMinify.indexOf('node.js') > -1 ? '_?.node.js' : '?.node.js');
 
@@ -175,7 +175,7 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
                 break;
 
             case 'browser.js':
-                inTechs.push(config.technologies.enb['pre-browser.js'], config.technologies.enb['browser.js']);
+                inTechs.push(config.techs.enb['pre-browser.js'], config.techs.enb['browser.js']);
 
                 inTargets.push(toMinify.indexOf('js') > -1 ? '_?.js' : '?.js');  // 'bem-core' --> 'browser.js' ==> 'js'
 
@@ -189,7 +189,7 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
                 break;
 
             case 'bemhtml':   // 'bem-core' ==> 'bemhtml-old' from package 'enb-bemxjst'
-                inTechs.push(config.technologies.enb['core-bemhtml']);
+                inTechs.push(config.techs.enb['core-bemhtml']);
 
                 inTargets.push(toMinify.indexOf('bemhtml.js') > -1 ? '_?.bemhtml.js' : '?.bemhtml.js');
 
@@ -200,7 +200,7 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
                 break;
 
             case 'bh':
-                inTechs.push(config.technologies.enb['bh']);
+                inTechs.push(config.techs.enb['bh']);
 
                 inTargets.push(toMinify.indexOf('bh.js') > -1 ? '_?.bh.js' : '?.bh.js');
 
@@ -214,7 +214,7 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
                 break;
 
             case 'html': // 'bh' ==> 'enb-bh' | 'bemhtml' ==> 'enb-bemxjst' in 'html' require path
-                var techVal = config.technologies.enb['html'];
+                var techVal = config.techs.enb['html'];
 
                 techs.indexOf('bemhtml') > -1 && (techVal = techVal.replace('enb', 'enb-bemxjst'));
 
@@ -226,7 +226,7 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
                 break;
 
             default:
-                inTechs.push(config.technologies.enb[tech]);
+                inTechs.push(config.techs.enb[tech]);
 
                 inTargets.push(toMinify.indexOf(tech) > -1 ? '_?.' + tech : '?.' + tech);
 
@@ -282,7 +282,7 @@ function getBrowsers(config, platforms) {
  *                              }]
  *                          }
  *
- * @param {Array} techs
+ * @param {Object[]} techs
  * @returns {Object}
  */
 function getStyles(techs) {
@@ -311,7 +311,7 @@ function getStyles(techs) {
  * @example
  * ['_?.js']       ==>     [{ elem: 'js', url: '_index.js' }]
  *
- * @param {Array} techs
+ * @param {Object[]} techs
  * @returns {Object} scripts
  */
 

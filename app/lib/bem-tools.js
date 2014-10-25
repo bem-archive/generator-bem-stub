@@ -34,8 +34,8 @@ var _ = require('lodash'),
  *              { desktop: ['common', 'desktop'],
  *                'touch-pad': ['common', 'touch', 'touch-pad'] } }
  *
- * @param {Array of arrays} pls
- * @param {Array of objects} libs
+ * @param {Object[]} pls
+ * @param {Object[]} libs
  * @param {Boolean} isDesign
  * @returns {Object}
  */
@@ -66,9 +66,9 @@ function getPlatforms(pls, libs, isDesign) {
 
 /**
  * Adds the chosen preprocessor to technologies
- * @param {Array} techs
+ * @param {Object[]} techs
  * @param {String} preprocessor
- * @returns {Array}
+ * @returns {Object[]}
  */
 function addPreprocessor(techs, preprocessor) {
     if (preprocessor === 'css') {
@@ -82,8 +82,8 @@ function addPreprocessor(techs, preprocessor) {
 
 /**
  * Adds 'ie.css' to technologies
- * @param {Array} techs
- * @returns {Array}
+ * @param {Object[]} techs
+ * @returns {Object[]}
  */
 function addIe(techs) {
     if (techs.indexOf('ie.css') > -1) { return techs; }
@@ -99,8 +99,8 @@ function addIe(techs) {
 
 /**
  * Adds the template engine to technologies
- * @param {Array} techs
- * @returns {Array}
+ * @param {Object[]} techs
+ * @returns {Object[]}
  */
 function addTemplateEngine(techs, templateEngine) {
     if (templateEngine === 'my') { return techs; }
@@ -123,7 +123,7 @@ function addTemplateEngine(techs, templateEngine) {
 /**
  * Returns technologies
  * @param {Object} config
- * @param {Array} techs
+ * @param {Object[]} techs
  * @param {Boolean} isAutoprefixer
  * @returns {Object}
  */
@@ -133,7 +133,7 @@ function getTechnologies(config, techs, isAutoprefixer) {
     */
     function getTechDecl(tech) {
         function getTechVal(tech) {
-            var _tech = config.technologies['bem-tools'][tech];
+            var _tech = config.techs['bem-tools'][tech];
 
             return '\'' + _tech + '\'';
         }
@@ -277,7 +277,7 @@ function getBrowsers(config, platforms) {
  * @example
  * ['css',     ==>         {
  *  'ie.css',                  css: [{
- *  'ie6.css']                    elem: 'css',
+ *  'ie6.css']                     elem: 'css',
  *                                 url: '_index.css'
  *                             }],
  *                             ies: [{
@@ -289,7 +289,7 @@ function getBrowsers(config, platforms) {
  *                             }]
  *                         }
  *
- * @param {Array} techs
+ * @param {Object[]} techs
  * @returns {Object}
  */
 function getStyles(techs) {
@@ -315,7 +315,7 @@ function getStyles(techs) {
  * @example
  * ['browser.js+bemhtml']  ==>  [{ elem: 'js', url: '_index.js' }]
  *
- * @param {Array} techs
+ * @param {Object[]} techs
  * @returns {Object}
  */
 function getScripts(techs) {
