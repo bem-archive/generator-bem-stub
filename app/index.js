@@ -1,11 +1,11 @@
 'use strict';
 var util = require('util'),
     path = require('path'),
-    fs = require('fs'),
-    yeoman = require('yeoman-generator'),
-    BemGenerator;
+    yeoman = require('yeoman-generator');
 
-BemGenerator = module.exports = function BemGenerator() {
+require('colors');
+
+var BemGenerator = module.exports = function BemGenerator() {
     yeoman.generators.Base.apply(this, arguments);
 
     this.option('skip-install', {
@@ -16,7 +16,12 @@ BemGenerator = module.exports = function BemGenerator() {
 
     this.on('end', function () {
         if (!this.options['skip-install']) {
-            this.log.write('').info(' ==> npm and bower install...').write('');
+            var msg =
+                '\nI\'m all done. Running ' + 'npm install'.bold.yellow +
+                ' for you to install the required dependencies. ' +
+                'If this fails, try running the command yourself.\n\n'.bold;
+
+            this.log.write(msg);
             this.shell.exec('cd ' + this.projectName + ' && npm i');
         }
 
@@ -30,17 +35,8 @@ util.inherits(BemGenerator, yeoman.generators.Base);
 BemGenerator.prototype.askFor = function askFor() {
     var cb = this.async(),
     _this = this,
-    configPath = path.join(_this.sourceRoot(), '..', 'config', 'config.json'); // app/config/config.json
-
-    /**
-     * Returns a version of a library from 'config.json'
-     * @param {String} base
-     * @param {String} value
-     * @returns {String}
-     */
-    function getLibVersion(base, value) {
-        return JSON.parse(_this.readFileAsString(configPath)).versions[base][value];
-    }
+    configPath = path.join(_this.sourceRoot(), '..', 'config', 'config.json'), // app/config/config.json
+    config = JSON.parse(_this.readFileAsString(configPath));
 
     /**
      * Checks whether there is library 'bem-components' in the given libs
@@ -95,7 +91,7 @@ BemGenerator.prototype.askFor = function askFor() {
                 name: 'bem-core',
                 value: {
                     name: 'bem-core',
-                    version: getLibVersion('libs', 'bem-core')
+                    version: config.versions.libs['bem-core']
                 }
             });
 
@@ -112,7 +108,7 @@ BemGenerator.prototype.askFor = function askFor() {
                 name: 'bem-components',
                 value: {
                     name: 'bem-components',
-                    version: getLibVersion('libs', 'bem-components')
+                    version: config.versions.libs['bem-components']
                 }
             });
 
@@ -276,7 +272,7 @@ BemGenerator.prototype.askFor = function askFor() {
 
         props.isHtml && techs.push('html');
 
-        _this.technologies = assembler.getTechnologies(configPath, techs, _this.toMinify, isAutoprefixer);
+        _this.technologies = assembler.getTechnologies(config, techs, isAutoprefixer, _this.toMinify);
 
         _this.isBemjson = techs.indexOf('bemjson.js') > -1;
 
@@ -285,7 +281,7 @@ BemGenerator.prototype.askFor = function askFor() {
 
         // Autoprefixer
         (_this.isAutoprefixer = isAutoprefixer) &&
-            (_this.browsers = assembler.getBrowsers(configPath, _this.platforms.withoutPath));
+            (_this.browsers = assembler.getBrowsers(config, _this.platforms.withoutPath));
 
         // Styles and scripts to 'bemjson.js'
         techs = _this.technologies;
@@ -307,7 +303,7 @@ BemGenerator.prototype.askFor = function askFor() {
 BemGenerator.prototype.app = function app() {
     var _this = this,
         platforms = _this.platforms.withoutPath,
-        root = path.join(_this.sourceRoot(), _this.assemblerName), // path to the templates
+        root = _this.sourceRoot(),
         files = _this.expandFiles('**', { dot: true, cwd: root });   // roots of the all files in the templates
 
     // Makes the necessary empty folders in the created project (only for 'ENB')
@@ -343,8 +339,13 @@ BemGenerator.prototype.app = function app() {
         var dirnames = [];
         dirnames.push(path.dirname(f));
 
-        if (_this.isBemjson && f === ['bundles', 'index', 'index.bemdecl.js'].join('/')) { return; }
+        if (_this.assemblerName === 'bem-tools' && f.indexOf('.enb') > -1) { return; }
+        if (_this.assemblerName === 'enb' &&
+            (/^.bem/.test(f) ||
+                f === ['blocks', '.bem', 'level.js'].join('/') ||
+                    f === ['bundles', '.bem', 'level.js'].join('/'))) { return; }
 
+        if (_this.isBemjson && f === ['bundles', 'index', 'index.bemdecl.js'].join('/')) { return; }
         if (!_this.isBemjson && f === ['bundles', 'index', 'index.bemjson.js'].join('/')) { return; }
 
         // only for 'bem-tools'
@@ -355,13 +356,12 @@ BemGenerator.prototype.app = function app() {
             (platforms['touch-pad'] || platforms['touch-phone']) && dirnames.push(['touch.blocks', '.bem'].join('/'));
 
             dirnames = dirnames.concat(formDirnames('.blocks', '.bem'));
+        } else if (f === ['bundles', '.bem', 'level.js'].join('/')) {
+            (dirnames = formDirnames('.bundles', '.bem'));
         }
 
         (f === ['bundles', 'index', 'index.bemdecl.js'].join('/') ||
             f === ['bundles', 'index', 'index.bemjson.js'].join('/')) && (dirnames = formDirnames('.bundles', 'index'));
-
-        // only for 'bem-tools'
-        (f === ['bundles', '.bem', 'level.js'].join('/')) && (dirnames = formDirnames('.bundles', '.bem'));
 
         var src = path.join(root, f);   // copy from
 
@@ -371,40 +371,4 @@ BemGenerator.prototype.app = function app() {
             _this.template(src, dest);
         });
     }.bind(_this));
-};
-
-// Adds dependencies to 'package.json'
-BemGenerator.prototype.addPackages = function addPackages() {
-    /**
-     * Returns a version of a library from 'config.json'
-     * @param {String} base
-     * @param {String} value
-     * @returns {String}
-     */
-    function getLibVersion(base, value) {
-        return JSON.parse(_this.readFileAsString(configPath)).versions[base][value];
-    }
-
-    var _this = this,
-        configPath = path.join(_this.sourceRoot(), '..', 'config', 'config.json'), // app/config/config.json
-        // path to 'package.json' in the created project
-        packagePath = path.join(_this.destinationRoot(), _this.projectName, 'package.json'),
-        pack = JSON.parse(_this.readFileAsString(packagePath)),
-        deps = pack.devDependencies,
-        inJSON = _this.technologies.inJSON;
-
-    inJSON.map(function (_package) {
-        deps[_package] = getLibVersion('deps', _package);
-    });
-
-    // autoprefixer
-    if (_this.isAutoprefixer) {
-        _this.assemblerName === 'bem-tools' &&
-            (deps['bem-tools-autoprefixer'] = getLibVersion('deps', 'bem-tools-autoprefixer'));
-
-        _this.assemblerName === 'enb' &&
-            (deps['enb-autoprefixer'] = getLibVersion('deps', 'enb-autoprefixer'));
-    }
-
-    fs.writeFileSync(packagePath, JSON.stringify(pack, null, '  ') + '\n');
 };

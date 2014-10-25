@@ -1,6 +1,5 @@
 'use strict';
-var fs = require('fs'),
-    _ = require('lodash'),
+var _ = require('lodash'),
     // technologies
     commonTechs = [
         { name: 'BEMJSON', value: 'bemjson.js' },
@@ -89,16 +88,13 @@ function addTemplateEngine(techs, templateEngine) {
 
 /**
  * Returns technologies
- * @param {String} configPath
+ * @param {Object} config
  * @param {Array} techs
+ * @param {Boolean} isAutoprefixer
  * @param {Array} toMinify
  * @returns {Object}
  */
-function getTechnologies(configPath, techs, toMinify, isAutoprefixer) {
-    function getTechVal(tech) {
-        return JSON.parse(fs.readFileSync(configPath, 'utf-8')).technologies.enb[tech];
-    }
-
+function getTechnologies(config, techs, isAutoprefixer, toMinify) {
     /*
        'inTechs' ==> '.enb/make.js' --> 'nodeConfig.addTechs',
        'inTargets' ==> '.enb/make.js' --> 'nodeConfig.addTargets',
@@ -116,71 +112,109 @@ function getTechnologies(configPath, techs, toMinify, isAutoprefixer) {
         inJSON = technologies.inJSON,
         autoprefixerTarget = ', { target: \'?.noprefix.css\' }';
 
+    isAutoprefixer && inJSON.push({
+        name: 'enb-autoprefixer',
+        version: config.versions.deps['enb-autoprefixer']
+    });
+
     // 'css' will be always added 'inTargets'
-    inTargets.push(toMinify.indexOf('css') > -1 ? 'min.css' : 'css');
+    inTargets.push(toMinify.indexOf('css') > -1 ? '_?.css' : '?.css');
 
     techs.map(function (tech) {
         switch (tech) {
             case 'bemjson.js': // 'bemjson.js' ==> only 'inTechs'
-                inTechs.push(getTechVal('bemjson.js'));
+                inTechs.push(config.technologies.enb['bemjson.js']);
                 break;
 
             case 'css':
-                inTechs.push(getTechVal('css') + (isAutoprefixer ? autoprefixerTarget : ''));
+                inTechs.push(config.technologies.enb['css'] + (isAutoprefixer ? autoprefixerTarget : ''));
                 break;
 
             case 'stylus':
-                inTechs.push(getTechVal('stylus') + (isAutoprefixer ? autoprefixerTarget : ''));
+                inTechs.push(config.technologies.enb['stylus'] + (isAutoprefixer ? autoprefixerTarget : ''));
 
-                inJSON.push('enb-stylus');
+                inJSON.push({
+                    name: 'enb-stylus',
+                    version: config.versions.deps['enb-stylus']
+                });
                 break;
 
             case 'roole':
-                inTechs.push(getTechVal('roole') + (isAutoprefixer ? autoprefixerTarget : ''));
+                inTechs.push(config.technologies.enb['roole'] + (isAutoprefixer ? autoprefixerTarget : ''));
 
-                inJSON.push('roole', 'enb-roole');  // 'roole' ==> 'roole', 'enb-roole' in 'package.json'
+                inJSON.push({
+                    name: 'roole',
+                    version: config.versions.deps['roole']
+                }, {
+                    name: 'enb-roole',
+                    version: config.versions.deps['enb-roole']
+                });  // 'roole' ==> 'roole', 'enb-roole' in 'package.json'
                 break;
 
             case 'less':
-                inTechs.push(getTechVal('less') + (isAutoprefixer ? autoprefixerTarget : ''));
+                inTechs.push(config.technologies.enb['less'] + (isAutoprefixer ? autoprefixerTarget : ''));
 
-                inJSON.push('less');
+                inJSON.push({
+                    name: 'less',
+                    version: config.versions.deps['less']
+                });
                 break;
 
             case 'node.js':
-                inTechs.push(getTechVal('pre-node.js'), getTechVal('node.js'));
+                inTechs.push(config.technologies.enb['pre-node.js'], config.technologies.enb['node.js']);
 
-                inTargets.push(toMinify.indexOf('node.js') > -1 ? 'min.node.js' : 'node.js');
+                inTargets.push(toMinify.indexOf('node.js') > -1 ? '_?.node.js' : '?.node.js');
 
-                inJSON.push('enb-diverse-js', 'enb-modules');
+                inJSON.push({
+                    name: 'enb-diverse-js',
+                    version: config.versions.deps['enb-diverse-js']
+                }, {
+                    name: 'enb-modules',
+                    version: config.versions.deps['enb-modules']
+                });
                 break;
 
             case 'browser.js':
-                inTechs.push(getTechVal('pre-browser.js'), getTechVal('browser.js'));
+                inTechs.push(config.technologies.enb['pre-browser.js'], config.technologies.enb['browser.js']);
 
-                inTargets.push(toMinify.indexOf('js') > -1 ? 'min.js' : 'js');  // 'bem-core' --> 'browser.js' ==> 'js'
+                inTargets.push(toMinify.indexOf('js') > -1 ? '_?.js' : '?.js');  // 'bem-core' --> 'browser.js' ==> 'js'
 
-                inJSON.push('enb-diverse-js', 'enb-modules');
+                inJSON.push({
+                    name: 'enb-diverse-js',
+                    version: config.versions.deps['enb-diverse-js']
+                }, {
+                    name: 'enb-modules',
+                    version: config.versions.deps['enb-modules']
+                });
                 break;
 
             case 'bemhtml':   // 'bem-core' ==> 'bemhtml-old' from package 'enb-bemxjst'
-                inTechs.push(getTechVal('core-bemhtml'));
+                inTechs.push(config.technologies.enb['core-bemhtml']);
 
-                inTargets.push(toMinify.indexOf('bemhtml.js') > -1 ? 'min.bemhtml.js' : 'bemhtml.js');
+                inTargets.push(toMinify.indexOf('bemhtml.js') > -1 ? '_?.bemhtml.js' : '?.bemhtml.js');
 
-                inJSON.push('enb-bemxjst');
+                inJSON.push({
+                    name: 'enb-bemxjst',
+                    version: config.versions.deps['enb-bemxjst']
+                });
                 break;
 
             case 'bh':
-                inTechs.push(getTechVal('bh'));
+                inTechs.push(config.technologies.enb['bh']);
 
-                inTargets.push(toMinify.indexOf('bh.js') > -1 ? 'min.bh.js' : 'bh.js');
+                inTargets.push(toMinify.indexOf('bh.js') > -1 ? '_?.bh.js' : '?.bh.js');
 
-                inJSON.push('enb-bh', 'bh');
+                inJSON.push({
+                    name: 'enb-bh',
+                    version: config.versions.deps['enb-bh']
+                }, {
+                    name: 'bh',
+                    version: config.versions.deps['bh']
+                });
                 break;
 
             case 'html': // 'bh' ==> 'enb-bh' | 'bemhtml' ==> 'enb-bemxjst' in 'html' require path
-                var techVal = getTechVal('html');
+                var techVal = config.technologies.enb['html'];
 
                 techs.indexOf('bemhtml') > -1 && (techVal = techVal.replace('enb', 'enb-bemxjst'));
 
@@ -188,19 +222,23 @@ function getTechnologies(configPath, techs, toMinify, isAutoprefixer) {
 
                 inTechs.push(techVal);
 
-                inTargets.push('html');
+                inTargets.push('?.html');
                 break;
 
             default:
-                inTechs.push(getTechVal(tech));
+                inTechs.push(config.technologies.enb[tech]);
 
-                inTargets.push(toMinify.indexOf(tech) > -1 ? 'min.' + tech : tech);
+                inTargets.push(toMinify.indexOf(tech) > -1 ? '_?.' + tech : '?.' + tech);
 
-                tech === 'bemtree.js' && inJSON.push('enb-bemxjst');
+                tech === 'bemtree.js' && inJSON.push({
+                    name: 'enb-bemxjst',
+                    version: config.versions.deps['enb-bemxjst']
+                });
         }
     });
 
     technologies.inTargets = _.uniq(inTargets);
+    technologies.inJSON = _.uniq(inJSON);
 
     return technologies;
 }
@@ -210,15 +248,15 @@ function getTechnologies(configPath, techs, toMinify, isAutoprefixer) {
  * @example
  *  { desktop: ['common', 'desktop'] } ==> { desktop: ['last 2 versions', 'ie 10', 'ff 24', 'opera 12.16'] }
  *
- * @param {String} configPath
+ * @param {Object} config
  * @param {Object} platforms --> without path
  * @returns {Object}
  */
-function getBrowsers(configPath, platforms) {
+function getBrowsers(config, platforms) {
     var browsers = {};
 
     Object.keys(platforms).forEach(function (platform) {
-        browsers[platform] = JSON.parse(fs.readFileSync(configPath, 'utf-8')).browsers[platform];
+        browsers[platform] = config.browsers[platform];
     });
 
     return browsers;
@@ -227,20 +265,20 @@ function getBrowsers(configPath, platforms) {
 /**
  * Returns styles which will be added to 'index.bemjson.js'
  * @example
- * ['min.css',     ==>      {
- *  'ie.css',                   css: [{
- *  'ie6.css',                      elem: 'css',
- *  'min.ie9.css']                  url: 'min.css'
+ * ['_?.css',     ==>      {
+ *  '?.ie.css',                 css: [{
+ *  '?.ie6.css',                   elem: 'css',
+ *  '_?.ie9.css']                  url: '_index.css'
  *                              }],
  *                              ies: [{
  *                                  elem: 'css',
- *                                  url: 'ie.css'
+ *                                  url: 'index.ie.css'
  *                              }, {
  *                                  elem: 'css',
- *                                  url: 'ie6.css'
+ *                                  url: 'index.ie6.css'
  *                              }, {
  *                                  elem: 'css',
- *                                  url: 'min.ie9.css'
+ *                                  url: '_index.ie9.css'
  *                              }]
  *                          }
  *
@@ -251,17 +289,17 @@ function getStyles(techs) {
     var styles = {
             css: [{
                 elem: 'css',
-                url: techs.indexOf('css') > -1 ? 'css' : 'min.css'
+                url: techs.indexOf('?.css') > -1 ? 'index.css' : '_index.css'
             }],
             ies: []
         },
-        ies = ['ie.css', 'ie6.css', 'ie7.css', 'ie8.css', 'ie9.css'];
+        ies = ['?.ie.css', '?.ie6.css', '?.ie7.css', '?.ie8.css', '?.ie9.css'];
 
     ies.forEach(function (ie) {
         var isIE = techs.indexOf(ie) > -1;
-        (isIE || techs.indexOf('min.' + ie) > -1) && styles.ies.push({
+        (isIE || techs.indexOf('_' + ie) > -1) && styles.ies.push({
             elem: 'css',
-            url: isIE ? ie : 'min.' + ie
+            url: isIE ? 'index' + ie.replace('?', '') : '_index' + ie.replace('?', '')
         });
     });
 
@@ -271,7 +309,7 @@ function getStyles(techs) {
 /**
  * Returns scripts which will be added to 'index.bemjson.js'
  * @example
- * ['min.js']       ==>     [{ elem: 'js', url: 'min.js' }]
+ * ['_?.js']       ==>     [{ elem: 'js', url: '_index.js' }]
  *
  * @param {Array} techs
  * @returns {Object} scripts
@@ -280,9 +318,9 @@ function getStyles(techs) {
 function getScripts(techs) {
     var scripts = [];
 
-    (techs.indexOf('js') > -1 || techs.indexOf('min.js') > -1) && scripts.push({
+    (techs.indexOf('?.js') > -1 || techs.indexOf('_?.js') > -1) && scripts.push({
         elem: 'js',
-        url: techs.indexOf('js') > -1 ? 'js' : 'min.js'
+        url: techs.indexOf('?.js') > -1 ? 'index.js' : '_index.js'
     });
 
     return scripts;

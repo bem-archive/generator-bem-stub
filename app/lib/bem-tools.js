@@ -1,6 +1,5 @@
 'use strict';
-var fs = require('fs'),
-    _ = require('lodash'),
+var _ = require('lodash'),
     // technologies
     commonTechs = [
         { name: 'BEMJSON', value: 'bemjson.js' },
@@ -123,17 +122,18 @@ function addTemplateEngine(techs, templateEngine) {
 
 /**
  * Returns technologies
- * @param {String} configPath
+ * @param {Object} config
  * @param {Array} techs
+ * @param {Boolean} isAutoprefixer
  * @returns {Object}
  */
-function getTechnologies(configPath, techs) {
+function getTechnologies(config, techs, isAutoprefixer) {
     /*
         for example, returns ==> bemdecl.js'         : 'v2/bemdecl.js'
     */
     function getTechDecl(tech) {
         function getTechVal(tech) {
-            var _tech = JSON.parse(fs.readFileSync(configPath, 'utf-8')).technologies['bem-tools'][tech];
+            var _tech = config.technologies['bem-tools'][tech];
 
             return '\'' + _tech + '\'';
         }
@@ -174,6 +174,11 @@ function getTechnologies(configPath, techs) {
         inMake = technologies.inMake,
         inJSON = technologies.inJSON,
         hasPreprocessor = false;
+
+    isAutoprefixer && inJSON.push({
+        name: 'bem-tools-autoprefixer',
+        version: config.versions.deps['bem-tools-autoprefixer']
+    });
 
     techs.map(function (tech) {
         switch (tech) {
@@ -224,7 +229,10 @@ function getTechnologies(configPath, techs) {
 
                     inMake.forked.push(tech);
 
-                    inJSON.push(tech);
+                    inJSON.push({
+                        name: tech,
+                        version: config.versions.deps[tech]
+                    });
 
                     hasPreprocessor = true;
                 }
@@ -250,15 +258,15 @@ function getTechnologies(configPath, techs) {
  * @example
  *  { desktop: ['common', 'desktop'] } ==> { desktop: ['last 2 versions', 'ie 10', 'ff 24', 'opera 12.16'] }
  *
- * @param {String} configPath
+ * @param {Object} config
  * @param {Object} platforms --> without path
  * @returns {Object}
  */
-function getBrowsers(configPath, platforms) {
+function getBrowsers(config, platforms) {
     var browsers = {};
 
     Object.keys(platforms).forEach(function (platform) {
-        browsers[platform] = JSON.parse(fs.readFileSync(configPath, 'utf-8')).browsers[platform];
+        browsers[platform] = config.browsers[platform];
     });
 
     return browsers;
@@ -270,14 +278,14 @@ function getBrowsers(configPath, platforms) {
  * ['css',     ==>         {
  *  'ie.css',                  css: [{
  *  'ie6.css']                    elem: 'css',
- *                                 url: 'css'
+ *                                 url: '_index.css'
  *                             }],
  *                             ies: [{
  *                                 elem: 'css',
- *                                 url: 'ie.css'
+ *                                 url: '_index.ie.css'
  *                             }, {
  *                                 elem: 'css',
- *                                 url: 'ie6.css'
+ *                                 url: '_index.ie6.css'
  *                             }]
  *                         }
  *
@@ -286,7 +294,7 @@ function getBrowsers(configPath, platforms) {
  */
 function getStyles(techs) {
     var styles = {
-            css: [{ elem: 'css', url: 'css' }],
+            css: [{ elem: 'css', url: '_index.css' }],
             ies: []
         },
         ies = ['ie.css', 'ie6.css', 'ie7.css', 'ie8.css', 'ie9.css'];
@@ -295,7 +303,7 @@ function getStyles(techs) {
         var isIE = techs.indexOf(ie) > -1;
         isIE && styles.ies.push({
             elem: 'css',
-            url: ie
+            url: '_index.' + ie
         });
     });
 
@@ -305,7 +313,7 @@ function getStyles(techs) {
 /**
  * Returns scripts which will be added to 'index.bemjson.js'
  * @example
- * ['browser.js+bemhtml']  ==>  [{ elem: 'js', url: 'js' }]
+ * ['browser.js+bemhtml']  ==>  [{ elem: 'js', url: '_index.js' }]
  *
  * @param {Array} techs
  * @returns {Object}
@@ -314,7 +322,7 @@ function getScripts(techs) {
     var scripts = [];
 
     techs.indexOf('browser.js+bemhtml') > -1 && scripts.push({
-        elem: 'js', url: 'js'
+        elem: 'js', url: '_index.js'
     });
 
     return scripts;
