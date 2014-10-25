@@ -6,7 +6,7 @@ module.exports = function (config) {
         ]);
 
         nodeConfig.addTargets([
-<%= _.map(technologies.inTargets, function (technology) { return "            '?." + technology + "'" }).join(',\n') %>
+<%= _.map(technologies.inTargets, function (technology) { return "            '" + technology + "'" }).join(',\n') %>
         ]);
     });<%= (platforms.withoutPath['desktop'] ?
 
@@ -67,13 +67,13 @@ module.exports = function (config) {
         "\n    config.mode('development', function () {\n        config.nodes('*.bundles/*', function (nodeConfig) {\n            nodeConfig.addTechs([\n" +
 
         _.map(toMinify, function (technology) {
-            return "                [require('enb/techs/file-copy'), { sourceTarget: '?." + technology + "', destTarget: '?.min." + technology + "' }]";
+            return "                [require('enb/techs/file-copy'), { sourceTarget: '?." + technology + "', destTarget: '_?." + technology + "' }]";
         }).join(',\n') +
 
         "\n            ]);\n        });\n    });\n\n    config.mode('production', function () {\n        config.nodes('*.bundles/*', function (nodeConfig) {\n            nodeConfig.addTechs([\n" +
 
         _.map(toMinify, function (technology) {
-            return "                [require('enb/techs/borschik'), { sourceTarget: '?." + technology + "', destTarget: '?.min." + technology + "' }]";
+            return "                [require('enb/techs/borschik'), { sourceTarget: '?." + technology + "', destTarget: '_?." + technology + "' }]";
         }).join(',\n') +
 
         "\n            ]);\n        });\n    });" : ""
