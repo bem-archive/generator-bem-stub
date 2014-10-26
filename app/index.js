@@ -186,11 +186,17 @@ var BemGenerator = yeoman.generators.Base.extend({
             name: 'techs',
             message: 'Choose technologies to be used in the project:',
             choices: function (input) {
-                // returns the list of possible technologies to choose in dependence of the previous answers
-                var assemblerName = input.assembler === 'bem-tools' ? 'bem-tools' : 'enb',
-                    assembler = require(['.', 'lib', assemblerName].join('/'));
-
-                return assembler.commonTechs.concat(assembler.templates.core, assembler.scripts.coreWithoutLocal);
+                return [
+                    { name: 'BEMJSON', value: 'bemjson.js' },
+                    { value: 'ie.css' },
+                    { value: 'ie6.css' },
+                    { value: 'ie7.css' },
+                    { value: 'ie8.css' },
+                    { value: 'ie9.css' },
+                    { name: 'BEMTREE', value: 'bemtree' },
+                    { value: 'node.js' },
+                    { value: input.assembler === 'bem-tools' ? 'browser.js+bemhtml' : 'browser.js' }
+                ];
             }
         }, {
             type: 'list',
@@ -227,6 +233,12 @@ var BemGenerator = yeoman.generators.Base.extend({
                 input.techs.map(function (tech) {
                     if (tech === 'browser.js') {
                         toMinimize.push({ value: 'js' });
+
+                        return;
+                    }
+
+                    if (tech === 'bemtree') {
+                        toMinimize.push({ value: 'bemtree.js' });
 
                         return;
                     }

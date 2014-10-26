@@ -1,23 +1,5 @@
 'use strict';
-var _ = require('lodash'),
-    // technologies
-    commonTechs = [
-        { name: 'BEMJSON', value: 'bemjson.js' },
-        { value: 'ie.css' },
-        { value: 'ie6.css' },
-        { value: 'ie7.css' },
-        { value: 'ie8.css' },
-        { value: 'ie9.css' }
-    ],
-    templates = {
-        core: [{ name: 'BEMTREE', value: 'bemtree'  }]
-    },
-    scripts = {
-        coreWithoutLocal: [
-            { value: 'node.js' },
-            { value: 'browser.js+bemhtml' }
-        ]
-    };
+var _ = require('lodash');
 
 /**
  * Returns platforms with path and without path
@@ -105,14 +87,12 @@ function addIe(techs) {
 function addTemplateEngine(techs, templateEngine) {
     if (templateEngine === 'my') return techs;
 
-    var _scripts = scripts.coreWithoutLocal,
+    var scripts = ['node.js', 'browser.js+bemhtml'],
         index = -1;
 
-    for (var i in _scripts) {
-        if (_scripts.hasOwnProperty(i)) {
-            index = techs.indexOf(_scripts[i].value);
-            if (index > -1) { break; }
-        }
+    for (var i = 0; i < scripts.length; i++) {
+        index = techs.indexOf(scripts[i]);
+        if (index > -1) break;
     }
 
     index > -1 ? techs.splice(index, 0, templateEngine) : techs.push(templateEngine);
@@ -334,12 +314,6 @@ function getScripts(techs) {
 }
 
 module.exports = {
-    // fields
-    commonTechs: commonTechs,
-    templates: templates,
-    scripts: scripts,
-
-    // methods
     getPlatforms: getPlatforms,
     addPreprocessor: addPreprocessor,
     addIe: addIe,

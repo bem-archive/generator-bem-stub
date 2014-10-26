@@ -1,23 +1,5 @@
 'use strict';
-var _ = require('lodash'),
-    // technologies
-    commonTechs = [
-        { name: 'BEMJSON', value: 'bemjson.js' },
-        { value: 'ie.css' },
-        { value: 'ie6.css' },
-        { value: 'ie7.css' },
-        { value: 'ie8.css' },
-        { value: 'ie9.css' }
-    ],
-    templates = {
-        core: [{ name: 'BEMTREE', value: 'bemtree.js' }]
-    },
-    scripts = {
-        coreWithoutLocal: [
-            { value: 'node.js' },
-            { value: 'browser.js' }
-        ]
-    };
+var _ = require('lodash');
 
 /**
  * Returns platforms with path and without path
@@ -193,6 +175,17 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
                 });
                 break;
 
+            case 'bemtree':
+                inTechs.push(config.techs.enb['bemtree']);
+
+                inTargets.push(toMinify.indexOf('bemtree.js') > -1 ? '_?.bemtree.js' : '?.bemtree.js');
+
+                inJSON.push({
+                    name: 'enb-bemxjst',
+                    version: config.versions.deps['enb-bemxjst']
+                });
+                break;
+
             case 'bemhtml':   // 'bem-core' ==> 'bemhtml-old' from package 'enb-bemxjst'
                 inTechs.push(config.techs.enb['core-bemhtml']);
 
@@ -233,11 +226,6 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
                 inTechs.push(config.techs.enb[tech]);
 
                 inTargets.push(toMinify.indexOf(tech) > -1 ? '_?.' + tech : '?.' + tech);
-
-                tech === 'bemtree.js' && inJSON.push({
-                    name: 'enb-bemxjst',
-                    version: config.versions.deps['enb-bemxjst']
-                });
         }
     });
 
@@ -331,12 +319,6 @@ function getScripts(techs) {
 }
 
 module.exports = {
-    // fields
-    commonTechs: commonTechs,
-    templates: templates,
-    scripts: scripts,
-
-    // methods
     getPlatforms: getPlatforms,
     addPreprocessor: addPreprocessor,
     addTemplateEngine: addTemplateEngine,

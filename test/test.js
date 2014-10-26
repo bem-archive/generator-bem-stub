@@ -371,16 +371,16 @@ describe('\'ENB\'', function () {
         enb.getTechnologies(config, techs, false, toMinify).must.eql(output);
     });
 
-    it('must get technology \'bemtree.js\'', function () {
+    it('must get technology \'bemtree\'', function () {
         var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.bemtree.json', 'utf-8'));
 
-        enb.getTechnologies(config, ['bemtree.js', 'css'], false, []).must.eql(output);
+        enb.getTechnologies(config, ['bemtree', 'css'], false, []).must.eql(output);
     });
 
-    it('must get minimized technology \'bemtree.js\'', function () {
+    it('must get minimized technology \'bemtree\'', function () {
         var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.bemtree.min.json', 'utf-8'));
 
-        enb.getTechnologies(config, ['bemtree.js', 'css'], false, ['bemtree.js']).must.eql(output);
+        enb.getTechnologies(config, ['bemtree', 'css'], false, ['bemtree.js']).must.eql(output);
     });
 
     it('must get technology \'node.js\'', function () {
