@@ -6,10 +6,19 @@
   ],
   "inTargets": ["?.css"],
   "inJSON": [{
-      "name": "roole",
-      "version": "*"
-    }, {
-      "name": "enb-roole",
-      "version": "*"
+    "name": "bower",
+    "version": "*"
+  }, {
+    "name": "bower-npm-install",
+    "version": "*"
+  }, {
+    "name": "enb",
+    "version": "*"
+  }, {
+    "name": "roole",
+    "version": "*"
+  }, {
+    "name": "enb-roole",
+    "version": "*"
   }]
 }

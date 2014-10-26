@@ -9,6 +9,15 @@
   ],
   "inTargets": ["?.css", "?.bemhtml.js", "?.html"],
   "inJSON": [{
+    "name": "bower",
+    "version": "*"
+  }, {
+    "name": "bower-npm-install",
+    "version": "*"
+  }, {
+    "name": "enb",
+    "version": "*"
+  }, {
     "name": "enb-bemxjst",
     "version": "*"
   }]

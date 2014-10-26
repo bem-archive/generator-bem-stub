@@ -9,6 +9,15 @@
   ],
   "inTargets": ["?.css", "?.bh.js", "?.html"],
   "inJSON": [{
+    "name": "bower",
+    "version": "*"
+  }, {
+    "name": "bower-npm-install",
+    "version": "*"
+  }, {
+    "name": "enb",
+    "version": "*"
+  }, {
       "name": "enb-bh",
       "version": "*"
     }, {

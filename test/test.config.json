@@ -5,10 +5,13 @@
       "bem-components": "*"
     },
     "deps": {
+      "bower": "*",
+      "bower-npm-install": "*",
       "stylus": "*",
       "roole": "*",
       "less": "*",
       "bh": "*",
+      "enb": "*",
       "enb-roole": "*",
       "enb-stylus": "*",
       "enb-diverse-js": "*",
@@ -16,6 +19,8 @@
       "enb-modules": "*",
       "enb-bh": "*",
       "enb-autoprefixer": "*",
+      "bem": "*",
+      "bem-environ": "*",
       "bem-tools-autoprefixer": "*"
     }
   },

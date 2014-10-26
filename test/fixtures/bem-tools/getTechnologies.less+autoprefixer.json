@@ -15,10 +15,22 @@
   },
   "inBundles": [],
   "inJSON": [{
-      "name": "bem-tools-autoprefixer",
-      "version": "*"
-    }, {
-      "name": "less",
-      "version": "*"
+    "name": "bower",
+    "version": "*"
+  }, {
+    "name": "bower-npm-install",
+    "version": "*"
+  }, {
+    "name": "bem",
+    "version": "*"
+  }, {
+    "name": "bem-environ",
+    "version": "*"
+  }, {
+    "name": "bem-tools-autoprefixer",
+    "version": "*"
+  }, {
+    "name": "less",
+    "version": "*"
   }]
 }

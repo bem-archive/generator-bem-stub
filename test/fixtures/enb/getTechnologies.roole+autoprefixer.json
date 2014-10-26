@@ -6,13 +6,22 @@
   ],
   "inTargets": ["?.css"],
   "inJSON": [{
-      "name": "enb-autoprefixer",
-      "version": "*"
-    }, {
-      "name": "roole",
-      "version": "*"
-    }, {
-      "name": "enb-roole",
-      "version": "*"
+    "name": "bower",
+    "version": "*"
+  }, {
+    "name": "bower-npm-install",
+    "version": "*"
+  }, {
+    "name": "enb",
+    "version": "*"
+  }, {
+    "name": "enb-autoprefixer",
+    "version": "*"
+  }, {
+    "name": "roole",
+    "version": "*"
+  }, {
+    "name": "enb-roole",
+    "version": "*"
   }]
 }

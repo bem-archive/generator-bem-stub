@@ -34,5 +34,17 @@
     "forked": ["browser.js+bemhtml"]
   },
   "inBundles": ["browser.js+bemhtml", "html"],
-  "inJSON": []
+  "inJSON": [{
+    "name": "bower",
+    "version": "*"
+  }, {
+    "name": "bower-npm-install",
+    "version": "*"
+  }, {
+    "name": "bem",
+    "version": "*"
+  }, {
+    "name": "bem-environ",
+    "version": "*"
+  }]
 }

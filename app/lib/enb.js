@@ -105,7 +105,12 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
             // 'files' and 'deps' are always included
             inTechs: ['require(\'enb/techs/files\')', 'require(\'enb/techs/deps\')'],
             inTargets: [],
-            inJSON: []
+            inJSON: ['bower', 'bower-npm-install', 'enb'].map(function (dep) {
+                return {
+                    name: dep,
+                    version: config.versions.deps[dep]
+                };
+            })
         },
         inTechs = technologies.inTechs,
         inTargets = technologies.inTargets,
@@ -217,7 +222,6 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
                 var techVal = config.techs.enb['html'];
 
                 techs.indexOf('bemhtml') > -1 && (techVal = techVal.replace('enb', 'enb-bemxjst'));
-
                 techs.indexOf('bh') > -1 && (techVal = techVal.replace('enb', 'enb-bh'));
 
                 inTechs.push(techVal);

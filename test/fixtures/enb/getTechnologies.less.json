@@ -6,7 +6,16 @@
   ],
   "inTargets": ["?.css"],
   "inJSON": [{
-      "name": "less",
-      "version": "*"
+    "name": "bower",
+    "version": "*"
+  }, {
+    "name": "bower-npm-install",
+    "version": "*"
+  }, {
+    "name": "enb",
+    "version": "*"
+  }, {
+    "name": "less",
+    "version": "*"
   }]
 }

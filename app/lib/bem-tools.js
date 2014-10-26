@@ -86,7 +86,7 @@ function addPreprocessor(techs, preprocessor) {
  * @returns {Object[]}
  */
 function addIe(techs) {
-    if (techs.indexOf('ie.css') > -1) { return techs; }
+    if (techs.indexOf('ie.css') > -1) return techs;
 
     var ie = /ie[0-9]{1,2}\.css/.exec(techs);
 
@@ -103,7 +103,7 @@ function addIe(techs) {
  * @returns {Object[]}
  */
 function addTemplateEngine(techs, templateEngine) {
-    if (templateEngine === 'my') { return techs; }
+    if (templateEngine === 'my') return techs;
 
     var _scripts = scripts.coreWithoutLocal,
         index = -1;
@@ -167,7 +167,12 @@ function getTechnologies(config, techs, isAutoprefixer) {
                 forked: []
             },
             inBundles: [],
-            inJSON: []
+            inJSON: ['bower', 'bower-npm-install', 'bem', 'bem-environ'].map(function (dep) {
+                return {
+                    name: dep,
+                    version: config.versions.deps[dep]
+                };
+            })
         },
         inBlocks = technologies.inBlocks,
         inBundles = technologies.inBundles,

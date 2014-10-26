@@ -6,10 +6,19 @@
   ],
   "inTargets": ["?.css"],
   "inJSON": [{
-      "name": "enb-autoprefixer",
-      "version": "*"
-    }, {
-      "name": "enb-stylus",
-      "version": "*"
+    "name": "bower",
+    "version": "*"
+  }, {
+    "name": "bower-npm-install",
+    "version": "*"
+  }, {
+    "name": "enb",
+    "version": "*"
+  }, {
+    "name": "enb-autoprefixer",
+    "version": "*"
+  }, {
+    "name": "enb-stylus",
+    "version": "*"
   }]
 }
