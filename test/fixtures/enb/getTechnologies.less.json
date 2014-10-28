@@ -4,6 +4,18 @@
     "require('enb/techs/deps')",
     "require('enb/techs/css-less')"
   ],
-  "inTargets": ["css"],
-  "inJSON": ["less"]
+  "inTargets": ["?.css"],
+  "inJSON": [{
+    "name": "bower",
+    "version": "*"
+  }, {
+    "name": "bower-npm-install",
+    "version": "*"
+  }, {
+    "name": "enb",
+    "version": "*"
+  }, {
+    "name": "less",
+    "version": "*"
+  }]
 }

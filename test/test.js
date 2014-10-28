@@ -1,7 +1,7 @@
 var fs = require('fs'),
     bemtools = require('../app/lib/bem-tools'),
     enb = require('../app/lib/enb'),
-    configPath = 'app/config/config.json';
+    config = JSON.parse(fs.readFileSync('test/test.config.json', 'utf-8'));
 
 // bem-tools
 // --------------------------------------
@@ -42,7 +42,7 @@ describe('\'bem-tools\'', function () {
     });
 
     it('must add preprocessor after technology \'bemjson.js\'', function () {
-        bemtools.addPreprocessor(['bemjson.js'], 'stylus').must.eql(['bemjson.js', 'stylus', 'css']);
+        bemtools.addPreprocessor(['bemjson.js'], 'stylus', false).must.eql(['bemjson.js', 'stylus', 'css']);
     });
 
     it('must add \'css\'', function () {
@@ -89,69 +89,97 @@ describe('\'bem-tools\'', function () {
     it('must get technology \'bemjson.js\'', function () {
         var output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.bemjson.json', 'utf-8'));
 
-        bemtools.getTechnologies(configPath, ['bemjson.js', 'css']).must.eql(output);
+        bemtools.getTechnologies(config, ['bemjson.js', 'css'], false).must.eql(output);
     });
 
     it('must get technology \'stylus\'', function () {
         var output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.stylus.json', 'utf-8'));
 
-        bemtools.getTechnologies(configPath, ['stylus', 'css']).must.eql(output);
+        bemtools.getTechnologies(config, ['stylus', 'css'], false).must.eql(output);
+    });
+
+    it('must get technology \'stylus\' + \'autoprefixer\'', function () {
+        var path = 'test/fixtures/bem-tools/getTechnologies.stylus+autoprefixer.json',
+            output = JSON.parse(fs.readFileSync(path, 'utf-8'));
+
+        bemtools.getTechnologies(config, ['stylus', 'css'], true).must.eql(output);
     });
 
     it('must get technology \'roole\'', function () {
         var output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.roole.json', 'utf-8'));
 
-        bemtools.getTechnologies(configPath, ['roole', 'css']).must.eql(output);
+        bemtools.getTechnologies(config, ['roole', 'css'], false).must.eql(output);
+    });
+
+    it('must get technology \'roole\' + \'autoprefixer\'', function () {
+        var path = 'test/fixtures/bem-tools/getTechnologies.roole+autoprefixer.json',
+            output = JSON.parse(fs.readFileSync(path, 'utf-8'));
+
+        bemtools.getTechnologies(config, ['roole', 'css'], true).must.eql(output);
     });
 
     it('must get technology \'less\'', function () {
         var output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.less.json', 'utf-8'));
 
-        bemtools.getTechnologies(configPath, ['less', 'css']).must.eql(output);
+        bemtools.getTechnologies(config, ['less', 'css'], false).must.eql(output);
+    });
+
+    it('must get technology \'less\' + \'autoprefixer\'', function () {
+        var path = 'test/fixtures/bem-tools/getTechnologies.less+autoprefixer.json',
+            output = JSON.parse(fs.readFileSync(path, 'utf-8'));
+
+        bemtools.getTechnologies(config, ['less', 'css'], true).must.eql(output);
     });
 
     it('must get technology \'css\'', function () {
         var output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.css.json', 'utf-8'));
 
-        bemtools.getTechnologies(configPath, ['css']).must.eql(output);
+        bemtools.getTechnologies(config, ['css'], false).must.eql(output);
+    });
+
+    it('must get technology \'css\' + \'autoprefixer\'', function () {
+        var path = 'test/fixtures/bem-tools/getTechnologies.css+autoprefixer.json',
+            output = JSON.parse(fs.readFileSync(path, 'utf-8'));
+
+        bemtools.getTechnologies(config, ['css'], true).must.eql(output);
     });
 
     it('must get technologies \'ieN.css\'', function () {
         var techs = ['css', 'ie.css', 'ie6.css', 'ie7.css', 'ie8.css', 'ie9.css'],
             output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.ie.json', 'utf-8'));
 
-        bemtools.getTechnologies(configPath, techs).must.eql(output);
+        bemtools.getTechnologies(config, techs, false).must.eql(output);
     });
 
     it('must get technology \'bemtree\'', function () {
         var output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.bemtree.json', 'utf-8'));
 
-        bemtools.getTechnologies(configPath, ['css', 'bemtree']).must.eql(output);
+        bemtools.getTechnologies(config, ['css', 'bemtree'], false).must.eql(output);
     });
 
     it('must get technology \'bemhtml\'', function () {
         var output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.bemhtml.json', 'utf-8'));
 
-        bemtools.getTechnologies(configPath, ['css', 'bemhtml']).must.eql(output);
+        bemtools.getTechnologies(config, ['css', 'bemhtml'], false).must.eql(output);
     });
 
     it('must get technology \'node.js\'', function () {
         var output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.node.json', 'utf-8'));
 
-        bemtools.getTechnologies(configPath, ['css', 'node.js']).must.eql(output);
+        bemtools.getTechnologies(config, ['css', 'node.js'], false).must.eql(output);
     });
 
     it('must get technology \'browser.js+bemhtml\'', function () {
         var output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.browser.json', 'utf-8'));
 
-        bemtools.getTechnologies(configPath, ['css', 'browser.js+bemhtml']).must.eql(output);
+        bemtools.getTechnologies(config, ['css', 'browser.js+bemhtml'], false).must.eql(output);
     });
 
     it('must get technology \'html\'', function () {
         var techs = ['bemjson.js', 'css', 'bemhtml', 'html'],
             output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.html.json', 'utf-8'));
 
-        bemtools.getTechnologies(configPath, techs).must.eql(output);
+        bemtools.getTechnologies(config, techs, false).must.eql(output);
     });
 
     it('must get all technologies', function () {
@@ -171,7 +199,7 @@ describe('\'bem-tools\'', function () {
             ],
             output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.all.json', 'utf-8'));
 
-        bemtools.getTechnologies(configPath, techs).must.eql(output);
+        bemtools.getTechnologies(config, techs, false).must.eql(output);
     });
 
     it('must get browsers for all platforms', function () {
@@ -186,17 +214,17 @@ describe('\'bem-tools\'', function () {
                 'touch-phone': ['android 4', 'ios 6', 'ie 10']
             };
 
-        bemtools.getBrowsers(configPath, platforms).must.eql(output);
+        bemtools.getBrowsers(config, platforms).must.eql(output);
     });
 
     it('must get styles', function () {
         var techs = ['css', 'ie.css', 'ie6.css', 'ie7.css', 'ie8.css', 'ie9.css'],
             output = {
-                css: [{ elem: 'css', url: 'css' }],
+                css: [{ elem: 'css', url: '_index.css' }],
                 ies: ['', 6, 7, 8, 9].map(function (i) {
                     return {
                         elem: 'css',
-                        url: 'ie' + i + '.css'
+                        url: '_index.ie' + i + '.css'
                     };
                 })
             };
@@ -205,7 +233,7 @@ describe('\'bem-tools\'', function () {
     });
 
     it('must get scripts', function () {
-        bemtools.getScripts(['browser.js+bemhtml']).must.eql([{ elem: 'js', url: 'js' }]);
+        bemtools.getScripts(['browser.js+bemhtml']).must.eql([{ elem: 'js', url: '_index.js' }]);
     });
 });
 
@@ -264,75 +292,75 @@ describe('\'ENB\'', function () {
     it('must get technology \'bemjson.js\'', function () {
         var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.bemjson.json', 'utf-8'));
 
-        enb.getTechnologies(configPath, ['bemjson.js', 'css'], []).must.eql(output);
+        enb.getTechnologies(config, ['bemjson.js', 'css'], false, []).must.eql(output);
     });
 
     it('must get technology \'stylus\'', function () {
         var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.stylus.json', 'utf-8'));
 
-        enb.getTechnologies(configPath, ['stylus'], []).must.eql(output);
+        enb.getTechnologies(config, ['stylus'], false, []).must.eql(output);
     });
 
     it('must get technology \'stylus\' + \'autoprefixer\'', function () {
         var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.stylus+autoprefixer.json', 'utf-8'));
 
-        enb.getTechnologies(configPath, ['stylus'], [], true).must.eql(output);
+        enb.getTechnologies(config, ['stylus'], true, []).must.eql(output);
     });
 
     it('must get technology \'roole\'', function () {
         var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.roole.json', 'utf-8'));
 
-        enb.getTechnologies(configPath, ['roole'], []).must.eql(output);
+        enb.getTechnologies(config, ['roole'], false, []).must.eql(output);
     });
 
     it('must get technology \'roole\' + \'autoprefixer\'', function () {
         var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.roole+autoprefixer.json', 'utf-8'));
 
-        enb.getTechnologies(configPath, ['roole'], [], true).must.eql(output);
+        enb.getTechnologies(config, ['roole'], true, []).must.eql(output);
     });
 
     it('must get technology \'less\'', function () {
         var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.less.json', 'utf-8'));
 
-        enb.getTechnologies(configPath, ['less'], []).must.eql(output);
+        enb.getTechnologies(config, ['less'], false, []).must.eql(output);
     });
 
     it('must get technology \'less\' + \'autoprefixer\'', function () {
         var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.less+autoprefixer.json', 'utf-8'));
 
-        enb.getTechnologies(configPath, ['less'], [], true).must.eql(output);
+        enb.getTechnologies(config, ['less'], true, []).must.eql(output);
     });
 
     it('must get technology \'css\'', function () {
         var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.css.json', 'utf-8'));
 
-        enb.getTechnologies(configPath, ['css'], []).must.eql(output);
+        enb.getTechnologies(config, ['css'], false, []).must.eql(output);
     });
 
     it('must get technology \'css\' + \'autoprefixer\'', function () {
         var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.css+autoprefixer.json', 'utf-8'));
 
-        enb.getTechnologies(configPath, ['css'], [], true).must.eql(output);
+        enb.getTechnologies(config, ['css'], true, []).must.eql(output);
     });
 
     it('must get minimized technology \'css\'', function () {
         var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.css.min.json', 'utf-8'));
 
-        enb.getTechnologies(configPath, ['css'], ['css']).must.eql(output);
+        enb.getTechnologies(config, ['css'], false, ['css']).must.eql(output);
     });
 
     it('must get minimized technology \'css\' + \'autoprefixer\'', function () {
         var testFile = fs.readFileSync('test/fixtures/enb/getTechnologies.css+autoprefixer.min.json', 'utf-8'),
             output = JSON.parse(testFile);
 
-        enb.getTechnologies(configPath, ['css'], ['css'], true).must.eql(output);
+        enb.getTechnologies(config, ['css'], true, ['css']).must.eql(output);
     });
 
     it('must get technologies \'ieN.css\'', function () {
         var techs = ['ie.css', 'ie6.css', 'ie7.css', 'ie8.css', 'ie9.css', 'css'],
             output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.ie.json', 'utf-8'));
 
-        enb.getTechnologies(configPath, techs, []).must.eql(output);
+        enb.getTechnologies(config, techs, false, []).must.eql(output);
     });
 
     it('must get minimized technologies \'ieN.css\'', function () {
@@ -340,81 +368,81 @@ describe('\'ENB\'', function () {
             toMinify = ['ie.css', 'ie6.css', 'ie7.css', 'ie8.css', 'ie9.css', 'css'],
             output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.ie.min.json', 'utf-8'));
 
-        enb.getTechnologies(configPath, techs, toMinify).must.eql(output);
+        enb.getTechnologies(config, techs, false, toMinify).must.eql(output);
     });
 
-    it('must get technology \'bemtree.js\'', function () {
+    it('must get technology \'bemtree\'', function () {
         var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.bemtree.json', 'utf-8'));
 
-        enb.getTechnologies(configPath, ['bemtree.js', 'css'], []).must.eql(output);
+        enb.getTechnologies(config, ['bemtree', 'css'], false, []).must.eql(output);
     });
 
-    it('must get minimized technology \'bemtree.js\'', function () {
+    it('must get minimized technology \'bemtree\'', function () {
         var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.bemtree.min.json', 'utf-8'));
 
-        enb.getTechnologies(configPath, ['bemtree.js', 'css'], ['bemtree.js']).must.eql(output);
+        enb.getTechnologies(config, ['bemtree', 'css'], false, ['bemtree.js']).must.eql(output);
     });
 
     it('must get technology \'node.js\'', function () {
         var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.node.json', 'utf-8'));
 
-        enb.getTechnologies(configPath, ['node.js', 'css'], []).must.eql(output);
+        enb.getTechnologies(config, ['node.js', 'css'], false, []).must.eql(output);
     });
 
     it('must get minimized technology \'node.js\'', function () {
         var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.node.min.json', 'utf-8'));
 
-        enb.getTechnologies(configPath, ['node.js', 'css'], ['node.js']).must.eql(output);
+        enb.getTechnologies(config, ['node.js', 'css'], false, ['node.js']).must.eql(output);
     });
 
     it('must get technology \'browser.js\'', function () {
         var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.browser.json', 'utf-8'));
 
-        enb.getTechnologies(configPath, ['browser.js', 'css'], []).must.eql(output);
+        enb.getTechnologies(config, ['browser.js', 'css'], false, []).must.eql(output);
     });
 
     it('must get minimized technology \'browser.js\'', function () {
         var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.browser.min.json', 'utf-8'));
 
-        enb.getTechnologies(configPath, ['browser.js', 'css'], ['js']).must.eql(output);
+        enb.getTechnologies(config, ['browser.js', 'css'], false, ['js']).must.eql(output);
     });
 
     it('must get technology \'bemhtml\'', function () {
         var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.bemhtml.json', 'utf-8'));
 
-        enb.getTechnologies(configPath, ['bemhtml', 'css'], []).must.eql(output);
+        enb.getTechnologies(config, ['bemhtml', 'css'], false, []).must.eql(output);
     });
 
     it('must get minimized technology \'bemhtml\'', function () {
         var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.bemhtml.min.json', 'utf-8'));
 
-        enb.getTechnologies(configPath, ['bemhtml', 'css'], ['bemhtml.js']).must.eql(output);
+        enb.getTechnologies(config, ['bemhtml', 'css'], false, ['bemhtml.js']).must.eql(output);
     });
 
     it('must get technology \'bh\'', function () {
         var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.bh.json', 'utf-8'));
 
-        enb.getTechnologies(configPath, ['bh', 'css'], []).must.eql(output);
+        enb.getTechnologies(config, ['bh', 'css'], false, []).must.eql(output);
     });
 
     it('must get minimized technology \'bh\'', function () {
         var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.bh.min.json', 'utf-8'));
 
-        enb.getTechnologies(configPath, ['bh', 'css'], ['bh.js']).must.eql(output);
+        enb.getTechnologies(config, ['bh', 'css'], false, ['bh.js']).must.eql(output);
     });
 
     it('must get technology \'html\' --> \'bemhtml\'', function () {
         var techs = ['bemjson.js', 'css', 'bemhtml', 'html'],
             output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.html.bemhtml.json', 'utf-8'));
 
-        enb.getTechnologies(configPath, techs, []).must.eql(output);
+        enb.getTechnologies(config, techs, false, []).must.eql(output);
     });
 
     it('must get technology \'html\' --> \'bh\'', function () {
         var techs = ['bemjson.js', 'css', 'bh', 'html'],
             output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.html.bh.json', 'utf-8'));
 
-        enb.getTechnologies(configPath, techs, []).must.eql(output);
+        enb.getTechnologies(config, techs, false, []).must.eql(output);
     });
 
     it('must get browsers for all platforms', function () {
@@ -429,17 +457,17 @@ describe('\'ENB\'', function () {
                 'touch-phone': ['android 4', 'ios 6', 'ie 10']
             };
 
-        enb.getBrowsers(configPath, platforms).must.eql(output);
+        enb.getBrowsers(config, platforms).must.eql(output);
     });
 
     it('must get styles', function () {
-        var techs = ['css', 'ie.css', 'ie6.css', 'ie7.css', 'ie8.css', 'ie9.css'],
+        var techs = ['?.css', '?.ie.css', '?.ie6.css', '?.ie7.css', '?.ie8.css', '?.ie9.css'],
             output = {
-                css: [{ elem: 'css', url: 'css' }],
+                css: [{ elem: 'css', url: 'index.css' }],
                 ies: ['', 6, 7, 8, 9].map(function (i) {
                     return {
                         elem: 'css',
-                        url: 'ie' + i + '.css'
+                        url: 'index.ie' + i + '.css'
                     };
                 })
             };
@@ -448,13 +476,13 @@ describe('\'ENB\'', function () {
     });
 
     it('must get minimized styles', function () {
-        var techs = ['min.css', 'min.ie.css', 'min.ie6.css', 'min.ie7.css', 'min.ie8.css', 'min.ie9.css'],
+        var techs = ['_?.css', '_?.ie.css', '_?.ie6.css', '_?.ie7.css', '_?.ie8.css', '_?.ie9.css'],
             output = {
-                css: [{ elem: 'css', url: 'min.css' }],
+                css: [{ elem: 'css', url: '_index.css' }],
                 ies: ['', 6, 7, 8, 9].map(function (i) {
                     return {
                         elem: 'css',
-                        url: 'min.ie' + i + '.css'
+                        url: '_index.ie' + i + '.css'
                     };
                 })
             };
@@ -463,11 +491,11 @@ describe('\'ENB\'', function () {
     });
 
     it('must get scripts', function () {
-        enb.getScripts(['js']).must.eql([{ elem: 'js', url: 'js' }]);
+        enb.getScripts(['?.js']).must.eql([{ elem: 'js', url: 'index.js' }]);
     });
 
     it('must get minimized scripts', function () {
-        enb.getScripts(['min.js']).must.eql([{ elem: 'js', url: 'min.js' }]);
+        enb.getScripts(['_?.js']).must.eql([{ elem: 'js', url: '_index.js' }]);
     });
 });
 

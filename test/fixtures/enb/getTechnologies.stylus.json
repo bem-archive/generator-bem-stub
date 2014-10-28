@@ -4,6 +4,18 @@
     "require('enb/techs/deps')",
     "require('enb-stylus/techs/css-stylus')"
   ],
-  "inTargets": ["css"],
-  "inJSON": ["enb-stylus"]
+  "inTargets": ["?.css"],
+  "inJSON": [{
+    "name": "bower",
+    "version": "*"
+  }, {
+    "name": "bower-npm-install",
+    "version": "*"
+  }, {
+    "name": "enb",
+    "version": "*"
+  }, {
+    "name": "enb-stylus",
+    "version": "*"
+  }]
 }

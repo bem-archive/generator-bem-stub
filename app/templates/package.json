@@ -6,13 +6,9 @@
   "engines": {
     "node": ">=0.10"
   },
-  "dependencies": {
-    "bem-environ": "1.4.0"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "bem": "0.9.0",
-    "bower": "1.3.9",
-    "bower-npm-install": "0.5.9"
+<%= _.map(technologies.inJSON, function(technology) { return '    "' + technology.name + '": "' + technology.version + '"'}).join(',\n') %>
   },
   "scripts": {
     "postinstall": "bower-npm-install",

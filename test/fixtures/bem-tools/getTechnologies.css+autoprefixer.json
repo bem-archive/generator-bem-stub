@@ -5,11 +5,11 @@
       "'deps.js'              : 'v2/deps.js'",
       "'css'                  : 'v2/css'"
     ],
-    "notV2": ["bemhtml"],
-    "defaultTechs": ["css", "bemhtml"]
+    "notV2": [],
+    "defaultTechs": ["css"]
   },
   "inMake": {
-    "techs": ["bemdecl.js", "deps.js", "css", "bemhtml"],
+    "techs": ["bemdecl.js", "deps.js", "css"],
     "forked": []
   },
   "inBundles": [],
@@ -24,6 +24,9 @@
     "version": "*"
   }, {
     "name": "bem-environ",
+    "version": "*"
+  }, {
+    "name": "bem-tools-autoprefixer",
     "version": "*"
   }]
 }

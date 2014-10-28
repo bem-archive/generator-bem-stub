@@ -16,7 +16,6 @@ module.exports = {
     disallowSpacesInNamedFunctionExpression: {
         beforeOpeningRoundBrace: true
     },
-    requireMultipleVarDecl: true,
     requireBlocksOnNewline: 1,
     disallowPaddingNewlinesInBlocks: true,
     disallowSpacesInsideArrayBrackets: 'nested',

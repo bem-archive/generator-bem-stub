@@ -23,8 +23,9 @@
     "url": "git://github.com/bem/generator-bem-stub.git"
   },
   "dependencies": {
-    "yeoman-generator": "0.16.0",
-    "lodash": "2.4.1"
+    "yeoman-generator": "0.17.7",
+    "lodash": "2.4.1",
+    "colors": "1.0.3"
   },
   "devDependencies": {
     "mocha": "1.21.4",

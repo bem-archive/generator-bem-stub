@@ -14,5 +14,20 @@
     "forked": ["stylus"]
   },
   "inBundles": [],
-  "inJSON": ["stylus"]
+  "inJSON": [{
+    "name": "bower",
+    "version": "*"
+  }, {
+    "name": "bower-npm-install",
+    "version": "*"
+  }, {
+    "name": "bem",
+    "version": "*"
+  }, {
+    "name": "bem-environ",
+    "version": "*"
+  }, {
+    "name": "stylus",
+    "version": "*"
+  }]
 }

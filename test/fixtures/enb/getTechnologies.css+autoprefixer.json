@@ -4,6 +4,18 @@
     "require('enb/techs/deps')",
     "require('enb/techs/css'), { target: '?.noprefix.css' }"
   ],
-  "inTargets": ["css"],
-  "inJSON": []
+  "inTargets": ["?.css"],
+  "inJSON": [{
+    "name": "bower",
+    "version": "*"
+  }, {
+    "name": "bower-npm-install",
+    "version": "*"
+  }, {
+    "name": "enb",
+    "version": "*"
+  }, {
+    "name": "enb-autoprefixer",
+    "version": "*"
+  }]
 }

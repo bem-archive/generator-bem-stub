@@ -5,6 +5,15 @@
     "require('enb/techs/bemdecl-from-bemjson')",
     "require('enb/techs/css')"
   ],
-  "inTargets": ["css"],
-  "inJSON": []
+  "inTargets": ["?.css"],
+  "inJSON": [{
+    "name": "bower",
+    "version": "*"
+  }, {
+    "name": "bower-npm-install",
+    "version": "*"
+  }, {
+    "name": "enb",
+    "version": "*"
+  }]
 }

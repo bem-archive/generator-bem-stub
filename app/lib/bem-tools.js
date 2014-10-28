@@ -1,24 +1,5 @@
 'use strict';
-var fs = require('fs'),
-    _ = require('lodash'),
-    // technologies
-    commonTechs = [
-        { name: 'BEMJSON', value: 'bemjson.js' },
-        { value: 'ie.css' },
-        { value: 'ie6.css' },
-        { value: 'ie7.css' },
-        { value: 'ie8.css' },
-        { value: 'ie9.css' }
-    ],
-    templates = {
-        core: [{ name: 'BEMTREE', value: 'bemtree'  }]
-    },
-    scripts = {
-        coreWithoutLocal: [
-            { value: 'node.js' },
-            { value: 'browser.js+bemhtml' }
-        ]
-    };
+var _ = require('lodash');
 
 /**
  * Returns platforms with path and without path
@@ -35,8 +16,8 @@ var fs = require('fs'),
  *              { desktop: ['common', 'desktop'],
  *                'touch-pad': ['common', 'touch', 'touch-pad'] } }
  *
- * @param {Array of arrays} pls
- * @param {Array of objects} libs
+ * @param {Object[]} pls
+ * @param {Object[]} libs
  * @param {Boolean} isDesign
  * @returns {Object}
  */
@@ -67,9 +48,9 @@ function getPlatforms(pls, libs, isDesign) {
 
 /**
  * Adds the chosen preprocessor to technologies
- * @param {Array} techs
+ * @param {Object[]} techs
  * @param {String} preprocessor
- * @returns {Array}
+ * @returns {Object[]}
  */
 function addPreprocessor(techs, preprocessor) {
     if (preprocessor === 'css') {
@@ -83,11 +64,11 @@ function addPreprocessor(techs, preprocessor) {
 
 /**
  * Adds 'ie.css' to technologies
- * @param {Array} techs
- * @returns {Array}
+ * @param {Object[]} techs
+ * @returns {Object[]}
  */
 function addIe(techs) {
-    if (techs.indexOf('ie.css') > -1) { return techs; }
+    if (techs.indexOf('ie.css') > -1) return techs;
 
     var ie = /ie[0-9]{1,2}\.css/.exec(techs);
 
@@ -100,20 +81,18 @@ function addIe(techs) {
 
 /**
  * Adds the template engine to technologies
- * @param {Array} techs
- * @returns {Array}
+ * @param {Object[]} techs
+ * @returns {Object[]}
  */
 function addTemplateEngine(techs, templateEngine) {
-    if (templateEngine === 'my') { return techs; }
+    if (templateEngine === 'my') return techs;
 
-    var _scripts = scripts.coreWithoutLocal,
+    var scripts = ['node.js', 'browser.js+bemhtml'],
         index = -1;
 
-    for (var i in _scripts) {
-        if (_scripts.hasOwnProperty(i)) {
-            index = techs.indexOf(_scripts[i].value);
-            if (index > -1) { break; }
-        }
+    for (var i = 0; i < scripts.length; i++) {
+        index = techs.indexOf(scripts[i]);
+        if (index > -1) break;
     }
 
     index > -1 ? techs.splice(index, 0, templateEngine) : techs.push(templateEngine);
@@ -123,17 +102,18 @@ function addTemplateEngine(techs, templateEngine) {
 
 /**
  * Returns technologies
- * @param {String} configPath
- * @param {Array} techs
+ * @param {Object} config
+ * @param {Object[]} techs
+ * @param {Boolean} isAutoprefixer
  * @returns {Object}
  */
-function getTechnologies(configPath, techs) {
+function getTechnologies(config, techs, isAutoprefixer) {
     /*
         for example, returns ==> bemdecl.js'         : 'v2/bemdecl.js'
     */
     function getTechDecl(tech) {
         function getTechVal(tech) {
-            var _tech = JSON.parse(fs.readFileSync(configPath, 'utf-8')).technologies['bem-tools'][tech];
+            var _tech = config.techs['bem-tools'][tech];
 
             return '\'' + _tech + '\'';
         }
@@ -167,13 +147,23 @@ function getTechnologies(configPath, techs) {
                 forked: []
             },
             inBundles: [],
-            inJSON: []
+            inJSON: ['bower', 'bower-npm-install', 'bem', 'bem-environ'].map(function (dep) {
+                return {
+                    name: dep,
+                    version: config.versions.deps[dep]
+                };
+            })
         },
         inBlocks = technologies.inBlocks,
         inBundles = technologies.inBundles,
         inMake = technologies.inMake,
         inJSON = technologies.inJSON,
         hasPreprocessor = false;
+
+    isAutoprefixer && inJSON.push({
+        name: 'bem-tools-autoprefixer',
+        version: config.versions.deps['bem-tools-autoprefixer']
+    });
 
     techs.map(function (tech) {
         switch (tech) {
@@ -224,7 +214,10 @@ function getTechnologies(configPath, techs) {
 
                     inMake.forked.push(tech);
 
-                    inJSON.push(tech);
+                    inJSON.push({
+                        name: tech,
+                        version: config.versions.deps[tech]
+                    });
 
                     hasPreprocessor = true;
                 }
@@ -250,15 +243,15 @@ function getTechnologies(configPath, techs) {
  * @example
  *  { desktop: ['common', 'desktop'] } ==> { desktop: ['last 2 versions', 'ie 10', 'ff 24', 'opera 12.16'] }
  *
- * @param {String} configPath
+ * @param {Object} config
  * @param {Object} platforms --> without path
  * @returns {Object}
  */
-function getBrowsers(configPath, platforms) {
+function getBrowsers(config, platforms) {
     var browsers = {};
 
     Object.keys(platforms).forEach(function (platform) {
-        browsers[platform] = JSON.parse(fs.readFileSync(configPath, 'utf-8')).browsers[platform];
+        browsers[platform] = config.browsers[platform];
     });
 
     return browsers;
@@ -269,24 +262,24 @@ function getBrowsers(configPath, platforms) {
  * @example
  * ['css',     ==>         {
  *  'ie.css',                  css: [{
- *  'ie6.css']                    elem: 'css',
- *                                 url: 'css'
+ *  'ie6.css']                     elem: 'css',
+ *                                 url: '_index.css'
  *                             }],
  *                             ies: [{
  *                                 elem: 'css',
- *                                 url: 'ie.css'
+ *                                 url: '_index.ie.css'
  *                             }, {
  *                                 elem: 'css',
- *                                 url: 'ie6.css'
+ *                                 url: '_index.ie6.css'
  *                             }]
  *                         }
  *
- * @param {Array} techs
+ * @param {Object[]} techs
  * @returns {Object}
  */
 function getStyles(techs) {
     var styles = {
-            css: [{ elem: 'css', url: 'css' }],
+            css: [{ elem: 'css', url: '_index.css' }],
             ies: []
         },
         ies = ['ie.css', 'ie6.css', 'ie7.css', 'ie8.css', 'ie9.css'];
@@ -295,7 +288,7 @@ function getStyles(techs) {
         var isIE = techs.indexOf(ie) > -1;
         isIE && styles.ies.push({
             elem: 'css',
-            url: ie
+            url: '_index.' + ie
         });
     });
 
@@ -305,28 +298,22 @@ function getStyles(techs) {
 /**
  * Returns scripts which will be added to 'index.bemjson.js'
  * @example
- * ['browser.js+bemhtml']  ==>  [{ elem: 'js', url: 'js' }]
+ * ['browser.js+bemhtml']  ==>  [{ elem: 'js', url: '_index.js' }]
  *
- * @param {Array} techs
+ * @param {Object[]} techs
  * @returns {Object}
  */
 function getScripts(techs) {
     var scripts = [];
 
     techs.indexOf('browser.js+bemhtml') > -1 && scripts.push({
-        elem: 'js', url: 'js'
+        elem: 'js', url: '_index.js'
     });
 
     return scripts;
 }
 
 module.exports = {
-    // fields
-    commonTechs: commonTechs,
-    templates: templates,
-    scripts: scripts,
-
-    // methods
     getPlatforms: getPlatforms,
     addPreprocessor: addPreprocessor,
     addIe: addIe,

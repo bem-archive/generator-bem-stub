@@ -6,6 +6,21 @@
     "require('enb-modules/techs/prepend-modules'), { source: '?.pre.js', target: '?.js' }",
     "require('enb/techs/css')"
   ],
-  "inTargets": ["css", "js"],
-  "inJSON": ["enb-diverse-js", "enb-modules"]
+  "inTargets": ["?.css", "?.js"],
+  "inJSON": [{
+    "name": "bower",
+    "version": "*"
+  }, {
+    "name": "bower-npm-install",
+    "version": "*"
+  }, {
+    "name": "enb",
+    "version": "*"
+  }, {
+    "name": "enb-diverse-js",
+    "version": "*"
+  }, {
+    "name": "enb-modules",
+    "version": "*"
+  }]
 }

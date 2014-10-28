@@ -14,5 +14,20 @@
     "forked": ["roole"]
   },
   "inBundles": [],
-  "inJSON": ["roole"]
+  "inJSON": [{
+    "name": "bower",
+    "version": "*"
+  }, {
+    "name": "bower-npm-install",
+    "version": "*"
+  }, {
+    "name": "bem",
+    "version": "*"
+  }, {
+    "name": "bem-environ",
+    "version": "*"
+  }, {
+    "name": "roole",
+    "version": "*"
+  }]
 }

@@ -14,5 +14,20 @@
     "forked": ["less"]
   },
   "inBundles": [],
-  "inJSON": ["less"]
+  "inJSON": [{
+    "name": "bower",
+    "version": "*"
+  }, {
+    "name": "bower-npm-install",
+    "version": "*"
+  }, {
+    "name": "bem",
+    "version": "*"
+  }, {
+    "name": "bem-environ",
+    "version": "*"
+  }, {
+    "name": "less",
+    "version": "*"
+  }]
 }

@@ -4,6 +4,21 @@
     "require('enb/techs/deps')",
     "require('enb-roole/techs/css-roole')"
   ],
-  "inTargets": ["css"],
-  "inJSON": ["roole", "enb-roole"]
+  "inTargets": ["?.css"],
+  "inJSON": [{
+    "name": "bower",
+    "version": "*"
+  }, {
+    "name": "bower-npm-install",
+    "version": "*"
+  }, {
+    "name": "enb",
+    "version": "*"
+  }, {
+    "name": "roole",
+    "version": "*"
+  }, {
+    "name": "enb-roole",
+    "version": "*"
+  }]
 }
