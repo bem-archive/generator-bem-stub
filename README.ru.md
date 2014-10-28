@@ -57,8 +57,8 @@ $ yo bem-stub
 * [Автопрефиксер](https://github.com/postcss/autoprefixer)
 * Технологии:
  * [BEMJSON](http://ru.bem.info/technology/bemjson/current/bemjson/)
+ * [BEMDECL](http://ru.bem.info/technology/bemjson/current/bemjson/)
  * [BEMTREE](http://ru.bem.info/technology/bemtree/current/bemtree/)
- * BEMDECL
  * node.js
  * browser.js (доступна только в [ENB](https://github.com/enb-make/enb))
  * browser.js+bemhtml (доступна только в [bem-tools](http://ru.bem.info/tools/bem/bem-tools/))
@@ -80,4 +80,4 @@ $ yo bem-stub --skip-install
 
 ### Версии
 
-В файле [app/config/config.json](https://github.com/bem/generator-bem-stub/blob/master/app/config/config.json#L2-L21) указано, какие версии зависимостей и библиотек использует `generator-bem-stub`.
+В файле [app/config/versions.json](https://github.com/bem/generator-bem-stub/blob/master/app/config/versions.json) указано, какие версии зависимостей и библиотек использует `generator-bem-stub`.

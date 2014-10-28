@@ -54,9 +54,9 @@ To create the config file fitting for your project, the generator will ask sever
  * [Less](https://github.com/less/less.js)
 * [Autoprefixer](https://github.com/postcss/autoprefixer)
 * Technologies:
- * BEMJSON
+ * [BEMJSON](http://bem.info/technology/bemjson/current/bemjson/)
+ * [BEMDECL](http://bem.info/technology/bemjson/current/bemjson/)
  * [BEMTREE](http://en.bem.info/technology/bemtree/current/bemtree/)
- * BEMDECL
  * node.js
  * browser.js (only in [ENB](https://github.com/enb-make/enb))
  * browser.js+bemhtml (only in [bem-tools](http://bem.info/tools/bem/bem-tools/))
@@ -78,5 +78,5 @@ $ yo bem-stub --skip-install
 
 ### Versions
 
-You can check in the file [app/config/config.json](https://github.com/bem/generator-bem-stub/blob/master/app/config/config.json#L2-L21) which versions of the dependencies and libraries `generator-bem-stub` uses.
+You can check in the file [app/config/versions.json](https://github.com/bem/generator-bem-stub/blob/master/app/config/versions.json) which versions of the dependencies and libraries `generator-bem-stub` uses.
 
