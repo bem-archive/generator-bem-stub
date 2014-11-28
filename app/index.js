@@ -1,6 +1,5 @@
 'use strict';
-var fs = require('fs'),
-    path = require('path'),
+var path = require('path'),
     yeoman = require('yeoman-generator');
 
 require('colors');
@@ -33,15 +32,6 @@ var BemGenerator = yeoman.generators.Base.extend({
 
     prompting: function () {
         /**
-         * Returns one of the configs
-         * @param {String} config
-         * @returns {Object}
-         */
-        function getConfig(config) {
-            return JSON.parse(fs.readFileSync(path.join(configPath, config), 'utf-8'));
-        }
-
-        /**
          * Checks whether there is library 'bem-components' in the given libs
          * @param {Array} addLibraries
          * @returns {Boolean}
@@ -55,11 +45,11 @@ var BemGenerator = yeoman.generators.Base.extend({
         }
 
         var cb = this.async(),
-            configPath = path.join(this.sourceRoot(), '..', 'config'), // app/config/
+            configPath = path.normalize(this.sourceRoot() + '/../config'), // app/config/
             config = {
-                versions: getConfig('versions.json'),
-                techs: getConfig('techs.json'),
-                browsers: getConfig('browsers.json')
+                versions: require(configPath + '/versions'),
+                techs: require(configPath + '/techs'),
+                browsers: require(configPath + '/browsers')
             };
 
         // questions to a user
@@ -266,7 +256,6 @@ var BemGenerator = yeoman.generators.Base.extend({
             this.projectName = props.projectName;
 
             // Libraries (base lib on the top - for 'bem-tools' it is vital)
-            this.baseLib = props.baseLibrary;
             this.libs = [props.baseLibrary].concat(props.addLibraries);
 
             var isAutoprefixer = props.isAutoprefixer || isBemComponents(this.libs);
