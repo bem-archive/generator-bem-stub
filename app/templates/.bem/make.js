@@ -15,7 +15,7 @@ MAKE.decl('BundleNode', {
 
     getTechs: function () {
         return [
-<%= _.map(technologies.inMake.techs, function (technology) { return "            '" + technology + "'" }).join(',\n') %>
+<%= _.map(technologies.inMake.techs, function (technology) { return "\t\t\t'" + technology + "'" }).join(',\n') %>
         ];
     },
 
@@ -26,55 +26,55 @@ MAKE.decl('BundleNode', {
     getLevelsMap: function () {
         return {<%= (platforms.withoutPath['desktop'] ?
 
-                        "\n            desktop: [\n" +
+                        "\n\t\t\tdesktop: [\n" +
 
                         _.map(platforms.withPath['desktop'], function (platform) {
-                            return "                'libs/" + platform + "',";
+                            return "\t\t\t\t'libs/" + platform + "',";
                         }).join('\n') +
 
                         "\n" +
 
                         _.map(platforms.withoutPath['desktop'], function (platform) {
-                            return "                '" + platform + ".blocks'";
+                            return "\t\t\t\t'" + platform + ".blocks'";
                         }).join(',\n') +
 
-                        "\n            ]" : "") +
+                        "\n\t\t\t]" : "") +
 
                     (platforms.withoutPath['touch-pad'] ?
 
                         (platforms.withoutPath['desktop'] ? ",\n" : "\n") +
 
-                        "            'touch-pad': [\n" +
+                        "\t\t\t'touch-pad': [\n" +
 
                         _.map(platforms.withPath['touch-pad'], function (platform) {
-                            return "                'libs/" + platform + "',";
+                            return "\t\t\t\t'libs/" + platform + "',";
                         }).join('\n') +
 
                         "\n" +
 
                         _.map(platforms.withoutPath['touch-pad'], function (platform) {
-                            return "                '" + platform + ".blocks'";
+                            return "\t\t\t\t'" + platform + ".blocks'";
                         }).join(',\n') +
 
-                        "\n            ]" : "") +
+                        "\n\t\t\t]" : "") +
 
                     (platforms.withoutPath['touch-phone'] ?
 
                         (platforms.withoutPath['desktop'] || platforms.withoutPath['touch-pad'] ? ",\n" : "\n") +
 
-                        "            'touch-phone': [\n" +
+                        "\t\t\t'touch-phone': [\n" +
 
                         _.map(platforms.withPath['touch-phone'], function (platform) {
-                            return "                'libs/" + platform + "',";
+                            return "\t\t\t\t'libs/" + platform + "',";
                         }).join('\n') +
 
                         "\n" +
 
                         _.map(platforms.withoutPath['touch-phone'], function (platform) {
-                            return "                '" + platform + ".blocks'";
+                            return "\t\t\t\t'" + platform + ".blocks'";
                         }).join(',\n') +
 
-                        "\n            ]" : "")
+                        "\n\t\t\t]" : "")
                 %>
         };
     },
@@ -89,44 +89,44 @@ MAKE.decl('BundleNode', {
             .concat(resolve(PATH.dirname(this.getNodePrefix()), 'blocks'));
     }<%= isAutoprefixer ?
 
-        ",\n\n    'create-css-node': function (tech, bundleNode, magicNode) {\n        var source = this.getBundlePath('" + preprocessor + "');\n        if (this.ctx.arch.hasNode(source)) {\n            return this.createAutoprefixerNode(tech, this.ctx.arch.getNode(source), bundleNode, magicNode);\n        }\n    }"
+        ",\n\n\t'create-css-node': function (tech, bundleNode, magicNode) {\n\t\tvar source = this.getBundlePath('" + preprocessor + "');\n\t\tif (this.ctx.arch.hasNode(source)) {\n\t\t\treturn this.createAutoprefixerNode(tech, this.ctx.arch.getNode(source), bundleNode, magicNode);\n\t\t}\n\t}"
 
     : "" %>
 
 });<%= isAutoprefixer ?
 
-        "\n\nMAKE.decl('AutoprefixerNode', {\n\n    getPlatform: function () {\n        return this.output.split('.')[0];\n    },\n\n    getBrowsers: function () {\n        var platform = this.getPlatform();\n        switch (platform) {\n" +
+        "\n\nMAKE.decl('AutoprefixerNode', {\n\n\tgetPlatform: function () {\n\t\treturn this.output.split('.')[0];\n\t},\n\n\tgetBrowsers: function () {\n\t\tvar platform = this.getPlatform();\n\t\tswitch (platform) {\n" +
 
         (platforms.withoutPath['desktop'] ?
 
-            "            case 'desktop':\n                return [\n" +
+            "\t\t\tcase 'desktop':\n\t\t\t\treturn [\n" +
 
             _.map(browsers['desktop'], function (browser) {
-                return "                    '" + browser + "'";
+                return "\t\t\t\t\t'" + browser + "'";
             }).join(',\n') +
 
-            "\n                ];\n" : "") +
+            "\n\t\t\t\t];\n" : "") +
 
         (platforms.withoutPath['touch-pad'] ?
 
-            "\n            case 'touch-pad':\n                return [\n" +
+            "\n\t\t\tcase 'touch-pad':\n\t\t\t\treturn [\n" +
 
             _.map(browsers['touch-pad'], function (browser) {
-                return "                    '" + browser + "'";
+                return "\t\t\t\t\t'" + browser + "'";
             }).join(',\n') +
 
-            "\n                ];\n" : "") +
+            "\n\t\t\t\t];\n" : "") +
 
         (platforms.withoutPath['touch-phone'] ?
 
-            "\n            case 'touch-phone':\n                return [\n" +
+            "\n\t\t\tcase 'touch-phone':\n\t\t\t\treturn [\n" +
 
             _.map(browsers['touch-phone'], function (browser) {
-                return "                    '" + browser + "'";
+                return "\t\t\t\t\t'" + browser + "'";
             }).join(',\n') +
 
-            "\n                ];\n" : "") +
+            "\n\t\t\t\t];\n" : "") +
 
-        "        }\n\n        return this.__base();\n    }\n\n});"
+        "\t\t}\n\n\t\treturn this.__base();\n\t}\n\n});"
 
     : "" %>
