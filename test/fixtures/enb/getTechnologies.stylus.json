@@ -1,8 +1,6 @@
 {
   "inTechs": [
-    "require('enb/techs/files')",
-    "require('enb/techs/deps')",
-    "require('enb-stylus/techs/css-stylus')"
+    "stylus"
   ],
   "inTargets": ["?.css"],
   "inJSON": [{
@@ -13,6 +11,9 @@
     "version": "*"
   }, {
     "name": "enb",
+    "version": "*"
+  }, {
+    "name": "enb-bem-techs",
     "version": "*"
   }, {
     "name": "enb-stylus",

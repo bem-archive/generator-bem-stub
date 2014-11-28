@@ -1,10 +1,10 @@
 {
   "inBlocks": {
     "V2": [
-      "'bemdecl.js'           : 'v2/bemdecl.js'",
-      "'deps.js'              : 'v2/deps.js'",
-      "'roole'                : 'v2/roole'",
-      "'css'                  : 'v2/css'"
+      "'bemdecl.js'           : 'bemdecl.js'",
+      "'deps.js'              : 'deps.js'",
+      "'roole'                : 'roole'",
+      "'css'                  : 'css'"
     ],
     "notV2": [],
     "defaultTechs": ["roole"]

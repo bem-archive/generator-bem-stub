@@ -1,11 +1,9 @@
 {
   "inTechs": [
-    "require('enb/techs/files')",
-    "require('enb/techs/deps')",
-    "require('enb/techs/bemdecl-from-bemjson')",
-    "require('enb/techs/css')",
-    "require('enb-bemxjst/techs/bemhtml-old')",
-    "require('enb-bemxjst/techs/html-from-bemjson')"
+    "bemjson.js",
+    "css",
+    "bemhtml",
+    "html-from-bemhtml"
   ],
   "inTargets": ["?.css", "?.bemhtml.js", "?.html"],
   "inJSON": [{
@@ -16,6 +14,9 @@
     "version": "*"
   }, {
     "name": "enb",
+    "version": "*"
+  }, {
+    "name": "enb-bem-techs",
     "version": "*"
   }, {
     "name": "enb-bemxjst",

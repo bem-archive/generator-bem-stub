@@ -1,8 +1,11 @@
 {
   "inTechs": [
-    "stylus+autoprefixer"
+    "browser.bemhtml.js",
+    "bemhtml",
+    "bemhtml-client",
+    "css"
   ],
-  "inTargets": ["?.css"],
+  "inTargets": ["?.css", "?.js", "?.bemhtml.js"],
   "inJSON": [{
     "name": "bower",
     "version": "*"
@@ -16,10 +19,13 @@
     "name": "enb-bem-techs",
     "version": "*"
   }, {
-    "name": "enb-autoprefixer",
+    "name": "enb-diverse-js",
     "version": "*"
   }, {
-    "name": "enb-stylus",
+    "name": "enb-modules",
+    "version": "*"
+  }, {
+    "name": "enb-bemxjst",
     "version": "*"
   }]
 }
