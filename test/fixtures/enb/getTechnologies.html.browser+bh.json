@@ -1,9 +1,13 @@
 {
   "inTechs": [
-    "browser.js",
-    "css"
+    "bemjson.js",
+    "css",
+    "browser.bh.js",
+    "bh",
+    "bh-client",
+    "html-from-bh"
   ],
-  "inTargets": ["?.css", "_?.js"],
+  "inTargets": ["?.css", "?.js", "?.bh.js", "?.html"],
   "inJSON": [{
     "name": "bower",
     "version": "*"
@@ -17,13 +21,16 @@
     "name": "enb-bem-techs",
     "version": "*"
   }, {
-    "name": "enb-borschik",
-    "version": "*"
-  }, {
     "name": "enb-diverse-js",
     "version": "*"
   }, {
     "name": "enb-modules",
+    "version": "*"
+  }, {
+    "name": "enb-bh",
+    "version": "*"
+  }, {
+    "name": "bh",
     "version": "*"
   }]
 }

@@ -1,8 +1,6 @@
 {
   "inTechs": [
-    "require('enb/techs/files')",
-    "require('enb/techs/deps')",
-    "require('enb/techs/css-less'), { target: '?.noprefix.css' }"
+    "less+autoprefixer"
   ],
   "inTargets": ["?.css"],
   "inJSON": [{
@@ -13,6 +11,9 @@
     "version": "*"
   }, {
     "name": "enb",
+    "version": "*"
+  }, {
+    "name": "enb-bem-techs",
     "version": "*"
   }, {
     "name": "enb-autoprefixer",

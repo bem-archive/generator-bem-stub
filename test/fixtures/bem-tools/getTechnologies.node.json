@@ -1,10 +1,10 @@
 {
   "inBlocks": {
     "V2": [
-      "'bemdecl.js'           : 'v2/bemdecl.js'",
-      "'deps.js'              : 'v2/deps.js'",
-      "'css'                  : 'v2/css'",
-      "'js'                   : 'v2/js-i'"
+      "'bemdecl.js'           : 'bemdecl.js'",
+      "'deps.js'              : 'deps.js'",
+      "'css'                  : 'css'",
+      "'js'                   : 'js-i'"
     ],
     "notV2": ["node.js", "vanilla.js"],
     "defaultTechs": ["css"]

@@ -1,11 +1,9 @@
 {
   "inTechs": [
-    "require('enb/techs/files')",
-    "require('enb/techs/deps')",
-    "require('enb/techs/bemdecl-from-bemjson')",
-    "require('enb/techs/css')",
-    "require('enb-bh/techs/bh-server')",
-    "require('enb-bh/techs/html-from-bemjson')"
+    "bemjson.js",
+    "css",
+    "bh",
+    "html-from-bh"
   ],
   "inTargets": ["?.css", "?.bh.js", "?.html"],
   "inJSON": [{
@@ -18,10 +16,13 @@
     "name": "enb",
     "version": "*"
   }, {
-      "name": "enb-bh",
-      "version": "*"
-    }, {
-      "name": "bh",
-      "version": "*"
+    "name": "enb-bem-techs",
+    "version": "*"
+  }, {
+    "name": "enb-bh",
+    "version": "*"
+  }, {
+    "name": "bh",
+    "version": "*"
   }]
 }

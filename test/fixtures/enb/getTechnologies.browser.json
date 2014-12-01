@@ -1,10 +1,7 @@
 {
   "inTechs": [
-    "require('enb/techs/files')",
-    "require('enb/techs/deps')",
-    "require('enb-diverse-js/techs/browser-js'), { target: '?.pre.js' }",
-    "require('enb-modules/techs/prepend-modules'), { source: '?.pre.js', target: '?.js' }",
-    "require('enb/techs/css')"
+    "browser.js",
+    "css"
   ],
   "inTargets": ["?.css", "?.js"],
   "inJSON": [{
@@ -15,6 +12,9 @@
     "version": "*"
   }, {
     "name": "enb",
+    "version": "*"
+  }, {
+    "name": "enb-bem-techs",
     "version": "*"
   }, {
     "name": "enb-diverse-js",

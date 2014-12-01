@@ -4,14 +4,11 @@
   "email": "<%= email %>",
   "version": "0.0.0",
   "ignore": [
-<%= assemblerName === 'bem-tools' ? '    ".bem/cache",' : '"    .enb/tmp",' %>
+<%= assemblerName === 'bem-tools' ? '    ".bem/cache",' : '    ".enb/tmp",' %>
     "node_modules",
     "libs"
   ],
   "dependencies": {
 <%= _.map(libs, function(lib) { return '    "' + lib.name + '": "' + lib.version + '"'}).join(',\n') %>
-  },
-  "resolutions": {
-    <%= '"' + baseLib.name + '": "' + baseLib.version + '"' %>
   }
 }

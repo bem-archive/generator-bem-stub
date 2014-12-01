@@ -1,8 +1,11 @@
 {
   "inTechs": [
-    "stylus+autoprefixer"
+    "browser.bh.js",
+    "bh",
+    "bh-client",
+    "css"
   ],
-  "inTargets": ["?.css"],
+  "inTargets": ["?.css", "?.js", "?.bh.js"],
   "inJSON": [{
     "name": "bower",
     "version": "*"
@@ -16,10 +19,16 @@
     "name": "enb-bem-techs",
     "version": "*"
   }, {
-    "name": "enb-autoprefixer",
+    "name": "enb-diverse-js",
     "version": "*"
   }, {
-    "name": "enb-stylus",
+    "name": "enb-modules",
+    "version": "*"
+  }, {
+    "name": "enb-bh",
+    "version": "*"
+  }, {
+    "name": "bh",
     "version": "*"
   }]
 }

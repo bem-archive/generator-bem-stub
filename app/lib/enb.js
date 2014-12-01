@@ -85,9 +85,9 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
 
     var technologies = {
             // 'files' and 'deps' are always included
-            inTechs: ['require(\'enb/techs/files\')', 'require(\'enb/techs/deps\')'],
+            inTechs: [],
             inTargets: [],
-            inJSON: ['bower', 'bower-npm-install', 'enb'].map(function (dep) {
+            inJSON: ['bower', 'bower-npm-install', 'enb', 'enb-bem-techs'].map(function (dep) {
                 return {
                     name: dep,
                     version: config.versions.deps[dep]
@@ -96,12 +96,21 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
         },
         inTechs = technologies.inTechs,
         inTargets = technologies.inTargets,
-        inJSON = technologies.inJSON,
-        autoprefixerTarget = ', { target: \'?.noprefix.css\' }';
+        inJSON = technologies.inJSON;
 
     isAutoprefixer && inJSON.push({
         name: 'enb-autoprefixer',
         version: config.versions.deps['enb-autoprefixer']
+    });
+
+    toMinify.length > 0 && inJSON.push({
+        name: 'enb-borschik',
+        version: config.versions.deps['enb-borschik']
+    });
+
+    toMinify.indexOf('css') > -1 && inJSON.push({
+        name: 'borschik-tech-cleancss',
+        version: config.versions.deps['borschik-tech-cleancss']
     });
 
     // 'css' will be always added 'inTargets'
@@ -114,11 +123,11 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
                 break;
 
             case 'css':
-                inTechs.push(config.techs.enb['css'] + (isAutoprefixer ? autoprefixerTarget : ''));
+                inTechs.push(config.techs.enb[isAutoprefixer ? 'css+autoprefixer' : 'css']);
                 break;
 
             case 'stylus':
-                inTechs.push(config.techs.enb['stylus'] + (isAutoprefixer ? autoprefixerTarget : ''));
+                inTechs.push(config.techs.enb[isAutoprefixer ? 'stylus+autoprefixer' : 'stylus']);
 
                 inJSON.push({
                     name: 'enb-stylus',
@@ -127,7 +136,7 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
                 break;
 
             case 'roole':
-                inTechs.push(config.techs.enb['roole'] + (isAutoprefixer ? autoprefixerTarget : ''));
+                inTechs.push(config.techs.enb[isAutoprefixer ? 'roole+autoprefixer' : 'roole']);
 
                 inJSON.push({
                     name: 'roole',
@@ -139,7 +148,7 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
                 break;
 
             case 'less':
-                inTechs.push(config.techs.enb['less'] + (isAutoprefixer ? autoprefixerTarget : ''));
+                inTechs.push(config.techs.enb[isAutoprefixer ? 'less+autoprefixer' : 'less']);
 
                 inJSON.push({
                     name: 'less',
@@ -148,7 +157,7 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
                 break;
 
             case 'node.js':
-                inTechs.push(config.techs.enb['pre-node.js'], config.techs.enb['node.js']);
+                inTechs.push(config.techs.enb['node.js']);
 
                 inTargets.push(toMinify.indexOf('node.js') > -1 ? '_?.node.js' : '?.node.js');
 
@@ -162,7 +171,17 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
                 break;
 
             case 'browser.js':
-                inTechs.push(config.techs.enb['pre-browser.js'], config.techs.enb['browser.js']);
+                if (techs.indexOf('bemhtml') > -1 || techs.indexOf('bh') > -1) {
+                    var techVal = config.techs.enb['browser.js+template'];
+
+                    techs.indexOf('bemhtml') > -1 &&
+                        (techVal = techVal.replace('browser.template.js', 'browser.bemhtml.js'));
+                    techs.indexOf('bh') > -1 && (techVal = techVal.replace('browser.template.js', 'browser.bh.js'));
+
+                    inTechs.push(techVal);
+                } else {
+                    inTechs.push(config.techs.enb['browser.js']);
+                }
 
                 inTargets.push(toMinify.indexOf('js') > -1 ? '_?.js' : '?.js');  // 'bem-core' --> 'browser.js' ==> 'js'
 
@@ -187,7 +206,10 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
                 break;
 
             case 'bemhtml':   // 'bem-core' ==> 'bemhtml-old' from package 'enb-bemxjst'
-                inTechs.push(config.techs.enb['core-bemhtml']);
+                inTechs.push(config.techs.enb['bemhtml']);
+                if (techs.indexOf('browser.js') > -1) {
+                    inTechs.push(config.techs.enb['bemhtml-client']);
+                }
 
                 inTargets.push(toMinify.indexOf('bemhtml.js') > -1 ? '_?.bemhtml.js' : '?.bemhtml.js');
 
@@ -199,6 +221,9 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
 
             case 'bh':
                 inTechs.push(config.techs.enb['bh']);
+                if (techs.indexOf('browser.js') > -1) {
+                    inTechs.push(config.techs.enb['bh-client']);
+                }
 
                 inTargets.push(toMinify.indexOf('bh.js') > -1 ? '_?.bh.js' : '?.bh.js');
 
@@ -212,12 +237,8 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
                 break;
 
             case 'html': // 'bh' ==> 'enb-bh' | 'bemhtml' ==> 'enb-bemxjst' in 'html' require path
-                var techVal = config.techs.enb['html'];
-
-                techs.indexOf('bemhtml') > -1 && (techVal = techVal.replace('enb', 'enb-bemxjst'));
-                techs.indexOf('bh') > -1 && (techVal = techVal.replace('enb', 'enb-bh'));
-
-                inTechs.push(techVal);
+                techs.indexOf('bemhtml') > -1 && inTechs.push(config.techs.enb['html-from-bemhtml']);
+                techs.indexOf('bh') > -1 && inTechs.push(config.techs.enb['html-from-bh']);
 
                 inTargets.push('?.html');
                 break;
@@ -230,7 +251,7 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
     });
 
     technologies.inTargets = _.uniq(inTargets);
-    technologies.inJSON = _.uniq(inJSON);
+    technologies.inJSON = _.uniq(inJSON, 'name');
 
     return technologies;
 }

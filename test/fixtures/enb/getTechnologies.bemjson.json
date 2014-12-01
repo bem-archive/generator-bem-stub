@@ -1,9 +1,7 @@
 {
   "inTechs": [
-    "require('enb/techs/files')",
-    "require('enb/techs/deps')",
-    "require('enb/techs/bemdecl-from-bemjson')",
-    "require('enb/techs/css')"
+    "bemjson.js",
+    "css"
   ],
   "inTargets": ["?.css"],
   "inJSON": [{
@@ -14,6 +12,9 @@
     "version": "*"
   }, {
     "name": "enb",
+    "version": "*"
+  }, {
+    "name": "enb-bem-techs",
     "version": "*"
   }]
 }
