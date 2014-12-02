@@ -76,10 +76,10 @@ var BemGenerator = yeoman.generators.Base.extend({
             name: 'assembler',
             message: 'Choose a toolkit to build the project:',
             choices: [{
-                value: 'bem-tools'
-            }, {
                 name: 'ENB',
                 value: 'enb'
+            }, {
+                value: 'bem-tools'
             }]
         }, {
             type: 'list',
