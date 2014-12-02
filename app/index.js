@@ -65,7 +65,7 @@ var BemGenerator = yeoman.generators.Base.extend({
             type: 'input',
             name: 'author',
             message: 'Enter a name of the project owner:',
-            'default': this.user.git.username || 'Ivan Ivanov'
+            'default': this.user.git.name() || 'Ivan Ivanov'
         }, {
             type: 'input',
             name: 'email',
