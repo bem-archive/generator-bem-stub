@@ -4,16 +4,6 @@ module.exports = {
     enb: {
         'bemjson.js': '[enbBemTechs.bemjsonToBemdecl]',
 
-        roole: [
-            '// css',
-            '[require(\'enb-roole/techs/css-roole\')]'
-        ].join(byIndent),
-
-        'roole+autoprefixer': [
-            '// css',
-            '[require(\'enb-roole/techs/css-roole\'), { target: \'?.noprefix.css\' }]'
-        ].join(byIndent),
-
         less: [
             '// css',
             '[require(\'enb/techs/css-less\')]'
@@ -49,22 +39,6 @@ module.exports = {
             '[require(\'enb/techs/css\'), {',
             '    target: \'?.ie.css\',',
             '    sourceSuffixes: [\'css\', \'ie.css\']',
-            '}]'
-        ].join(byIndent),
-
-        'ie6.css': [
-            '// ie6.css',
-            '[require(\'enb/techs/css\'), { ',
-            '    target: \'?.ie6.css\',',
-            '    sourceSuffixes: [\'css\', \'ie6.css\']',
-            '}]'
-        ].join(byIndent),
-
-        'ie7.css': [
-            '// ie7.css',
-            '[require(\'enb/techs/css\'), { ',
-            '    target: \'?.ie7.css\',',
-            '    sourceSuffixes: [\'css\', \'ie7.css\']',
             '}]'
         ].join(byIndent),
 
@@ -219,12 +193,9 @@ module.exports = {
         'bemdecl.js': 'v2/bemdecl.js',
         'deps.js': 'v2/deps.js',
         stylus: 'v2/styl',
-        roole: 'v2/roole',
         less: 'v2/less',
         css: 'v2/css',
         'ie.css': 'v2/ie.css',
-        'ie6.css': 'v2/ie6.css',
-        'ie7.css': 'v2/ie7.css',
         'ie8.css': 'v2/ie8.css',
         'ie9.css': 'v2/ie9.css',
         js: 'v2/js-i'

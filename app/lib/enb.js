@@ -135,18 +135,6 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
                 });
                 break;
 
-            case 'roole':
-                inTechs.push(config.techs.enb[isAutoprefixer ? 'roole+autoprefixer' : 'roole']);
-
-                inJSON.push({
-                    name: 'roole',
-                    version: config.versions.deps['roole']
-                }, {
-                    name: 'enb-roole',
-                    version: config.versions.deps['enb-roole']
-                });  // 'roole' ==> 'roole', 'enb-roole' in 'package.json'
-                break;
-
             case 'less':
                 inTechs.push(config.techs.enb[isAutoprefixer ? 'less+autoprefixer' : 'less']);
 
@@ -280,7 +268,7 @@ function getBrowsers(config, platforms) {
  * @example
  * ['_?.css',     ==>      {
  *  '?.ie.css',                 css: [{
- *  '?.ie6.css',                   elem: 'css',
+ *  '?.ie8.css',                   elem: 'css',
  *  '_?.ie9.css']                  url: '_index.css'
  *                              }],
  *                              ies: [{
@@ -288,7 +276,7 @@ function getBrowsers(config, platforms) {
  *                                  url: 'index.ie.css'
  *                              }, {
  *                                  elem: 'css',
- *                                  url: 'index.ie6.css'
+ *                                  url: 'index.ie8.css'
  *                              }, {
  *                                  elem: 'css',
  *                                  url: '_index.ie9.css'
@@ -306,7 +294,7 @@ function getStyles(techs) {
             }],
             ies: []
         },
-        ies = ['?.ie.css', '?.ie6.css', '?.ie7.css', '?.ie8.css', '?.ie9.css'];
+        ies = ['?.ie.css', '?.ie8.css', '?.ie9.css'];
 
     ies.forEach(function (ie) {
         var isIE = techs.indexOf(ie) > -1;
