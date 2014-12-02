@@ -50,7 +50,6 @@ To create the config file fitting for your project, the generator will ask sever
  * touch-phone
 * CSS preprocessors:
  * [Stylus](https://github.com/LearnBoost/stylus)
- * [Roole](https://github.com/curvedmark/roole)
  * [Less](https://github.com/less/less.js)
 * [Autoprefixer](https://github.com/postcss/autoprefixer)
 * Technologies:
@@ -58,8 +57,7 @@ To create the config file fitting for your project, the generator will ask sever
  * [BEMDECL](http://bem.info/technology/bemjson/current/bemjson/)
  * [BEMTREE](http://en.bem.info/technology/bemtree/current/bemtree/)
  * node.js
- * browser.js (only in [ENB](https://github.com/enb-make/enb))
- * browser.js+bemhtml (only in [bem-tools](http://bem.info/tools/bem/bem-tools/))
+ * browser.js
 * Template engines:
  * [BEMHTML](http://bem.info/technology/bemhtml/current/intro/)
  * [BH](https://github.com/enb-make/bh) (only in [ENB](https://github.com/enb-make/enb))
@@ -78,5 +76,5 @@ $ yo bem-stub --skip-install
 
 ### Versions
 
-You can check in the file [app/config/versions.json](https://github.com/bem/generator-bem-stub/blob/master/app/config/versions.json) which versions of the dependencies and libraries `generator-bem-stub` uses.
+You can check in the file [app/config/versions.js](https://github.com/bem/generator-bem-stub/blob/master/app/config/versions.js) which versions of the dependencies and libraries `generator-bem-stub` uses.
 
