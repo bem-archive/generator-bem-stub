@@ -38,9 +38,9 @@
     "yo": ">=1.0.0"
   },
   "scripts": {
-    "test": "npm run lint && npm run func-test && npm run cover",
+    "test": "npm run lint && npm run unit-test && npm run cover",
     "lint": "jshint . && jscs -c .jscs.js .",
-    "func-test": "mocha test",
+    "unit-test": "mocha test",
     "cover": "istanbul cover _mocha -- test"
   },
   "engines": {
