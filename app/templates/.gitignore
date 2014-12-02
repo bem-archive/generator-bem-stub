@@ -4,8 +4,4 @@ node_modules/
 libs/
 <%= assemblerName === 'bem-tools' ? '.bem/cache/' : '.enb/tmp/' %>
 *bundles*/*/*.*
-!*bundles*/*/*.bemjson.js
-!*bundles*/.bem/*
-*pages*/*/*.*
-!*pages*/*/*.bemjson.js
-!*pages*/.bem/*
+<%= isBemjson ? '!*bundles*/*/*.bemjson.js' : '!*bundles*/*/*.bemdecl.js' %><%= assemblerName === 'bem-tools' ? '\n!*bundles*/.bem/*' : '' %>
