@@ -1,6 +1,18 @@
 History of changes
 ==================
 
+0.2.0
+-----
+
+* Fixed the work of the generator on Windows OS.
+* Moved to using [enb-bem-techs](http://ru.bem.info/tools/bem/enb-bem-techs/) in generation of projects for assembler [ENB](https://github.com/enb-make/enb).
+* Fixed the configuration of template engines for assembler [ENB](https://github.com/enb-make/enb).
+* Fixed the generation of files `.gitignore` and `bower.json`.
+* Removed technologies:
+ * ie6.css
+ * ie7.css
+ * [Roole](https://github.com/curvedmark/roole)
+
 0.1.1
 -----
 

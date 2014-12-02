@@ -1,6 +1,18 @@
 История изменений
 ==================
 
+0.2.0
+-----
+
+* Исправлена работа генартора на Windows OS.
+* Переход на использование [enb-bem-techs](http://ru.bem.info/tools/bem/enb-bem-techs/) при генерации проэктов на [ENB](https://github.com/enb-make/enb).
+* Исправлена конфигурация шаблонизаторов на [ENB](https://github.com/enb-make/enb).
+* Исправлена генерация файлов `.gitignore` и `bower.json`.
+* Удалены технологии:
+ * ie6.css
+ * ie7.css
+ * [Roole](https://github.com/curvedmark/roole)
+
 0.1.1
 -----
 
