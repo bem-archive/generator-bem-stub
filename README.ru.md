@@ -52,7 +52,6 @@ $ yo bem-stub
  * touch-phone
 * CSS-препроцессоры:
  * [Stylus](https://github.com/LearnBoost/stylus)
- * [Roole](https://github.com/curvedmark/roole)
  * [Less](https://github.com/less/less.js)
 * [Автопрефиксер](https://github.com/postcss/autoprefixer)
 * Технологии:
@@ -60,8 +59,7 @@ $ yo bem-stub
  * [BEMDECL](http://ru.bem.info/technology/bemjson/current/bemjson/)
  * [BEMTREE](http://ru.bem.info/technology/bemtree/current/bemtree/)
  * node.js
- * browser.js (доступна только в [ENB](https://github.com/enb-make/enb))
- * browser.js+bemhtml (доступна только в [bem-tools](http://ru.bem.info/tools/bem/bem-tools/))
+ * browser.js
 * Шаблонизаторы:
  * [BEMHTML](http://ru.bem.info/technology/bemhtml/current/intro/)
  * [BH](https://github.com/enb-make/bh) (доступен только в [ENB](https://github.com/enb-make/enb))
@@ -80,4 +78,4 @@ $ yo bem-stub --skip-install
 
 ### Версии
 
-В файле [app/config/versions.json](https://github.com/bem/generator-bem-stub/blob/master/app/config/versions.json) указано, какие версии зависимостей и библиотек использует `generator-bem-stub`.
+В файле [app/config/versions.js](https://github.com/bem/generator-bem-stub/blob/master/app/config/versions.js) указано, какие версии зависимостей и библиотек использует `generator-bem-stub`.
