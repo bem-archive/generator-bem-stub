@@ -209,7 +209,7 @@ function getTechnologies(config, techs, isAutoprefixer) {
                 break;
 
             default:
-                if (tech === 'roole' || tech === 'stylus' || tech === 'less') {
+                if (tech === 'stylus' || tech === 'less') {
                     inBlocks.defaultTechs.push(tech);
 
                     inMake.forked.push(tech);
@@ -262,7 +262,7 @@ function getBrowsers(config, platforms) {
  * @example
  * ['css',     ==>         {
  *  'ie.css',                  css: [{
- *  'ie6.css']                     elem: 'css',
+ *  'ie8.css']                     elem: 'css',
  *                                 url: '_index.css'
  *                             }],
  *                             ies: [{
@@ -270,7 +270,7 @@ function getBrowsers(config, platforms) {
  *                                 url: '_index.ie.css'
  *                             }, {
  *                                 elem: 'css',
- *                                 url: '_index.ie6.css'
+ *                                 url: '_index.ie8.css'
  *                             }]
  *                         }
  *
@@ -282,7 +282,7 @@ function getStyles(techs) {
             css: [{ elem: 'css', url: '_index.css' }],
             ies: []
         },
-        ies = ['ie.css', 'ie6.css', 'ie7.css', 'ie8.css', 'ie9.css'];
+        ies = ['ie.css', 'ie8.css', 'ie9.css'];
 
     ies.forEach(function (ie) {
         var isIE = techs.indexOf(ie) > -1;

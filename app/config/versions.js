@@ -13,7 +13,6 @@ module.exports = {
         'enb-borschik': '1.1.1',
         'enb-diverse-js': '0.1.0',
         'enb-modules': '0.2.0',
-        'enb-roole': '0.2.1',
         'enb-stylus': '1.1.4',
 
         // bem
@@ -27,7 +26,6 @@ module.exports = {
         'borschik-tech-cleancss': '1.0.0',
         'bower-npm-install': '0.5.9',
         less: '1.7.4',
-        roole: '0.9.0',
         stylus: '0.47.3'
     }
 };

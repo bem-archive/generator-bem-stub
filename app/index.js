@@ -150,9 +150,6 @@ var BemGenerator = yeoman.generators.Base.extend({
                     name: 'Stylus',
                     value: 'stylus'
                 }, {
-                    name: 'Roole',
-                    value: 'roole'
-                }, {
                     name: 'Less',
                     value: 'less'
                 }, {
@@ -179,8 +176,6 @@ var BemGenerator = yeoman.generators.Base.extend({
                 return [
                     { name: 'BEMJSON', value: 'bemjson.js' },
                     { value: 'ie.css' },
-                    { value: 'ie6.css' },
-                    { value: 'ie7.css' },
                     { value: 'ie8.css' },
                     { value: 'ie9.css' },
                     { name: 'BEMTREE', value: 'bemtree' },
