@@ -1,13 +1,11 @@
 {
   "inTechs": [
     "ie.css",
-    "ie6.css",
-    "ie7.css",
     "ie8.css",
     "ie9.css",
     "css"
   ],
-  "inTargets": ["?.css", "?.ie.css", "?.ie6.css", "?.ie7.css", "?.ie8.css", "?.ie9.css"],
+  "inTargets": ["?.css", "?.ie.css", "?.ie8.css", "?.ie9.css"],
   "inJSON": [{
     "name": "bower",
     "version": "*"

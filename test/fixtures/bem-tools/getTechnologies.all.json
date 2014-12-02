@@ -5,8 +5,6 @@
       "'deps.js'              : 'deps.js'",
       "'css'                  : 'css'",
       "'ie.css'               : 'ie.css'",
-      "'ie6.css'              : 'ie6.css'",
-      "'ie7.css'              : 'ie7.css'",
       "'ie8.css'              : 'ie8.css'",
       "'ie9.css'              : 'ie9.css'",
       "'js'                   : 'js-i'"
@@ -21,8 +19,6 @@
       "deps.js",
       "css",
       "ie.css",
-      "ie6.css",
-      "ie7.css",
       "ie8.css",
       "ie9.css",
       "bemtree",
