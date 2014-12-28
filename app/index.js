@@ -4,7 +4,15 @@ var path = require('path'),
 
 require('colors');
 
+/**
+ * @class BemGenerator
+ * @extends Base
+ */
 var BemGenerator = yeoman.generators.Base.extend({
+
+    /**
+     * @constructor
+     */
     constructor: function () {
         yeoman.generators.Base.apply(this, arguments);
 
@@ -30,30 +38,39 @@ var BemGenerator = yeoman.generators.Base.extend({
         });
     },
 
-    prompting: function () {
+    /**
+     * @public
+     */
+    initializing: function () {
+        var configPath = path.normalize(this.sourceRoot() + '/../config'); // app/config/
+
         /**
-         * Checks whether there is library 'bem-components' in the given libs
-         * @param {Array} addLibraries
-         * @returns {Boolean}
+         * @type {{versions: object, techs: object, browsers: object}}
+         * @private
          */
-        function isBemComponents(addLibraries) {
-            for (var lib in addLibraries) {
-                if (addLibraries[lib].name === 'bem-components') return true;
-            }
+        this._config = {
+            versions: require(configPath + '/versions'),
+            techs: require(configPath + '/techs'),
+            browsers: require(configPath + '/browsers')
+        };
+    },
 
-            return false;
-        }
+    /**
+     * @public
+     */
+    prompting: function () {
+        this.prompt(this._getPrompts(), this._onUserInputEnd.bind(this, this.async()));
+    },
 
-        var cb = this.async(),
-            configPath = path.normalize(this.sourceRoot() + '/../config'), // app/config/
-            config = {
-                versions: require(configPath + '/versions'),
-                techs: require(configPath + '/techs'),
-                browsers: require(configPath + '/browsers')
-            };
+    /**
+     * @returns {Array.<object>}
+     * @protected
+     */
+    _getPrompts: function () {
+        var config = this._config,
+            isBemComponents = this._isBemComponents;
 
-        // questions to a user
-        var prompts = [{
+        return [{
             type: 'input',
             name: 'projectName',
             message: 'Enter your project name:',
@@ -240,64 +257,91 @@ var BemGenerator = yeoman.generators.Base.extend({
                 return input.assembler === 'enb';
             }
         }];
-
-        this.prompt(prompts, function (props) {
-            this.assemblerName = props.assembler === 'bem-tools' ? 'bem-tools' : 'enb';
-            var assembler = require(['.', 'lib', this.assemblerName].join('/'));
-
-            // General information
-            this.author = props.author;
-            this.email = props.email;
-            this.projectName = props.projectName;
-
-            // Libraries (base lib on the top - for 'bem-tools' it is vital)
-            this.libs = [props.baseLibrary].concat(props.addLibraries);
-
-            var isAutoprefixer = props.isAutoprefixer || isBemComponents(this.libs);
-
-            // Platforms
-            var platforms = assembler.getPlatforms(props.platforms, this.libs, props.isDesign);
-            this.platforms = {
-                withPath: platforms.withPath,           // 'bem-core/common.blocks'
-                withoutPath: platforms.withoutPath      // 'common'
-            };
-
-            // Minimization (this is needed only for 'ENB')
-            this.assemblerName === 'enb' && (this.toMinify = props.minimization);
-
-            // Technologies
-            var preprocessor = props.preprocessor,
-                techs = props.techs;
-
-            techs = assembler.addPreprocessor(techs, preprocessor) &&
-                        assembler.addTemplateEngine(techs, props.templateEngine); // bem-core' ==> 'bemhtml', 'bh'
-
-            this.assemblerName === 'bem-tools' &&
-                (techs = assembler.addIe(techs)); // 'bem-tools' --> 'ieN' ==> 'ie.css'
-
-            props.isHtml && techs.push('html');
-
-            this.technologies = assembler.getTechnologies(config, techs, isAutoprefixer, this.toMinify);
-
-            this.isBemjson = techs.indexOf('bemjson.js') > -1;
-
-            // Preprocessor
-            this.preprocessor = !preprocessor ? 'stylus' : preprocessor;
-
-            // Autoprefixer
-            (this.isAutoprefixer = isAutoprefixer) &&
-                (this.browsers = assembler.getBrowsers(config, this.platforms.withoutPath));
-
-            // Styles and scripts to 'bemjson.js'
-            techs = this.technologies;
-            var technologies = this.assemblerName === 'bem-tools' ? techs.inMake.techs : techs.inTargets;
-
-            this.styles = assembler.getStyles(technologies);
-            this.scripts = assembler.getScripts(technologies);
-
-            cb();
-        }.bind(this));
     },
+
+    /**
+     * Checks whether there is library 'bem-components' in the given libs
+     * @param {Array} addLibraries
+     * @returns {Boolean}
+     * @private
+     */
+    _isBemComponents: function (addLibraries) {
+        for (var lib in addLibraries) {
+            if (addLibraries[lib].name === 'bem-components') {
+                return true;
+            }
+        }
+        return false;
+    },
+
+    /**
+     * @param {function} callback
+     * @param {object} props
+     * @private
+     */
+    _onUserInputEnd: function (callback, props) {
+        var isBemComponents = this._isBemComponents,
+            config = this._config;
+
+        this.assemblerName = props.assembler === 'bem-tools' ? 'bem-tools' : 'enb';
+        var assembler = require(['.', 'lib', this.assemblerName].join('/'));
+
+        // General information
+        this.author = props.author;
+        this.email = props.email;
+        this.projectName = props.projectName;
+
+        // Libraries (base lib on the top - for 'bem-tools' it is vital)
+        this.libs = [props.baseLibrary].concat(props.addLibraries);
+
+        var isAutoprefixer = props.isAutoprefixer || isBemComponents(this.libs);
+
+        // Platforms
+        var platforms = assembler.getPlatforms(props.platforms, this.libs, props.isDesign);
+        this.platforms = {
+            withPath: platforms.withPath,           // 'bem-core/common.blocks'
+            withoutPath: platforms.withoutPath      // 'common'
+        };
+
+        // Minimization (this is needed only for 'ENB')
+        this.assemblerName === 'enb' && (this.toMinify = props.minimization);
+
+        // Technologies
+        var preprocessor = props.preprocessor,
+            techs = props.techs;
+
+        techs = assembler.addPreprocessor(techs, preprocessor) &&
+                    assembler.addTemplateEngine(techs, props.templateEngine); // bem-core' ==> 'bemhtml', 'bh'
+
+        this.assemblerName === 'bem-tools' &&
+            (techs = assembler.addIe(techs)); // 'bem-tools' --> 'ieN' ==> 'ie.css'
+
+        props.isHtml && techs.push('html');
+
+        this.technologies = assembler.getTechnologies(config, techs, isAutoprefixer, this.toMinify);
+
+        this.isBemjson = techs.indexOf('bemjson.js') > -1;
+
+        // Preprocessor
+        this.preprocessor = !preprocessor ? 'stylus' : preprocessor;
+
+        // Autoprefixer
+        (this.isAutoprefixer = isAutoprefixer) &&
+            (this.browsers = assembler.getBrowsers(config, this.platforms.withoutPath));
+
+        // Styles and scripts to 'bemjson.js'
+        techs = this.technologies;
+        var technologies = this.assemblerName === 'bem-tools' ? techs.inMake.techs : techs.inTargets;
+
+        this.styles = assembler.getStyles(technologies);
+        this.scripts = assembler.getScripts(technologies);
+
+        callback();
+    },
+
+    /**
+     * @public
+     */
     writing: function () {
         var _this = this,
             platforms = _this.platforms.withoutPath,
@@ -316,14 +360,14 @@ var BemGenerator = yeoman.generators.Base.extend({
             });
         }
 
-        _this._.each(files, function (f) {
+        _this._.each(files, function (filePath) {
             /**
              * Forms dir names for chosen platforms
              * @param {String} ending
              * @param {String} folder
              * @returns {Array}
              */
-            function formDirnames(ending, folder) {
+            function formDirnames (ending, folder) {
                 var names = [];
                 Object.keys(platforms).forEach(function (platform) {
                     var pl = platforms[platform];
@@ -335,19 +379,14 @@ var BemGenerator = yeoman.generators.Base.extend({
             }
 
             var dirnames = [];
-            dirnames.push(path.dirname(f));
+            dirnames.push(path.dirname(filePath));
 
-            if (_this.assemblerName === 'bem-tools' && f.indexOf('.enb') > -1) return;
-            if (_this.assemblerName === 'enb' &&
-                (/^.bem/.test(f) ||
-                    f === ['blocks', '.bem', 'level.js'].join('/') ||
-                        f === ['bundles', '.bem', 'level.js'].join('/'))) return;
-
-            if (_this.isBemjson && f === ['bundles', 'index', 'index.bemdecl.js'].join('/')) return;
-            if (!_this.isBemjson && f === ['bundles', 'index', 'index.bemjson.js'].join('/')) return;
+            if (!_this._isTemplateNeeded(filePath)) {
+                return;
+            }
 
             // only for 'bem-tools'
-            if (f === ['blocks', '.bem', 'level.js'].join('/')) {
+            if (filePath === ['blocks', '.bem', 'level.js'].join('/')) {
                 dirnames = [];
 
                 dirnames.push(['common.blocks', '.bem'].join('/'));
@@ -356,22 +395,43 @@ var BemGenerator = yeoman.generators.Base.extend({
                     dirnames.push(['touch.blocks', '.bem'].join('/'));
 
                 dirnames = dirnames.concat(formDirnames('.blocks', '.bem'));
-            } else if (f === ['bundles', '.bem', 'level.js'].join('/')) {
-                (dirnames = formDirnames('.bundles', '.bem'));
+            } else if (filePath === ['bundles', '.bem', 'level.js'].join('/')) {
+                dirnames = formDirnames('.bundles', '.bem');
             }
 
-            (f === ['bundles', 'index', 'index.bemdecl.js'].join('/') ||
-                f === ['bundles', 'index', 'index.bemjson.js'].join('/')) &&
+            (filePath === ['bundles', 'index', 'index.bemdecl.js'].join('/') ||
+                filePath === ['bundles', 'index', 'index.bemjson.js'].join('/')) &&
                     (dirnames = formDirnames('.bundles', 'index'));
 
-            var src = path.join(root, f);   // copy from
+            var src = _this.templatePath(filePath);   // copy from
 
             dirnames.map(function (dirname) {
                 // where to copy
-                var dest = path.join(_this.destinationRoot(), _this.projectName, dirname, path.basename(f));
+                var dest = _this.destinationPath(_this.projectName, dirname, path.basename(filePath));
                 _this.template(src, dest);
             });
-        }.bind(_this));
+        }, _this);
+    },
+
+    /**
+     * @param {string} filePath
+     * @returns {boolean}
+     * @protected
+     */
+    _isTemplateNeeded: function (filePath) {
+        if (this.assemblerName === 'bem-tools' && filePath.indexOf('.enb') > -1) {
+            return false;
+        }
+        if (this.assemblerName === 'enb' &&
+            (/^.bem/.test(filePath) ||
+                filePath === ['blocks', '.bem', 'level.js'].join('/') ||
+                    filePath === ['bundles', '.bem', 'level.js'].join('/'))) {
+            return false;
+        }
+        if (this.isBemjson && filePath === ['bundles', 'index', 'index.bemdecl.js'].join('/')) {
+            return false;
+        }
+        return !(!this.isBemjson && filePath === ['bundles', 'index', 'index.bemjson.js'].join('/'));
     }
 });
 
