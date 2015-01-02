@@ -1,5 +1,6 @@
 'use strict';
 var path = require('path'),
+    shell = require('shelljs'),
     yeoman = require('yeoman-generator');
 
 require('colors');
@@ -30,7 +31,7 @@ var BemGenerator = yeoman.generators.Base.extend({
                     'If this fails, try running the command yourself.\n\n'.bold;
 
                 this.log.write(msg);
-                this.shell.exec('cd ' + this.projectName + ' && npm i');
+                shell.exec('cd ' + this.projectName + ' && npm i');
             }
 
             this.log.write('').ok('Done!');

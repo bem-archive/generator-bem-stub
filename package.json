@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "yeoman-generator": "0.18.5",
+    "shelljs": "0.3.0",
     "lodash": "2.4.1",
     "colors": "1.0.3"
   },
