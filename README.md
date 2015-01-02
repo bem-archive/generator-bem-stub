@@ -55,7 +55,7 @@ To create the config file fitting for your project, the generator will ask sever
 * Technologies:
  * [BEMJSON](https://bem.info/technology/bemjson/current/bemjson/)
  * [BEMTREE](https://en.bem.info/technology/bemtree/current/bemtree/)
- * **BEMDECL**
+ * BEMDECL
  * node.js
  * browser.js
 * Template engines:
