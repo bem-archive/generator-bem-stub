@@ -1,6 +1,12 @@
 History of changes
 ==================
 
+0.2.1
+-----
+
+* Fixed generation of folders `*.bundles`.
+* Updated [dependencies](https://github.com/bem/generator-bem-stub/commit/7113c13541c36ed510f259a5767747c12ef85624).
+
 0.2.0
 -----
 
