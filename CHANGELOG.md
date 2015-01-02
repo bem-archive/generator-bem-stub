@@ -1,6 +1,11 @@
 History of changes
 ==================
 
+0.2.2
+-----
+
+* Fixed generation of file `.gitignore`.
+
 0.2.1
 -----
 
