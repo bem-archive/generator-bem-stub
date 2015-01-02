@@ -368,7 +368,7 @@ var BemGenerator = yeoman.generators.Base.extend({
              * @param {String} folder
              * @returns {Array}
              */
-            function formDirnames (ending, folder) {
+            function formDirnames(ending, folder) {
                 var names = [];
                 Object.keys(platforms).forEach(function (platform) {
                     var pl = platforms[platform];
@@ -377,6 +377,21 @@ var BemGenerator = yeoman.generators.Base.extend({
                 });
 
                 return names;
+            }
+
+            /**
+             * Returns destination root for template
+             * @param {String} dirname
+             * @param {String} filePath
+             * @returns {String}
+             */
+            function getDestPath(dirname, filePath) {
+                return _this.destinationPath(_this.projectName, dirname, path.basename(filePath));
+            }
+
+            if (filePath === 'gitignore') {
+                _this.template(filePath, getDestPath('.', '.' + filePath));
+                return;
             }
 
             var dirnames = [];
@@ -408,7 +423,7 @@ var BemGenerator = yeoman.generators.Base.extend({
 
             dirnames.map(function (dirname) {
                 // where to copy
-                var dest = _this.destinationPath(_this.projectName, dirname, path.basename(filePath));
+                var dest = getDestPath(dirname, filePath);
                 _this.template(src, dest);
             });
         }, _this);
