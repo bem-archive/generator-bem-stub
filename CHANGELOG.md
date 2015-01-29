@@ -1,6 +1,12 @@
 History of changes
 ==================
 
+0.3.0
+-----
+
+* Library [bem-components](http://bem.info/libs/bem-components/current/) was updated to `v2.0.0`.
+* Updated other dependencies.
+
 0.2.2
 -----
 
