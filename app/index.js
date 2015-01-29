@@ -281,8 +281,7 @@ var BemGenerator = yeoman.generators.Base.extend({
      * @private
      */
     _onUserInputEnd: function (callback, props) {
-        var isBemComponents = this._isBemComponents,
-            config = this._config;
+        var config = this._config;
 
         this.assemblerName = props.assembler === 'bem-tools' ? 'bem-tools' : 'enb';
         var assembler = require(['.', 'lib', this.assemblerName].join('/'));
@@ -293,9 +292,14 @@ var BemGenerator = yeoman.generators.Base.extend({
         this.projectName = props.projectName;
 
         // Libraries (base lib on the top - for 'bem-tools' it is vital)
-        this.libs = [props.baseLibrary].concat(props.addLibraries);
+        var addLibraries = props.addLibraries,
+            isBemComponents = this._isBemComponents(addLibraries),
+            allLibraries = [props.baseLibrary].concat(addLibraries);
 
-        var isAutoprefixer = props.isAutoprefixer || isBemComponents(this.libs);
+        this.libsToBower = isBemComponents ? addLibraries : allLibraries;
+        this.libs = allLibraries;
+
+        var isAutoprefixer = props.isAutoprefixer || isBemComponents;
 
         // Platforms
         var platforms = assembler.getPlatforms(props.platforms, this.libs, props.isDesign);

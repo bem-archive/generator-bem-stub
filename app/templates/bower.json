@@ -9,6 +9,6 @@
     "libs"
   ],
   "dependencies": {
-<%= _.map(libs, function(lib) { return '    "' + lib.name + '": "' + lib.version + '"'}).join(',\n') %>
+<%= _.map(libsToBower, function(lib) { return '    "' + lib.name + '": "' + lib.version + '"'}).join(',\n') %>
   }
 }
