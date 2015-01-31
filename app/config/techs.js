@@ -37,24 +37,24 @@ module.exports = {
         'ie.css': [
             '// ie.css',
             '[require(\'enb/techs/css\'), {',
-            '    target: \'?.ie.css\',',
-            '    sourceSuffixes: [\'css\', \'ie.css\']',
+            '\ttarget: \'?.ie.css\',',
+            '\tsourceSuffixes: [\'css\', \'ie.css\']',
             '}]'
         ].join(byIndent),
 
         'ie8.css': [
             '// ie8.css',
             '[require(\'enb/techs/css\'), { ',
-            '    target: \'?.ie8.css\',',
-            '    sourceSuffixes: [\'css\', \'ie8.css\']',
+            '\ttarget: \'?.ie8.css\',',
+            '\tsourceSuffixes: [\'css\', \'ie8.css\']',
             '}]'
         ].join(byIndent),
 
         'ie9.css': [
             '// ie9.css',
             '[require(\'enb/techs/css\'), { ',
-            '    target: \'?.ie9.css\',',
-            '    sourceSuffixes: [\'css\', \'ie9.css\']',
+            '\ttarget: \'?.ie9.css\',',
+            '\tsourceSuffixes: [\'css\', \'ie9.css\']',
             '}]'
         ].join(byIndent),
 
@@ -72,29 +72,29 @@ module.exports = {
             '// client bemhtml',
             [
                 '[enbBemTechs.depsByTechToBemdecl, {',
-                '    target: \'?.bemhtml.bemdecl.js\',',
-                '    sourceTech: \'js\',',
-                '    destTech: \'bemhtml\'',
+                '\ttarget: \'?.bemhtml.bemdecl.js\',',
+                '\tsourceTech: \'js\',',
+                '\tdestTech: \'bemhtml\'',
                 '}],'
             ].join(byIndent),
             [
                 '[enbBemTechs.deps, {',
-                '    target: \'?.bemhtml.deps.js\',',
-                '    bemdeclFile: \'?.bemhtml.bemdecl.js\'',
+                '\ttarget: \'?.bemhtml.deps.js\',',
+                '\tbemdeclFile: \'?.bemhtml.bemdecl.js\'',
                 '}],'
             ].join(byIndent),
             [
                 '[enbBemTechs.files, {',
-                '    depsFile: \'?.bemhtml.deps.js\',',
-                '    filesTarget: \'?.bemhtml.files\',',
-                '    dirsTarget: \'?.bemhtml.dirs\'',
+                '\tdepsFile: \'?.bemhtml.deps.js\',',
+                '\tfilesTarget: \'?.bemhtml.files\',',
+                '\tdirsTarget: \'?.bemhtml.dirs\'',
                 '}],'
             ].join(byIndent),
             [
                 '[require(\'enb-bemxjst/techs/bemhtml-old\'), {',
-                '    target: \'?.browser.bemhtml.js\',',
-                '    filesTarget: \'?.bemhtml.files\',',
-                '    devMode: process.env.BEMHTML_ENV === \'development\'',
+                '\ttarget: \'?.browser.bemhtml.js\',',
+                '\tfilesTarget: \'?.bemhtml.files\',',
+                '\tdevMode: process.env.BEMHTML_ENV === \'development\'',
                 '}]'
             ].join(byIndent)
         ].join(byIndent),
@@ -102,8 +102,8 @@ module.exports = {
         bh: [
             '// bh',
             '[require(\'enb-bh/techs/bh-server\'), {',
-            '    jsAttrName: \'data-bem\',',
-            '    jsAttrScheme: \'json\'',
+            '\tjsAttrName: \'data-bem\',',
+            '\tjsAttrScheme: \'json\'',
             '}]'
         ].join(byIndent),
 
@@ -111,31 +111,31 @@ module.exports = {
             '// client bh',
             [
                 '[enbBemTechs.depsByTechToBemdecl, {',
-                '    target: \'?.bh.bemdecl.js\',',
-                '    sourceTech: \'js\',',
-                '    destTech: \'bemhtml\'',
+                '\ttarget: \'?.bh.bemdecl.js\',',
+                '\tsourceTech: \'js\',',
+                '\tdestTech: \'bemhtml\'',
                 '}],'
             ].join(byIndent),
             [
                 '[enbBemTechs.deps, {',
-                '    target: \'?.bh.deps.js\',',
-                '    bemdeclFile: \'?.bh.bemdecl.js\'',
+                '\ttarget: \'?.bh.deps.js\',',
+                '\tbemdeclFile: \'?.bh.bemdecl.js\'',
                 '}],'
             ].join(byIndent),
             [
                 '[enbBemTechs.files, {',
-                '    depsFile: \'?.bh.deps.js\',',
-                '    filesTarget: \'?.bh.files\',',
-                '    dirsTarget: \'?.bh.dirs\'',
+                '\tdepsFile: \'?.bh.deps.js\',',
+                '\tfilesTarget: \'?.bh.files\',',
+                '\tdirsTarget: \'?.bh.dirs\'',
                 '}],'
             ].join(byIndent),
             [
                 '[require(\'enb-bh/techs/bh-client-module\'), {',
-                '    target: \'?.browser.bh.js\',',
-                '    filesTarget: \'?.bh.files\',',
-                '    jsAttrName: \'data-bem\',',
-                '    jsAttrScheme: \'json\',',
-                '    mimic: \'BEMHTML\'',
+                '\ttarget: \'?.browser.bh.js\',',
+                '\tfilesTarget: \'?.bh.files\',',
+                '\tjsAttrName: \'data-bem\',',
+                '\tjsAttrScheme: \'json\',',
+                '\tmimic: \'BEMHTML\'',
                 '}]'
             ].join(byIndent)
         ].join(byIndent),
@@ -145,8 +145,8 @@ module.exports = {
             '[require(\'enb-diverse-js/techs/node-js\'), { target: \'?.pre.node.js\' }],',
             [
                 '[require(\'enb-modules/techs/prepend-modules\'), {',
-                '    source: \'?.pre.node.js\',',
-                '    target: \'?.node.js\'',
+                '\tsource: \'?.pre.node.js\',',
+                '\ttarget: \'?.node.js\'',
                 '}]'
             ].join(byIndent)
         ].join(byIndent),
@@ -156,8 +156,8 @@ module.exports = {
             '[require(\'enb-diverse-js/techs/browser-js\'), { target: \'?.browser.js\' }],',
             [
                 '[require(\'enb-modules/techs/prepend-modules\'), {',
-                '    source: \'?.browser.js\',',
-                '    target: \'?.js\'',
+                '\tsource: \'?.browser.js\',',
+                '\ttarget: \'?.js\'',
                 '}]'
             ].join(byIndent)
         ].join(byIndent),
@@ -167,14 +167,14 @@ module.exports = {
             '[require(\'enb-diverse-js/techs/browser-js\'), { target: \'?.browser.js\' }],',
             [
                 '[require(\'enb/techs/file-merge\'), {',
-                '    target: \'?.pre.js\',',
-                '    sources: [\'?.browser.template.js\', \'?.browser.js\']',
+                '\ttarget: \'?.pre.js\',',
+                '\tsources: [\'?.browser.template.js\', \'?.browser.js\']',
                 '}],'
             ].join(byIndent),
             [
                 '[require(\'enb-modules/techs/prepend-modules\'), {',
-                '    source: \'?.pre.js\',',
-                '    target: \'?.js\'',
+                '\tsource: \'?.pre.js\',',
+                '\ttarget: \'?.js\'',
                 '}]'
             ].join(byIndent)
         ].join(byIndent),
