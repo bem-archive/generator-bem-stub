@@ -20,7 +20,12 @@ var BemGenerator = yeoman.generators.Base.extend({
         this.option('skip-install', {
             desc: 'Skip the installation of dependencies and libraries after generation of the project',
             type: Boolean,
-            required: 'false'
+            required: false
+        });
+        this.option('tab-size', {
+            desc: 'Tab size of the generated code in spaces. Specify 0 to generate tabs instead of spaces',
+            type: Number,
+            defaults: 4
         });
 
         this.on('end', function () {
@@ -54,6 +59,15 @@ var BemGenerator = yeoman.generators.Base.extend({
             techs: require(configPath + '/techs'),
             browsers: require(configPath + '/browsers')
         };
+
+        var tabSize = Math.max(0, Math.min(12, this.options['tab-size']));
+        if (tabSize) {
+            var _origEngine = this.engine;
+            this.engine = function () {
+                var res = _origEngine.apply(this, arguments);
+                return res.replace(/\t/g, new Array(tabSize + 1).join(' '));
+            };
+        }
     },
 
     /**
