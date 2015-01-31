@@ -1,6 +1,5 @@
-var fs = require('fs'),
-    enb = require('../app/lib/enb'),
-    bemTools = require('../app/lib/bem-tools'),
+var enb = require('../../app/lib/enb'),
+    bemTools = require('../../app/lib/bem-tools'),
     config = {
         versions: require('./mocks/versions'),
         techs: require('./mocks/techs'),
@@ -20,7 +19,7 @@ describe('\'ENB\'', function () {
                 { name: 'bem-core', version: '' },
                 { name: 'bem-components', version: '' }
             ],
-            output = JSON.parse(fs.readFileSync('test/fixtures/enb/getPlatforms.no.design.json', 'utf-8'));
+            output = require('./fixtures/enb/getPlatforms.no.design.json');
 
         enb.getPlatforms(pls, libs, false).must.eql(output);
     });
@@ -35,7 +34,7 @@ describe('\'ENB\'', function () {
                 { name: 'bem-core', version: '' },
                 { name: 'bem-components', version: '' }
             ],
-            output = JSON.parse(fs.readFileSync('test/fixtures/enb/getPlatforms.design.json', 'utf-8'));
+            output = require('./fixtures/enb/getPlatforms.design.json');
 
         enb.getPlatforms(pls, libs, true).must.eql(output);
     });
@@ -57,63 +56,62 @@ describe('\'ENB\'', function () {
     });
 
     it('must get technology \'bemjson.js\'', function () {
-        var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.bemjson.json', 'utf-8'));
+        var output = require('./fixtures/enb/getTechnologies.bemjson.json');
 
         enb.getTechnologies(config, ['bemjson.js', 'css'], false, []).must.eql(output);
     });
 
     it('must get technology \'stylus\'', function () {
-        var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.stylus.json', 'utf-8'));
+        var output = require('./fixtures/enb/getTechnologies.stylus.json');
 
         enb.getTechnologies(config, ['stylus'], false, []).must.eql(output);
     });
 
     it('must get technology \'stylus\' + \'autoprefixer\'', function () {
-        var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.stylus+autoprefixer.json', 'utf-8'));
+        var output = require('./fixtures/enb/getTechnologies.stylus+autoprefixer.json');
 
         enb.getTechnologies(config, ['stylus'], true, []).must.eql(output);
     });
 
     it('must get technology \'less\'', function () {
-        var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.less.json', 'utf-8'));
+        var output = require('./fixtures/enb/getTechnologies.less.json');
 
         enb.getTechnologies(config, ['less'], false, []).must.eql(output);
     });
 
     it('must get technology \'less\' + \'autoprefixer\'', function () {
-        var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.less+autoprefixer.json', 'utf-8'));
+        var output = require('./fixtures/enb/getTechnologies.less+autoprefixer.json');
 
         enb.getTechnologies(config, ['less'], true, []).must.eql(output);
     });
 
     it('must get technology \'css\'', function () {
-        var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.css.json', 'utf-8'));
+        var output = require('./fixtures/enb/getTechnologies.css.json');
 
         enb.getTechnologies(config, ['css'], false, []).must.eql(output);
     });
 
     it('must get technology \'css\' + \'autoprefixer\'', function () {
-        var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.css+autoprefixer.json', 'utf-8'));
+        var output = require('./fixtures/enb/getTechnologies.css+autoprefixer.json');
 
         enb.getTechnologies(config, ['css'], true, []).must.eql(output);
     });
 
     it('must get minimized technology \'css\'', function () {
-        var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.css.min.json', 'utf-8'));
+        var output = require('./fixtures/enb/getTechnologies.css.min.json');
 
         enb.getTechnologies(config, ['css'], false, ['css']).must.eql(output);
     });
 
     it('must get minimized technology \'css\' + \'autoprefixer\'', function () {
-        var testFile = fs.readFileSync('test/fixtures/enb/getTechnologies.css+autoprefixer.min.json', 'utf-8'),
-            output = JSON.parse(testFile);
+        var output = require('./fixtures/enb/getTechnologies.css+autoprefixer.min.json');
 
         enb.getTechnologies(config, ['css'], true, ['css']).must.eql(output);
     });
 
     it('must get technologies \'ieN.css\'', function () {
         var techs = ['ie.css', 'ie8.css', 'ie9.css', 'css'],
-            output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.ie.json', 'utf-8'));
+            output = require('./fixtures/enb/getTechnologies.ie.json');
 
         enb.getTechnologies(config, techs, false, []).must.eql(output);
     });
@@ -121,108 +119,107 @@ describe('\'ENB\'', function () {
     it('must get minimized technologies \'ieN.css\'', function () {
         var techs = ['ie.css', 'ie8.css', 'ie9.css', 'css'],
             toMinify = ['ie.css', 'ie8.css', 'ie9.css', 'css'],
-            output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.ie.min.json', 'utf-8'));
+            output = require('./fixtures/enb/getTechnologies.ie.min.json');
 
         enb.getTechnologies(config, techs, false, toMinify).must.eql(output);
     });
 
     it('must get technology \'bemtree\'', function () {
-        var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.bemtree.json', 'utf-8'));
+        var output = require('./fixtures/enb/getTechnologies.bemtree.json');
 
         enb.getTechnologies(config, ['bemtree', 'css'], false, []).must.eql(output);
     });
 
     it('must get minimized technology \'bemtree\'', function () {
-        var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.bemtree.min.json', 'utf-8'));
+        var output = require('./fixtures/enb/getTechnologies.bemtree.min.json');
 
         enb.getTechnologies(config, ['bemtree', 'css'], false, ['bemtree.js']).must.eql(output);
     });
 
     it('must get technology \'node.js\'', function () {
-        var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.node.json', 'utf-8'));
+        var output = require('./fixtures/enb/getTechnologies.node.json');
 
         enb.getTechnologies(config, ['node.js', 'css'], false, []).must.eql(output);
     });
 
     it('must get minimized technology \'node.js\'', function () {
-        var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.node.min.json', 'utf-8'));
+        var output = require('./fixtures/enb/getTechnologies.node.min.json');
 
         enb.getTechnologies(config, ['node.js', 'css'], false, ['node.js']).must.eql(output);
     });
 
     it('must get technology \'browser.js\'', function () {
-        var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.browser.json', 'utf-8'));
+        var output = require('./fixtures/enb/getTechnologies.browser.json');
 
         enb.getTechnologies(config, ['browser.js', 'css'], false, []).must.eql(output);
     });
 
     it('must get minimized technology \'browser.js\'', function () {
-        var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.browser.min.json', 'utf-8'));
+        var output = require('./fixtures/enb/getTechnologies.browser.min.json');
 
         enb.getTechnologies(config, ['browser.js', 'css'], false, ['js']).must.eql(output);
     });
 
     it('must get technology \'browser.js\' + bemhtml', function () {
-        var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.browser+bemhtml.json', 'utf-8'));
+        var output = require('./fixtures/enb/getTechnologies.browser+bemhtml.json');
 
         enb.getTechnologies(config, ['browser.js', 'bemhtml', 'css'], false, []).must.eql(output);
     });
 
     it('must get technology \'browser.js\' + bh', function () {
-        var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.browser+bh.json', 'utf-8'));
+        var output = require('./fixtures/enb/getTechnologies.browser+bh.json');
 
         enb.getTechnologies(config, ['browser.js', 'bh', 'css'], false, []).must.eql(output);
     });
 
     it('must get technology \'bemhtml\'', function () {
-        var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.bemhtml.json', 'utf-8'));
+        var output = require('./fixtures/enb/getTechnologies.bemhtml.json');
 
         enb.getTechnologies(config, ['bemhtml', 'css'], false, []).must.eql(output);
     });
 
     it('must get minimized technology \'bemhtml\'', function () {
-        var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.bemhtml.min.json', 'utf-8'));
+        var output = require('./fixtures/enb/getTechnologies.bemhtml.min.json');
 
         enb.getTechnologies(config, ['bemhtml', 'css'], false, ['bemhtml.js']).must.eql(output);
     });
 
     it('must get technology \'bh\'', function () {
-        var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.bh.json', 'utf-8'));
+        var output = require('./fixtures/enb/getTechnologies.bh.json');
 
         enb.getTechnologies(config, ['bh', 'css'], false, []).must.eql(output);
     });
 
     it('must get minimized technology \'bh\'', function () {
-        var output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.bh.min.json', 'utf-8'));
+        var output = require('./fixtures/enb/getTechnologies.bh.min.json');
 
         enb.getTechnologies(config, ['bh', 'css'], false, ['bh.js']).must.eql(output);
     });
 
     it('must get technology \'html\' --> \'bemhtml\'', function () {
         var techs = ['bemjson.js', 'css', 'bemhtml', 'html'],
-            output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.html.bemhtml.json', 'utf-8'));
+            output = require('./fixtures/enb/getTechnologies.html.bemhtml.json');
 
         enb.getTechnologies(config, techs, false, []).must.eql(output);
     });
 
     it('must get technology \'html\' --> \'bh\'', function () {
         var techs = ['bemjson.js', 'css', 'bh', 'html'],
-            output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.html.bh.json', 'utf-8'));
+            output = require('./fixtures/enb/getTechnologies.html.bh.json');
 
         enb.getTechnologies(config, techs, false, []).must.eql(output);
     });
 
     it('must get technology \'html\' --> \'browser.js\' + \'bemhtml\'', function () {
         var techs = ['bemjson.js', 'css', 'browser.js', 'bemhtml', 'html'],
-            path = 'test/fixtures/enb/getTechnologies.html.browser+bemhtml.json',
-            output = JSON.parse(fs.readFileSync(path, 'utf-8'));
+            output = require('./fixtures/enb/getTechnologies.html.browser+bemhtml.json');
 
         enb.getTechnologies(config, techs, false, []).must.eql(output);
     });
 
     it('must get technology \'html\' --> \'browser.js\' + \'bh\'', function () {
         var techs = ['bemjson.js', 'css', 'browser.js', 'bh', 'html'],
-            output = JSON.parse(fs.readFileSync('test/fixtures/enb/getTechnologies.html.browser+bh.json', 'utf-8'));
+            output = require('./fixtures/enb/getTechnologies.html.browser+bh.json');
 
         enb.getTechnologies(config, techs, false, []).must.eql(output);
     });
@@ -295,7 +292,7 @@ describe('\'bem-tools\'', function () {
                 { name: 'bem-core', version: '' },
                 { name: 'bem-components', version: '' }
             ],
-            output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getPlatforms.no.design.json', 'utf-8'));
+            output = require('./fixtures/bem-tools/getPlatforms.no.design.json');
 
         bemTools.getPlatforms(pls, libs, false).must.eql(output);
     });
@@ -310,7 +307,7 @@ describe('\'bem-tools\'', function () {
                 { name: 'bem-core', version: '' },
                 { name: 'bem-components', version: '' }
             ],
-            output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getPlatforms.design.json', 'utf-8'));
+            output = require('./fixtures/bem-tools/getPlatforms.design.json');
 
         bemTools.getPlatforms(pls, libs, true).must.eql(output);
     });
@@ -365,84 +362,81 @@ describe('\'bem-tools\'', function () {
     });
 
     it('must get technology \'bemjson.js\'', function () {
-        var output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.bemjson.json', 'utf-8'));
+        var output = require('./fixtures/bem-tools/getTechnologies.bemjson.json');
 
         bemTools.getTechnologies(config, ['bemjson.js', 'css'], false).must.eql(output);
     });
 
     it('must get technology \'stylus\'', function () {
-        var output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.stylus.json', 'utf-8'));
+        var output = require('./fixtures/bem-tools/getTechnologies.stylus.json');
 
         bemTools.getTechnologies(config, ['stylus', 'css'], false).must.eql(output);
     });
 
     it('must get technology \'stylus\' + \'autoprefixer\'', function () {
-        var path = 'test/fixtures/bem-tools/getTechnologies.stylus+autoprefixer.json',
-            output = JSON.parse(fs.readFileSync(path, 'utf-8'));
+        var output = require('./fixtures/bem-tools/getTechnologies.stylus+autoprefixer.json');
 
         bemTools.getTechnologies(config, ['stylus', 'css'], true).must.eql(output);
     });
 
     it('must get technology \'less\'', function () {
-        var output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.less.json', 'utf-8'));
+        var output = require('./fixtures/bem-tools/getTechnologies.less.json');
 
         bemTools.getTechnologies(config, ['less', 'css'], false).must.eql(output);
     });
 
     it('must get technology \'less\' + \'autoprefixer\'', function () {
-        var path = 'test/fixtures/bem-tools/getTechnologies.less+autoprefixer.json',
-            output = JSON.parse(fs.readFileSync(path, 'utf-8'));
+        var output = require('./fixtures/bem-tools/getTechnologies.less+autoprefixer.json');
 
         bemTools.getTechnologies(config, ['less', 'css'], true).must.eql(output);
     });
 
     it('must get technology \'css\'', function () {
-        var output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.css.json', 'utf-8'));
+        var output = require('./fixtures/bem-tools/getTechnologies.css.json');
 
         bemTools.getTechnologies(config, ['css'], false).must.eql(output);
     });
 
     it('must get technology \'css\' + \'autoprefixer\'', function () {
-        var path = 'test/fixtures/bem-tools/getTechnologies.css+autoprefixer.json',
-            output = JSON.parse(fs.readFileSync(path, 'utf-8'));
+        var output = require('./fixtures/bem-tools/getTechnologies.css+autoprefixer.json');
 
         bemTools.getTechnologies(config, ['css'], true).must.eql(output);
     });
 
     it('must get technologies \'ieN.css\'', function () {
         var techs = ['css', 'ie.css', 'ie8.css', 'ie9.css'],
-            output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.ie.json', 'utf-8'));
+            output = require('./fixtures/bem-tools/getTechnologies.ie.json');
 
         bemTools.getTechnologies(config, techs, false).must.eql(output);
     });
 
     it('must get technology \'bemtree\'', function () {
-        var output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.bemtree.json', 'utf-8'));
+        var output = require('./fixtures/bem-tools/getTechnologies.bemtree.json');
 
         bemTools.getTechnologies(config, ['css', 'bemtree'], false).must.eql(output);
     });
 
     it('must get technology \'bemhtml\'', function () {
-        var output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.bemhtml.json', 'utf-8'));
+        var output = require('./fixtures/bem-tools/getTechnologies.bemhtml.json');
 
         bemTools.getTechnologies(config, ['css', 'bemhtml'], false).must.eql(output);
     });
 
     it('must get technology \'node.js\'', function () {
-        var output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.node.json', 'utf-8'));
+        var output = require('./fixtures/bem-tools/getTechnologies.node.json');
 
         bemTools.getTechnologies(config, ['css', 'node.js'], false).must.eql(output);
     });
 
     it('must get technology \'browser.js+bemhtml\'', function () {
-        var output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.browser.json', 'utf-8'));
+        var output = require('./fixtures/bem-tools/getTechnologies.browser.json');
 
         bemTools.getTechnologies(config, ['css', 'browser.js+bemhtml'], false).must.eql(output);
     });
 
     it('must get technology \'html\'', function () {
         var techs = ['bemjson.js', 'css', 'bemhtml', 'html'],
-            output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.html.json', 'utf-8'));
+            output = require('./fixtures/bem-tools/getTechnologies.html.json');
 
         bemTools.getTechnologies(config, techs, false).must.eql(output);
     });
@@ -460,7 +454,7 @@ describe('\'bem-tools\'', function () {
                 'browser.js+bemhtml',
                 'html'
             ],
-            output = JSON.parse(fs.readFileSync('test/fixtures/bem-tools/getTechnologies.all.json', 'utf-8'));
+            output = require('./fixtures/bem-tools/getTechnologies.all.json');
 
         bemTools.getTechnologies(config, techs, false).must.eql(output);
     });

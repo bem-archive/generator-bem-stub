@@ -20,7 +20,7 @@ var BemGenerator = yeoman.generators.Base.extend({
         this.option('skip-install', {
             desc: 'Skip the installation of dependencies and libraries after generation of the project',
             type: Boolean,
-            required: false
+            defaults: false
         });
         this.option('tab-size', {
             desc: 'Tab size of the generated code in spaces. Specify 0 to generate tabs instead of spaces',
