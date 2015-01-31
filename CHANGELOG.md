@@ -1,6 +1,11 @@
 History of changes
 ==================
 
+0.4.0
+-----
+
+* Added option `tab-size`.
+
 0.3.0
 -----
 
