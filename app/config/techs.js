@@ -44,7 +44,7 @@ module.exports = {
 
         'ie8.css': [
             '// ie8.css',
-            '[require(\'enb/techs/css\'), { ',
+            '[require(\'enb/techs/css\'), {',
             '\ttarget: \'?.ie8.css\',',
             '\tsourceSuffixes: [\'css\', \'ie8.css\']',
             '}]'
@@ -52,7 +52,7 @@ module.exports = {
 
         'ie9.css': [
             '// ie9.css',
-            '[require(\'enb/techs/css\'), { ',
+            '[require(\'enb/techs/css\'), {',
             '\ttarget: \'?.ie9.css\',',
             '\tsourceSuffixes: [\'css\', \'ie9.css\']',
             '}]'

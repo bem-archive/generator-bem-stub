@@ -24,19 +24,19 @@ Run:
 $ yo bem-stub
 ```
 
-To create the config file fitting for your project, the generator will ask several questions. Note that some of them depend on the previous ones, for example:
+### Options
 
-* If you have chosen library [bem-components](https://bem.info/libs/bem-components/), `generator-bem-stub` will choose [Autoprefixer](https://github.com/postcss/autoprefixer) and CSS preprocessor [Stylus](https://github.com/LearnBoost/stylus) as default.
+* **skip-install** - skip the installation of dependencies and libraries after generation of the project (default: `false`).
 
-* You can choose template engine [BH](https://bem.info/technology/bh/) only if you have chosen assembler [ENB](https://github.com/enb-make/enb).
+* **tab-size** - tab size of the generated code in spaces. Specify `0` to generate tabs instead of spaces (default: `4`).
 
-* If you have not chosen technology [BEMJSON](https://bem.info/technology/bemjson/current/bemjson/), bundles will be assembled from **BEMDECL**.
+### Example
 
-* You can build HTML only if you have chosen technology [BEMJSON](https://bem.info/technology/bemjson/current/bemjson/) and template engine [BEMHTML](https://bem.info/technology/bemhtml/current/intro/) or [BH](https://bem.info/technology/bh/).
+```
+$ yo bem-stub --skip-install --tab-size=4
+```
 
-* You will be able to choose which separate files to minimize only if you have chosen assembler [ENB](https://github.com/enb-make/enb) ([bem-tools](https://bem.info/tools/bem/bem-tools/) does not support configuration of minimization, all possible files are minimized by [borschik](https://bem.info/tools/optimizers/borschik/)).
-
-### What does generator-bem-stub support?
+## What does generator-bem-stub support?
 
 * Assemblers:
  * [bem-tools](https://bem.info/tools/bem/bem-tools/)
@@ -64,17 +64,19 @@ To create the config file fitting for your project, the generator will ask sever
 * Building of HTML
 * Minimization of separate files (only in [ENB](https://github.com/enb-make/enb))
 
-### Installation of dependencies
+To create the config file fitting for your project, the generator will ask several questions. Note that some of them depend on the previous ones, for example:
 
-`generator-bem-stub` will install all dependencies and libraries after generation of the project.
+* If you have chosen library [bem-components](https://bem.info/libs/bem-components/), `generator-bem-stub` will choose [Autoprefixer](https://github.com/postcss/autoprefixer) and CSS preprocessor [Stylus](https://github.com/LearnBoost/stylus) as default.
 
-If you do not want to install dependencies and libraries, use the option `--skip-install`:
+* You can choose template engine [BH](https://bem.info/technology/bh/) only if you have chosen assembler [ENB](https://github.com/enb-make/enb).
 
-```bash
-$ yo bem-stub --skip-install
-```
+* If you have not chosen technology [BEMJSON](https://bem.info/technology/bemjson/current/bemjson/), bundles will be assembled from **BEMDECL**.
 
-### Versions
+* You can build HTML only if you have chosen technology [BEMJSON](https://bem.info/technology/bemjson/current/bemjson/) and template engine [BEMHTML](https://bem.info/technology/bemhtml/current/intro/) or [BH](https://bem.info/technology/bh/).
+
+* You will be able to choose which separate files to minimize only if you have chosen assembler [ENB](https://github.com/enb-make/enb) ([bem-tools](https://bem.info/tools/bem/bem-tools/) does not support configuration of minimization, all possible files are minimized by [borschik](https://bem.info/tools/optimizers/borschik/)).
+
+## Versions
 
 You can check in the file [app/config/versions.js](https://github.com/bem/generator-bem-stub/blob/master/app/config/versions.js) which versions of the dependencies and libraries `generator-bem-stub` uses.
 

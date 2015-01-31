@@ -24,21 +24,19 @@ $ npm install -g generator-bem-stub
 $ yo bem-stub
 ```
 
-Чтобы создать оптимальный для вашего проекта конфигурационный файл, генератор задаст несколько вопросов, от которых будет зависеть последующая конфигурация сборки.
+### Опции
 
-Важно знать, что многие вопросы в `generator-bem-stub` зависят друг от друга, например:
+* **skip-install** - не устанавливать зависимости и бибилиотеки после генерации проекта (по умолчанию: `false`).
 
-* Если вы выбрали библиотеку [bem-components](https://ru.bem.info/libs/bem-components/), `generator-bem-stub` выберет [Автопрефиксер](https://github.com/postcss/autoprefixer) и CSS-препроцессор [Stylus](https://github.com/LearnBoost/stylus) по умолчанию.
+* **tab-size** - размер символов табуляции в сгенерированном коде. Укажите `0`, чтобы генерировались символы табуляции вместо пробелов (по умолчанию: `4`).
 
-* Возможность использования [BH](https://ru.bem.info/technology/bh/)-шаблонизатора появляется только при выборе сборщика [ENB](https://github.com/enb-make/enb).
+### Пример
 
-* Бандлы будут собираться из **BEMDECL**, если вы не выбрали технологию [BEMJSON](https://ru.bem.info/technology/bemjson/current/bemjson/).
+```
+$ yo bem-stub --skip-install --tab-size=4
+```
 
-* Вы можете собирать HTML, только если выбрали технологию [BEMJSON](https://ru.bem.info/technology/bemjson/current/bemjson/) и шаблонизатор [BEMHTML](https://ru.bem.info/technology/bemhtml/current/intro/) или [BH](https://ru.bem.info/technology/bh/).
-
-* У вас будет возможность выбрать, какие конкретно файлы минимизировать, только если вы выбрали сборщик [ENB](https://github.com/enb-make/enb). ([bem-tools](https://ru.bem.info/tools/bem/bem-tools/) не предоставляет возможность конфигурировать минимизацию файлов, все возможные файлы минимизируются с помощью [borschik](https://ru.bem.info/tools/optimizers/borschik/)).
-
-### Что поддерживает generator-bem-stub?
+## Что поддерживает generator-bem-stub?
 
 * Сборщики:
  * [bem-tools](https://ru.bem.info/tools/bem/bem-tools/)
@@ -66,16 +64,20 @@ $ yo bem-stub
 * Сборка HTML
 * Минимизиция отдельных файлов (доступна только в [ENB](https://github.com/enb-make/enb))
 
-### Установка зависимостей
+Чтобы создать оптимальный для вашего проекта конфигурационный файл, генератор задаст несколько вопросов, от которых будет зависеть последующая конфигурация сборки.
 
-`generator-bem-stub` установит все зависимости и библиотеки после генерации проекта.
+Важно знать, что многие вопросы в `generator-bem-stub` зависят друг от друга, например:
 
-Чтобы не устанавливать зависимости и библиотеки, используйте опцию `--skip-install`:
+* Если вы выбрали библиотеку [bem-components](https://ru.bem.info/libs/bem-components/), `generator-bem-stub` выберет [Автопрефиксер](https://github.com/postcss/autoprefixer) и CSS-препроцессор [Stylus](https://github.com/LearnBoost/stylus) по умолчанию.
 
-```bash
-$ yo bem-stub --skip-install
-```
+* Возможность использования [BH](https://ru.bem.info/technology/bh/)-шаблонизатора появляется только при выборе сборщика [ENB](https://github.com/enb-make/enb).
 
-### Версии
+* Бандлы будут собираться из **BEMDECL**, если вы не выбрали технологию [BEMJSON](https://ru.bem.info/technology/bemjson/current/bemjson/).
+
+* Вы можете собирать HTML, только если выбрали технологию [BEMJSON](https://ru.bem.info/technology/bemjson/current/bemjson/) и шаблонизатор [BEMHTML](https://ru.bem.info/technology/bemhtml/current/intro/) или [BH](https://ru.bem.info/technology/bh/).
+
+* У вас будет возможность выбрать, какие конкретно файлы минимизировать, только если вы выбрали сборщик [ENB](https://github.com/enb-make/enb). ([bem-tools](https://ru.bem.info/tools/bem/bem-tools/) не предоставляет возможность конфигурировать минимизацию файлов, все возможные файлы минимизируются с помощью [borschik](https://ru.bem.info/tools/optimizers/borschik/)).
+
+## Версии
 
 В файле [app/config/versions.js](https://github.com/bem/generator-bem-stub/blob/master/app/config/versions.js) указано, какие версии зависимостей и библиотек использует `generator-bem-stub`.
