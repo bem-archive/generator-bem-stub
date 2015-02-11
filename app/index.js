@@ -114,23 +114,6 @@ var BemGenerator = yeoman.generators.Base.extend({
                 value: 'bem-tools'
             }]
         }, {
-            type: 'list',
-            name: 'baseLibrary',
-            message: 'Choose a base library:',
-            choices: function () {
-                var choices = [];
-
-                choices.push({
-                    name: 'bem-core',
-                    value: {
-                        name: 'bem-core',
-                        version: config.versions.libs['bem-core']
-                    }
-                });
-
-                return choices;
-            }
-        }, {
             type: 'checkbox',
             name: 'addLibraries',
             message: 'Specify additional libraries if needed:',
@@ -297,8 +280,15 @@ var BemGenerator = yeoman.generators.Base.extend({
     _onUserInputEnd: function (callback, props) {
         var config = this._config;
 
+        // Assembler
         this.assemblerName = props.assembler === 'bem-tools' ? 'bem-tools' : 'enb';
         var assembler = require(['.', 'lib', this.assemblerName].join('/'));
+
+        // Base library
+        var baseLibrary = {
+            name: 'bem-core',
+            version: config.versions.libs['bem-core']
+        };
 
         // General information
         this.author = props.author;
@@ -308,7 +298,7 @@ var BemGenerator = yeoman.generators.Base.extend({
         // Libraries (base lib on the top - for 'bem-tools' it is vital)
         var addLibraries = props.addLibraries,
             isBemComponents = this._isBemComponents(addLibraries),
-            allLibraries = [props.baseLibrary].concat(addLibraries);
+            allLibraries = [baseLibrary].concat(addLibraries);
 
         this.libsToBower = isBemComponents ? addLibraries : allLibraries;
         this.libs = allLibraries;
