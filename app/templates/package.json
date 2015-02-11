@@ -12,6 +12,7 @@
   },
   "scripts": {
     "postinstall": "bower-npm-install",
-    "deps": "bower-npm-install --non-interactive"
+    "deps": "bower-npm-install --non-interactive",
+    "start": "<%= assemblerName === 'bem-tools' ? 'bem' : 'enb' %> server"
   }
 }
