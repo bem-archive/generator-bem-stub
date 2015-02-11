@@ -1,6 +1,12 @@
 History of changes
 ==================
 
+0.5.0
+-----
+
+* Removed the question about the **base library**. [bem-core](http://bem.info/libs/bem-core/current/) is included as the base by default.
+* Added shortcut `npm start` for starting a server in a generated project.
+
 0.4.0
 -----
 
