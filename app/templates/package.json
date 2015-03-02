@@ -1,10 +1,11 @@
 {
-  "author": "<%= author %>",
   "name": "<%= projectName %>",
-  "email": "<%= email %>",
+  "description": "BEM project",
   "version": "0.0.0",
-  "engines": {
-    "node": ">=0.10"
+  "repository": {},
+  "author": {
+    "name": "<%= author %>",
+    "email": "<%= email %>"
   },
   "dependencies": {},
   "devDependencies": {
@@ -14,5 +15,8 @@
     "postinstall": "npm run deps",
     "deps": "<%= assemblerName === 'bem-tools' ? 'bower-npm-install --non-interactive' : 'bower install --non-interactive' %>",
     "start": "<%= assemblerName === 'bem-tools' ? 'bem' : 'enb' %> server"
+  },
+  "engines": {
+    "node": ">=0.10.0"
   }
 }
