@@ -11,8 +11,8 @@
 <%= _.map(technologies.inJSON, function(technology) { return '    "' + technology.name + '": "' + technology.version + '"'}).join(',\n') %>
   },
   "scripts": {
-    "postinstall": "bower-npm-install",
-    "deps": "bower-npm-install --non-interactive",
+    "postinstall": "npm run deps",
+    "deps": "<%= assemblerName === 'bem-tools' ? 'bower-npm-install --non-interactive' : 'bower install --non-interactive' %>",
     "start": "<%= assemblerName === 'bem-tools' ? 'bem' : 'enb' %> server"
   }
 }
