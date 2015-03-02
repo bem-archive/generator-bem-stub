@@ -5,17 +5,17 @@ module.exports = {
     },
     deps: {
         // enb
-        enb: '0.13.15',
-        'enb-autoprefixer': '0.2.2',
+        enb: '0.15.0',
+        'enb-autoprefixer': '0.2.3',
         'enb-bemxjst': '1.3.4',
-        'enb-bem-techs': '1.0.3',
+        'enb-bem-techs': '1.0.4',
         'enb-bh': '0.4.1',
         'enb-borschik': '1.5.0',
         'enb-diverse-js': '0.1.0',
         'enb-modules': '0.2.0',
-        'enb-stylus': '1.2.0',
+        'enb-stylus': '1.2.2',
 
-        // bem
+        // bem-tools
         bem: '0.9.0',
         'bem-environ': '1.4.0',
         'bem-tools-autoprefixer': '0.0.3',
@@ -23,9 +23,9 @@ module.exports = {
         // other
         bh: '3.3.0',
         bower: '1.3.12',
-        'borschik-tech-cleancss': '1.0.3',
+        'borschik-tech-cleancss': '2.0.1',
         'bower-npm-install': '0.5.9',
-        less: '1.7.5',
-        stylus: '0.49.3'
+        stylus: '0.50.0',
+        less: '1.7.5'
     }
 };
