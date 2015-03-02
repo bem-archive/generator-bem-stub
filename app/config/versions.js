@@ -25,7 +25,6 @@ module.exports = {
         bower: '1.3.12',
         'borschik-tech-cleancss': '2.0.1',
         'bower-npm-install': '0.5.9',
-        stylus: '0.50.0',
-        less: '1.7.5'
+        stylus: '0.50.0'
     }
 };

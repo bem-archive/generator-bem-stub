@@ -165,9 +165,6 @@ var BemGenerator = yeoman.generators.Base.extend({
                     name: 'Stylus',
                     value: 'stylus'
                 }, {
-                    name: 'Less',
-                    value: 'less'
-                }, {
                     name: 'Only pure CSS',
                     value: 'css'
                 }];

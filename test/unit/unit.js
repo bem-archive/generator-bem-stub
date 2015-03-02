@@ -73,18 +73,6 @@ describe('\'ENB\'', function () {
         enb.getTechnologies(config, ['stylus'], true, []).must.eql(output);
     });
 
-    it('must get technology \'less\'', function () {
-        var output = require('./fixtures/enb/getTechnologies.less.json');
-
-        enb.getTechnologies(config, ['less'], false, []).must.eql(output);
-    });
-
-    it('must get technology \'less\' + \'autoprefixer\'', function () {
-        var output = require('./fixtures/enb/getTechnologies.less+autoprefixer.json');
-
-        enb.getTechnologies(config, ['less'], true, []).must.eql(output);
-    });
-
     it('must get technology \'css\'', function () {
         var output = require('./fixtures/enb/getTechnologies.css.json');
 
@@ -377,18 +365,6 @@ describe('\'bem-tools\'', function () {
         var output = require('./fixtures/bem-tools/getTechnologies.stylus+autoprefixer.json');
 
         bemTools.getTechnologies(config, ['stylus', 'css'], true).must.eql(output);
-    });
-
-    it('must get technology \'less\'', function () {
-        var output = require('./fixtures/bem-tools/getTechnologies.less.json');
-
-        bemTools.getTechnologies(config, ['less', 'css'], false).must.eql(output);
-    });
-
-    it('must get technology \'less\' + \'autoprefixer\'', function () {
-        var output = require('./fixtures/bem-tools/getTechnologies.less+autoprefixer.json');
-
-        bemTools.getTechnologies(config, ['less', 'css'], true).must.eql(output);
     });
 
     it('must get technology \'css\'', function () {

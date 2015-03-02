@@ -135,15 +135,6 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
                 });
                 break;
 
-            case 'less':
-                inTechs.push(config.techs.enb[isAutoprefixer ? 'less+autoprefixer' : 'less']);
-
-                inJSON.push({
-                    name: 'less',
-                    version: config.versions.deps['less']
-                });
-                break;
-
             case 'node.js':
                 inTechs.push(config.techs.enb['node.js']);
 
