@@ -87,7 +87,7 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
             // 'files' and 'deps' are always included
             inTechs: [],
             inTargets: [],
-            inJSON: ['bower', 'bower-npm-install', 'enb', 'enb-bem-techs'].map(function (dep) {
+            inJSON: ['bower', 'enb', 'enb-bem-techs'].map(function (dep) {
                 return {
                     name: dep,
                     version: config.versions.deps[dep]

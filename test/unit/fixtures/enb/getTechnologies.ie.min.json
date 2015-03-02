@@ -10,9 +10,6 @@
     "name": "bower",
     "version": "*"
   }, {
-    "name": "bower-npm-install",
-    "version": "*"
-  }, {
     "name": "enb",
     "version": "*"
   }, {
