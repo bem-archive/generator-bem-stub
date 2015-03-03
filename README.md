@@ -16,6 +16,14 @@ To install the generator run:
 $ npm install -g generator-bem-stub
 ```
 
+## Update
+
+To update the generator run:
+
+```bash
+$ npm update -g generator-bem-stub
+```
+
 ## Usage
 
 Run:
