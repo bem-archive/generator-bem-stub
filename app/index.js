@@ -102,7 +102,7 @@ var BemGenerator = yeoman.generators.Base.extend({
             type: 'input',
             name: 'email',
             message: 'Enter an email of the project owner:',
-            'default': this.user.git.email || 'ivan@yandex.com'
+            'default': this.user.git.email() || 'ivan@yandex.com'
         }, {
             type: 'list',
             name: 'assembler',
