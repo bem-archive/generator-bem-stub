@@ -209,7 +209,7 @@ function getTechnologies(config, techs, isAutoprefixer) {
                 break;
 
             default:
-                if (tech === 'stylus' || tech === 'less') {
+                if (tech === 'stylus') {
                     inBlocks.defaultTechs.push(tech);
 
                     inMake.forked.push(tech);

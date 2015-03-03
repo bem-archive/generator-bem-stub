@@ -4,16 +4,6 @@ module.exports = {
     enb: {
         'bemjson.js': '[enbBemTechs.bemjsonToBemdecl]',
 
-        less: [
-            '// css',
-            '[require(\'enb/techs/css-less\')]'
-        ].join(byIndent),
-
-        'less+autoprefixer': [
-            '// css',
-            '[require(\'enb/techs/css-less\'), { target: \'?.noprefix.css\' }]'
-        ].join(byIndent),
-
         stylus: [
             '// css',
             '[require(\'enb-stylus/techs/css-stylus\')]'
@@ -193,7 +183,6 @@ module.exports = {
         'bemdecl.js': 'v2/bemdecl.js',
         'deps.js': 'v2/deps.js',
         stylus: 'v2/styl',
-        less: 'v2/less',
         css: 'v2/css',
         'ie.css': 'v2/ie.css',
         'ie8.css': 'v2/ie8.css',
