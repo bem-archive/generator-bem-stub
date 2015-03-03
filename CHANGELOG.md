@@ -1,6 +1,13 @@
 History of changes
 ==================
 
+0.6.0
+-----
+
+* CSS preprocessor [Less](https://github.com/less/less.js) is not supported any more.
+* Fixed the `postinstall` script in file `package.json` of the generated project (see [#1]).
+* Updated the versions of dependencies (see [#2]).
+
 0.5.0
 -----
 
@@ -57,3 +64,6 @@ History of changes
 * Fixed the generation of file `bemjson.js`. It will be generated the same no matter what of kind assembler you use.
 * Updated the versions of dependencies and libraries.
 * Fixed bugs.
+
+[#1]: https://github.com/bem/generator-bem-stub/issues/107
+[#2]: https://github.com/bem/generator-bem-stub/pull/114/files
