@@ -2,6 +2,18 @@
 
 `generator-bem-stub` is a generator of [BEM](http://bem.info/) projects for [Yeoman](http://yeoman.io).
 
+<!-- TOC -->
+- [Introduction](#introduction)
+- [Install](#install)
+- [Update](#update)
+- [Usage](#usage)
+  - [Options](#options)
+  - [Example](#example)
+- [What does generator-bem-stub support?](#what-does-generator-bem-stub-support)
+- [Versions](#versions)
+
+<!-- TOC END -->
+
 ## Introduction
 
 There are several assemblers for [BEM](https://bem.info/) projects — [bem-tools](https://bem.info/tools/bem/bem-tools/) and [ENB](https://github.com/enb-make/enb). What does any developer do by starting a new [BEM](https://bem.info/) project? First and foremost, a developer creates a configuration file for an assembler which he is going to use. Unfortunately it is rather time-consuming and prone to error process both for [bem-tools](https://bem.info/tools/bem/bem-tools/) and [ENB](https://github.com/enb-make/enb).
