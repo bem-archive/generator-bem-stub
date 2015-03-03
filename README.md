@@ -38,31 +38,30 @@ $ yo bem-stub --skip-install --tab-size=4
 
 ## What does generator-bem-stub support?
 
-* Assemblers:
- * [bem-tools](https://bem.info/tools/bem/bem-tools/)
- * [ENB](https://github.com/enb-make/enb)
-* Libraries:
- * [bem-core](https://bem.info/libs/bem-core/)
- * [bem-components](https://bem.info/libs/bem-components/)
-* Platforms:
- * desktop
- * touch-pad
- * touch-phone
-* CSS preprocessors:
- * [Stylus](https://github.com/LearnBoost/stylus)
- * [Less](https://github.com/less/less.js)
-* [Autoprefixer](https://github.com/postcss/autoprefixer)
-* Technologies:
- * [BEMJSON](https://bem.info/technology/bemjson/current/bemjson/)
- * [BEMTREE](https://en.bem.info/technology/bemtree/current/bemtree/)
- * BEMDECL
- * node.js
- * browser.js
-* Template engines:
- * [BEMHTML](http://bem.info/technology/bemhtml/current/intro/)
- * [BH](https://bem.info/technology/bh/) (only in [ENB](https://github.com/enb-make/enb))
-* Building of HTML
-* Minimization of separate files (only in [ENB](https://github.com/enb-make/enb))
+- Assemblers:
+  - [bem-tools](https://bem.info/tools/bem/bem-tools/)
+  - [ENB](https://github.com/enb-make/enb)
+- Libraries:
+  - [bem-core](https://bem.info/libs/bem-core/)
+  - [bem-components](https://bem.info/libs/bem-components/)
+- Platforms:
+  - desktop
+  - touch-pad
+  - touch-phone
+- CSS preprocessors:
+  - [Stylus](https://github.com/LearnBoost/stylus)
+- [Autoprefixer](https://github.com/postcss/autoprefixer)
+- Technologies:
+  - [BEMJSON](https://bem.info/technology/bemjson/current/bemjson/)
+  - [BEMTREE](https://en.bem.info/technology/bemtree/current/bemtree/)
+  - BEMDECL
+  - node.js
+  - browser.js
+- Template engines:
+  - [BEMHTML](http://bem.info/technology/bemhtml/current/intro/)
+  - [BH](https://bem.info/technology/bh/) (only in [ENB](https://github.com/enb-make/enb))
+- Building of HTML
+- Minimization of separate files (only in [ENB](https://github.com/enb-make/enb))
 
 To create the config file fitting for your project, the generator will ask several questions. Note that some of them depend on the previous ones, for example:
 

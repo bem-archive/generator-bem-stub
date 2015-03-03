@@ -38,31 +38,30 @@ $ yo bem-stub --skip-install --tab-size=4
 
 ## Что поддерживает generator-bem-stub?
 
-* Сборщики:
- * [bem-tools](https://ru.bem.info/tools/bem/bem-tools/)
- * [ENB](https://github.com/enb-make/enb)
-* Библиотеки:
- * [bem-core](https://ru.bem.info/libs/bem-core/)
- * [bem-components](https://ru.bem.info/libs/bem-components/)
-* Платформы:
- * desktop
- * touch-pad
- * touch-phone
-* CSS-препроцессоры:
- * [Stylus](https://github.com/LearnBoost/stylus)
- * [Less](https://github.com/less/less.js)
-* [Автопрефиксер](https://github.com/postcss/autoprefixer)
-* Технологии:
- * [BEMJSON](https://ru.bem.info/technology/bemjson/current/bemjson/)
- * [BEMTREE](https://ru.bem.info/technology/bemtree/current/bemtree/)
- * BEMDECL
- * node.js
- * browser.js
-* Шаблонизаторы:
- * [BEMHTML](https://ru.bem.info/technology/bemhtml/current/intro/)
- * [BH](https://ru.bem.info/technology/bh/) (доступен только в [ENB](https://github.com/enb-make/enb))
-* Сборка HTML
-* Минимизиция отдельных файлов (доступна только в [ENB](https://github.com/enb-make/enb))
+- Сборщики:
+  - [bem-tools](https://ru.bem.info/tools/bem/bem-tools/)
+  - [ENB](https://github.com/enb-make/enb)
+- Библиотеки:
+  - [bem-core](https://ru.bem.info/libs/bem-core/)
+  - [bem-components](https://ru.bem.info/libs/bem-components/)
+- Платформы:
+  - desktop
+  - touch-pad
+  - touch-phone
+- CSS-препроцессоры:
+  - [Stylus](https://github.com/LearnBoost/stylus)
+- [Автопрефиксер](https://github.com/postcss/autoprefixer)
+- Технологии:
+  - [BEMJSON](https://ru.bem.info/technology/bemjson/current/bemjson/)
+  - [BEMTREE](https://ru.bem.info/technology/bemtree/current/bemtree/)
+  - BEMDECL
+  - node.js
+  - browser.js
+- Шаблонизаторы:
+  - [BEMHTML](https://ru.bem.info/technology/bemhtml/current/intro/)
+  - [BH](https://ru.bem.info/technology/bh/) (доступен только в [ENB](https://github.com/enb-make/enb))
+- Сборка HTML
+- Минимизиция отдельных файлов (доступна только в [ENB](https://github.com/enb-make/enb))
 
 Чтобы создать оптимальный для вашего проекта конфигурационный файл, генератор задаст несколько вопросов, от которых будет зависеть последующая конфигурация сборки.
 
