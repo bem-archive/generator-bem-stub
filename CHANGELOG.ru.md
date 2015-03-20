@@ -1,6 +1,12 @@
 История изменений
 ==================
 
+0.7.0
+-----
+
+* Библиотека [bem-core](http://bem.info/libs/bem-core/) обновлена до `v2.6.0`.
+* Библиотека [bem-components](http://bem.info/libs/bem-components/) обновлена до `v2.1.0`.
+
 0.6.0
 -----
 
