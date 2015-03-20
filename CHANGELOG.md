@@ -1,6 +1,12 @@
 History of changes
 ==================
 
+0.7.0
+-----
+
+* Library [bem-core](http://bem.info/libs/bem-core/) was updated to `v2.6.0`.
+* Library [bem-components](http://bem.info/libs/bem-components/) was updated to `v2.1.0`.
+
 0.6.0
 -----
 

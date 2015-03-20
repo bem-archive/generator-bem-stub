@@ -1,7 +1,7 @@
 module.exports = {
     libs: {
-        'bem-core': 'v2.5.1',
-        'bem-components': 'v2.0.0'
+        'bem-core': 'v2.6.0',
+        'bem-components': 'v2.1.0'
     },
     deps: {
         // enb
