@@ -13,7 +13,7 @@ module.exports = {
         'enb-borschik': '1.5.0',
         'enb-diverse-js': '0.1.0',
         'enb-modules': '0.2.0',
-        'enb-stylus': '1.2.2',
+        'enb-stylus': '1.2.3',
 
         // bem-tools
         bem: '0.9.0',
@@ -22,7 +22,7 @@ module.exports = {
 
         // other
         bh: '3.3.0',
-        bower: '1.3.12',
+        bower: '1.4.1',
         'borschik-tech-cleancss': '2.0.1',
         'bower-npm-install': '0.5.9',
         stylus: '0.50.0'
