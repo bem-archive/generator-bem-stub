@@ -1,6 +1,11 @@
 История изменений
 ==================
 
+0.7.1
+-----
+
+* Обновлены зависимости (подробнее [#3]).
+
 0.7.0
 -----
 
@@ -73,3 +78,4 @@
 
 [#1]: https://github.com/bem/generator-bem-stub/issues/107
 [#2]: https://github.com/bem/generator-bem-stub/pull/114/files
+[#3]: https://github.com/bem/generator-bem-stub/pull/123/files
