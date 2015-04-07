@@ -4,7 +4,7 @@ History of changes
 0.7.1
 -----
 
-* Updated the versions of dependencies (see [#3]).
+* Updated the versions of dependencies (see [#123]).
 
 0.7.0
 -----
@@ -16,8 +16,8 @@ History of changes
 -----
 
 * CSS preprocessor [Less](https://github.com/less/less.js) is not supported any more.
-* Fixed the `postinstall` script in file `package.json` of the generated project (see [#1]).
-* Updated the versions of dependencies (see [#2]).
+* Fixed the `postinstall` script in file `package.json` of the generated project (see [#107]).
+* Updated the versions of dependencies (see [#114]).
 
 0.5.0
 -----
@@ -76,6 +76,6 @@ History of changes
 * Updated the versions of dependencies and libraries.
 * Fixed bugs.
 
-[#1]: https://github.com/bem/generator-bem-stub/issues/107
-[#2]: https://github.com/bem/generator-bem-stub/pull/114/files
-[#3]: https://github.com/bem/generator-bem-stub/pull/123/files
+[#107]: https://github.com/bem/generator-bem-stub/issues/107
+[#114]: https://github.com/bem/generator-bem-stub/pull/114/files
+[#123]: https://github.com/bem/generator-bem-stub/pull/123/files

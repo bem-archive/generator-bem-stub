@@ -4,7 +4,7 @@
 0.7.1
 -----
 
-* Обновлены зависимости (подробнее [#3]).
+* Обновлены зависимости (подробнее [#123]).
 
 0.7.0
 -----
@@ -16,8 +16,8 @@
 -----
 
 * CSS-препроцессор [Less](https://github.com/less/less.js) больше не поддерживается.
-* Исправлен скрипт `postinstall` в файле `package.json` генерируемого проекта (подробене [#1]).
-* Обновлены зависимости (подробнее [#2]).
+* Исправлен скрипт `postinstall` в файле `package.json` генерируемого проекта (подробене [#107]).
+* Обновлены зависимости (подробнее [#114]).
 
 0.5.0
 -----
@@ -76,6 +76,6 @@
 * Обновлены версии зависимостей и библиотек.
 * Исправлены баги.
 
-[#1]: https://github.com/bem/generator-bem-stub/issues/107
-[#2]: https://github.com/bem/generator-bem-stub/pull/114/files
-[#3]: https://github.com/bem/generator-bem-stub/pull/123/files
+[#107]: https://github.com/bem/generator-bem-stub/issues/107
+[#114]: https://github.com/bem/generator-bem-stub/pull/114/files
+[#123]: https://github.com/bem/generator-bem-stub/pull/123/files
