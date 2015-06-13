@@ -1,15 +1,15 @@
 module.exports = {
     libs: {
         'bem-core': 'v2.6.0',
-        'bem-components': 'v2.1.0'
+        'bem-components': 'v2.2.1'
     },
     deps: {
         // enb
         enb: '0.15.0',
-        'enb-autoprefixer': '0.2.3',
+        'enb-autoprefixer': '0.3.0',
         'enb-bemxjst': '1.3.4',
         'enb-bem-techs': '1.0.4',
-        'enb-bh': '0.4.1',
+        'enb-bh': '0.5.0',
         'enb-borschik': '1.5.0',
         'enb-diverse-js': '0.1.0',
         'enb-modules': '0.2.0',
