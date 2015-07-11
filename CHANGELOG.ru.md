@@ -1,6 +1,11 @@
 История изменений
 ==================
 
+0.8.1
+-----
+
+* Исправлена ошибка при подключении модуля [Автопрефиксер](https://github.com/postcss/autoprefixer) (подробнее [#131]).
+
 0.8.0
 -----
 
@@ -81,6 +86,7 @@
 * Обновлены версии зависимостей и библиотек.
 * Исправлены баги.
 
+[#131]: https://github.com/bem/generator-bem-stub/issues/131
 [#107]: https://github.com/bem/generator-bem-stub/issues/107
 [#114]: https://github.com/bem/generator-bem-stub/pull/114/files
 [#123]: https://github.com/bem/generator-bem-stub/pull/123/files

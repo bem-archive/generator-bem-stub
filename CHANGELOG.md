@@ -1,6 +1,11 @@
 History of changes
 ==================
 
+0.8.1
+-----
+
+* Fixed the bug when using [Autoprefixer](https://github.com/postcss/autoprefixer) (see [#131])
+
 0.8.0
 -----
 
@@ -81,6 +86,7 @@ History of changes
 * Updated the versions of dependencies and libraries.
 * Fixed bugs.
 
+[#131]: https://github.com/bem/generator-bem-stub/issues/131
 [#107]: https://github.com/bem/generator-bem-stub/issues/107
 [#114]: https://github.com/bem/generator-bem-stub/pull/114/files
 [#123]: https://github.com/bem/generator-bem-stub/pull/123/files
