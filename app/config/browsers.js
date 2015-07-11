@@ -3,7 +3,7 @@ module.exports = {
         'last 2 versions',
         'ie 10',
         'ff 24',
-        'opera 12.16'
+        'opera 12.1'
     ],
     'touch-pad': [
         'android 4',

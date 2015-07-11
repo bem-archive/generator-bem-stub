@@ -238,7 +238,7 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
 /**
  * Returns browsers for given platforms
  * @example
- *  { desktop: ['common', 'desktop'] } ==> { desktop: ['last 2 versions', 'ie 10', 'ff 24', 'opera 12.16'] }
+ *  { desktop: ['common', 'desktop'] } ==> { desktop: ['last 2 versions', 'ie 10', 'ff 24', 'opera 12.1'] }
  *
  * @param {Object} config
  * @param {Object} platforms --> without path
