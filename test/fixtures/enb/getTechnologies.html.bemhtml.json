@@ -1,0 +1,22 @@
+{
+  "inTechs": {
+    "bemjson.js": true,
+    "css": true,
+    "bemhtml": true,
+    "html": true
+  },
+  "inTargets": ["?.css", "?.bemhtml.js", "?.html"],
+  "inJSON": [{
+    "name": "bower",
+    "version": "*"
+  }, {
+    "name": "enb",
+    "version": "*"
+  }, {
+    "name": "enb-bem-techs",
+    "version": "*"
+  }, {
+    "name": "enb-bemxjst",
+    "version": "*"
+  }]
+}

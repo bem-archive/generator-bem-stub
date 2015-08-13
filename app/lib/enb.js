@@ -2,46 +2,49 @@
 var _ = require('lodash');
 
 /**
- * Returns platforms with path and without path
+ * Returns redefinition levels
  * @example
  *  [['common', 'desktop'], ['common', 'touch', 'touch-pad']] and [{ name: 'bem-core', version: '' }] ==>
  *
- *      -->  withPath:
+ *      -->  libsLevels:
  *               { desktop: ['bem-core/common.blocks', 'bem-core/desktop.blocks'],
  *                 'touch-pad': ['bem-core/common.blocks', 'bem-core/touch.blocks'] }
- *      -->  withouPath:
+ *      -->  projectLevels:
  *               { desktop: ['common', 'desktop'],
  *                 'touch-pad': ['common', 'touch', 'touch-pad'] } }
  *
- * @param {Object[]} pls
+ * @param {Object[]} lvls
  * @param {Object[]} libs
  * @param {Boolean} isDesign
  * @returns {Object}
  */
-function getPlatforms(pls, libs, isDesign) {
-    var platforms = {
-            withPath: {},
-            withoutPath: {}
-        };
+function getLevels(lvls, libs, isDesign) {
+    var levels = {
+        libsLevels: {},
+        projectLevels: {}
+    };
 
-    pls.map(function (pl) {
-        var platform = pl[pl.length - 1];
+    lvls.forEach(function (lvl) {
+        var level = lvl[lvl.length - 1];
 
-        platforms.withPath[platform] = [];
-        platforms.withoutPath[platform] = pl;
+        levels.libsLevels[level] = [];
+        levels.projectLevels[level] = lvl;
 
-        libs.map(function (lib) {
-            pl.map(function (level) {
-                level.indexOf('touch-') === -1 && // 'touch-pad' and 'touch-phone' can not be added
-                    platforms.withPath[platform].push(lib.name + '/' + level + '.blocks');
+        libs.forEach(function (lib) {
+            lvl.forEach(function (platform) {
+                if (lib.name === 'bem-core' && platform.indexOf('touch-') > -1) {
+                    return;
+                }
+
+                levels.libsLevels[level].push(lib.name + '/' + platform + '.blocks');
 
                 isDesign && lib.name === 'bem-components' &&
-                    platforms.withPath[platform].push(lib.name + '/design/' + level + '.blocks');
+                    levels.libsLevels[level].push(lib.name + '/design/' + platform + '.blocks');
             });
         });
     });
 
-    return platforms;
+    return levels;
 }
 
 /**
@@ -63,7 +66,7 @@ function addPreprocessor(techs, preprocessor) {
  * @returns {Object[]}
  */
 function addTemplateEngine(techs, templateEngine) {
-    if (templateEngine !== 'my') { techs.push(templateEngine); }
+    techs.push(templateEngine);
 
     return techs;
 }
@@ -85,7 +88,7 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
 
     var technologies = {
             // 'files' and 'deps' are always included
-            inTechs: [],
+            inTechs: {},
             inTargets: [],
             inJSON: ['bower', 'enb', 'enb-bem-techs'].map(function (dep) {
                 return {
@@ -98,7 +101,7 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
         inTargets = technologies.inTargets,
         inJSON = technologies.inJSON;
 
-    isAutoprefixer && inJSON.push({
+    techs.indexOf('stylus') === -1 && isAutoprefixer && inJSON.push({
         name: 'enb-autoprefixer',
         version: config.versions.deps['enb-autoprefixer']
     });
@@ -114,20 +117,20 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
     });
 
     // 'css' will be always added 'inTargets'
-    inTargets.push(toMinify.indexOf('css') > -1 ? '_?.css' : '?.css');
+    inTargets.push(toMinify.indexOf('css') > -1 ? '?.min.css' : '?.css');
 
     techs.map(function (tech) {
         switch (tech) {
             case 'bemjson.js': // 'bemjson.js' ==> only 'inTechs'
-                inTechs.push(config.techs.enb['bemjson.js']);
+                inTechs['bemjson.js'] = true;
                 break;
 
             case 'css':
-                inTechs.push(config.techs.enb[isAutoprefixer ? 'css+autoprefixer' : 'css']);
+                inTechs['css'] = true;
                 break;
 
             case 'stylus':
-                inTechs.push(config.techs.enb[isAutoprefixer ? 'stylus+autoprefixer' : 'stylus']);
+                inTechs['stylus'] = true;
 
                 inJSON.push({
                     name: 'enb-stylus',
@@ -136,9 +139,9 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
                 break;
 
             case 'node.js':
-                inTechs.push(config.techs.enb['node.js']);
+                inTechs['node.js'] = true;
 
-                inTargets.push(toMinify.indexOf('node.js') > -1 ? '_?.node.js' : '?.node.js');
+                inTargets.push(toMinify.indexOf('node.js') > -1 ? '?.min.node.js' : '?.node.js');
 
                 inJSON.push({
                     name: 'enb-diverse-js',
@@ -150,19 +153,9 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
                 break;
 
             case 'browser.js':
-                if (techs.indexOf('bemhtml') > -1 || techs.indexOf('bh') > -1) {
-                    var techVal = config.techs.enb['browser.js+template'];
+                inTechs['browser.js'] = true;
 
-                    techs.indexOf('bemhtml') > -1 &&
-                        (techVal = techVal.replace('browser.template.js', 'browser.bemhtml.js'));
-                    techs.indexOf('bh') > -1 && (techVal = techVal.replace('browser.template.js', 'browser.bh.js'));
-
-                    inTechs.push(techVal);
-                } else {
-                    inTechs.push(config.techs.enb['browser.js']);
-                }
-
-                inTargets.push(toMinify.indexOf('js') > -1 ? '_?.js' : '?.js');  // 'bem-core' --> 'browser.js' ==> 'js'
+                inTargets.push(toMinify.indexOf('js') > -1 ? '?.min.js' : '?.js');
 
                 inJSON.push({
                     name: 'enb-diverse-js',
@@ -174,9 +167,9 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
                 break;
 
             case 'bemtree':
-                inTechs.push(config.techs.enb['bemtree']);
+                inTechs['bemtree'] = true;
 
-                inTargets.push(toMinify.indexOf('bemtree.js') > -1 ? '_?.bemtree.js' : '?.bemtree.js');
+                inTargets.push(toMinify.indexOf('bemtree.js') > -1 ? '?.min.bemtree.js' : '?.bemtree.js');
 
                 inJSON.push({
                     name: 'enb-bemxjst',
@@ -185,12 +178,9 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
                 break;
 
             case 'bemhtml':   // 'bem-core' ==> 'bemhtml-old' from package 'enb-bemxjst'
-                inTechs.push(config.techs.enb['bemhtml']);
-                if (techs.indexOf('browser.js') > -1) {
-                    inTechs.push(config.techs.enb['bemhtml-client']);
-                }
+                inTechs['bemhtml'] = true;
 
-                inTargets.push(toMinify.indexOf('bemhtml.js') > -1 ? '_?.bemhtml.js' : '?.bemhtml.js');
+                inTargets.push(toMinify.indexOf('bemhtml.js') > -1 ? '?.min.bemhtml.js' : '?.bemhtml.js');
 
                 inJSON.push({
                     name: 'enb-bemxjst',
@@ -199,33 +189,20 @@ function getTechnologies(config, techs, isAutoprefixer, toMinify) {
                 break;
 
             case 'bh':
-                inTechs.push(config.techs.enb['bh']);
-                if (techs.indexOf('browser.js') > -1) {
-                    inTechs.push(config.techs.enb['bh-client']);
-                }
+                inTechs['bh'] = true;
 
-                inTargets.push(toMinify.indexOf('bh.js') > -1 ? '_?.bh.js' : '?.bh.js');
+                inTargets.push(toMinify.indexOf('bh.js') > -1 ? '?.min.bh.js' : '?.bh.js');
 
                 inJSON.push({
                     name: 'enb-bh',
                     version: config.versions.deps['enb-bh']
-                }, {
-                    name: 'bh',
-                    version: config.versions.deps['bh']
                 });
                 break;
 
-            case 'html': // 'bh' ==> 'enb-bh' | 'bemhtml' ==> 'enb-bemxjst' in 'html' require path
-                techs.indexOf('bemhtml') > -1 && inTechs.push(config.techs.enb['html-from-bemhtml']);
-                techs.indexOf('bh') > -1 && inTechs.push(config.techs.enb['html-from-bh']);
-
-                inTargets.push('?.html');
-                break;
-
             default:
-                inTechs.push(config.techs.enb[tech]);
+                inTechs[tech] = true;
 
-                inTargets.push(toMinify.indexOf(tech) > -1 ? '_?.' + tech : '?.' + tech);
+                inTargets.push(toMinify.indexOf(tech) > -1 ? '?.min.' + tech : '?.' + tech);
         }
     });
 
@@ -281,7 +258,7 @@ function getStyles(techs) {
     var styles = {
             css: [{
                 elem: 'css',
-                url: techs.indexOf('?.css') > -1 ? 'index.css' : '_index.css'
+                url: techs.indexOf('?.css') > -1 ? 'index.css' : 'index.min.css'
             }],
             ies: []
         },
@@ -289,9 +266,9 @@ function getStyles(techs) {
 
     ies.forEach(function (ie) {
         var isIE = techs.indexOf(ie) > -1;
-        (isIE || techs.indexOf('_' + ie) > -1) && styles.ies.push({
+        (isIE || techs.indexOf(ie.replace('?.', '?.min.')) > -1) && styles.ies.push({
             elem: 'css',
-            url: isIE ? 'index' + ie.replace('?', '') : '_index' + ie.replace('?', '')
+            url: isIE ? 'index' + ie.replace('?', '') : 'index.min' + ie.replace('?', '')
         });
     });
 
@@ -310,16 +287,16 @@ function getStyles(techs) {
 function getScripts(techs) {
     var scripts = [];
 
-    (techs.indexOf('?.js') > -1 || techs.indexOf('_?.js') > -1) && scripts.push({
+    (techs.indexOf('?.js') > -1 || techs.indexOf('?.min.js') > -1) && scripts.push({
         elem: 'js',
-        url: techs.indexOf('?.js') > -1 ? 'index.js' : '_index.js'
+        url: techs.indexOf('?.js') > -1 ? 'index.js' : 'index.min.js'
     });
 
     return scripts;
 }
 
 module.exports = {
-    getPlatforms: getPlatforms,
+    getLevels: getLevels,
     addPreprocessor: addPreprocessor,
     addTemplateEngine: addTemplateEngine,
     getTechnologies: getTechnologies,

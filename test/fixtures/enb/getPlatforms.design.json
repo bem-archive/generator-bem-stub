@@ -1,0 +1,37 @@
+{
+  "libsLevels": {
+    "desktop": [
+      "bem-core/common.blocks",
+      "bem-core/desktop.blocks",
+      "bem-components/common.blocks",
+      "bem-components/design/common.blocks",
+      "bem-components/desktop.blocks",
+      "bem-components/design/desktop.blocks"
+    ],
+    "touch-pad": [
+      "bem-core/common.blocks",
+      "bem-core/touch.blocks",
+      "bem-components/common.blocks",
+      "bem-components/design/common.blocks",
+      "bem-components/touch.blocks",
+      "bem-components/design/touch.blocks",
+      "bem-components/touch-pad.blocks",
+      "bem-components/design/touch-pad.blocks"
+    ],
+    "touch-phone": [
+      "bem-core/common.blocks",
+      "bem-core/touch.blocks",
+      "bem-components/common.blocks",
+      "bem-components/design/common.blocks",
+      "bem-components/touch.blocks",
+      "bem-components/design/touch.blocks",
+      "bem-components/touch-phone.blocks",
+      "bem-components/design/touch-phone.blocks"
+    ]
+  },
+  "projectLevels": {
+    "desktop": ["common", "desktop"],
+    "touch-pad": ["common", "touch", "touch-pad"],
+    "touch-phone": ["common", "touch", "touch-phone"]
+  }
+}

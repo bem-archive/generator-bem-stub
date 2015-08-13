@@ -1,9 +1,9 @@
 module.exports = {
     desktop: [
+        'ie >= 10',
         'last 2 versions',
-        'ie 10',
-        'ff 24',
-        'opera 12.1'
+        'opera 12.1',
+        '> 2%'
     ],
     'touch-pad': [
         'android 4',
