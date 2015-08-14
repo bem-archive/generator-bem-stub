@@ -1,6 +1,12 @@
 История изменений
 ==================
 
+0.9.0
+-----
+
+* В случае выбора [bem-tools](http://ru.bem.info/tools/bem/bem-tools/) в качестве сборщика, результаты сборки будут аналогичны выбору сборщика [ENB](https://github.com/enb-make/enb). [bem-tools](http://ru.bem.info/tools/bem/bem-tools/) проксирует вызовы [ENB](https://github.com/enb-make/enb).
+* Обновлены все библиотеки и зависимости до последних версий.
+
 0.8.1
 -----
 
