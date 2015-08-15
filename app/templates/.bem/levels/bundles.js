@@ -1,18 +1,15 @@
-var environ = require('bem-environ'),
-	getTechResolver = environ.getTechResolver,
-
-	BEMCORE_TECHS = environ.getLibPath('bem-core', '.bem/techs');
+var PATH = require('path'),
+    BEMCORE_TECHS = PATH.resolve(__dirname, '..', 'libs', 'bem-core', '.bem', 'techs');
 
 exports.baseLevelPath = require.resolve('./blocks');
 
-exports.getTechs = function () {
-	var techs = this.__base();
+exports.getTechs = function() {
+    var techs = this.__base();
+    techs['browser.js+bemhtml'] = PATH.join(BEMCORE_TECHS, 'browser.js+bemhtml.js');
+    techs['html'] = PATH.join(BEMCORE_TECHS, 'html.js');
 
-	// Use techs from lib bem-core
-	[<%= _.map(technologies.inBundles, function (tech) { return "'" + tech + "'" }).join(', ') %>].forEach(getTechResolver(techs, BEMCORE_TECHS));
-
-	return techs;
+    return techs;
 };
 
 // Create bundles in bemjson.js tech
-exports.defaultTechs = [<%= isBemjson ? "'bemjson.js'" : "'bemdecl.js'" %>];
+exports.defaultTechs = ['bemjson.js'];

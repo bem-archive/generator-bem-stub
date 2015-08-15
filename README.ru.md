@@ -16,9 +16,11 @@
 
 ## Введение
 
-Существуют два стандартных сборщика для [БЭМ](https://ru.bem.info/)-проектов: [bem-tools](https://ru.bem.info/tools/bem/bem-tools/) и [ENB](https://github.com/enb-make/enb). Что обычно делает разработчик, создавая новый БЭМ-проект? В первую очередь - пишет конфигурационный файл для сборщика, который он будет использовать. К сожалению, и для `bem-tools`, и для `ENB` это довольно трудоемкий процесс, в ходе которого часто возникают ошибки.
+Существуют два стандартных сборщика для [БЭМ](https://ru.bem.info/)-проектов: [ENB](https://ru.bem.info/tools/bem/enb-bem/) и [bem-tools](https://ru.bem.info/tools/bem/bem-tools/) — комбайн, который под капотом использует `ENB` для сборки и предоставляет дополнительные команды для работы с файлами по БЭМ.
 
-Для экономии времени и снижения порога вхождения в понимание инструментов для сборки, мы создали генератор конфигурационных файлов, который позволяет настраивать сборку без погружения в API инструментов. Этот генератор предоставляет вам возможность получить базу БЭМ-проекта за считаные минуты, просто ответив на вопросы.
+Что обычно делает разработчик, создавая новый БЭМ-проект? В первую очередь - пишет конфигурационный файл для сборщика, который он будет использовать. Это довольно трудоемкий процесс, в ходе которого часто возникают ошибки.
+
+Для экономии времени и снижения порога входа в сборку, мы создали генератор конфигурационных файлов, который позволяет настраивать сборку без погружения в API инструментов. Этот генератор предоставляет вам возможность получить заготовку БЭМ-проекта за считаные минуты, просто ответив на вопросы.
 
 ## Установка
 
@@ -27,6 +29,14 @@
 ```bash
 $ npm install -g generator-bem-stub
 ```
+
+Если вы используете **`npm@>=3.0.0`**, то перед установкой генератора выполните:
+
+```bash
+$ npm install -g yo
+```
+
+**ЗАМЕЧАНИЕ!** Глобальная установка (с флагом `-g`) обязательна в обоих случаях.
 
 ## Обновление
 
@@ -38,7 +48,7 @@ $ npm update -g generator-bem-stub
 
 ## Использование
 
-Для запуска функциональности генератора выполните:
+Для запуска генератора выполните:
 
 ```bash
 $ yo bem-stub
@@ -56,47 +66,45 @@ $ yo bem-stub
 $ yo bem-stub --skip-install --tab-size=4
 ```
 
-## Что поддерживает generator-bem-stub?
+## Что поддерживает `generator-bem-stub`?
 
 - Сборщики:
-  - [bem-tools](https://ru.bem.info/tools/bem/bem-tools/)
   - [ENB](https://github.com/enb-make/enb)
+  - [bem-tools](https://ru.bem.info/tools/bem/bem-tools/)
 - Библиотеки:
   - [bem-core](https://ru.bem.info/libs/bem-core/)
   - [bem-components](https://ru.bem.info/libs/bem-components/)
-- Платформы:
+- Уровни переопределения:
   - desktop
   - touch-pad
   - touch-phone
 - CSS-препроцессоры:
-  - [Stylus](https://github.com/LearnBoost/stylus)
+  - [Stylus](https://github.com/stylus/stylus)
 - [Автопрефиксер](https://github.com/postcss/autoprefixer)
 - Технологии:
-  - [BEMJSON](https://ru.bem.info/technology/bemjson/current/bemjson/)
-  - [BEMTREE](https://ru.bem.info/technology/bemtree/current/bemtree/)
+  - [BEMJSON](https://ru.bem.info/technology/bemjson/)
+  - [BEMTREE](https://ru.bem.info/technology/bemtree/)
   - BEMDECL
   - node.js
   - browser.js
 - Шаблонизаторы:
-  - [BEMHTML](https://ru.bem.info/technology/bemhtml/current/intro/)
-  - [BH](https://ru.bem.info/technology/bh/) (доступен только в [ENB](https://github.com/enb-make/enb))
+  - [BEMHTML](https://ru.bem.info/technology/bemhtml/)
+  - [BH](https://ru.bem.info/technology/bh/)
 - Сборка HTML
-- Минимизиция отдельных файлов (доступна только в [ENB](https://github.com/enb-make/enb))
+- Минимизиция отдельных файлов
 
-Чтобы создать оптимальный для вашего проекта конфигурационный файл, генератор задаст несколько вопросов, от которых будет зависеть последующая конфигурация сборки.
+Чтобы создать оптимальный для вашего проекта конфигурационный файл, генератор задаст несколько вопросов.
 
 Важно знать, что многие вопросы в `generator-bem-stub` зависят друг от друга, например:
 
-* Если вы выбрали библиотеку [bem-components](https://ru.bem.info/libs/bem-components/), `generator-bem-stub` выберет [Автопрефиксер](https://github.com/postcss/autoprefixer) и CSS-препроцессор [Stylus](https://github.com/LearnBoost/stylus) по умолчанию.
-
-* Возможность использования [BH](https://ru.bem.info/technology/bh/)-шаблонизатора появляется только при выборе сборщика [ENB](https://github.com/enb-make/enb).
+* Если вы выбрали библиотеку [bem-components](https://ru.bem.info/libs/bem-components/), `generator-bem-stub` выберет [Автопрефиксер](https://github.com/postcss/autoprefixer) и CSS-препроцессор [Stylus](https://github.com/stylus/stylus) по умолчанию.
 
 * Бандлы будут собираться из **BEMDECL**, если вы не выбрали технологию [BEMJSON](https://ru.bem.info/technology/bemjson/current/bemjson/).
 
 * Вы можете собирать HTML, только если выбрали технологию [BEMJSON](https://ru.bem.info/technology/bemjson/current/bemjson/) и шаблонизатор [BEMHTML](https://ru.bem.info/technology/bemhtml/current/intro/) или [BH](https://ru.bem.info/technology/bh/).
 
-* У вас будет возможность выбрать, какие конкретно файлы минимизировать, только если вы выбрали сборщик [ENB](https://github.com/enb-make/enb). ([bem-tools](https://ru.bem.info/tools/bem/bem-tools/) не предоставляет возможность конфигурировать минимизацию файлов, все возможные файлы минимизируются с помощью [borschik](https://ru.bem.info/tools/optimizers/borschik/)).
+**ЗАМЕЧАНИЕ!** [bem-tools](https://ru.bem.info/tools/bem/bem-tools/) использует `ENB` для команды `make`. Если вы выберете его, то конфигурационный файл будет создан для сборщика `ENB`, но у вас будет возможность использовать [команды](https://ru.bem.info/tools/bem/bem-tools/commands/) из bem-tools.
 
 ## Версии
 
-В файле [app/config/versions.js](https://github.com/bem/generator-bem-stub/blob/master/app/config/versions.js) указано, какие версии зависимостей и библиотек использует `generator-bem-stub`.
+В файле [app/config/versions.js](./app/config/versions.js) указано, какие версии зависимостей и библиотек использует `generator-bem-stub`.

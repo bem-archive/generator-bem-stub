@@ -4,7 +4,7 @@
   "email": "<%= email %>",
   "version": "0.0.0",
   "ignore": [
-<%= assemblerName === 'bem-tools' ? '    ".bem/cache",' : '    ".enb/tmp",' %>
+    ".enb/tmp",
     "node_modules",
     "libs"
   ],

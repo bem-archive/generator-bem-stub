@@ -1,6 +1,12 @@
 History of changes
 ==================
 
+0.9.0
+-----
+
+* In case of choosing [bem-tools](http://bem.info/tools/bem/bem-tools/) assembler, the result files will be the same as in case of choosing of [ENB](https://github.com/enb-make/enb). `bem-tools` just calls `ENB` under the hood.
+* Updated all libraries and dependencies to the latest versions.
+
 0.8.1
 -----
 

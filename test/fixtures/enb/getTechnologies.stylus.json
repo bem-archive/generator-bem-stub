@@ -1,0 +1,19 @@
+{
+  "inTechs": {
+    "stylus": true
+  },
+  "inTargets": ["?.css"],
+  "inJSON": [{
+    "name": "bower",
+    "version": "*"
+  }, {
+    "name": "enb",
+    "version": "*"
+  }, {
+    "name": "enb-bem-techs",
+    "version": "*"
+  }, {
+    "name": "enb-stylus",
+    "version": "*"
+  }]
+}

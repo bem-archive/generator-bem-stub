@@ -1,0 +1,19 @@
+{
+  "inTechs": {
+    "ie.css": true,
+    "ie8.css": true,
+    "ie9.css": true,
+    "css": true
+  },
+  "inTargets": ["?.css", "?.ie.css", "?.ie8.css", "?.ie9.css"],
+  "inJSON": [{
+    "name": "bower",
+    "version": "*"
+  }, {
+    "name": "enb",
+    "version": "*"
+  }, {
+    "name": "enb-bem-techs",
+    "version": "*"
+  }]
+}

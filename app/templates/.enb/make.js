@@ -1,122 +1,166 @@
-var enbBemTechs = require('enb-bem-techs'),<%= toMinify.length > 0 ? "\n\tborschikTech = require('enb-borschik/techs/borschik')," : "" %>
-	isProd = process.env.YENV === 'production';
+var enbBemTechs = require('enb-bem-techs')<% if (toMinify.length) { %>,
+	borschikTech = require('enb-borschik/techs/borschik'); <% } else { %>;<% } %>
 
 module.exports = function (config) {
-	config.nodes('*.bundles/*', function (nodeConfig) {
-		nodeConfig.addTechs([
-			// essential
-			[require('enb/techs/file-provider'), { target: <%= "'?." + (isBemjson ? 'bemjson.js' : 'bemdecl.js') + "'" %> }],
-			[enbBemTechs.files],
-			[enbBemTechs.deps],
-<%= _.map(technologies.inTechs, function (technology) { return "\t\t\t" + technology }).join(',\n') %><%= toMinify.length > 0 ? ",\n\t\t\t// borschik\n" +
-			_.map(toMinify, function (technology) {
-				return "\t\t\t[borschikTech, { sourceTarget: '?." + technology + "', destTarget: '_?." + technology + "', " + (technology === 'css' ? "tech: 'cleancss', " : "") + "freeze: true, minify: isProd }]";
-			}).join(',\n') : "" %>
-		]);
+	var isProd = process.env.YENV === 'production';
 
-		nodeConfig.addTargets([
-<%= _.map(technologies.inTargets, function (technology) { return "\t\t\t'" + technology + "'" }).join(',\n') %>
-		]);
-	});<%= (platforms.withoutPath['desktop'] ?
+    config.nodes('*.bundles/*', function (nodeConfig) {
+        nodeConfig.addTechs([
+            // essential
+            [require('enb/techs/file-provider'), { target:<% if (isBemjson) { %> '?.bemjson.js' <% } else { %> 'bemdecl.js' <% } %>}],
+            [enbBemTechs.files],
+            [enbBemTechs.deps]<% if (isBemjson) { %>,
+            [enbBemTechs.bemjsonToBemdecl]<% } %><% if (technologies.inTechs['css'] && !isAutoprefixer) { %>,
+            [require('enb/techs/css')]<% } else if (technologies.inTechs['css'] && isAutoprefixer) { %>,
+            // css
+            [require('enb/techs/css'), { target: '?.noprefix.css' }] <% } %><% if (technologies.inTechs['ie.css']) { %>,
+            // ie.css
+            [require('enb/techs/css'), {
+                target: '?.ie.css',
+                sourceSuffixes: ['css', 'ie.css']
+            }]<% } %><% if (technologies.inTechs['ie8.css']) { %>,
+            // ie8.css
+            [require('enb/techs/css'), {
+                target: '?.ie8.css',
+                sourceSuffixes: ['css', 'ie8.css']
+            }]<% } %><% if (technologies.inTechs['ie9.css']) { %>,
+            // ie9.css
+            [require('enb/techs/css'), {
+                target: '?.ie9.css',
+                sourceSuffixes: ['css', 'ie9.css']
+            }]<% } %><% if (technologies.inTechs['bemtree']) { %>,
+            // bemtree
+            [require('enb-bemxjst/techs/bemtree-old'), { devMode: process.env.BEMTREE_ENV === 'development' }]<% } %><% if (technologies.inTechs['node.js']) { %>,
+            // node.js
+            [require('enb-diverse-js/techs/node-js'), { target: '?.pre.node.js' }],
+            [require('enb-modules/techs/prepend-modules'), {
+                source: '?.pre.node.js',
+                target: '?.node.js'
+            }]<% } %><% if (technologies.inTechs['browser.js']) { %>,
+            // browser.js
+            [require('enb-diverse-js/techs/browser-js'), { target: '?.browser.js' }],
+            [require('enb/techs/file-merge'), {
+                target: '?.pre.js',
+                sources: ['?.browser.<%=technologies.inTechs["bemhtml"] ? "bemhtml" : "bh"%>.js', '?.browser.js']
+            }],
+            [require('enb-modules/techs/prepend-modules'), {
+                source: '?.pre.js',
+                target: '?.js'
+            }]<% } %><% if (technologies.inTechs['bemhtml']) { %>,
+            // bemhtml
+            [require('enb-bemxjst/techs/bemhtml-old'), { devMode: process.env.BEMHTML_ENV === 'development' }]<% } %><% if (technologies.inTechs['bemhtml'] && technologies.inTechs['browser.js']) { %>,
+            // client bemhtml
+            [enbBemTechs.depsByTechToBemdecl, {
+                target: '?.bemhtml.bemdecl.js',
+                sourceTech: 'js',
+                destTech: 'bemhtml'
+            }],
+            [enbBemTechs.deps, {
+                target: '?.bemhtml.deps.js',
+                bemdeclFile: '?.bemhtml.bemdecl.js'
+            }],
+            [enbBemTechs.files, {
+                depsFile: '?.bemhtml.deps.js',
+                filesTarget: '?.bemhtml.files',
+                dirsTarget: '?.bemhtml.dirs'
+            }],
+            [require('enb-bemxjst/techs/bemhtml-old'), {
+                target: '?.browser.bemhtml.js',
+                filesTarget: '?.bemhtml.files',
+                devMode: process.env.BEMHTML_ENV === 'development'
+            }]<% } %><% if (technologies.inTechs['bh']) { %>,
+            // bh
+            [require('enb-bh/techs/bh-commonjs'), {
+                jsAttrName: 'data-bem',
+                jsAttrScheme: 'json'
+            }]<% } %><% if (technologies.inTechs['bh'] && technologies.inTechs['browser.js']) { %>,
+            // client bh
+            [enbBemTechs.depsByTechToBemdecl, {
+                target: '?.bh.bemdecl.js',
+                sourceTech: 'js',
+                destTech: 'bemhtml'
+            }],
+            [enbBemTechs.deps, {
+                target: '?.bh.deps.js',
+                bemdeclFile: '?.bh.bemdecl.js'
+            }],
+            [enbBemTechs.files, {
+                depsFile: '?.bh.deps.js',
+                filesTarget: '?.bh.files',
+                dirsTarget: '?.bh.dirs'
+            }],
+            [require('enb-bh/techs/bh-bundle'), {
+                target: '?.browser.bh.js',
+                filesTarget: '?.bh.files',
+                jsAttrName: 'data-bem',
+                jsAttrScheme: 'json',
+                mimic: 'BEMHTML'
+            }]<% } %><% if (technologies.inTechs['html'] && technologies.inTechs['bemhtml']) { %>,
+            // html
+            [require('enb-bemxjst/techs/html-from-bemjson')]<% } else if (technologies.inTechs['html'] && technologies.inTechs['bh']) { %>,
+            // html
+            [require('enb-bh/techs/bemjson-to-html')]<% } %><%= toMinify.length > 0 ? ",\n\t\t\t// borschik\n\t\t\t" +
+            	_.map(toMinify, function (technology) {
+                	return "[borschikTech, { sourceTarget: '?." + technology +
+                		"', destTarget: '?.min." + technology + "', " +
+                			(technology === 'css' ? "tech: 'cleancss', " : "") + "freeze: true, minify: isProd }]";
+           		}).join(',\n\t\t\t') : ""
+           	%>
+        ]);
 
-				"\n\n\tconfig.nodes('*desktop.bundles/*', function (nodeConfig) {\n\t\tnodeConfig.addTechs([\n\t\t\t// essential\n\t\t\t[enbBemTechs.levels, { levels: getDesktops(config) }]" +
+        nodeConfig.addTargets([
+			<%= _.map(technologies.inTargets, function (technology) {
+				return "'" + technology + "'"
+			}).join(',\n\t\t\t') %>
+        ]);
+    });
+	<% for (var projectLevel in levels.projectLevels) { %>
+	config.nodes('<%= "*" + projectLevel + ".bundles/*" %>', function (nodeConfig) {
+        nodeConfig.addTechs([
+            // essential
+            [enbBemTechs.levels, {
+                levels: [
+                    <%= formatLevels(levels, projectLevel) %>
+                ]
+            }]<% if (technologies.inTechs['stylus']) { %>,
+            // css
+            [require('enb-stylus/techs/stylus'), {
+                target: '?.css'<%if (isAutoprefixer) { %>,
+                autoprefixer: {
+                    browsers: [<%= formatBrowsers(browsers, projectLevel) %>]
+                }<% } %>
+            }]<% } else if (technologies.inTechs['css'] && isAutoprefixer) { %>,
+            // autoprefixer
+            [require('enb-autoprefixer/techs/css-autoprefixer'), {
+                browserSupport: [<%= formatBrowsers(browsers, projectLevel) %>],
+                sourceTarget: '?.noprefix.css'
+            }]<% } %>
+        ]);
+    });<% } %>
+};
+<%
+function formatBrowsers(browsers, level) {
+    return _.map(browsers[level], function(browser) {
+        return "'" + browser + "'";
+    }).join(', ');
+}
+%>
+<%
+function formatLevels(levels, projectLevel) {
+    return _(levels)
+        .map(function(lvls, type) {
+            if(type === 'libsLevels') {
+                return _.map(lvls[projectLevel], function(pl) {
+                    return "{ path: 'libs/" + pl + "', check: false }";
+                });
+            }
 
-				(isAutoprefixer ?
-
-					",\n\t\t\t// autoprefixer\n\t\t\t[require('enb-autoprefixer/techs/css-autoprefixer'), {\n\t\t\t\tbrowserSupport: [" +
-
-					_.map(browsers['desktop'], function (browser) {
-						return "'" + browser + "'";
-					}).join(', ') +
-
-					"],\n\t\t\t\tsourceTarget: '?.noprefix.css'\n\t\t\t}]"
-
-				: "") +
-
-				"\n\t\t]);\n\t});" : "") +
-
-			(platforms.withoutPath['touch-pad'] ?
-
-				"\n\n\tconfig.nodes('*touch-pad.bundles/*', function (nodeConfig) {\n\t\tnodeConfig.addTechs([\n\t\t\t// essential\n\t\t\t[enbBemTechs.levels, { levels: getTouchPads(config) }]" +
-
-				(isAutoprefixer ?
-
-					",\n\t\t\t// autoprefixer\n\t\t\t[require('enb-autoprefixer/techs/css-autoprefixer'), {\n\t\t\t\tbrowserSupport: [" +
-
-					_.map(browsers['touch-pad'], function (browser) {
-						return "'" + browser + "'";
-					}).join(', ') +
-
-					"],\n\t\t\t\tsourceTarget: '?.noprefix.css'\n\t\t\t}]"
-
-				: "") +
-
-				"\n\t\t]);\n\t});" : "") +
-
-			(platforms.withoutPath['touch-phone'] ?
-
-				"\n\n\tconfig.nodes('*touch-phone.bundles/*', function (nodeConfig) {\n\t\tnodeConfig.addTechs([\n\t\t\t// essential\n\t\t\t[enbBemTechs.levels, { levels: getTouchPhones(config) }]" +
-
-				(isAutoprefixer ?
-
-					",\n\t\t\t// autoprefixer\n\t\t\t[require('enb-autoprefixer/techs/css-autoprefixer'), {\n\t\t\t\tbrowserSupport: [" +
-
-					_.map(browsers['touch-phone'], function (browser) {
-						return "'" + browser + "'";
-					}).join(', ') +
-
-					"],\n\t\t\t\tsourceTarget: '?.noprefix.css'\n\t\t\t}]"
-
-				: "") +
-
-				"\n\t\t]);\n\t});" : "")
-		%>
-
-};<%= (platforms.withoutPath['desktop'] ?
-
-		"\n\nfunction getDesktops(config) {\n\treturn [\n" +
-
-		_.map(platforms.withPath['desktop'], function (platform) {
-			return "\t\t{ path: 'libs/" + platform + "', check: false },";
-		}).join('\n') +
-
-		"\n" +
-
-		_.map(platforms.withoutPath['desktop'], function (platform) {
-			return "\t\t'" + platform + ".blocks'";
-		}).join(',\n') +
-
-		"\n\t].map(function (level) {\n\t\treturn config.resolvePath(level);\n\t});\n}" : "") +
-
-	(platforms.withoutPath['touch-pad'] ?
-
-		"\n\nfunction getTouchPads(config) {\n\treturn [\n" +
-
-		_.map(platforms.withPath['touch-pad'], function (platform) {
-			return "\t\t{ path: 'libs/" + platform + "', check: false },";
-		}).join('\n') +
-
-		"\n" +
-
-		_.map(platforms.withoutPath['touch-pad'], function (platform) {
-			return "\t\t'" + platform + ".blocks'";
-		}).join(',\n') +
-
-		"\n\t].map(function (level) {\n\t\treturn config.resolvePath(level);\n\t});\n}" : "") +
-
-	(platforms.withoutPath['touch-phone'] ?
-
-		"\n\nfunction getTouchPhones(config) {\n\treturn [\n" +
-
-		_.map(platforms.withPath['touch-phone'], function (platform) {
-			return "\t\t{ path: 'libs/" + platform + "', check: false },";
-		}).join('\n') +
-
-		"\n" +
-
-		_.map(platforms.withoutPath['touch-phone'], function (platform) {
-			return "\t\t'" + platform + ".blocks'";
-		}).join(',\n') +
-
-		"\n\t].map(function (level) {\n\t\treturn config.resolvePath(level);\n\t});\n}" : "")
-	%>
+            return _.map(lvls[projectLevel], function(pl) {
+                return "'" + pl + ".blocks'";
+            });
+        })
+        .flatten()
+        .value()
+        .join(',\n\t\t\t\t\t');
+}
+%>

@@ -56,7 +56,6 @@ var BemGenerator = yeoman.generators.Base.extend({
          */
         this._config = {
             versions: require(configPath + '/versions'),
-            techs: require(configPath + '/techs'),
             browsers: require(configPath + '/browsers')
         };
 
@@ -140,8 +139,8 @@ var BemGenerator = yeoman.generators.Base.extend({
             }
         }, {
             type: 'checkbox',
-            name: 'platforms',
-            message: 'Choose target platforms:',
+            name: 'levels',
+            message: 'Choose redefinition levels to use:',
             choices: [{
                 name: 'desktop',
                 value: ['common', 'desktop']
@@ -153,22 +152,19 @@ var BemGenerator = yeoman.generators.Base.extend({
                 value: ['common', 'touch', 'touch-phone']
             }],
             validate: function (input) {
-                return input.length > 0 ? true : 'Please select at least one platform';
+                return input.length > 0 ? true : 'Please select at least one level';
             }
         }, {
             type: 'list',
             name: 'preprocessor',
             message: 'Choose CSS preprocessor:',
-            choices: function () {
-                // returns the list of possible preprocessors to choose in dependence of the previous answers
-                return [{
-                    name: 'Stylus',
-                    value: 'stylus'
-                }, {
-                    name: 'Only pure CSS',
-                    value: 'css'
-                }];
-            },
+            choices: [{
+                name: 'Stylus',
+                value: 'stylus'
+            }, {
+                name: 'Only pure CSS',
+                value: 'css'
+            }],
             when: function (input) {    // 'bem-components' ==> 'stylus' as default
                 return !isBemComponents(input.addLibraries);
             }
@@ -184,41 +180,33 @@ var BemGenerator = yeoman.generators.Base.extend({
             type: 'checkbox',
             name: 'techs',
             message: 'Choose technologies to be used in the project:',
-            choices: function (input) {
-                return [
-                    { name: 'BEMJSON', value: 'bemjson.js' },
-                    { value: 'ie.css' },
-                    { value: 'ie8.css' },
-                    { value: 'ie9.css' },
-                    { name: 'BEMTREE', value: 'bemtree' },
-                    { value: 'node.js' },
-                    { value: input.assembler === 'bem-tools' ? 'browser.js+bemhtml' : 'browser.js' }
-                ];
-            }
+            choices: [
+                { name: 'BEMJSON', value: 'bemjson.js' },
+                { value: 'ie.css' },
+                { value: 'ie8.css' },
+                { value: 'ie9.css' },
+                { name: 'BEMTREE', value: 'bemtree' },
+                { value: 'node.js' },
+                { value: 'browser.js' }
+            ]
         }, {
             type: 'list',
             name: 'templateEngine',
             message: 'Choose a template engine:',
-            choices: function (input) {
-                var choices = [{
-                    name: 'BEMHTML',
-                    value: 'bemhtml'
-                }, {
-                    name: 'My template engine',
-                    value: 'my'
-                }];
-
-                input.assembler === 'enb' && choices.splice(1, 0, { name: 'BH', value: 'bh' });
-
-                return choices;
-            }
+            choices: [{
+                name: 'BEMHTML',
+                value: 'bemhtml'
+            }, {
+                name: 'BH',
+                value: 'bh'
+            }]
         }, {
             type: 'confirm',
             name: 'isHtml',
             message: 'Do you want to build static HTML?',
             'default': true,
-            when: function (input) { // 'BEMJSON' --> 'bemhtml' || 'bh' ==> 'html'
-                return input.templateEngine !== 'my' && input.techs.indexOf('bemjson.js') > -1;
+            when: function (input) { // 'BEMJSON' --> 'bemhtml'
+                return input.techs.indexOf('bemjson.js') > -1;
             }
         }, {
             type: 'checkbox',
@@ -244,12 +232,9 @@ var BemGenerator = yeoman.generators.Base.extend({
                 });
 
                 var templSys = input.templateEngine;
-                (templSys && templSys !== 'my') && toMinimize.push({ value: templSys + '.js' });
+                templSys && toMinimize.push({ value: templSys + '.js' });
 
                 return toMinimize;
-            },
-            when: function (input) { // 'ENB' ==> minimization
-                return input.assembler === 'enb';
             }
         }];
     },
@@ -278,8 +263,8 @@ var BemGenerator = yeoman.generators.Base.extend({
         var config = this._config;
 
         // Assembler
-        this.assemblerName = props.assembler === 'bem-tools' ? 'bem-tools' : 'enb';
-        var assembler = require(['.', 'lib', this.assemblerName].join('/'));
+        var assembler = require('./lib/enb');
+        this.assemblerName = props.assembler;
 
         // Base library
         var baseLibrary = {
@@ -302,15 +287,11 @@ var BemGenerator = yeoman.generators.Base.extend({
 
         var isAutoprefixer = props.isAutoprefixer || isBemComponents;
 
-        // Platforms
-        var platforms = assembler.getPlatforms(props.platforms, this.libs, props.isDesign);
-        this.platforms = {
-            withPath: platforms.withPath,           // 'bem-core/common.blocks'
-            withoutPath: platforms.withoutPath      // 'common'
-        };
+        // Levels
+        this.levels = assembler.getLevels(props.levels, this.libs, props.isDesign);
 
-        // Minimization (this is needed only for 'ENB')
-        this.assemblerName === 'enb' && (this.toMinify = props.minimization);
+        // Minimization
+        this.toMinify = props.minimization;
 
         // Technologies
         var preprocessor = props.preprocessor,
@@ -319,12 +300,15 @@ var BemGenerator = yeoman.generators.Base.extend({
         techs = assembler.addPreprocessor(techs, preprocessor) &&
                     assembler.addTemplateEngine(techs, props.templateEngine); // bem-core' ==> 'bemhtml', 'bh'
 
-        this.assemblerName === 'bem-tools' &&
-            (techs = assembler.addIe(techs)); // 'bem-tools' --> 'ieN' ==> 'ie.css'
-
         props.isHtml && techs.push('html');
 
         this.technologies = assembler.getTechnologies(config, techs, isAutoprefixer, this.toMinify);
+        if (this.assemblerName === 'bem-tools') {
+            this.technologies.inJSON.push({
+                name: 'bem',
+                version: config.versions.deps['bem']
+            });
+        }
 
         this.isBemjson = techs.indexOf('bemjson.js') > -1;
 
@@ -333,11 +317,11 @@ var BemGenerator = yeoman.generators.Base.extend({
 
         // Autoprefixer
         (this.isAutoprefixer = isAutoprefixer) &&
-            (this.browsers = assembler.getBrowsers(config, this.platforms.withoutPath));
+            (this.browsers = assembler.getBrowsers(config, this.levels.projectLevels));
 
         // Styles and scripts to 'bemjson.js'
         techs = this.technologies;
-        var technologies = this.assemblerName === 'bem-tools' ? techs.inMake.techs : techs.inTargets;
+        var technologies = techs.inTargets;
 
         this.styles = assembler.getStyles(technologies);
         this.scripts = assembler.getScripts(technologies);
@@ -350,7 +334,7 @@ var BemGenerator = yeoman.generators.Base.extend({
      */
     writing: function () {
         var _this = this,
-            platforms = _this.platforms.withoutPath,
+            projectLevels = _this.levels.projectLevels,
             root = _this.sourceRoot(),
             files = _this.expandFiles('**', { dot: true, cwd: root });   // roots of the all files in the templates
 
@@ -358,25 +342,25 @@ var BemGenerator = yeoman.generators.Base.extend({
         if (_this.assemblerName === 'enb') {
             _this.mkdir(path.join(_this.projectName, 'common.blocks'));
 
-            (platforms['touch-pad'] || platforms['touch-phone']) &&
+            (projectLevels['touch-pad'] || projectLevels['touch-phone']) &&
                 _this.mkdir(path.join(_this.projectName, 'touch.blocks'));
 
-            Object.keys(platforms).forEach(function (platform) {
-                _this.mkdir(path.join(_this.projectName, platform + '.blocks'));
+            Object.keys(projectLevels).forEach(function (level) {
+                _this.mkdir(path.join(_this.projectName, level + '.blocks'));
             });
         }
 
         _this._.each(files, function (filePath) {
             /**
-             * Forms dir names for chosen platforms
+             * Forms dir names for chosen level
              * @param {String} ending
              * @param {String} folder
              * @returns {Array}
              */
             function formDirnames(ending, folder) {
                 var names = [];
-                Object.keys(platforms).forEach(function (platform) {
-                    var pl = platforms[platform];
+                Object.keys(projectLevels).forEach(function (level) {
+                    var pl = projectLevels[level];
 
                     names.push(path.join(pl[pl.length - 1] + ending, folder));
                 });
@@ -412,7 +396,7 @@ var BemGenerator = yeoman.generators.Base.extend({
 
                 dirnames.push(['common.blocks', '.bem'].join('/'));
 
-                (platforms['touch-pad'] || platforms['touch-phone']) &&
+                (projectLevels['touch-pad'] || projectLevels['touch-phone']) &&
                     dirnames.push(['touch.blocks', '.bem'].join('/'));
 
                 dirnames = dirnames.concat(formDirnames('.blocks', '.bem'));
@@ -440,18 +424,17 @@ var BemGenerator = yeoman.generators.Base.extend({
      * @protected
      */
     _isTemplateNeeded: function (filePath) {
-        if (this.assemblerName === 'bem-tools' && filePath.indexOf('.enb') > -1) {
-            return false;
-        }
         if (this.assemblerName === 'enb' &&
             (/^.bem/.test(filePath) ||
                 filePath === ['blocks', '.bem', 'level.js'].join('/') ||
                     filePath === ['bundles', '.bem', 'level.js'].join('/'))) {
             return false;
         }
+
         if (this.isBemjson && filePath === ['bundles', 'index', 'index.bemdecl.js'].join('/')) {
             return false;
         }
+
         return !(!this.isBemjson && filePath === ['bundles', 'index', 'index.bemjson.js'].join('/'));
     }
 });
