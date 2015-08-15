@@ -1,6 +1,6 @@
 # generator-bem-stub [![Build Status](https://travis-ci.org/bem/generator-bem-stub.svg)](https://travis-ci.org/bem/generator-bem-stub) [![Coverage Status](https://img.shields.io/coveralls/bem/generator-bem-stub.svg)](https://coveralls.io/r/bem/generator-bem-stub?branch=master) [![Dependency Status](https://david-dm.org/bem/generator-bem-stub.svg)](https://david-dm.org/bem/generator-bem-stub) [![devDependency Status](https://david-dm.org/bem/generator-bem-stub/dev-status.svg)](https://david-dm.org/bem/generator-bem-stub#info=devDependencies)
 
-`generator-bem-stub` is a generator of [BEM](http://en.bem.info/) projects for [Yeoman](http://yeoman.io).
+`generator-bem-stub` is a generator of [BEM](http://en.bem.info/) projects on [Yeoman](http://yeoman.io).
 
 <!-- TOC -->
 - [Introduction](#introduction)
@@ -16,9 +16,11 @@
 
 ## Introduction
 
-There are several assemblers for [BEM](https://en.bem.info/) projects — [bem-tools](https://en.bem.info/tools/bem/bem-tools/) (the developing of this assembler is frozen) and [ENB](https://github.com/enb-make/enb). What does any developer do by starting a new [BEM](https://en.bem.info/) project? First and foremost, a developer creates a configuration file for an assembler which he is going to use. Unfortunately it is rather time-consuming and prone to error process both for [bem-tools](https://en.bem.info/tools/bem/bem-tools/) and [ENB](https://github.com/enb-make/enb).
+There are several assemblers for [BEM](https://en.bem.info/) projects: [bem-tools](https://en.bem.info/tools/bem/bem-tools/) (uses `ENB` for `make` command) and [ENB](https://github.com/enb-make/enb) itself.
 
-In order to save time and decrease barrier to entry into the tools for assembly, we decided to create a generator of configuration files which allows a developer to configure the assembly without immersion into tools' **API**. This generator provides you the ability to get the base of [BEM](https://en.bem.info/) project in few minutes by answering the simple questions.
+What does any developer do by starting a new BEM project? First and foremost, a developer creates a configuration file for an assembler. It is rather time-consuming and error prone process.
+
+In order to save time, we decided to create a generator of configuration files which allows a developer to configure the assembly without immersion into tools' **API**. This generator provides you with the ability to get a stub of BEM project in few minutes by answering a few simple questions.
 
 ## Install
 
@@ -34,7 +36,7 @@ If you use **`npm@>=3.0.0`**, before the installing of the generator you need to
 $ npm install -g yo
 ```
 
-**REMARK!** The global installation (with flag `-g`) is mandatory in both cases.
+**REMARK!** The global installation (with `-g` flag) is mandatory in both cases.
 
 ## Update
 
@@ -93,13 +95,13 @@ $ yo bem-stub --skip-install --tab-size=4
 
 To create the config file fitting for your project, the generator will ask several questions. Note that some of them depend on the previous ones, for example:
 
-* If you have chosen library [bem-components](https://en.bem.info/libs/bem-components/), `generator-bem-stub` will choose [Autoprefixer](https://github.com/postcss/autoprefixer) and CSS preprocessor [Stylus](https://github.com/stylus/stylus) as default.
+* If you have chosen library [bem-components](https://en.bem.info/libs/bem-components/), `generator-bem-stub` will choose [Autoprefixer](https://github.com/postcss/autoprefixer) and CSS preprocessor [Stylus](https://github.com/stylus/stylus) by default.
 
-* If you have not chosen technology [BEMJSON](https://en.bem.info/technology/bemjson/current/bemjson/), bundles will be assembled from **BEMDECL**.
+* If you have not chosen [BEMJSON](https://en.bem.info/technology/bemjson/current/bemjson/) technology bundles will be assembled by **BEMDECL**.
 
-* You can build HTML only if you have chosen technology [BEMJSON](https://en.bem.info/technology/bemjson/current/bemjson/) and template engine [BEMHTML](https://en.bem.info/technology/bemhtml/current/intro/) or [BH](https://en.bem.info/technology/bh/).
+* You can build HTML only if you have chosen technology BEMJSON and [BEMHTML](https://en.bem.info/technology/bemhtml/current/intro/) or [BH](https://en.bem.info/technology/bh/) template engine.
 
-**REMARK!** [bem-tools](https://bem.info/tools/bem/bem-tools/) is a legacy assembler. If you choose it, the config file will be generated for [ENB](https://github.com/enb-make/enb) and your project will be built by [ENB](https://github.com/enb-make/enb),  but you will be able to use [commands](https://en.bem.info/tools/bem/bem-tools/commands/) from [bem-tools](https://en.bem.info/tools/bem/bem-tools/).
+**REMARK!** If you choose `bem-tools` the config file will be generated for [ENB](https://github.com/enb-make/enb) and your project will be built by [ENB](https://github.com/enb-make/enb) under the hood,  but you will be able to use `bem-tools` [commands](https://en.bem.info/tools/bem/bem-tools/commands/).
 
 ## Versions
 

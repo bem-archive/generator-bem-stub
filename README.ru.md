@@ -16,9 +16,11 @@
 
 ## Введение
 
-Существуют два стандартных сборщика для [БЭМ](https://ru.bem.info/)-проектов: [bem-tools](https://ru.bem.info/tools/bem/bem-tools/) (разработка этого сборщика заморожена) и [ENB](https://github.com/enb-make/enb). Что обычно делает разработчик, создавая новый БЭМ-проект? В первую очередь - пишет конфигурационный файл для сборщика, который он будет использовать. К сожалению, и для [bem-tools](https://ru.bem.info/tools/bem/bem-tools/), и для [ENB](https://github.com/enb-make/enb) это довольно трудоемкий процесс, в ходе которого часто возникают ошибки.
+Существуют два стандартных сборщика для [БЭМ](https://ru.bem.info/)-проектов: [ENB](https://ru.bem.info/tools/bem/enb-bem/) и [bem-tools](https://ru.bem.info/tools/bem/bem-tools/) — комбайн, который под капотом использует `ENB` для сборки и предоставляет дополнительные команды для работы с файлами по БЭМ.
 
-Для экономии времени и снижения порога вхождения в понимание инструментов для сборки, мы создали генератор конфигурационных файлов, который позволяет настраивать сборку без погружения в API инструментов. Этот генератор предоставляет вам возможность получить базу БЭМ-проекта за считаные минуты, просто ответив на вопросы.
+Что обычно делает разработчик, создавая новый БЭМ-проект? В первую очередь - пишет конфигурационный файл для сборщика, который он будет использовать. Это довольно трудоемкий процесс, в ходе которого часто возникают ошибки.
+
+Для экономии времени и снижения порога входа в сборку, мы создали генератор конфигурационных файлов, который позволяет настраивать сборку без погружения в API инструментов. Этот генератор предоставляет вам возможность получить заготовку БЭМ-проекта за считаные минуты, просто ответив на вопросы.
 
 ## Установка
 
@@ -46,7 +48,7 @@ $ npm update -g generator-bem-stub
 
 ## Использование
 
-Для запуска функциональности генератора выполните:
+Для запуска генератора выполните:
 
 ```bash
 $ yo bem-stub
@@ -80,18 +82,18 @@ $ yo bem-stub --skip-install --tab-size=4
   - [Stylus](https://github.com/stylus/stylus)
 - [Автопрефиксер](https://github.com/postcss/autoprefixer)
 - Технологии:
-  - [BEMJSON](https://ru.bem.info/technology/bemjson/current/bemjson/)
-  - [BEMTREE](https://ru.bem.info/technology/bemtree/current/bemtree/)
+  - [BEMJSON](https://ru.bem.info/technology/bemjson/)
+  - [BEMTREE](https://ru.bem.info/technology/bemtree/)
   - BEMDECL
   - node.js
   - browser.js
 - Шаблонизаторы:
-  - [BEMHTML](https://ru.bem.info/technology/bemhtml/current/intro/)
+  - [BEMHTML](https://ru.bem.info/technology/bemhtml/)
   - [BH](https://ru.bem.info/technology/bh/)
 - Сборка HTML
 - Минимизиция отдельных файлов
 
-Чтобы создать оптимальный для вашего проекта конфигурационный файл, генератор задаст несколько вопросов, от которых будет зависеть последующая конфигурация сборки.
+Чтобы создать оптимальный для вашего проекта конфигурационный файл, генератор задаст несколько вопросов.
 
 Важно знать, что многие вопросы в `generator-bem-stub` зависят друг от друга, например:
 
@@ -101,7 +103,7 @@ $ yo bem-stub --skip-install --tab-size=4
 
 * Вы можете собирать HTML, только если выбрали технологию [BEMJSON](https://ru.bem.info/technology/bemjson/current/bemjson/) и шаблонизатор [BEMHTML](https://ru.bem.info/technology/bemhtml/current/intro/) или [BH](https://ru.bem.info/technology/bh/).
 
-**ЗАМЕЧАНИЕ!** [bem-tools](https://ru.bem.info/tools/bem/bem-tools/) – устаревший сборщик. Если вы выберете его, то конфигурационный файл будет создан для сборщика [ENB](https://github.com/enb-make/enb) и ваш проект будет собираться с помощью [ENB](https://github.com/enb-make/enb), но у вас будет возможность использовать [команды](https://ru.bem.info/tools/bem/bem-tools/commands/) из [bem-tools](https://ru.bem.info/tools/bem/bem-tools/).
+**ЗАМЕЧАНИЕ!** [bem-tools](https://ru.bem.info/tools/bem/bem-tools/) использует `ENB` для команды `make`. Если вы выберете его, то конфигурационный файл будет создан для сборщика `ENB`, но у вас будет возможность использовать [команды](https://ru.bem.info/tools/bem/bem-tools/commands/) из bem-tools.
 
 ## Версии
 
