@@ -91,6 +91,7 @@ $ yo bem-stub --skip-install --tab-size=4
   - [BEMHTML](http://en.bem.info/technology/bemhtml/current/intro/)
   - [BH](https://en.bem.info/technology/bh/)
 - Building of HTML
+- Building of _tidy_ (formatted and not minimized) HTML using [enb-beautify](https://github.com/enb-make/enb-beautify)
 - Minimization of separate files
 
 To create the config file fitting for your project, the generator will ask several questions. Note that some of them depend on the previous ones, for example:
