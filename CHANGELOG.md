@@ -1,6 +1,11 @@
 History of changes
 ==================
 
+0.10.0
+------
+
+* Added a question about beautifying HTML. This feature gives the ability to build _tidy_ (formatted and not minimized) HTML.
+
 0.9.0
 -----
 
