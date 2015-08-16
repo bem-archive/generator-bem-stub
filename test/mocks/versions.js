@@ -12,17 +12,11 @@ module.exports = {
         'enb-borschik': '*',
         'enb-diverse-js': '*',
         'enb-modules': '*',
-        'enb-roole': '*',
         'enb-stylus': '*',
+        'enb-beautify': '*',
         bem: '*',
-        'bem-environ': '*',
-        'bem-tools-autoprefixer': '*',
         bh: '*',
         bower: '*',
-        'borschik-tech-cleancss': '*',
-        'bower-npm-install': '*',
-        less: '*',
-        roole: '*',
-        stylus: '*'
+        'borschik-tech-cleancss': '*'
     }
 };

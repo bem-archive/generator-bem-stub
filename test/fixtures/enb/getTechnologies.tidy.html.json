@@ -1,0 +1,20 @@
+{
+  "inTechs": {
+    "tidy.html": true,
+    "css": true
+  },
+  "inTargets": ["?.css", "?.tidy.html"],
+  "inJSON": [{
+    "name": "bower",
+    "version": "*"
+  }, {
+    "name": "enb",
+    "version": "*"
+  }, {
+    "name": "enb-bem-techs",
+    "version": "*"
+  }, {
+    "name": "enb-beautify",
+    "version": "*"
+  }]
+}
