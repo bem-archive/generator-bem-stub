@@ -91,7 +91,7 @@ $ yo bem-stub --skip-install --tab-size=4
   - [BEMHTML](https://ru.bem.info/technology/bemhtml/)
   - [BH](https://ru.bem.info/technology/bh/)
 - Сборка HTML
-- Сборка _опрятного_ (отформатированного и неминимизированного) HTML с помощью [enb-beautify](https://github.com/enb-make/enb-beautify)
+- Сборка _опрятного_ (отформатированного и не минимизированного) HTML с помощью [enb-beautify](https://github.com/enb-make/enb-beautify)
 - Минимизиция отдельных файлов
 
 Чтобы создать оптимальный для вашего проекта конфигурационный файл, генератор задаст несколько вопросов.
