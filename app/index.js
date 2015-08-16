@@ -1,7 +1,8 @@
 'use strict';
 var path = require('path'),
     shell = require('shelljs'),
-    yeoman = require('yeoman-generator');
+    yeoman = require('yeoman-generator'),
+    assembler = require('./lib/enb');
 
 require('colors');
 
@@ -209,6 +210,14 @@ var BemGenerator = yeoman.generators.Base.extend({
                 return input.techs.indexOf('bemjson.js') > -1;
             }
         }, {
+            type: 'confirm',
+            name: 'isTidyHtml',
+            message: 'Do you want to build \'tidy\' HTML?',
+            'default': false,
+            when: function (input) {
+                return input.isHtml;
+            }
+        }, {
             type: 'checkbox',
             name: 'minimization',
             message: 'Choose types of files to be minimized:',
@@ -263,7 +272,6 @@ var BemGenerator = yeoman.generators.Base.extend({
         var config = this._config;
 
         // Assembler
-        var assembler = require('./lib/enb');
         this.assemblerName = props.assembler;
 
         // Base library
@@ -283,26 +291,29 @@ var BemGenerator = yeoman.generators.Base.extend({
             allLibraries = [baseLibrary].concat(addLibraries);
 
         this.libsToBower = isBemComponents ? addLibraries : allLibraries;
-        this.libs = allLibraries;
 
         var isAutoprefixer = props.isAutoprefixer || isBemComponents;
 
         // Levels
-        this.levels = assembler.getLevels(props.levels, this.libs, props.isDesign);
+        this.levels = assembler.getLevels(props.levels, allLibraries, props.isDesign);
 
         // Minimization
         this.toMinify = props.minimization;
 
         // Technologies
-        var preprocessor = props.preprocessor,
-            techs = props.techs;
+        var techs = props.techs;
 
-        techs = assembler.addPreprocessor(techs, preprocessor) &&
-                    assembler.addTemplateEngine(techs, props.templateEngine); // bem-core' ==> 'bemhtml', 'bh'
-
+        techs.push(props.preprocessor || 'stylus');
+        techs.push(props.templateEngine);
         props.isHtml && techs.push('html');
+        props.isTidyHtml && techs.push('tidy.html');
 
-        this.technologies = assembler.getTechnologies(config, techs, isAutoprefixer, this.toMinify);
+        this.technologies = assembler.getTechnologies(techs, {
+            config: config,
+            isAutoprefixer: isAutoprefixer,
+            toMinify: this.toMinify
+        });
+
         if (this.assemblerName === 'bem-tools') {
             this.technologies.inJSON.push({
                 name: 'bem',
@@ -311,9 +322,6 @@ var BemGenerator = yeoman.generators.Base.extend({
         }
 
         this.isBemjson = techs.indexOf('bemjson.js') > -1;
-
-        // Preprocessor
-        this.preprocessor = !preprocessor ? 'stylus' : preprocessor;
 
         // Autoprefixer
         (this.isAutoprefixer = isAutoprefixer) &&

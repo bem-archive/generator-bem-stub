@@ -14,6 +14,7 @@ module.exports = {
         'enb-diverse-js': '^0.1.0',
         'enb-modules': '^0.2.0',
         'enb-stylus': '^2.0.0-rc',
+        'enb-beautify': '^0.0.3',
 
         // bem-tools
         bem: '^0.10.0',

@@ -99,7 +99,12 @@ module.exports = function (config) {
             // html
             [require('enb-bemxjst/techs/html-from-bemjson')]<% } else if (technologies.inTechs['html'] && technologies.inTechs['bh']) { %>,
             // html
-            [require('enb-bh/techs/bemjson-to-html')]<% } %><%= toMinify.length > 0 ? ",\n\t\t\t// borschik\n\t\t\t" +
+            [require('enb-bh/techs/bemjson-to-html')]<% } %><% if (technologies.inTechs['tidy.html']) { %>,
+            // tidy html
+            [require('enb-beautify/techs/enb-beautify-html'), {
+                sourceTarget: '?.html',
+                destTarget: '?.tidy.html'
+            }]<% } %><%= toMinify.length > 0 ? ",\n\t\t\t// borschik\n\t\t\t" +
             	_.map(toMinify, function (technology) {
                 	return "[borschikTech, { sourceTarget: '?." + technology +
                 		"', destTarget: '?.min." + technology + "', " +

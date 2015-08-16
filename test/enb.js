@@ -35,135 +35,136 @@ describe('\'ENB\'', function () {
         enb.getLevels(pls, libs, true).must.eql(output);
     });
 
-    it('must add preprocessor', function () {
-        enb.addPreprocessor([], 'stylus').must.eql(['stylus']);
-    });
-
-    it('must add preprocessor \'stylus\' as default', function () {
-        enb.addPreprocessor([], undefined).must.eql(['stylus']);
-    });
-
-    it('must add template engine', function () {
-        enb.addTemplateEngine(['css'], 'bh').must.eql(['css', 'bh']);
-    });
+    function getTechnologies_(techs, toMinify) {
+        return enb.getTechnologies(techs, {
+            config: config,
+            isAutoprefixer: false,
+            toMinify: toMinify || []
+        });
+    }
 
     it('must get technology \'bemjson.js\'', function () {
         var output = require('./fixtures/enb/getTechnologies.bemjson.json');
 
-        enb.getTechnologies(config, ['bemjson.js', 'css'], false, []).must.eql(output);
+        getTechnologies_(['css', 'bemjson.js']).must.be.eql(output);
     });
 
     it('must get technology \'stylus\'', function () {
         var output = require('./fixtures/enb/getTechnologies.stylus.json');
 
-        enb.getTechnologies(config, ['stylus'], false, []).must.eql(output);
+        getTechnologies_(['stylus']).must.eql(output);
     });
 
     it('must get minimized technology \'stylus\'', function () {
         var output = require('./fixtures/enb/getTechnologies.stylus.min.json');
 
-        enb.getTechnologies(config, ['stylus'], false, ['css']).must.eql(output);
+        getTechnologies_(['stylus'], ['css']).must.eql(output);
     });
 
     it('must get technology \'css\'', function () {
         var output = require('./fixtures/enb/getTechnologies.css.json');
 
-        enb.getTechnologies(config, ['css'], false, []).must.eql(output);
+        getTechnologies_(['css']).must.eql(output);
     });
 
     it('must get minimized technology \'css\'', function () {
         var output = require('./fixtures/enb/getTechnologies.css.min.json');
 
-        enb.getTechnologies(config, ['css'], false, ['css']).must.eql(output);
+        getTechnologies_(['css'], ['css']).must.eql(output);
     });
 
     it('must get technologies \'ieN.css\'', function () {
         var techs = ['ie.css', 'ie8.css', 'ie9.css', 'css'],
             output = require('./fixtures/enb/getTechnologies.ie.json');
 
-        enb.getTechnologies(config, techs, false, []).must.eql(output);
+        getTechnologies_(techs).must.eql(output);
     });
 
     it('must get minimized technologies \'ieN.css\'', function () {
         var techs = ['ie.css', 'ie8.css', 'ie9.css', 'css'],
-            toMinify = ['ie.css', 'ie8.css', 'ie9.css', 'css'],
             output = require('./fixtures/enb/getTechnologies.ie.min.json');
 
-        enb.getTechnologies(config, techs, false, toMinify).must.eql(output);
+        getTechnologies_(techs, techs).must.eql(output);
     });
 
     it('must get technology \'bemtree\'', function () {
         var output = require('./fixtures/enb/getTechnologies.bemtree.json');
 
-        enb.getTechnologies(config, ['bemtree', 'css'], false, []).must.eql(output);
+        getTechnologies_(['css', 'bemtree']).must.eql(output);
     });
 
     it('must get minimized technology \'bemtree\'', function () {
         var output = require('./fixtures/enb/getTechnologies.bemtree.min.json');
 
-        enb.getTechnologies(config, ['bemtree', 'css'], false, ['bemtree.js']).must.eql(output);
+        getTechnologies_(['css', 'bemtree'], ['bemtree.js']).must.eql(output);
     });
 
     it('must get technology \'node.js\'', function () {
         var output = require('./fixtures/enb/getTechnologies.node.json');
 
-        enb.getTechnologies(config, ['node.js', 'css'], false, []).must.eql(output);
+        getTechnologies_(['css', 'node.js']).must.eql(output);
     });
 
     it('must get minimized technology \'node.js\'', function () {
         var output = require('./fixtures/enb/getTechnologies.node.min.json');
 
-        enb.getTechnologies(config, ['node.js', 'css'], false, ['node.js']).must.eql(output);
+        getTechnologies_(['css', 'node.js'], ['node.js']).must.be.eql(output);
     });
 
     it('must get technology \'browser.js\'', function () {
         var output = require('./fixtures/enb/getTechnologies.browser.json');
 
-        enb.getTechnologies(config, ['browser.js', 'css'], false, []).must.eql(output);
+        getTechnologies_(['css', 'browser.js']).must.eql(output);
     });
 
     it('must get minimized technology \'browser.js\'', function () {
         var output = require('./fixtures/enb/getTechnologies.browser.min.json');
 
-        enb.getTechnologies(config, ['browser.js', 'css'], false, ['js']).must.eql(output);
+        getTechnologies_(['css', 'browser.js'], ['js']).must.eql(output);
     });
 
     it('must get technology \'bemhtml\'', function () {
         var output = require('./fixtures/enb/getTechnologies.bemhtml.json');
 
-        enb.getTechnologies(config, ['bemhtml', 'css'], false, []).must.eql(output);
+        getTechnologies_(['css', 'bemhtml']).must.eql(output);
     });
 
     it('must get minimized technology \'bemhtml\'', function () {
         var output = require('./fixtures/enb/getTechnologies.bemhtml.min.json');
 
-        enb.getTechnologies(config, ['bemhtml', 'css'], false, ['bemhtml.js']).must.eql(output);
+        getTechnologies_(['css', 'bemhtml'], ['bemhtml.js']).must.eql(output);
     });
 
     it('must get technology \'bh\'', function () {
         var output = require('./fixtures/enb/getTechnologies.bh.json');
 
-        enb.getTechnologies(config, ['bh', 'css'], false, []).must.eql(output);
+        getTechnologies_(['css', 'bh']).must.eql(output);
     });
 
     it('must get minimized technology \'bh\'', function () {
         var output = require('./fixtures/enb/getTechnologies.bh.min.json');
 
-        enb.getTechnologies(config, ['bh', 'css'], false, ['bh.js']).must.eql(output);
+        getTechnologies_(['css', 'bh'], ['bh.js']).must.eql(output);
     });
 
     it('must get technology \'html\' --> \'bemhtml\'', function () {
         var techs = ['bemjson.js', 'css', 'bemhtml', 'html'],
             output = require('./fixtures/enb/getTechnologies.html.bemhtml.json');
 
-        enb.getTechnologies(config, techs, false, []).must.eql(output);
+        getTechnologies_(techs).must.eql(output);
     });
 
     it('must get technology \'html\' --> \'bh\'', function () {
         var techs = ['bemjson.js', 'css', 'bh', 'html'],
             output = require('./fixtures/enb/getTechnologies.html.bh.json');
 
-        enb.getTechnologies(config, techs, false, []).must.eql(output);
+        getTechnologies_(techs).must.eql(output);
+    });
+
+    it('must get technology \'tidy.html\'', function () {
+        var output = require('./fixtures/enb/getTechnologies.tidy.html.json');
+
+        getTechnologies_(['css', 'tidy.html']).must.eql(output);
     });
 
     it('must get browsers for all platforms', function () {
