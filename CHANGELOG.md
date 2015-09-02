@@ -1,6 +1,11 @@
 History of changes
 ==================
 
+0.11.0
+------
+
+* Updated the versions of the dependencies.
+
 0.10.0
 ------
 
