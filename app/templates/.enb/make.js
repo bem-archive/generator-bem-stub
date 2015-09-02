@@ -71,8 +71,10 @@ module.exports = function (config) {
             }]<% } %><% if (technologies.inTechs['bh']) { %>,
             // bh
             [require('enb-bh/techs/bh-commonjs'), {
-                jsAttrName: 'data-bem',
-                jsAttrScheme: 'json'
+                bhOptions: {
+                    jsAttrName: 'data-bem',
+                    jsAttrScheme: 'json'
+                }
             }]<% } %><% if (technologies.inTechs['bh'] && technologies.inTechs['browser.js']) { %>,
             // client bh
             [enbBemTechs.depsByTechToBemdecl, {
