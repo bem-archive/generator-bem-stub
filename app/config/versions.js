@@ -5,15 +5,15 @@ module.exports = {
     },
     deps: {
         // enb
-        enb: '^0.17.0',
+        enb: '^0.17.2',
         'enb-autoprefixer': '^0.3.0',
-        'enb-bemxjst': '^1.3.5',
-        'enb-bem-techs': '^2.0.0-rc',
-        'enb-bh': '^1.0.0-rc',
-        'enb-borschik': '^1.5.1',
+        'enb-bemxjst': '^2.0.0',
+        'enb-bem-techs': '^2.0.0',
+        'enb-bh': '^1.0.0',
+        'enb-borschik': '^2.0.0',
         'enb-diverse-js': '^0.1.0',
         'enb-modules': '^0.2.0',
-        'enb-stylus': '^2.0.0-rc',
+        'enb-stylus': '^2.0.0',
         'enb-beautify': '^0.0.3',
 
         // bem-tools
