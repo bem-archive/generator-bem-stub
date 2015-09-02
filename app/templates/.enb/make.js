@@ -30,10 +30,7 @@ module.exports = function (config) {
                 sourceSuffixes: ['css', 'ie9.css']
             }]<% } %><% if (technologies.inTechs['bemtree']) { %>,
             // bemtree
-            [require('enb-bemxjst/techs/bemtree'), {
-                devMode: process.env.BEMTREE_ENV === 'development',
-                compact: true
-            }]<% } %><% if (technologies.inTechs['node.js']) { %>,
+            [require('enb-bemxjst/techs/bemtree-old'), { devMode: process.env.BEMTREE_ENV === 'development' }]<% } %><% if (technologies.inTechs['node.js']) { %>,
             // node.js
             [require('enb-diverse-js/techs/node-js'), { target: '?.pre.node.js' }],
             [require('enb-modules/techs/prepend-modules'), {
@@ -51,10 +48,7 @@ module.exports = function (config) {
                 target: '?.js'
             }]<% } %><% if (technologies.inTechs['bemhtml']) { %>,
             // bemhtml
-            [require('enb-bemxjst/techs/bemhtml'), {
-                devMode: process.env.BEMHTML_ENV === 'development',
-                compact: true
-            }]<% } %><% if (technologies.inTechs['bemhtml'] && technologies.inTechs['browser.js']) { %>,
+            [require('enb-bemxjst/techs/bemhtml-old'), { devMode: process.env.BEMHTML_ENV === 'development' }]<% } %><% if (technologies.inTechs['bemhtml'] && technologies.inTechs['browser.js']) { %>,
             // client bemhtml
             [enbBemTechs.depsByTechToBemdecl, {
                 target: '?.bemhtml.bemdecl.js',
@@ -70,11 +64,10 @@ module.exports = function (config) {
                 filesTarget: '?.bemhtml.files',
                 dirsTarget: '?.bemhtml.dirs'
             }],
-            [require('enb-bemxjst/techs/bemhtml'), {
+            [require('enb-bemxjst/techs/bemhtml-old'), {
                 target: '?.browser.bemhtml.js',
                 filesTarget: '?.bemhtml.files',
-                devMode: process.env.BEMHTML_ENV === 'development',
-                compact: true
+                devMode: process.env.BEMHTML_ENV === 'development'
             }]<% } %><% if (technologies.inTechs['bh']) { %>,
             // bh
             [require('enb-bh/techs/bh-commonjs'), {
@@ -101,14 +94,12 @@ module.exports = function (config) {
             [require('enb-bh/techs/bh-bundle'), {
                 target: '?.browser.bh.js',
                 filesTarget: '?.bh.files',
-                bhOptions: {
-                    jsAttrName: 'data-bem',
-                    jsAttrScheme: 'json',
-                },
+                jsAttrName: 'data-bem',
+                jsAttrScheme: 'json',
                 mimic: 'BEMHTML'
             }]<% } %><% if (technologies.inTechs['html'] && technologies.inTechs['bemhtml']) { %>,
             // html
-            [require('enb-bemxjst/techs/bemjson-to-html')]<% } else if (technologies.inTechs['html'] && technologies.inTechs['bh']) { %>,
+            [require('enb-bemxjst/techs/html-from-bemjson')]<% } else if (technologies.inTechs['html'] && technologies.inTechs['bh']) { %>,
             // html
             [require('enb-bh/techs/bemjson-to-html')]<% } %><% if (technologies.inTechs['tidy.html']) { %>,
             // tidy html
