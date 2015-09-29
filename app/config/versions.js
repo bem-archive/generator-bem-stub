@@ -1,6 +1,6 @@
 module.exports = {
     libs: {
-        'bem-core': 'v2.7.0',
+        'bem-core': 'v2.8.0',
         'bem-components': 'v2.3.0'
     },
     deps: {
