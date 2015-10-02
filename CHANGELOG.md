@@ -1,6 +1,11 @@
 History of changes
 ==================
 
+0.12.0
+------
+
+* Library [bem-core](http://bem.info/libs/bem-core/) was updated to `v2.8.0`.
+
 0.11.0
 ------
 
