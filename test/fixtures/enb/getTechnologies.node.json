@@ -14,7 +14,7 @@
     "name": "enb-bem-techs",
     "version": "*"
   }, {
-    "name": "enb-diverse-js",
+    "name": "enb-js",
     "version": "*"
   }, {
     "name": "enb-modules",
