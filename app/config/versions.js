@@ -11,7 +11,7 @@ module.exports = {
         'enb-bem-techs': '^2.0.1',
         'enb-bh': '^1.0.0',
         'enb-borschik': '^2.0.0',
-        'enb-diverse-js': '^0.1.0',
+        'enb-js': '^1.0.0',
         'enb-modules': '^0.2.0',
         'enb-stylus': '^2.0.0',
         'enb-beautify': '^0.0.3',

@@ -125,8 +125,8 @@ function getTechnologies(techs, params) {
                 inTargets.push(formatTechToTargets_('node.js', toMinify));
 
                 inJSON.push({
-                    name: 'enb-diverse-js',
-                    version: config.versions.deps['enb-diverse-js']
+                    name: 'enb-js',
+                    version: config.versions.deps['enb-js']
                 }, {
                     name: 'enb-modules',
                     version: config.versions.deps['enb-modules']
@@ -139,8 +139,8 @@ function getTechnologies(techs, params) {
                 inTargets.push(formatTechToTargets_('js', toMinify));
 
                 inJSON.push({
-                    name: 'enb-diverse-js',
-                    version: config.versions.deps['enb-diverse-js']
+                    name: 'enb-js',
+                    version: config.versions.deps['enb-js']
                 }, {
                     name: 'enb-modules',
                     version: config.versions.deps['enb-modules']

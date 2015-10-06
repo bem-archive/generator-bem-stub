@@ -10,7 +10,7 @@ module.exports = {
         'enb-bem-techs': '*',
         'enb-bh': '*',
         'enb-borschik': '*',
-        'enb-diverse-js': '*',
+        'enb-js': '*',
         'enb-modules': '*',
         'enb-stylus': '*',
         'enb-beautify': '*',
