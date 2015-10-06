@@ -113,7 +113,7 @@ module.exports = function (config) {
             [require('enb-bh/techs/bemjson-to-html')]<% } %><% if (technologies.inTechs['tidy.html']) { %>,
             // tidy html
             [require('enb-beautify/techs/enb-beautify-html'), {
-                sourceTarget: '?.html',
+                htmlFileTarget: '?.html',
                 destTarget: '?.tidy.html'
             }]<% } %><%= toMinify.length > 0 ? ",\n\t\t\t// borschik\n\t\t\t" +
             	_.map(toMinify, function (technology) {
