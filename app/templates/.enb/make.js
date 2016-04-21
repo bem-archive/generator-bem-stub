@@ -31,29 +31,20 @@ module.exports = function (config) {
             }]<% } %><% if (technologies.inTechs['bemtree']) { %>,
             // bemtree
             [require('enb-bemxjst/techs/bemtree'), {
-                devMode: process.env.BEMTREE_ENV === 'development',
-                compact: true
+                sourceSuffixes: ['bemtree', 'bemtree.js']
             }]<% } %><% if (technologies.inTechs['node.js']) { %>,
             // node.js
-            [require('enb-js/techs/node-js'), { target: '?.pre.node.js' }],
-            [require('enb-modules/techs/prepend-modules'), {
-                source: '?.pre.node.js',
-                target: '?.node.js'
-            }]<% } %><% if (technologies.inTechs['browser.js']) { %>,
+            [require('enb-js/techs/node-js'), { includeYM: true }]<% } %><% if (technologies.inTechs['browser.js']) { %>,
             // browser.js
-            [require('enb-js/techs/browser-js'), { target: '?.browser.js' }],
+            [require('enb-js/techs/browser-js'), { includeYM: true }],
             [require('enb/techs/file-merge'), {
-                target: '?.pre.js',
+                target: '?.js',
                 sources: ['?.browser.<%=technologies.inTechs["bemhtml"] ? "bemhtml" : "bh"%>.js', '?.browser.js']
-            }],
-            [require('enb-modules/techs/prepend-modules'), {
-                source: '?.pre.js',
-                target: '?.js'
-            }]<% } %><% if (technologies.inTechs['bemhtml']) { %>,
+            }]
+            <% } %><% if (technologies.inTechs['bemhtml']) { %>,
             // bemhtml
             [require('enb-bemxjst/techs/bemhtml'), {
-                devMode: process.env.BEMHTML_ENV === 'development',
-                compact: true
+                sourceSuffixes: ['bemhtml', 'bemhtml.js']
             }]<% } %><% if (technologies.inTechs['bemhtml'] && technologies.inTechs['browser.js']) { %>,
             // client bemhtml
             [enbBemTechs.depsByTechToBemdecl, {
@@ -73,8 +64,7 @@ module.exports = function (config) {
             [require('enb-bemxjst/techs/bemhtml'), {
                 target: '?.browser.bemhtml.js',
                 filesTarget: '?.bemhtml.files',
-                devMode: process.env.BEMHTML_ENV === 'development',
-                compact: true
+                sourceSuffixes: ['bemhtml', 'bemhtml.js']
             }]<% } %><% if (technologies.inTechs['bh']) { %>,
             // bh
             [require('enb-bh/techs/bh-commonjs'), {

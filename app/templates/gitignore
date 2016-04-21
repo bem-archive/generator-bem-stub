@@ -4,4 +4,4 @@ libs/
 # bem
 .enb/tmp/
 *.bundles*/*/*.*
-<%= isBemjson ? '!*.bundles*/*/*.bemjson.js' : '!*.bundles*/*/*.bemdecl.js' %><%= assemblerName === 'bem-tools' ? '\n!*.bundles*/.bem/*' : '' %>
+!*.bundles*/*/*.bem<%= isBemjson ? 'json' : 'decl' %>.js
