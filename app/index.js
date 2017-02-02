@@ -104,16 +104,6 @@ var BemGenerator = yeoman.generators.Base.extend({
             message: 'Enter an email of the project owner:',
             'default': this.user.git.email() || 'ivan@yandex.com'
         }, {
-            type: 'list',
-            name: 'assembler',
-            message: 'Choose a toolkit to build the project:',
-            choices: [{
-                name: 'ENB',
-                value: 'enb'
-            }, {
-                value: 'bem-tools'
-            }]
-        }, {
             type: 'checkbox',
             name: 'addLibraries',
             message: 'Specify additional libraries if needed:',

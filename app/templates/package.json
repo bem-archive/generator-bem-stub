@@ -1,14 +1,17 @@
 {
   "name": "<%= projectName %>",
   "description": "BEM project",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "author": {
     "name": "<%= author %>",
     "email": "<%= email %>"
   },
   "repository": {},
   "engines": {
-    "node": ">=0.10.0"
+    "node": ">=4.0.0"
+  },
+  "dependencies": {
+    "bower": "^1.7.9"
   },
   "devDependencies": {
 <%= _.map(technologies.inJSON, function(technology) { return '    "' + technology.name + '": "' + technology.version + '"'}).join(',\n') %>
@@ -16,8 +19,7 @@
   "scripts": {
     "start": "enb server",
     "postinstall": "npm run deps",
-    "deps": "bower install",
-    "postinstall": "npm run deps"
+    "deps": "bower i --allow-root"
   },
   "private": true
 }
